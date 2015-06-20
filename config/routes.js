@@ -1,8 +1,10 @@
 module.exports.routes = {
 
     '/' : {
-         controller: 'main',
-         action: 'index'
+         view: 'homepage'
+    },
+    '/home' : {
+         view: 'home/app'
     },
     '/signup' : {
          controller: 'main',
