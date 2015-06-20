@@ -16,3 +16,10 @@ SETTING UP THE ENVIRONMENT:
 RUNNING THE APP:
 - Run command sails lift
 - If you are asked to choose option 1, 2 or 3, choose 1 or 2.
+
+
+
+
+How to add dependencies:
+- Edit the file package.json. You can find the dependencies from https://www.npmjs.com/
+- Run command npm install
