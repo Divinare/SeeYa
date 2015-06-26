@@ -1,38 +1,25 @@
-sails-browserify-example
-========================
+# EventMeetup
 
-An example of how it works grunt in sails adding browserify, with React support
+a [Sails](http://sailsjs.org) application
 
-# Usage
 
-Clone this repo and download with npm the packages:
+How to run the app locally (Windows):
 
-```
+SETTING UP THE ENVIRONMENT:
 
-  git clone https://github.com/Josebaseba/sails-browserify-example
+- Install node.js https://nodejs.org/
+- Open command line and go to the folder where you cloned the project
+- When you are in the folder run command: npm install -g sails --ignore-scripts
+- In the same folder run command npm install
+- Your environment is all set
 
-  cd sails-browserify-example
+RUNNING THE APP:
+- Run command sails lift
+- If you are asked to choose option 1, 2 or 3, choose 1 or 2.
 
-  sudo npm install
 
-  sails lift
 
-```
 
-Check the assets/js/app.js file to see a small example.
-
-To modify the Browserify main file please modify tasks/pipeline.js file (line 15) for the new main file path.
-
-```
-  var browserifyMainFile = '.tmp/public/js/app.js';
-
-```
-
-## IMPORTANT
-
-The sails.io.js file has a small modification, just commenting a few lines of code that uses require('request'). Because Browserify understands that it has to require that package, but we don't need that in the browser.
-
-You can see that change in the line 673 (until the 692 line).
-
-### More details in [this repository](https://github.com/Josebaseba/sails-browserify)
-
+How to add dependencies:
+- Edit the file package.json. You can find the dependencies from https://www.npmjs.com/
+- Run command npm install
