@@ -38,7 +38,8 @@ module.exports.routes = {
 
   'GET /event':  'EventController.findAll',
   'GET /event/:id': 'EventController.findOne',
-  'POST /event': 'EventController.create'
+  'POST /event': 'EventController.create',
+  'PUT /event/:id': 'EventController.update'
 
   /***************************************************************************
   *                                                                          *
