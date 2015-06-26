@@ -9,7 +9,4 @@ _.each([1,2,3,4,5], function(value){
 
 console.log('Sails.sockets.io', io);
 
-React.render(
-  <Main />,
-  document.getElementById('main-title')
-);
+React.render(<Main />, document.body);
