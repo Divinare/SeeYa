@@ -36,7 +36,8 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  'GET /event':  'EventController.hi',
+  'GET /event':  'EventController.findAll',
+  'GET /event/:id': 'EventController.findOne',
   'POST /event': 'EventController.create'
 
   /***************************************************************************

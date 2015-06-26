@@ -1,10 +1,3 @@
-/**
- * EventController
- *
- * @description :: Server-side logic for managing events
- * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
- */
-
  module.exports = {
 
  	findOne: function (req, res) {
@@ -16,26 +9,24 @@
  		});
  	},
 
- //	findAll: function
+ 	findAll: function (req, res) {
 
+ 		Event.find().then(function (events) {
+ 			res.send(events);
+ 		});
+
+ 	},
  	create: function (req, res) {
  		var eventToAdd = req.body;
  		Event.create({
  			name: eventToAdd.name
  		}).then(function(model) {
  			console.log(model.name + ' on lisätty tietokantaan onnistuneesti!');
-      // Palauta vastauksena lisätty aihealue
-      res.send(model);
-  });
+	      // Palauta vastauksena lisätty aihealue
+	      res.send(model);
+	  });
 
+ 	}
 
-
-
-
-    //res.json({
-
- //   });
-}
-
-};
+ };
 
