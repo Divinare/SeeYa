@@ -34,7 +34,10 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
+
+  'GET /event':  'EventController.hi',
+  'POST /event': 'EventController.create'
 
   /***************************************************************************
   *                                                                          *
