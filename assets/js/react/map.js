@@ -17,7 +17,7 @@ var Map = React.createClass({
 
     componentDidMount: function() {
         this.initMap();
-        console.log("JEEEEEEEEEEE");
+
     },
 
     initMap: function() {
@@ -44,7 +44,9 @@ var Map = React.createClass({
 
   render: function(){
     return (
-      <div id="map"></div>
+      <div id="map">
+         Map comes here
+      </div>
     )
   }
 

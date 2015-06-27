@@ -30,8 +30,6 @@
 
  	},
 
-
-
  	update: function (req, res) {
  		var controlId = req.params.id;
  		Event.findOne({

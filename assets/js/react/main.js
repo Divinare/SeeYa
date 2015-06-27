@@ -1,8 +1,9 @@
 var React = require('react');
-
-var Map = require('./map.js');
 var $ = require('jquery');
 var URL = require('../url.js');
+
+var Map = require('./map.js');
+var EventList = require('./eventList.js');
 
 var Main = React.createClass({
 
@@ -10,7 +11,7 @@ var Main = React.createClass({
 	getInitialState: function() {
 
 		return {
-
+			events: []
 		};
 
 	},
@@ -19,19 +20,24 @@ var Main = React.createClass({
 	},
 
 	componentDidMount: function() {
+		var that = this;
 		$.ajax({ 
 			type: 'GET', 
 			url: URL.base + 'event', 
 			data: { get_param: 'name' }, 
 			dataType: 'json',
 			success: function (data) { 
-				$.each(data, function(index, event) {
-					console.log(event.name);
+				that.setState({
+					events: data
+				})
+
+			//	$.each(data, function(index, event) {
+			//		console.log(event.name);
 
 					//$('body').append($('<div>', {
 				//		text: element.name
 				//	}));
-				});
+			//	});
 			}
 		});
 	},
@@ -39,10 +45,11 @@ var Main = React.createClass({
 
 	render: function(){
 		return (
-			<span>
-			Events
+			<div>
+			EventMeetup
 			<Map />
-			</span>
+			<EventList events={this.state.events} />
+			</div>
 			)
 	}
 
