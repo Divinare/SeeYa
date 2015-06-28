@@ -28,14 +28,32 @@ var EventList = React.createClass({
 		console.log("events: ");
 		console.log(this.props.events);
 
-		_.each(this.props.events, function(event) {
-			console.log(event);
+		var table = document.createElement('table');
+		var tr1 = document.createElement('tr');
+		var tr2 = document.createElement('tr');
+		var tableHeaders = ['Name', 'Description', 'Date'];
+
+		tableHeaders.map(function(header) {
+			var td = document.createElement('th');
+			var text = document.createTextNode(header);
+			td.appendChild(text);
+			tr1.appendChild(td);
+
 		});
+		table.appendChild(tr1);
+
+		this.props.events.map(function(event) {
+			var listItem = <ListItem />
+			console.log(listItem);
+			table.appendChild(listItem);
+		});
+	//	table.appendChild(tr2);
 
 		return (
 			<div id="eventList">
 			Events
-			
+			<table />
+
 			</div>
 			)
 	}
@@ -48,7 +66,9 @@ var ListItem = React.createClass({
 
 render: function(){
 	return (
-		<li>list item</li>
+		<tr>
+			<td>listitemiiii</td>
+		</tr>
 		);
 }
 
