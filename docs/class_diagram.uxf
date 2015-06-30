@@ -7,7 +7,7 @@
       <x>60</x>
       <y>70</y>
       <w>390</w>
-      <h>180</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>Event
 --
@@ -18,7 +18,9 @@ geom: Point (NOT NULL) (to be decided later)
 date: Date
 created_at: Date (probably automatically created by sails)
 registrations: List&lt;Registration&gt;
-</panel_attributes>
+longitude: long
+latitude: long 
+requiresRegistration: boolean</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -42,14 +44,44 @@ comment: String
     <id>Relation</id>
     <coordinates>
       <x>240</x>
-      <y>240</y>
+      <y>270</y>
       <w>50</w>
-      <h>170</h>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m2=1
 m1=0..*
 </panel_attributes>
-    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>70</y>
+      <w>390</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Address
+--
+id: long (NOT NULL)
+streetAddress: String
+zipCode: String
+country: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>140</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=1
+m1=1..*
+</panel_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
   </element>
 </diagram>

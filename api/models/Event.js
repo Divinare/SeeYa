@@ -10,7 +10,10 @@ module.exports = {
   attributes: {
   	name:'STRING',
   	description: 'STRING',
-  	date: 'DATE'
+  	date: 'DATE',
+  	latitude: 'LONG',
+  	longitude: 'LONG',
+  	requiresRegistration: 'BOOLEAN'
   }
 };
 
