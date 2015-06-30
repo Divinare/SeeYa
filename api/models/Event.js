@@ -11,9 +11,16 @@ module.exports = {
   	name:'STRING',
   	description: 'STRING',
   	date: 'DATE',
-  	latitude: 'LONG',
-  	longitude: 'LONG',
-  	requiresRegistration: 'BOOLEAN'
+  	lat: 'FLOAT',
+  	lon: 'FLOAT',
+  	requiresRegistration: 'BOOLEAN',
+  	registrations:{
+  		collection: 'registration',
+  		via: 'targetEvent'
+  	},
+  	address:{
+      model:'address'
+    }
   }
 };
 

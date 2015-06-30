@@ -26,8 +26,7 @@ module.exports = {
  	create: function (req, res) {
  		var registrationToAdd = req.body;
  		Registration.create({
- 			comment: registrationToAdd.comment,
- 			registrationDate: ragistrationToAdd.registrationDate
+ 			comment: registrationToAdd.comment
  		}).then(function(model) {
  			//console.log(model.name + ' on lisätty tietokantaan onnistuneesti!');
 	      // Palauta vastauksena lisätty aihealue
@@ -42,7 +41,6 @@ module.exports = {
  			where: { id: registrationId}
  		}).then(function( registration) {
  			registration.comment = req.body['comment'];
- 			registration.registrationDate = req.body['registrationDate']
  			registration.save(function(err) {
  				if (err) {
  					return res.send(err);
