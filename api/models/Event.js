@@ -10,7 +10,7 @@ module.exports = {
   attributes: {
   	name:'STRING',
   	description: 'STRING',
-  	date: 'date'
+  	date: 'DATE'
   }
 };
 

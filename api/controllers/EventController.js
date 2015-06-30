@@ -37,6 +37,7 @@
  		}).then(function( event) {
  			event.name = req.body['name'];
  			event.description = req.body['description']
+ 			event.date = req.body['date']
  			event.save(function(err) {
  				if (err) {
  					return res.send(err);

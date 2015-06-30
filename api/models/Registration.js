@@ -8,7 +8,8 @@
 module.exports = {
 
   attributes: {
-
+  	comment:'STRING',
+  	registrationDate:'DATE'
   }
 };
 
