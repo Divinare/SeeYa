@@ -2,6 +2,26 @@ var React = require('react');
 
 var $ = require('jquery');
 var _ = require('lodash');
+var DataTable = require('react-data-components').DataTable;
+
+var columns = [
+  { title: 'Name', prop: 'name'  },
+  { title: 'Description', prop: 'description' },
+  { title: 'Participants', prop: 'participants' },
+  { title: 'Address', prop: 'address' },
+  { title: 'Date', prop: 'date' }
+];
+ 
+var data = [
+  { name: 'name value', city: 'city value', address: 'address value', phone: 'phone value' },
+  { name: 'name value1', city: 'city value', address: 'address value', phone: 'phone value' },
+  { name: 'name value2', city: 'city value', address: 'address value', phone: 'phone value' },
+  { name: 'name value3', city: 'city value', address: 'address value', phone: 'phone value' },
+  { name: 'name value4', city: 'city value', address: 'address value', phone: 'phone value' },
+  { name: 'name value5', city: 'city value', address: 'address value', phone: 'phone value' }
+  // It also supports arrays 
+  // [ 'name value', 'city value', 'address value', 'phone value' ] 
+];
 
 var EventList = React.createClass({
 
@@ -21,38 +41,38 @@ var EventList = React.createClass({
 	
 	},
 
-
+	createEventList: function(events) {
+		var eventList = [];
+		events.map(function(event) {
+			console.log(event);
+			eventList.push(event);
+		});
+		return eventList;
+	},
 
 
 	render: function(){
-		console.log("events: ");
-		console.log(this.props.events);
 
-		var table = document.createElement('table');
-		var tr1 = document.createElement('tr');
-		var tr2 = document.createElement('tr');
-		var tableHeaders = ['Name', 'Description', 'Date'];
 
-		tableHeaders.map(function(header) {
-			var td = document.createElement('th');
-			var text = document.createTextNode(header);
-			td.appendChild(text);
-			tr1.appendChild(td);
+	var events = this.props.events;
 
-		});
-		table.appendChild(tr1);
+	var eventList = this.createEventList(events);
 
-		this.props.events.map(function(event) {
-			var listItem = <ListItem />
-			console.log(listItem);
-			table.appendChild(listItem);
-		});
-	//	table.appendChild(tr2);
+
+
 
 		return (
 			<div id="eventList">
 			Events
-			<table />
+			    <DataTable
+			      className="container"
+			      keys={[ 'name', 'address', 'id' ]}
+			      columns={columns}
+			      initialData={eventList}
+			      initialPageLength={5}
+			      initialSortBy={{ prop: 'city', order: 'descending' }}
+			      pageLengthOptions={[ 5, 20, 50 ]}
+			    />
 
 			</div>
 			)

@@ -5,6 +5,14 @@ var URL = require('../url.js');
 var Map = require('./map.js');
 var EventList = require('./eventList.js');
 
+
+
+
+
+
+
+
+
 var Main = React.createClass({
 
 
@@ -23,7 +31,7 @@ var Main = React.createClass({
 		var that = this;
 		$.ajax({ 
 			type: 'GET', 
-			url: URL.base + 'event', 
+			url: URL.base + 'events', 
 			data: { get_param: 'name' }, 
 			dataType: 'json',
 			success: function (data) { 
