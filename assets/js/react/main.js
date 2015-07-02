@@ -3,13 +3,8 @@ var $ = require('jquery');
 var URL = require('../url.js');
 
 var Map = require('./map.js');
-var EventList = require('./eventList.js');
-
-
-
-
-
-
+var EventList = require('./event/eventList.js');
+var EventForm = require('./event/eventForm.js')
 
 
 
@@ -54,9 +49,10 @@ var Main = React.createClass({
 	render: function(){
 		return (
 			<div>
-			EventMeetup
-			<Map />
-			<EventList events={this.state.events} />
+				<h1>EventMeetup</h1>
+				<Map />
+				<EventList events={this.state.events} />
+				<EventForm />
 			</div>
 			)
 	}

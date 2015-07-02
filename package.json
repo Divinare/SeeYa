@@ -7,7 +7,6 @@
   "dependencies": {
     "ejs": "~0.8.4",
     "google-maps": "^3.0.0",
-    "googlemaps": "^1.0.1",
     "grunt": "0.4.2",
     "grunt-browserify": "*",
     "grunt-contrib-clean": "~0.5.0",
@@ -27,9 +26,10 @@
     "leaflet": "^0.7.3",
     "lodash": "^2.4.1",
     "rc": "~0.5.0",
-    "react": "^0.13.0",
+    "react": "^0.13.3",
+    "react-async": "^2.1.0",
     "react-data-components": "^0.4.0",
-    "react-google-maps": "^1.7.0",
+    "react-router-component": "^0.25.4",
     "sails": "~0.10.5",
     "sails-disk": "~0.10.0"
   },

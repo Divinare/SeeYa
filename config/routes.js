@@ -32,9 +32,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
+/*  '/': {
     view: 'homepage'
-  },
+  },*/
 
   'GET /events':  'EventController.findAll',
   'GET /event/:id': 'EventController.findOne',

@@ -8,47 +8,19 @@ var $ = require('jquery');
 //var Map = ReactGoogleMaps.Map;
 //var Marker = ReactGoogleMaps.Marker;
 
-
-/*
-var GoogleMaps = require('google-maps');
-
-var signupHeading = "Sign up for the event "
-var chosenEvent = {};
-var infowindow = new google.maps.InfoWindow();
-
-GoogleMapsLoader.load(function(google) {
-    new google.maps.Map(el, options);
-});
-
-var openInfoWindow;
-var geocoder;
-var myCenter = new google.maps.LatLng(51.508742, -0.120850);
-var mapProp = {
-    center: new google.maps.LatLng(60.1733244, 24.9410248), //start from helsinki
-    zoom: zoomOutNoUserLocation,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-};
-var markers = [];
-var newEventMarker = null;
-var GeoMarker;
-var map;
-
-*/
-
-//import {GoogleMaps, Marker} from "react-google-maps";
 var Map = React.createClass({
 
     getDefaultProps: function () {
         return {
             initialZoom: 8,
-            mapCenterLat: 43.6425569,
-            mapCenterLng: -79.4073126,
+            mapCenterLat: 60,
+            mapCenterLng: 20,
         };
     },
     componentDidMount: function (rootNode) {
         var that = this;
         var mapOptions = {
-          center: { lat: -34.397, lng: 150.644},
+          center: { lat: 60.205294, lng: 24.936092},
           zoom: 8
         };
 

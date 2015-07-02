@@ -52,37 +52,32 @@ var EventList = React.createClass({
 
 
 	render: function(){
-		var events = this.props.events;
-		var eventList = this.createEventList(events);
+
+
+	var events = this.props.events;
+
+	var eventList = this.createEventList(events);
+
+
+
+
 		return (
-			<div id='eventList'>
-				<h1 id='eventTopic'>Events sadsada</h1>
+			<div id="eventList">
+			<h1>Events</h1>
 			    <DataTable
 			      className="container"
 			      keys={[ 'name', 'address', 'id' ]}
 			      columns={columns}
 			      initialData={eventList}
-			      initialPageLength={10}
+			      initialPageLength={5}
 			      initialSortBy={{ prop: 'city', order: 'descending' }}
 			      pageLengthOptions={[ 5, 20, 50 ]}
 			    />
 
 			</div>
-		)
+			)
 	}
 
 });
 
 module.exports = EventList;
-
-var ListItem = React.createClass({
-
-render: function(){
-	return (
-		<tr>
-			<td>listitemiiii</td>
-		</tr>
-		);
-}
-
-})
