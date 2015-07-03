@@ -1,8 +1,5 @@
 var React = require('react');
-var L = require('leaflet');
-//L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/';
 
-//var ReactGoogleMaps = require('react-google-maps')
 var GoogleMapsLoader = require('google-maps');
 var $ = require('jquery');
 //var Map = ReactGoogleMaps.Map;

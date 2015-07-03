@@ -7,6 +7,7 @@
   "dependencies": {
     "ejs": "~0.8.4",
     "grunt": "0.4.2",
+    "google-maps": "^3.0.0",
     "grunt-browserify": "*",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-coffee": "~0.10.1",
@@ -21,6 +22,11 @@
     "grunt-sails-linker": "~0.9.5",
     "grunt-sync": "~0.0.4",
     "include-all": "^0.1.6",
+    "lodash": "^2.4.1",
+    "jquery": "^2.1.4",
+    "react-bootstrap": "^0.23.7",
+    "react-data-components": "^0.4.0",
+    "react-router-component": "^0.25.4",
     "rc": "~0.5.0",
     "react-async": "^2.1.0",
     "sails": "~0.10.5",
@@ -36,5 +42,9 @@
     "url": "git://github.com/josebalegarreta/browserify-sails.git"
   },
   "author": "josebalegarreta",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "grunt-jsxhint": "^0.6.0",
+    "react-tools": "^0.13.3"
+  }
 }
