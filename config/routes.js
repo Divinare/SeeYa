@@ -39,7 +39,9 @@ module.exports.routes = {
   'GET /api/events':  'EventController.findAll',
   'GET /api/event/:id': 'EventController.findOne',
   'POST /api/events': 'EventController.create',
-  'PUT /api/event/:id': 'EventController.update'
+  'PUT /api/event/:id': 'EventController.update',
+
+  'GET /api/address/:id': 'AddressController.findOne'
 
   /***************************************************************************
   *                                                                          *
