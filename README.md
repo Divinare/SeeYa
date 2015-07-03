@@ -1,7 +1,13 @@
 # EventMeetup
 
+DESCRIPTION
+
+EventMeetup brings people together in their commonities and helps them find nearby events specific to their interests. EventMeetup also gives people the opportunity to create and publish their own events!
+
+
 a [Sails](http://sailsjs.org) application
 
+INSTRUCTIONS
 
 How to run the app locally (Windows):
 
