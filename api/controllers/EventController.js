@@ -5,6 +5,7 @@
  		Event.findOne({
  			where: { id: eventId }
  		}).then(function (event) {
+ 			console.log(event);
  			res.send(event);
  		});
  	},

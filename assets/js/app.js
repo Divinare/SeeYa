@@ -1,3 +1,4 @@
+/*global sails*/
 var io = require('./dependencies/sails.io.js')();
 var React = require('react');
 
@@ -14,7 +15,7 @@ var Location = Router.Location;
 React.render((
 	<Locations>
 		<Location path="/" handler={Index} />
-		<Location path="/events/:id" handler={EventPage} />
+		<Location path="/event/:id" handler={EventPage} />
 		<Location path="/about" handler={About} />
 		<Location path="*" handler={NoMatch} />
 	</Locations>
