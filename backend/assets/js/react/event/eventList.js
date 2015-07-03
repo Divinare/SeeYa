@@ -63,7 +63,7 @@ var EventList = React.createClass({
 
 		return (
 			<div id="eventList">
-			<h1>Events</h1>
+				<h1 className='bottomListTopic'>Events</h1>
 			    <DataTable
 			      className="container"
 			      keys={[ 'name', 'address', 'id' ]}

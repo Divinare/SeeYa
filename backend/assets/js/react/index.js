@@ -2,27 +2,25 @@ var React = require('react');
 var $ = require('jquery');
 var URL = require('../url.js');
 
+var Navbar = require('./navbar.js');
 var Map = require('./map.js');
 var EventList = require('./event/eventList.js');
 var EventForm = require('./event/eventForm.js')
 
 
 
-var Main = React.createClass({
+var Index = React.createClass({
 
 
 	getInitialState: function() {
 
 		return {
-			events: []
+			events: [],
+			showEventForm: false
 		};
 
 	},
 	componentWillMount: function() {
-
-	},
-
-	componentDidMount: function() {
 		var that = this;
 		$.ajax({ 
 			type: 'GET', 
@@ -33,30 +31,37 @@ var Main = React.createClass({
 				that.setState({
 					events: data
 				})
-
-			//	$.each(data, function(index, event) {
-			//		console.log(event.name);
-
-					//$('body').append($('<div>', {
-				//		text: element.name
-				//	}));
-			//	});
 			}
 		});
 	},
 
+	componentDidMount: function() {
+
+	},
+
+	toggleShowEventForm: function() {
+		this.setState({
+			showEventForm: !this.state.showEventForm
+		})
+	},
+
 
 	render: function(){
+
+		var eventForm = <EventForm />;
+		var eventList = <EventList events={this.state.events} />;
+		var bottomElement = this.state.showEventForm ? eventForm : eventList;
+
 		return (
 			<div>
-				<h1>EventMeetup</h1>
+				<Navbar toggleShowEventForm={this.showEventForm} showEventForm={this.state.showEventForm} />
 				<Map />
-				<EventList events={this.state.events} />
-				<EventForm />
+				{bottomElement}
+				
 			</div>
 			)
 	}
 
 });
 
-module.exports = Main;
+module.exports = Index;

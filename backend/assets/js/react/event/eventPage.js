@@ -3,7 +3,7 @@ var $ = require('jquery');
 var URL = require('../../url.js');
 
 
-var EventShow = React.createClass({
+var EventPage = React.createClass({
 
 
 	getInitialState: function() {
@@ -32,4 +32,4 @@ var EventShow = React.createClass({
 
 });
 
-module.exports = EventShow;
+module.exports = EventPage;
