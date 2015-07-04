@@ -19,21 +19,34 @@ var EventPage = React.createClass({
 	},
 
 	componentDidMount: function() {
+		var that = this;
+		$.ajax({ 
+			type: 'GET', 
+			url: URL.base + 'event/1', 
+			data: { get_param: 'name' }, 
+			dataType: 'json',
+			success: function (data) { 
+				that.setState({
+					event: data
+				})
+			}
+		});
 
 	},
 
 
 	render: function(){
 
-		var event = this.state.event
+		//var event = this.state.event
 		return (
 
 			<div>
-				<Map />
-				<h1>{event.name}</h1>
-				Address: {event.address}<br/>
-				Date: {event.date}<br/>
-				Description: {event.description}
+			<h1>Moro</h1>
+		/*	<Map />
+			<h1>{event.name}</h1>
+			Address: {event.address}<br/>
+			Date: {event.date}<br/>
+			Description: {event.description}*/
 			</div>
 			)
 	}

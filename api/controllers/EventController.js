@@ -4,7 +4,8 @@
  		var eventId = req.params.id;
  		Event.findOne({
  			where: { id: eventId }
- 		}).then(function (event) {
+ 		}).populate('address')
+ 		.then(function (event) {
  			console.log(event);
  			res.send(event);
  		});
