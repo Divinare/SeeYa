@@ -1,6 +1,7 @@
 var React = require('react');
 var $ = require('jquery');
 var URL = require('../url.js');
+var utils = require('../utils.js');
 
 var Navbar = require('./navbar.js');
 var Map = require('./map.js');
@@ -14,24 +15,31 @@ var NoMatch = require('./noMatch.js');
 var Router = require('react-router-component');
 var Locations = Router.Locations;
 var Location = Router.Location;
-
+var NotFound = Router.NotFound;
 
 var Index = React.createClass({
 
 
 	getInitialState: function() {
 
+		showEventForm = false;
+		console.log(window.location.href);
+	//	if(utils.getParam(1) {
+	//		showEventForm = true;
+	//	}
+
 		return {
 			events: [],
-			showEventForm: false
+			showEventForm: showEventForm
 		};
 
 	},
 	componentWillMount: function() {
+		
 		var that = this;
 		$.ajax({ 
 			type: 'GET', 
-			url: URL.base + 'events', 
+			url: URL.REST + '/events', 
 			data: { get_param: 'name' }, 
 			dataType: 'json',
 			success: function (data) { 
@@ -40,6 +48,7 @@ var Index = React.createClass({
 				})
 			}
 		});
+
 	},
 
 	componentDidMount: function() {
@@ -74,9 +83,10 @@ var Index = React.createClass({
 
 				<Locations>
 					<Location path="/" handler={bottomElement} />
+					<Location path="/event/new" handler={EventForm} />
 					<Location path="/event/:id" handler={EventPage} />
 					<Location path="/about" handler={About} />
-					<Location path="*" handler={NoMatch} />
+					<NotFound handler={NoMatch} />
 				</Locations>
 
 				

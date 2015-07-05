@@ -20,14 +20,14 @@ module.exports = React.createClass({
 
 	render: function(){
 		var toggleEventFormLinkText = this.props.showEventForm ? 'Browse events' : 'Create new event';
-
+		var toggleEventFormHref = this.props.showEventForm ? 'event/new' : '/';
 		return (
 			<Navbar brand='' href='/' toggleNavKey={0}>
 			    <CollapsibleNav eventKey={0}>
 				     <Nav navbar>
-				  	    <NavItem eventKey={1} onClick={this.showEventList}>EventMeetup</NavItem>
+				  	    <NavItem eventKey={1} href='/' onClick={this.showEventList}>EventMeetup</NavItem>
 				        <NavItem eventKey={1} href='/about'>About</NavItem>
-				        <NavItem eventKey={2} onClick={this.toggleShowEventForm}>{toggleEventFormLinkText}</NavItem>
+				        <NavItem eventKey={2} href={toggleEventFormHref} onClick={this.toggleShowEventForm}>{toggleEventFormLinkText}</NavItem>
 				    </Nav>
 				      <Nav navbar right>
 				      	 <DropdownButton eventKey={3} title='Dropdown'>

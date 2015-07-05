@@ -1,5 +1,9 @@
+var base = 'http://localhost:1337';
+var REST = base + '/api';
+
 module.exports = {
 
-	'base': 'http://localhost:1337/api/'
+	'base': base,
+	'REST': REST
 
 };
