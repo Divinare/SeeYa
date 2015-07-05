@@ -1,6 +1,7 @@
 var React = require('react');
 var $ = require('jquery');
 var URL = require('../../url.js');
+var utils = require('../../utils.js');
 
 
 var Map = require('../map.js');
@@ -17,9 +18,11 @@ var EventPage = React.createClass({
 	},
 	componentWillMount: function() {
 		var that = this;
+		var tokens = utils.urlTokens();
+		var eventId = tokens[tokens.length - 1]
 		$.ajax({ 
 			type: 'GET', 
-			url: URL.REST + '/event/12/',
+			url: URL.REST + '/event/' + eventId,
 			dataType: 'json',
 			success: function (data) { 
 				that.setState({
@@ -34,22 +37,17 @@ var EventPage = React.createClass({
 
 	},
 
-	formatDate: function(dateStr){
-		var dateObj = new Date(dateStr)
-		var formatted = dateObj.getDate() + '.' + (dateObj.getMonth() + 1) + '.' + dateObj.getFullYear();
-		return formatted;
-	},
-		
-
 	render: function(){
-		console.log("href: " + window.location.href)
+		console.log("result: " + utils.urlTokens())
+
 		var event = this.state.event
+		console.log("name: " + event.name)
 		return (
 
 			<div>
 			<h1>{event.name}</h1>
-			Address: {event.streetAddress}<br/>
-			Date: {this.formatDate(event.date)}<br/>
+			Address: {event.address}<br/>
+	
 			Description: {event.description}
 			</div>
 			)
