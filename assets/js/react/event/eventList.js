@@ -44,7 +44,6 @@ var EventList = React.createClass({
 	createEventList: function(events) {
 		var eventList = [];
 		events.map(function(event) {
-			console.log(event);
 			eventList.push(event);
 		});
 		return eventList;

@@ -10,7 +10,7 @@ var EventPage = React.createClass({
 	getInitialState: function() {
 
 		return {
-
+			event: []
 		};
 
 	},
@@ -22,7 +22,7 @@ var EventPage = React.createClass({
 		var that = this;
 		$.ajax({ 
 			type: 'GET', 
-			url: URL.base + 'event/1', 
+			url: URL.base + 'event/12', 
 			data: { get_param: 'name' }, 
 			dataType: 'json',
 			success: function (data) { 
@@ -34,19 +34,28 @@ var EventPage = React.createClass({
 
 	},
 
+	/*
+				<Map />
+			<h1>{event.name}</h1>
+			Address: {event.address}<br/>
+			Date: {event.date}<br/>
+			Description: {event.description}
+
+			*/
+
 
 	render: function(){
 
-		//var event = this.state.event
+		var event = this.state.event
 		return (
 
 			<div>
 			<h1>Moro</h1>
-		/*	<Map />
+			<Map />
 			<h1>{event.name}</h1>
 			Address: {event.address}<br/>
 			Date: {event.date}<br/>
-			Description: {event.description}*/
+			Description: {event.description}
 			</div>
 			)
 	}

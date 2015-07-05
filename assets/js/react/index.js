@@ -40,8 +40,16 @@ var Index = React.createClass({
 	},
 
 	toggleShowEventForm: function() {
+		console.log("toggle");
 		this.setState({
 			showEventForm: !this.state.showEventForm
+		})
+	},
+	
+	showEventList: function() {
+		console.log("show event list");
+		this.setState({
+			showEventForm: false
 		})
 	},
 
@@ -54,7 +62,7 @@ var Index = React.createClass({
 
 		return (
 			<div>
-				<Navbar toggleShowEventForm={this.toggleShowEventForm} showEventForm={this.state.showEventForm} />
+				<Navbar toggleShowEventForm={this.toggleShowEventForm} showEventList={this.showEventList} showEventForm={this.state.showEventForm} />
 				<Map />
 				{bottomElement}
 				
