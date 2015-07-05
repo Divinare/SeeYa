@@ -10,7 +10,7 @@ var EventPage = React.createClass({
 	getInitialState: function() {
 
 		return {
-
+			event: []
 		};
 
 	},
@@ -34,19 +34,25 @@ var EventPage = React.createClass({
 
 	},
 
+	formatDate: function(dateStr){
+		var dateObj = new Date(dateStr)
+		var formatted = dateObj.getDate() + '.' + dateObj.getMonth() + 1 + '.' + dateObj.getFullYear();
+		return formatted;
+	},
+
 
 	render: function(){
 
-		//var event = this.state.event
+		var event = this.state.event
 		return (
 
 			<div>
-			<h1>Moro</h1>
-		/*	<Map />
+				
+			<Map />
 			<h1>{event.name}</h1>
 			Address: {event.address}<br/>
-			Date: {event.date}<br/>
-			Description: {event.description}*/
+			Date: {this.formatDate(event.date)}<br/>
+			Description: {event.description}
 			</div>
 			)
 	}
