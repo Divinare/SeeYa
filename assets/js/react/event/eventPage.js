@@ -41,13 +41,27 @@ var EventPage = React.createClass({
 		console.log("result: " + utils.urlTokens())
 
 		var event = this.state.event
-		console.log("name: " + event.name)
-		return (
+		console.log("type: " + typeof event.address)
+		if(typeof event.address !== 'undefined'){
+			console.log(event.address)
+			console.log(event.address[0])
+			console.log(event.address.streetAddress)
+			console.log(event.address['streetAddress'])
+		}
 
-			<div>
+		console.log("name: " + event.name)
+
+		if(typeof event.address === 'undefined'){
+			return (
+				<div></div>
+				)
+		}
+		return (		<div>
 			<h1>{event.name}</h1>
-			Address: {event.address}<br/>
-	
+			Address: {event.address.streetAddress}<br/>
+			ZipCode: {event.address.ZipCode}<br/>
+			Country: {event.address.country}<br/>
+			Date: {utils.formatDate(event.date)}<br/>
 			Description: {event.description}
 			</div>
 			)
