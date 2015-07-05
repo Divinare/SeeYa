@@ -2,6 +2,8 @@ var React = require('react');
 var $ = require('jquery');
 var URL = require('../../url.js');
 
+var Navbar = require('../navbar.js');
+
 var Map = require('../map.js');
 var Router = require('react-router-component');
 var EventPage = React.createClass({
@@ -22,7 +24,7 @@ var EventPage = React.createClass({
 		var that = this;
 		$.ajax({ 
 			type: 'GET', 
-			url: URL.base + 'event/1', 
+			url: URL.base + 'event/12', 
 			data: { get_param: 'name' }, 
 			dataType: 'json',
 			success: function (data) { 
@@ -47,7 +49,7 @@ var EventPage = React.createClass({
 		return (
 
 			<div>
-				
+				<Navbar toggleShowEventForm={this.toggleShowEventForm} showEventList={this.showEventList} showEventForm={this.state.showEventForm} />
 			<Map />
 			<h1>{event.name}</h1>
 			Address: {event.address}<br/>
