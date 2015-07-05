@@ -2,7 +2,6 @@ var React = require('react');
 var $ = require('jquery');
 var URL = require('../../url.js');
 
-var Navbar = require('../navbar.js');
 
 var Map = require('../map.js');
 var Router = require('react-router-component');
@@ -17,14 +16,10 @@ var EventPage = React.createClass({
 
 	},
 	componentWillMount: function() {
-
-	},
-
-	componentDidMount: function() {
 		var that = this;
 		$.ajax({ 
 			type: 'GET', 
-			url: URL.base + 'event/12', 
+			url: URL.base + 'event/1', 
 			data: { get_param: 'name' }, 
 			dataType: 'json',
 			success: function (data) { 
@@ -33,26 +28,28 @@ var EventPage = React.createClass({
 				})
 			}
 		});
+	},
+
+	componentDidMount: function() {
+
 
 	},
 
 	formatDate: function(dateStr){
 		var dateObj = new Date(dateStr)
-		var formatted = dateObj.getDate() + '.' + dateObj.getMonth() + 1 + '.' + dateObj.getFullYear();
+		var formatted = dateObj.getDate() + '.' + (dateObj.getMonth() + 1) + '.' + dateObj.getFullYear();
 		return formatted;
 	},
-
+		
 
 	render: function(){
-
+		console.log("href: " + window.location.href)
 		var event = this.state.event
 		return (
 
 			<div>
-				<Navbar toggleShowEventForm={this.toggleShowEventForm} showEventList={this.showEventList} showEventForm={this.state.showEventForm} />
-			<Map />
 			<h1>{event.name}</h1>
-			Address: {event.address}<br/>
+			Address: {event.streetAddress}<br/>
 			Date: {this.formatDate(event.date)}<br/>
 			Description: {event.description}
 			</div>
