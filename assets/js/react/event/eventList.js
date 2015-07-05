@@ -5,11 +5,12 @@ var _ = require('lodash');
 var DataTable = require('react-data-components').DataTable;
 
 var columns = [
-  { title: 'Name', prop: 'name'  },
-  { title: 'Description', prop: 'description' },
-  { title: 'Participants', prop: 'participants' },
-  { title: 'Address', prop: 'address' },
-  { title: 'Date', prop: 'date' }
+    { title: 'Name', prop: 'name'  },
+    { title: 'Date', prop: 'date' },
+    { title: 'Participants', prop: 'participants' },
+    { title: 'Address', prop: 'address' },
+    { title: 'Description', prop: 'description' }
+
 ];
  
 var data = [
