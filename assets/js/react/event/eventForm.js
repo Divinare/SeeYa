@@ -1,35 +1,13 @@
 var React = require('react');
 var DatePicker = require('react-datepicker');
 var Select = require('react-select');
+//var $ = require('jquery-autocomplete-js');
 
-//var jquery = require('jquery-autocomplete-js');
+var b = require('react-bootstrap');
+var Glyphicon = b.Glyphicon;
 var URL = require('../../url.js');
 var clock24hour = require('../utils/clocktimes.js').hour24;
 
-var asd = [
-      "ActionScript",
-      "AppleScript",
-      "Asp",
-      "BASIC",
-      "C",
-      "C++",
-      "Clojure",
-      "COBOL",
-      "ColdFusion",
-      "Erlang",
-      "Fortran",
-      "Groovy",
-      "Haskell",
-      "Java",
-      "JavaScript",
-      "Lisp",
-      "Perl",
-      "PHP",
-      "Python",
-      "Ruby",
-      "Scala",
-      "Scheme"
-    ];
 
 var EventForm = React.createClass({
 
@@ -45,10 +23,11 @@ var EventForm = React.createClass({
 	},
 
 	componentDidMount: function() {
-		console.log(asd);
-			var ac = jquery('#time').autocomplete({
+
+			/* var ac = $('#time').autocomplete({
 			  options: ["apple", "bannana", "strawberry", "pineapple"]
 			});
+	*/
 	},
 
     handleNewDateChange: function(date) {
@@ -63,22 +42,26 @@ var EventForm = React.createClass({
 
 	render: function(){
 		return (
-			<div className='container'>
+			<div className="container">
 				<h1>Create new event</h1>
-				<form className="form-horizontal" role="form">
+				<form className='form-horizontal' role="form">
 				    <div className="form-group">
 				        <label className="col-sm-2 control-label">Name</label>
 				        <div className="col-sm-8">
-				            <input type="text" className="form-control" id="inputName" placeholder="Event name" />
+				            <input type="text" className="form-control" placeholder="Event name" />
 				        </div>
 				    </div>
 
 				    <div className="form-group">
-				        <label className="col-sm-2 control-label">URL</label>
+				        <label className="col-sm-2 control-label">Address</label>
 				        <div className="col-sm-8">
-				            <input type="text" className="form-control" id="inputUrl" value="{{url}}" placeholder="http://www.example.com/" />
+				            <input type="text" className="form-control" value="" placeholder="Address" />
+				                            <span className="input-group-btn">
+                    <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
+                </span>
 				        </div>
 				    </div>
+
 				    <div className="form-group">
 				    <label className="col-sm-2 control-label">Date</label>
 				        <div className="col-sm-8">
@@ -90,24 +73,27 @@ var EventForm = React.createClass({
 					      />
 				        </div>
 					</div>
+
 				    <div className="form-group">
 				    <label className="col-sm-2 control-label">Time</label>
 				        <div className="col-sm-8">
-  								<input id="time" />
+  							<input id="time" className="form-control" placeholder="hh:mm" />
 				        </div>
 					</div>
+
+				    <div className="form-group">
+				        <label className="col-sm-2 control-label">Description</label>
+				        <div className="col-sm-8">
+				            <input type="text" className="form-control" value="" placeholder="Description" />
+				        </div>
+				    </div>
 
 				    <div className="form-group">
 				        <div className="col-sm-8 col-sm-offset-2">
 				            <button type="submit" className="btn btn-default">Submit</button>
 				        </div>
 				    </div>
-
-
-
-
-
-
+				    <button className="glyphicon glyphicon-time"></button>
 
 				</form>
 

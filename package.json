@@ -23,6 +23,8 @@
     "grunt-sync": "~0.0.4",
     "include-all": "^0.1.6",
     "jquery": "^2.1.4",
+    "jquery-autocomplete": "^1.2.1",
+    "jquery-autocomplete-js": "^1.1.0",
     "lodash": "^2.4.1",
     "moment": "^2.10.3",
     "rc": "~0.5.0",
