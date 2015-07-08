@@ -1,31 +1,53 @@
-# EventMeetup
+## React App Boilerplate
 
-DESCRIPTION
+Start developing React JS applications easily with the included tooling. Using gulp with browserify and jasmine for testing.
 
-EventMeetup brings people together in their commonities and helps them find nearby events specific to their interests. EventMeetup also gives people the opportunity to create and publish their own events!
+Read more about how it works at: [React JS workflow, part 2](http://christianalfoni.github.io/javascript/2014/10/30/react-js-workflow-part2.html)
 
+### Notes
+The boilerplate is minimalistic, meaning you have to expand on the current workflow for handling static assets etc.
 
-a [Sails](http://sailsjs.org) application
+### Install
 
-INSTRUCTIONS
+* Clone the repo
+* Run `npm install`
 
-How to run the app locally (Windows):
+### Changes
 
-SETTING UP THE ENVIRONMENT:
+**2.2.3**
+  - Now works with React 0.13.1 (Thanks to @fatso83)
 
-- Install node.js https://nodejs.org/
-- Open command line and go to the folder where you cloned the project
-- When you are in the folder run command: npm install -g sails --ignore-scripts
-- In the same folder run command npm install
-- Your environment is all set
+**2.2.2**
+  - Added es5 shim to testrunner-phantom.js html as phantomJS does not have bind etc.
 
-RUNNING THE APP:
-- Run command sails lift
-- If you are asked to choose option 1, 2 or 3, choose 1 or 2.
+**2.2.1**
 
+  - Updated package.json dep versions
 
+**2.2.0**
 
+  - Using gulp-watch instead of gulp.watch, now reacts to adding and deleting files
 
-How to add dependencies:
-- Edit the file package.json. You can find the dependencies from https://www.npmjs.com/
-- Run command npm install
+**2.1.0**
+
+  - Fixed watch bug
+  - Deploy does not include react-addons
+
+### Development
+* Run `gulp`
+* Start a webservice in the `build` folder, f.ex. `python -m SimpleHTTPServer`
+* Go to `localhost:8000` to display the app
+* Go to `localhost:8000/testrunner.html` to see your tests
+* Any changes to `app` or `styles` folder will automatically rebuild to `build` folder
+* Both tests and application changes will refresh automatically in the browser
+* Run `gulp test` to run all tests with phantomJS and produce XML reports
+
+### Minify the code, ready for production
+* Run `NODE_ENV=production gulp deploy`
+
+### Directory
+* **build/**: Where your automatically builds to. This is where you launch your app in development
+* **dist/**: Where the deployed code exists, ready for production
+* **styles/**: Where you put your css files
+* **specs/**: Where you put your test files
+* **gulpfile**: Gulp configuration
