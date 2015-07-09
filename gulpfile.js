@@ -33,6 +33,10 @@ semantic_path = modules_path + "/semantic-ui-css";
 
 dist_path = "dist";
 
+var concat = require('gulp-concat');
+var cssmin = require('gulp-cssmin');
+
+
 err = function() {
   var x;
   x = 1 <= arguments.length ? slice.call(arguments, 0) : [];
@@ -85,6 +89,28 @@ gulp.task('js-dev', function() {
   return js(true);
 });
 
+
+gulp.task('css', function () {
+    return gulp.src(src_path + '/css/**/*.css')
+        .on('error', err).pipe(postcss([
+            autoprefixer({
+                browsers: ["last 2 versions", "ie 8", "ie 9"]
+            })
+        ]))
+       .pipe(concat('main.css'))
+       .pipe(cssmin())
+       .pipe(gulp.dest(dist_path));
+});
+
+
+/*
+
+        .pipe(autoprefixer({
+            browsers: ["last 2 versions", "ie 8", "ie 9"],
+            cascade: false
+        }))
+
+
 gulp.task('css', function() {
   return gulp.src(src_path + "/styles.less").pipe(plumber()).pipe(less({
     paths: [components_path, modules_path]
@@ -94,6 +120,10 @@ gulp.task('css', function() {
     })
   ])).pipe(gulp.dest(dist_path));
 });
+
+
+*/
+
 
 gulp.task('clean', function() {
   return rimraf.sync(dist_path);
