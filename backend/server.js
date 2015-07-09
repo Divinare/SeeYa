@@ -20,6 +20,9 @@ dist = path.join(__dirname, '/../dist');
 
 app = express();
 
+var rest = require('epilogue');
+var models = require('./models');
+
 app.use(logger("dev"));
 
 app.use(bodyParser.json());
@@ -32,7 +35,29 @@ app.use(cookieParser());
 
 app.use(express["static"](dist));
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 1337);
+
+
+rest.initialize({
+    app: app,
+    base: '/rest',
+    sequelize: models.sequelize
+});
+
+
+var events = rest.resource({
+    model: models.Event,
+    include: [models.Address],
+    endpoints: ['/events', '/events/:id']
+});
+
+var address = rest.resource({
+    model: models.Address,
+    include: [models.Event],
+    endpoints: ['/address', '/address/:id']
+});
+
+
 
 app.use(function(req, res, next) {
   var err;

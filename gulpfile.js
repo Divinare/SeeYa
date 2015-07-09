@@ -1,4 +1,4 @@
-var autoprefixer, components_path, dist_path, err, gulp, gutil, gwebpack, js, less, livereload, modules_path, nodemon, plumber, postcss, rimraf, semantic_path, server_main, src_path, webpack,
+var autoprefixer, components_path, dist_path, err, gulp, gutil, gwebpack, js, less, livereload, modules_path, nodemon, plumber, postcss, rimraf, semantic_path, server_main, frontend_path, webpack,
   slice = [].slice;
 
 gulp = require('gulp');
@@ -23,7 +23,8 @@ rimraf = require('rimraf');
 
 GLOBAL.Promise = (require('es6-promise')).Promise;
 
-src_path = "src";
+var frontend_path = 'frontend';
+var backend_path = 'backend';
 
 components_path = "bower_components";
 
@@ -74,11 +75,11 @@ webpack = function(name, ext, watch) {
       ]
     }
   };
-  return gulp.src(src_path + "/" + name + "." + ext).pipe(gwebpack(options)).pipe(gulp.dest(dist_path));
+  return gulp.src(frontend_path + "/" + name + "." + ext).pipe(gwebpack(options)).pipe(gulp.dest(dist_path));
 };
 
 js = function(watch) {
-  return webpack("client", "js", watch); // cjsx
+  return webpack("main", "js", watch); // cjsx
 };
 
 gulp.task('js', function() {
@@ -91,7 +92,7 @@ gulp.task('js-dev', function() {
 
 
 gulp.task('css', function () {
-    return gulp.src(src_path + '/css/**/*.css')
+    return gulp.src(frontend_path + '/css/**/*.css')
         .on('error', err).pipe(postcss([
             autoprefixer({
                 browsers: ["last 2 versions", "ie 8", "ie 9"]
@@ -102,42 +103,19 @@ gulp.task('css', function () {
        .pipe(gulp.dest(dist_path));
 });
 
-
-/*
-
-        .pipe(autoprefixer({
-            browsers: ["last 2 versions", "ie 8", "ie 9"],
-            cascade: false
-        }))
-
-
-gulp.task('css', function() {
-  return gulp.src(src_path + "/styles.less").pipe(plumber()).pipe(less({
-    paths: [components_path, modules_path]
-  })).on('error', err).pipe(postcss([
-    autoprefixer({
-      browsers: ["last 2 versions", "ie 8", "ie 9"]
-    })
-  ])).pipe(gulp.dest(dist_path));
-});
-
-
-*/
-
-
 gulp.task('clean', function() {
   return rimraf.sync(dist_path);
 });
 
 gulp.task('copy', function() {
-  gulp.src(src_path + "/*.html").pipe(gulp.dest(dist_path));
-  gulp.src(src_path + "/favicon.ico").pipe(gulp.dest(dist_path));
+  gulp.src(frontend_path + "/*.html").pipe(gulp.dest(dist_path));
+  gulp.src(frontend_path + "/favicon.ico").pipe(gulp.dest(dist_path));
   return gulp.src(semantic_path + "/themes/default/assets/**/*").pipe(gulp.dest(dist_path + "/themes/default/assets/"));
 });
 
 gulp.task('build', ['clean', 'copy', 'css', 'js']);
 
-server_main = src_path + "/server.js";
+server_main = backend_path + "/server.js";
 
 gulp.task('server', function() {
   return nodemon({
@@ -147,7 +125,7 @@ gulp.task('server', function() {
       coffee: modules_path + "/.bin/coffee"
     },
     env: {
-      PORT: process.env.PORT || 3000
+      PORT: process.env.PORT || 1337
     }
   });
 });
@@ -157,6 +135,6 @@ gulp.task('default', ['clean', 'copy', 'css', 'server', 'js-dev', 'watch']);
 gulp.task('watch', ['copy'], function() {
   livereload.listen();
   gulp.watch([dist_path + "/**/*"]).on('change', livereload.changed);
-  gulp.watch([src_path + "/**/*.less"], ['css']);
-  return gulp.watch([src_path + "/**/*.html"], ['copy']);
+  gulp.watch([frontend_path + "/**/*.less"], ['css']);
+  return gulp.watch([frontend_path + "/**/*.html"], ['copy']);
 });

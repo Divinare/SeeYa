@@ -37,7 +37,10 @@
     "transform-loader": "^0.2.2",
     "google-maps": "^3.0.0",
     "gulp-concat": "^2.3.4",
-    "gulp-cssmin": "^0.1.6"
+    "epilogue": "~0.5.1",
+    "gulp-cssmin": "^0.1.6",
+    "sequelize": "3.3.0",
+    "sqlite3": "^3.0.1"
   },
   "devDependencies": {}
 }
