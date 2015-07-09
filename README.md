@@ -1,53 +1,44 @@
-## React App Boilerplate
+react-express-template
+=============================
 
-Start developing React JS applications easily with the included tooling. Using gulp with browserify and jasmine for testing.
+Web app starter template with React, React Router, ES6 (via Babel), CoffeeScript, Express/Node.js, Semantic-UI, Gulp and more.
 
-Read more about how it works at: [React JS workflow, part 2](http://christianalfoni.github.io/javascript/2014/10/30/react-js-workflow-part2.html)
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/khaled/react-express-template)
 
-### Notes
-The boilerplate is minimalistic, meaning you have to expand on the current workflow for handling static assets etc.
+### Getting Started ###
 
-### Install
+1. Fork and/or clone
+2. Run ```npm install```
+3. Start the dev server by running ```$(npm bin)/gulp```
+4. Visit http://localhost:3000
+5. Get to work!
 
-* Clone the repo
-* Run `npm install`
+### Languages / Frameworks / Libraries ###
 
-### Changes
+* Facebook's React for client side view and controller logic
+* React Router for client side routing
+* ES6 (via Babel)
+* CoffeeScript with React sugar (.cjsx)
+* Normalize-CSS for normalization of default element styles across browsers
+* Semantic-UI CSS framework
+* LESS for extended styling capabilities
+* Autoprefixer for automatic vendor prefixing
+* JQuery because semantic wants it (use React for most client side view rendering / manipulation)
+* Webpack for client side CommonJS modules and script concatenation
+* Express for server side logic
+* Gulp for building and change monitoring
+* LiveReload
 
-**2.2.3**
-  - Now works with React 0.13.1 (Thanks to @fatso83)
+### Development Notes ###
 
-**2.2.2**
-  - Added es5 shim to testrunner-phantom.js html as phantomJS does not have bind etc.
+* Client side scripts are concatenated using Webpack.  The main entry point is client.cjsx.  From here you can require() other .cjsx, .coffee, .jsx, or .js files.
+* ES6 is supported in JS and JSX files; these are transpiled to ES5 via Babel.  There's an example of this in ```src/header.jsx```.
+* The main stylesheet entry point is styles.less.
+* The server entry point is server.coffee.
 
-**2.2.1**
+### LiveReload ###
 
-  - Updated package.json dep versions
+Install a live reload plugin for your browser (e.g. [RemoteLiveReload for Chrome](https://chrome.google.com/webstore/detail/remotelivereload/jlppknnillhjgiengoigajegdpieppei)) to instantly see your changes in the browser when a client side file (cjsx/coffee/jsx/js/less/css/html) changes.
 
-**2.2.0**
-
-  - Using gulp-watch instead of gulp.watch, now reacts to adding and deleting files
-
-**2.1.0**
-
-  - Fixed watch bug
-  - Deploy does not include react-addons
-
-### Development
-* Run `gulp`
-* Start a webservice in the `build` folder, f.ex. `python -m SimpleHTTPServer`
-* Go to `localhost:8000` to display the app
-* Go to `localhost:8000/testrunner.html` to see your tests
-* Any changes to `app` or `styles` folder will automatically rebuild to `build` folder
-* Both tests and application changes will refresh automatically in the browser
-* Run `gulp test` to run all tests with phantomJS and produce XML reports
-
-### Minify the code, ready for production
-* Run `NODE_ENV=production gulp deploy`
-
-### Directory
-* **build/**: Where your automatically builds to. This is where you launch your app in development
-* **dist/**: Where the deployed code exists, ready for production
-* **styles/**: Where you put your css files
-* **specs/**: Where you put your test files
-* **gulpfile**: Gulp configuration
+###License###
+MIT
