@@ -25,11 +25,13 @@ var debug = require("debug")("react-express-template");
 
 require("babel/register");
 
+require('./routes');
+
 var dist = path.join(__dirname, '/../dist');
 
 var app = express();
 
-var rest = require('epilogue');
+//var rest = require('epilogue');
 var models = require('./models');
 
 app.use(logger("dev"));
@@ -46,7 +48,7 @@ app.use(express["static"](dist));
 
 app.set("port", process.env.PORT || 1337);
 
-
+/*
 rest.initialize({
     app: app,
     base: '/rest',
@@ -64,7 +66,7 @@ var address = rest.resource({
     model: models.Address,
     include: [models.Event],
     endpoints: ['/address', '/address/:id']
-});
+}); */
 
 
 
@@ -95,6 +97,13 @@ app.use(function(err, req, res, next) {
 
 server = http.createServer(app);
 
+models.sequelize.sync().then(function () {
+    server.listen(app.get('port'), function() {
+    debug('Express server listening on port ' + server.address().port);
+  });
+});
+
+/*
 server.listen(app.get("port"), function() {
   return debug("Express server listening on port " + server.address().port);
-});
+});*/
