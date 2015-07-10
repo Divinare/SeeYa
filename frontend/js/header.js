@@ -1,9 +1,9 @@
-import React from "react/addons"
-import Router from "react-router"
+var React = require('react/addons');
+var Router = require('react-router');
+var Link = Router.Link;
 
-let {Link} = Router
+var Header = React.createClass({
 
-export default React.createClass({
   render: function() {
     return <div className="ui pointing menu">
       <div className="ui page grid">
@@ -31,3 +31,5 @@ export default React.createClass({
     </div>
   }
 });
+
+module.exports = Header;

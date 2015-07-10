@@ -11,7 +11,7 @@ Router = require('react-router');
 Route = Router.Route, RouteHandler = Router.RouteHandler, DefaultRoute = Router.DefaultRoute, Link = Router.Link;
 
 
-var Header = require('./header');
+var Header = require('./js/header.js');
 var Map = require('./js/map.js');
 
 var About = require('./js/about.js');
@@ -36,7 +36,7 @@ var Home = React.createClass({
 
 var Main = React.createClass({
   render: function() {
-    return (
+    return (4
     <div>
       <Header />
       <Map />

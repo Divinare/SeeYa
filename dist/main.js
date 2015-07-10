@@ -52822,76 +52822,65 @@
 /* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	var React = __webpack_require__(3);
+	var Router = __webpack_require__(176);
+	var Link = Router.Link;
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	var _reactAddons = __webpack_require__(3);
-	
-	var _reactAddons2 = _interopRequireDefault(_reactAddons);
-	
-	var _reactRouter = __webpack_require__(176);
-	
-	var _reactRouter2 = _interopRequireDefault(_reactRouter);
-	
-	var Link = _reactRouter2["default"].Link;
-	exports["default"] = _reactAddons2["default"].createClass({
-	  displayName: "header",
+	var Header = React.createClass({
+	  displayName: 'Header',
 	
 	  render: function render() {
-	    return _reactAddons2["default"].createElement(
-	      "div",
-	      { className: "ui pointing menu" },
-	      _reactAddons2["default"].createElement(
-	        "div",
-	        { className: "ui page grid" },
-	        _reactAddons2["default"].createElement(
-	          "div",
-	          { className: "column", style: { "padding-bottom": 0 } },
-	          _reactAddons2["default"].createElement(
-	            "div",
-	            { className: "title item" },
-	            _reactAddons2["default"].createElement(
-	              "b",
+	    return React.createElement(
+	      'div',
+	      { className: 'ui pointing menu' },
+	      React.createElement(
+	        'div',
+	        { className: 'ui page grid' },
+	        React.createElement(
+	          'div',
+	          { className: 'column', style: { 'padding-bottom': 0 } },
+	          React.createElement(
+	            'div',
+	            { className: 'title item' },
+	            React.createElement(
+	              'b',
 	              null,
-	              "Application Name"
+	              'Application Name'
 	            )
 	          ),
-	          _reactAddons2["default"].createElement(
+	          React.createElement(
 	            Link,
-	            { className: "item", to: "home" },
-	            "Home"
+	            { className: 'item', to: 'home' },
+	            'Home'
 	          ),
-	          _reactAddons2["default"].createElement(
+	          React.createElement(
 	            Link,
-	            { className: "item", to: "about" },
-	            "About"
+	            { className: 'item', to: 'about' },
+	            'About'
 	          ),
-	          _reactAddons2["default"].createElement(
-	            "div",
-	            { className: "right floated item" },
-	            _reactAddons2["default"].createElement("i", { className: "setting icon" })
+	          React.createElement(
+	            'div',
+	            { className: 'right floated item' },
+	            React.createElement('i', { className: 'setting icon' })
 	          ),
-	          _reactAddons2["default"].createElement(
-	            "div",
-	            { className: "right floated item" },
-	            _reactAddons2["default"].createElement(
-	              "div",
-	              { className: "ui teal button" },
-	              "Sign Up"
+	          React.createElement(
+	            'div',
+	            { className: 'right floated item' },
+	            React.createElement(
+	              'div',
+	              { className: 'ui teal button' },
+	              'Sign Up'
 	            )
 	          ),
-	          _reactAddons2["default"].createElement(
-	            "div",
-	            { className: "right floated item" },
-	            _reactAddons2["default"].createElement(
-	              "div",
-	              { className: "ui button" },
-	              "Log in"
+	          React.createElement(
+	            'div',
+	            { className: 'right floated item' },
+	            React.createElement(
+	              'div',
+	              { className: 'ui button' },
+	              'Log in'
 	            )
 	          )
 	        )
@@ -52899,7 +52888,8 @@
 	    );
 	  }
 	});
-	module.exports = exports["default"];
+	
+	module.exports = Header;
 
 /***/ },
 /* 217 */

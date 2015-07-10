@@ -3,9 +3,9 @@ var autoprefixer, components_path, dist_path, err, gulp, gutil, gwebpack, js, le
 
 gulp = require('gulp');
 
-gutil = require('gulp-util');
+var gutil = require('gulp-util');
 
-livereload = require('gulp-livereload');
+var livereload = require('gulp-livereload');
 
 nodemon = require('gulp-nodemon');
 

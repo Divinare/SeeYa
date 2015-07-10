@@ -1,17 +1,44 @@
-react-express-template
-=============================
+# EventMeetup
+=============
 
-Web app starter template with React, React Router, ES6 (via Babel), CoffeeScript, Express/Node.js, Semantic-UI, Gulp and more.
+DESCRIPTION
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/khaled/react-express-template)
+EventMeetup brings people together in their commonities and helps them find nearby events specific to their interests. EventMeetup also gives people the opportunity to create and publish their own events!
 
-### Getting Started ###
+a [Sails](http://sailsjs.org) application
 
-1. Fork and/or clone
-2. Run ```npm install```
-3. Start the dev server by running ```$(npm bin)/gulp```
-4. Visit http://localhost:3000
-5. Get to work!
+DEVELOPMENT INSTRUCTIONS
+
+How to run the app locally (Windows):
+
+SETTING UP THE ENVIRONMENT:
+
+- Install node.js https://nodejs.org/
+- Open command line and go to the folder where you cloned the project
+- When you are in the folder run command:
+
+npm install -g sails --ignore-scripts
+
+- In the same folder run command:
+
+npm install
+
+- Your environment is all set
+
+RUNNING THE APP:
+
+1. Start the dev server by running:
+
+$(npm bin)/gulp      <- Pitäisi ehkä olla jQuery asennettuna globaalisti
+
+2. Visit http://localhost:1337
+
+
+How to add dependencies:
+- Edit the file package.json. You can find the dependencies from https://www.npmjs.com/
+- Run command npm install
+
+
 
 ### Languages / Frameworks / Libraries ###
 
@@ -39,6 +66,3 @@ Web app starter template with React, React Router, ES6 (via Babel), CoffeeScript
 ### LiveReload ###
 
 Install a live reload plugin for your browser (e.g. [RemoteLiveReload for Chrome](https://chrome.google.com/webstore/detail/remotelivereload/jlppknnillhjgiengoigajegdpieppei)) to instantly see your changes in the browser when a client side file (cjsx/coffee/jsx/js/less/css/html) changes.
-
-###License###
-MIT
