@@ -36,7 +36,7 @@ var Home = React.createClass({
 
 var Main = React.createClass({
   render: function() {
-    return (4
+    return (
     <div>
       <Header />
       <Map />

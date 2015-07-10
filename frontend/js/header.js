@@ -17,6 +17,7 @@ var Header = React.createClass({
           <Link className="item" to="about">
             About
           </Link>
+
           <div className="right floated item">
             <i className="setting icon"/>
           </div>
