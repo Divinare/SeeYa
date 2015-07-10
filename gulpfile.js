@@ -1,38 +1,56 @@
-var autoprefixer, components_path, dist_path, err, gulp, gutil, gwebpack, js, less, livereload, modules_path, nodemon, plumber, postcss, rimraf, semantic_path, server_main, frontend_path, webpack,
-  slice = [].slice;
+var autoprefixer;
+var components_path;
+var dist_path; 
+var err;
+var gulp;
+var gutil;
+var gwebpack;
+var js;
+var less;
+var livereload;
+var modules_path;
+var nodemon;
+var plumber;
+var postcss;
+var rimraf;
+var semantic_path;
+var server_main;
+var frontend_path;
+var webpack;
+var slice = [].slice;
 
-gulp = require('gulp');
+var gulp = require('gulp');
 
 var gutil = require('gulp-util');
 
 var livereload = require('gulp-livereload');
 
-nodemon = require('gulp-nodemon');
+var nodemon = require('gulp-nodemon');
 
-plumber = require('gulp-plumber');
+var plumber = require('gulp-plumber');
 
-gwebpack = require('gulp-webpack');
+var gwebpack = require('gulp-webpack');
 
-less = require('gulp-less');
+var less = require('gulp-less');
 
-postcss = require('gulp-postcss');
+var postcss = require('gulp-postcss');
 
-autoprefixer = require('autoprefixer-core');
+var autoprefixer = require('autoprefixer-core');
 
-rimraf = require('rimraf');
+var rimraf = require('rimraf');
 
 GLOBAL.Promise = (require('es6-promise')).Promise;
 
 var frontend_path = 'frontend';
 var backend_path = 'backend';
 
-components_path = "bower_components";
+var components_path = "bower_components";
 
-modules_path = "node_modules";
+var modules_path = "node_modules";
 
-semantic_path = modules_path + "/semantic-ui-css";
+var semantic_path = modules_path + "/semantic-ui-css";
 
-dist_path = "dist";
+var dist_path = "dist";
 
 var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');

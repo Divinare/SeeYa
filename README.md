@@ -17,7 +17,9 @@ SETTING UP THE ENVIRONMENT:
 - Open command line and go to the folder where you cloned the project
 - When you are in the folder run command:
 
-npm install -g sails --ignore-scripts
+npm install -g gulp
+
+This install gulp globally to your machine. At least on windows you might have to restart the command prompt after this.
 
 - In the same folder run command:
 
@@ -29,7 +31,12 @@ RUNNING THE APP:
 
 1. Start the dev server by running:
 
-$(npm bin)/gulp      <- Pitäisi ehkä olla jQuery asennettuna globaalisti
+gulp
+
+This starts the server
+
+On linux this also works:
+$(npm bin)/gulp
 
 2. Visit http://localhost:1337
 

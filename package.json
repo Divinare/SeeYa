@@ -42,5 +42,7 @@
     "sequelize": "3.3.0",
     "sqlite3": "^3.0.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  }
 }
