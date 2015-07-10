@@ -8,18 +8,17 @@ var columns = [
     { title: 'Name', prop: 'name'  },
     { title: 'Date', prop: 'date' },
     { title: 'Participants', prop: 'participants' },
-    { title: 'Address', prop: 'address' },
-    { title: 'Description', prop: 'description' }
+    { title: 'Address', prop: 'address' }
 
 ];
  
 var data = [
-  { name: 'name value', city: 'city value', address: 'address value', phone: 'phone value' },
-  { name: 'name value1', city: 'city value', address: 'address value', phone: 'phone value' },
-  { name: 'name value2', city: 'city value', address: 'address value', phone: 'phone value' },
-  { name: 'name value3', city: 'city value', address: 'address value', phone: 'phone value' },
-  { name: 'name value4', city: 'city value', address: 'address value', phone: 'phone value' },
-  { name: 'name value5', city: 'city value', address: 'address value', phone: 'phone value' }
+  { name: 'name value', date: 'city value', participants: 'address value', address: 'phone value' },
+  { name: 'name value1', date: 'city value', participants: 'address value', address: 'phone value' },
+  { name: 'name value2', date: 'city value', participants: 'address value', address: 'phone value' },
+  { name: 'name value3', date: 'city value', participants: 'address value', address: 'phone value' },
+  { name: 'name value4', date: 'city value', participants: 'address value', address: 'phone value' },
+  { name: 'name value5', date: 'city value', participants: 'address value', address: 'phone value' }
   // It also supports arrays 
   // [ 'name value', 'city value', 'address value', 'phone value' ] 
 ];
@@ -49,21 +48,8 @@ var EventList = React.createClass({
 		});
 		return eventList;
 	},
+/*
 
-
-	render: function(){
-
-
-	var events = this.props.events;
-
-	var eventList = this.createEventList(events);
-
-
-
-
-		return (
-			<div id="eventList">
-				<h1 className='bottomListTopic'>Events</h1>
 			    <DataTable
 			      className="container"
 			      keys={[ 'name', 'address', 'id' ]}
@@ -73,6 +59,22 @@ var EventList = React.createClass({
 			      initialSortBy={{ prop: 'city', order: 'descending' }}
 			      pageLengthOptions={[ 5, 20, 50 ]}
 			    />
+			    */
+
+	render: function(){
+
+
+	//var eventList = this.data;
+	console.log(this.props.eventList);
+	console.log("^");
+	//var eventList = this.createEventList(events);
+
+
+
+
+		return (
+			<div id="eventList">
+				<h1 className='bottomListTopic'>Events</h1>
 
 			</div>
 			)

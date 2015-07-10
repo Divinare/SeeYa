@@ -1,4 +1,138 @@
 var React = require('react/addons');
+
+var Router = require('react-router')
+  , RouteHandler = Router.RouteHandler
+  , Route = Router.Route;
+
+var ReactBootstrap = require('react-bootstrap')
+  , Nav = ReactBootstrap.Nav
+  , Navbar = ReactBootstrap.Navbar
+  , ListGroup = ReactBootstrap.ListGroup;
+
+var ReactRouterBootstrap = require('react-router-bootstrap')
+  , NavItemLink = ReactRouterBootstrap.NavItemLink
+  , ButtonLink = ReactRouterBootstrap.ButtonLink
+  , ListGroupItemLink = ReactRouterBootstrap.ListGroupItemLink
+  , Link = ReactRouterBootstrap.Link;
+
+var Navbar = ReactBootstrap.Navbar;
+var CollapsibleNav = ReactBootstrap.CollapsibleNav;
+var NavItem = ReactBootstrap.NavItem;
+var DropdownButton = ReactBootstrap.DropdownButton;
+var MenuItem = ReactBootstrap.MenuItem;
+
+
+
+module.exports = React.createClass({
+
+	toggleShowEventForm: function() {
+		this.props.toggleShowEventForm();
+	},
+
+	showEventList: function() {
+		this.props.showEventList();
+	},
+
+	render: function(){
+		var toggleEventFormLinkText = this.props.showEventForm ? 'Browse events' : 'Create new event';
+		var toggleEventFormHref = this.props.showEventForm ? 'event/new' : '/';
+		
+    var Brand = <NavItemLink to='home' className='nav navbar-nav app-name-navbar'>EventMeetup</NavItemLink>;
+
+    return (
+
+
+
+      <Navbar brand={Brand} toggleNavKey={0}>
+          <CollapsibleNav eventKey={0}>
+             <Nav navbar>
+          <NavItemLink
+            to="about"
+            params={{ someparam: 'hello' }}>
+            About
+          </NavItemLink>
+          <NavItemLink
+            to="eventForm"
+            params={{ someparam: 'hello' }}>
+            Create new event
+          </NavItemLink>
+            </Nav>
+              <Nav navbar right>
+                <NavItem eventKey={1} href='#'>Register</NavItem>
+                <NavItem eventKey={2} href='#'>Sign in</NavItem>
+            </Nav>
+          </CollapsibleNav>
+        </Navbar>
+
+		)
+	}
+
+});
+
+/*
+
+
+      <div>
+        NavItemLink<br />
+        <Nav>
+          <NavItemLink
+            to="home"
+            params={{ someparam: 'hello' }}>
+            Linky!
+          </NavItemLink>
+        </Nav>
+        <br />
+        ButtonLink<br />
+        <ButtonLink
+          to="about"
+          params={{ someparam: 'hello' }}>
+          Linky!
+        </ButtonLink>
+        <br />
+        <ListGroup>
+          <ListGroupItemLink
+            to="eventForm"
+            params={{ someparam: 'hello' }}>
+            Linky!
+          </ListGroupItemLink>
+        </ListGroup>
+        <RouteHandler />
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+			<Navbar brand='' href='/' toggleNavKey={0}>
+			    <CollapsibleNav eventKey={0}>
+				     <Nav navbar>
+				  	    <NavItem eventKey={1} href='/' onClick={this.showEventList}>EventMeetup</NavItem>
+				        <NavItem eventKey={1} href='/about'>About</NavItem>
+				        <NavItem eventKey={2} href={toggleEventFormHref} onClick={this.toggleShowEventForm}>{toggleEventFormLinkText}</NavItem>
+				    </Nav>
+				      <Nav navbar right>
+				      	 <DropdownButton eventKey={3} title='Dropdown'>
+				          <MenuItem eventKey='1'>Action</MenuItem>
+				          <MenuItem eventKey='2'>Another action</MenuItem>
+				          <MenuItem eventKey='3'>Something else here</MenuItem>
+				          <MenuItem divider />
+				          <MenuItem eventKey='4'>Separated link</MenuItem>
+				        </DropdownButton>
+				        <NavItem eventKey={1} href='#'>Register</NavItem>
+				        <NavItem eventKey={2} href='#'>Sign in</NavItem>
+				    </Nav>
+			    </CollapsibleNav>
+		    </Navbar>
+
+
+var React = require('react/addons');
 var Router = require('react-router');
 var Link = Router.Link;
 
@@ -17,6 +151,9 @@ var Header = React.createClass({
           <Link className="item" to="about">
             About
           </Link>
+          <Link className="item" to="eventForm">
+            Create new event
+          </Link>
 
           <div className="right floated item">
             <i className="setting icon"/>
@@ -34,3 +171,6 @@ var Header = React.createClass({
 });
 
 module.exports = Header;
+
+
+*/
