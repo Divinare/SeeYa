@@ -1,24 +1,33 @@
-var app, bodyParser, cookieParser, debug, dist, express, http, logger, path, server;
+var app;
+var bodyParser;
+var cookieParser;
+var debug;
+var dist;
+var express;
+var http;
+var logger;
+var path;
+var server;
 
-express = require("express");
+var express = require("express");
 
-http = require('http');
+var http = require('http');
 
-path = require("path");
+var path = require("path");
 
-logger = require("morgan");
+var logger = require("morgan");
 
-cookieParser = require("cookie-parser");
+var cookieParser = require("cookie-parser");
 
-bodyParser = require("body-parser");
+var bodyParser = require("body-parser");
 
-debug = require("debug")("react-express-template");
+var debug = require("debug")("react-express-template");
 
 require("babel/register");
 
-dist = path.join(__dirname, '/../dist');
+var dist = path.join(__dirname, '/../dist');
 
-app = express();
+var app = express();
 
 var rest = require('epilogue');
 var models = require('./models');
