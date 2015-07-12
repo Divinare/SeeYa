@@ -37,62 +37,58 @@ var EventForm = React.createClass({
 	render: function(){
 		return (
 			<div id="eventForm">
-				<h1 className="centeredHeader">Create new event</h1>
+				<div id='leftPane' className='col-xs-0 col-md-3'>
+				</div>
+				<div id='centerPane' className='col-xs-12 col-md-6'>
 
-				<form className='form-horizontal' role="form">
+					<h1 className="centeredHeader">Create new event</h1>
+					<form className='form' role='form'>
+						<div className='form-group'>
+							<input type='text' className='form-control' id='name' placeholder='Event name'/>
+						</div>
 
-				    <div className="form-group col-xs-12">
+						<div className='form-group'>
+							<div className='input-group'>
+								<input type='text' className='form-control' id='address' placeholder='Address'/>
+								<span className="input-group-btn">
+									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
+								</span>
+							</div>
+						</div>
 
-				        <label className="col-sm-2 control-label">Name</label>
-				        <div className="col-sm-8">
-				            <input type="text" className="form-control" placeholder="Event name" />
-				        </div>
-				    </div>
+						<div className='form-group'>
+							<div className="input-group">
+					          <DatePicker
+						        key="example3"
+						        selected={this.state.new_date}
+						        onChange={this.handleNewDateChange}
+						        placeholderText="Date: dd:mm:yyyy"
+						      />
+					        </div>
+						</div>
 
-				    <div className="form-group">
-				        <label className="col-sm-2 control-label">Address</label>
-				        <div className="col-sm-8">
-				            <input type="text" className="form-control" value="" placeholder="Address" />
-				                <span className="input-group-btn">
-                    <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
-                </span>
-				        </div>
-				    </div>
+						<div className='form-group'>
+							<div className='input-group'>
+								<input type='text' className='form-control' id='time' placeholder="Time: hh:mm"/>
+								<span className="input-group-btn">
+									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-time"></i></button>
+								</span>
+							</div>
+						</div>
 
-				    <div className="form-group">
-				    <label className="col-sm-2 control-label">Date</label>
-				        <div className="col-sm-8">
-				          <DatePicker
-					        key="example3"
-					        selected={this.state.new_date}
-					        onChange={this.handleNewDateChange}
-					        placeholderText="Date: dd:mm:yyyy"
-					      />
-				        </div>
-					</div>
+						<div className='form-group'>
+							<input type='text' className='form-control' id='description' placeholder='Description'/>
+						</div>
+						<div className="form-group">
 
-				    <div className="form-group">
-				    <label className="col-sm-2 control-label">Time</label>
-				        <div className="col-sm-8">
-  							<input id="time" className="form-control" placeholder="hh:mm" />
-				        </div>
-					</div>
-
-				    <div className="form-group">
-				        <label className="col-sm-2 control-label">Description</label>
-				        <div className="col-sm-8">
-				            <input type="text" className="form-control" value="" placeholder="Description" />
-				        </div>
-				    </div>
-
-				    <div className="form-group">
-				        <div className="col-sm-8 col-sm-offset-2">
 				            <button type="submit" className="btn btn-default">Submit</button>
-				        </div>
-				    </div>
-				    <button className="glyphicon glyphicon-time"></button>
+					    </div>
+					
+					 </form>
 
-				</form>
+				</div>
+				<div id='rightPane' className='col-xs-0 col-md-3'>
+				</div>
 			</div>
 		)
 	}
@@ -101,4 +97,63 @@ var EventForm = React.createClass({
 
 module.exports = EventForm;
 
+//FORM WITH LABELS
+/*
+			<div id="eventForm">
+				<div id='leftPane' className='col-xs-0 col-md-3'>
+				</div>
+				<div id='centerPane' className='col-xs-12 col-md-6'>
 
+					<h1 className="centeredHeader">Create new event</h1>
+					<form className='form' role='form'>
+						<div className='form-group'>
+							<label for='name'>Name</label>
+							<input type='text' className='form-control' id='name'/>
+						</div>
+
+						<div className='form-group'>
+							<label for='address'>Address</label>
+							<div className='input-group'>
+								<input type='text' className='form-control' id='address'/>
+								<span className="input-group-btn">
+									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
+								</span>
+							</div>
+						</div>
+
+						<div className='form-group'>
+							<label for='date'>Date</label>
+							<div className="input-group">
+					          <DatePicker
+						        key="example3"
+						        selected={this.state.new_date}
+						        onChange={this.handleNewDateChange}
+						        placeholderText="Date: dd:mm:yyyy"
+						      />
+					        </div>
+						</div>
+
+						<div className='form-group'>
+							<label for='time'>Time</label>
+							<div className='input-group'>
+								<input type='text' className='form-control' id='time' placeholder="hh:mm"/>
+								<span className="input-group-btn">
+									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-time"></i></button>
+								</span>
+							</div>
+						</div>
+
+						<div className='form-group'>
+							<label for='description'>Description</label>
+							<input type='text' className='form-control' id='description'/>
+						</div>
+						<div className="form-group">
+
+				            <button type="submit" className="btn btn-default">Submit</button>
+					    </div>
+					
+					 </form>
+				</div>
+				<div id='rightPane' className='col-xs-0 col-md-3'>
+				</div>
+			</div>*/

@@ -52954,119 +52954,157 @@
 			return React.createElement(
 				'div',
 				{ id: 'eventForm' },
+				React.createElement('div', { id: 'leftPane', className: 'col-xs-0 col-md-3' }),
 				React.createElement(
-					'h1',
-					{ className: 'centeredHeader' },
-					'Create new event'
-				),
-				React.createElement(
-					'form',
-					{ className: 'form-horizontal', role: 'form' },
+					'div',
+					{ id: 'centerPane', className: 'col-xs-12 col-md-6' },
 					React.createElement(
-						'div',
-						{ className: 'form-group col-xs-12' },
-						React.createElement(
-							'label',
-							{ className: 'col-sm-2 control-label' },
-							'Name'
-						),
-						React.createElement(
-							'div',
-							{ className: 'col-sm-8' },
-							React.createElement('input', { type: 'text', className: 'form-control', placeholder: 'Event name' })
-						)
+						'h1',
+						{ className: 'centeredHeader' },
+						'Create new event'
 					),
 					React.createElement(
-						'div',
-						{ className: 'form-group' },
+						'form',
+						{ className: 'form', role: 'form' },
 						React.createElement(
-							'label',
-							{ className: 'col-sm-2 control-label' },
-							'Address'
+							'div',
+							{ className: 'form-group' },
+							React.createElement('input', { type: 'text', className: 'form-control', id: 'name', placeholder: 'Event name' })
 						),
 						React.createElement(
 							'div',
-							{ className: 'col-sm-8' },
-							React.createElement('input', { type: 'text', className: 'form-control', value: '', placeholder: 'Address' }),
+							{ className: 'form-group' },
 							React.createElement(
-								'span',
-								{ className: 'input-group-btn' },
+								'div',
+								{ className: 'input-group' },
+								React.createElement('input', { type: 'text', className: 'form-control', id: 'address', placeholder: 'Address' }),
 								React.createElement(
-									'button',
-									{ className: 'btn btn-default', type: 'button' },
-									React.createElement('i', { className: 'glyphicon glyphicon-search' })
+									'span',
+									{ className: 'input-group-btn' },
+									React.createElement(
+										'button',
+										{ className: 'btn btn-default', type: 'button' },
+										React.createElement('i', { className: 'glyphicon glyphicon-search' })
+									)
 								)
 							)
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'form-group' },
-						React.createElement(
-							'label',
-							{ className: 'col-sm-2 control-label' },
-							'Date'
 						),
 						React.createElement(
 							'div',
-							{ className: 'col-sm-8' },
-							React.createElement(DatePicker, {
-								key: 'example3',
-								selected: this.state.new_date,
-								onChange: this.handleNewDateChange,
-								placeholderText: 'Date: dd:mm:yyyy'
-							})
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'form-group' },
-						React.createElement(
-							'label',
-							{ className: 'col-sm-2 control-label' },
-							'Time'
+							{ className: 'form-group' },
+							React.createElement(
+								'div',
+								{ className: 'input-group' },
+								React.createElement(DatePicker, {
+									key: 'example3',
+									selected: this.state.new_date,
+									onChange: this.handleNewDateChange,
+									placeholderText: 'Date: dd:mm:yyyy'
+								})
+							)
 						),
 						React.createElement(
 							'div',
-							{ className: 'col-sm-8' },
-							React.createElement('input', { id: 'time', className: 'form-control', placeholder: 'hh:mm' })
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'form-group' },
-						React.createElement(
-							'label',
-							{ className: 'col-sm-2 control-label' },
-							'Description'
+							{ className: 'form-group' },
+							React.createElement(
+								'div',
+								{ className: 'input-group' },
+								React.createElement('input', { type: 'text', className: 'form-control', id: 'time', placeholder: 'Time: hh:mm' }),
+								React.createElement(
+									'span',
+									{ className: 'input-group-btn' },
+									React.createElement(
+										'button',
+										{ className: 'btn btn-default', type: 'button' },
+										React.createElement('i', { className: 'glyphicon glyphicon-time' })
+									)
+								)
+							)
 						),
 						React.createElement(
 							'div',
-							{ className: 'col-sm-8' },
-							React.createElement('input', { type: 'text', className: 'form-control', value: '', placeholder: 'Description' })
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'form-group' },
+							{ className: 'form-group' },
+							React.createElement('input', { type: 'text', className: 'form-control', id: 'description', placeholder: 'Description' })
+						),
 						React.createElement(
 							'div',
-							{ className: 'col-sm-8 col-sm-offset-2' },
+							{ className: 'form-group' },
 							React.createElement(
 								'button',
 								{ type: 'submit', className: 'btn btn-default' },
 								'Submit'
 							)
 						)
-					),
-					React.createElement('button', { className: 'glyphicon glyphicon-time' })
-				)
+					)
+				),
+				React.createElement('div', { id: 'rightPane', className: 'col-xs-0 col-md-3' })
 			);
 		}
 	
 	});
 	
 	module.exports = EventForm;
+	
+	//FORM WITH LABELS
+	/*
+				<div id="eventForm">
+					<div id='leftPane' className='col-xs-0 col-md-3'>
+					</div>
+					<div id='centerPane' className='col-xs-12 col-md-6'>
+
+						<h1 className="centeredHeader">Create new event</h1>
+						<form className='form' role='form'>
+							<div className='form-group'>
+								<label for='name'>Name</label>
+								<input type='text' className='form-control' id='name'/>
+							</div>
+
+							<div className='form-group'>
+								<label for='address'>Address</label>
+								<div className='input-group'>
+									<input type='text' className='form-control' id='address'/>
+									<span className="input-group-btn">
+										 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
+									</span>
+								</div>
+							</div>
+
+							<div className='form-group'>
+								<label for='date'>Date</label>
+								<div className="input-group">
+						          <DatePicker
+							        key="example3"
+							        selected={this.state.new_date}
+							        onChange={this.handleNewDateChange}
+							        placeholderText="Date: dd:mm:yyyy"
+							      />
+						        </div>
+							</div>
+
+							<div className='form-group'>
+								<label for='time'>Time</label>
+								<div className='input-group'>
+									<input type='text' className='form-control' id='time' placeholder="hh:mm"/>
+									<span className="input-group-btn">
+										 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-time"></i></button>
+									</span>
+								</div>
+							</div>
+
+							<div className='form-group'>
+								<label for='description'>Description</label>
+								<input type='text' className='form-control' id='description'/>
+							</div>
+							<div className="form-group">
+
+					            <button type="submit" className="btn btn-default">Submit</button>
+						    </div>
+						
+						 </form>
+					</div>
+					<div id='rightPane' className='col-xs-0 col-md-3'>
+					</div>
+				</div>*/
 
 /***/ },
 /* 320 */
