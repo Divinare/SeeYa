@@ -1,22 +1,3 @@
-var autoprefixer;
-var components_path;
-var dist_path; 
-var err;
-var gulp;
-var gutil;
-var gwebpack;
-var js;
-var less;
-var livereload;
-var modules_path;
-var nodemon;
-var plumber;
-var postcss;
-var rimraf;
-var semantic_path;
-var server_main;
-var frontend_path;
-var webpack;
 var slice = [].slice;
 
 var gulp = require('gulp');
@@ -56,14 +37,14 @@ var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
 
 
-err = function() {
+var err = function() {
   var x;
   x = 1 <= arguments.length ? slice.call(arguments, 0) : [];
   gutil.log.apply(gutil, x);
   return gutil.beep.apply(gutil, x);
 };
 
-webpack = function(name, ext, watch) {
+var webpack = function(name, ext, watch) {
   var options;
   options = {
     watch: watch,
@@ -96,7 +77,7 @@ webpack = function(name, ext, watch) {
   return gulp.src(frontend_path + "/" + name + "." + ext).pipe(gwebpack(options)).pipe(gulp.dest(dist_path));
 };
 
-js = function(watch) {
+var js = function(watch) {
   return webpack("main", "js", watch); // cjsx
 };
 
@@ -153,6 +134,7 @@ gulp.task('default', ['clean', 'copy', 'css', 'server', 'js-dev', 'watch']);
 gulp.task('watch', ['copy'], function() {
   livereload.listen();
   gulp.watch([dist_path + "/**/*"]).on('change', livereload.changed);
-  gulp.watch([frontend_path + "/**/*.less"], ['css']);
+//  gulp.watch([frontend_path + "/**/*.less"], ['css']);
+  gulp.watch([frontend_path + "/**/*.css"], ['css']);
   return gulp.watch([frontend_path + "/**/*.html"], ['copy']);
 });

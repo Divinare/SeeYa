@@ -37,7 +37,7 @@ var EventForm = React.createClass({
 	render: function(){
 		return (
 			<div id="eventForm">
-				<h1>Create new event</h1>
+				<h1 className="centeredHeader">Create new event</h1>
 
 				<form className='form-horizontal' role="form">
 
