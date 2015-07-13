@@ -1,5 +1,10 @@
- module.exports = {
+var router = require("express").Router();
+//var Event = require('../models/event.js');
+var models  = require('../models');
 
+
+module.exports = {
+/*
  	findOne: function (req, res) {
  		var eventId = req.params.id;
  		Event.findOne({
@@ -10,14 +15,40 @@
  			res.send(event);
  		});
  	},
-
- 	findAll: function (req, res) {
-
- 		Event.find().then(function (events) {
- 			res.send(events);
+*/
+/*
+  findAll: function (req, res) {
+ 		models.Event.findAll().then(function (events) {
+ 			res.json(events);
  		});
 
- 	},
+ 	}
+*/
+
+    findAll: function (req, res) {
+        console.log("moiii")
+        models.Event.findAll().then(function (events) {
+            res.json(events);
+        });
+  }
+ 	
+/*
+ 	function findAll (req, res) {
+ 		console.log("BBBBBBBBBBBBBbbs")
+    console.log(Event.find);
+  Event.findAll(function (error, events) {
+    if (error) {
+      log.error(error, "error finding customers");
+      res.status(500).send(error);
+      return;
+    }
+    res.json(events);
+  });
+}
+*/
+
+
+ /*
  	create: function (req, res) {
  		var eventToAdd = req.body;
  		console.log(eventToAdd.address)
@@ -63,4 +94,34 @@
  		});
  	});
  }
+
+*/
+
+
 };
+
+
+
+
+
+
+
+
+
+/* ERRORIN KANSSA: */
+/*
+    findAll: function (req, res) {
+        console.log("moiii")
+        models.Event.findAll().then(function (error, events) {
+            res.json(events);
+        });
+        
+        if (error) {
+            log.error(error, "error finding customers");
+            res.status(500).send(error);
+            return;
+        }
+        
+  }
+
+  */

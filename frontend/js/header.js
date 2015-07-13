@@ -58,8 +58,8 @@ module.exports = React.createClass({
           </NavItemLink>
             </Nav>
               <Nav navbar right>
-                <NavItem eventKey={1} href='#'>Register</NavItem>
-                <NavItem eventKey={2} href='#'>Sign in</NavItem>
+                <NavItem eventKey={1} href='/'>Register</NavItem>
+                <NavItem eventKey={2} href='/'>Sign in</NavItem>
             </Nav>
           </CollapsibleNav>
         </Navbar>
