@@ -51,6 +51,8 @@
 	var React = __webpack_require__(160);
 	
 	var Router = __webpack_require__(178);
+	//var History = Router.HistoryLocation;   // require('react-router/lib/BrowserHistory');
+	//import { history } from 'react-router/lib/BrowserHistory';
 	
 	var Route = Router.Route,
 	    RouteHandler = Router.RouteHandler,
@@ -109,7 +111,7 @@
 	  React.createElement(Route, { name: 'eventForm', handler: EventForm })
 	);
 	
-	Router.run(routes, function (Handler) {
+	Router.run(routes, Router.HistoryLocation, function (Handler) {
 	  React.render(React.createElement(Handler, null), document.body);
 	});
 
@@ -52994,7 +52996,7 @@
 							{ className: 'form-group' },
 							React.createElement(
 								'div',
-								{ className: 'input-group' },
+								{ className: 'input-group full-width' },
 								React.createElement(DatePicker, {
 									key: 'example3',
 									selected: this.state.new_date,
@@ -53024,7 +53026,7 @@
 						React.createElement(
 							'div',
 							{ className: 'form-group' },
-							React.createElement('input', { type: 'text', className: 'form-control', id: 'description', placeholder: 'Description' })
+							React.createElement('textArea', { type: 'text', className: 'form-control', id: 'description', placeholder: 'Description' })
 						),
 						React.createElement(
 							'div',

@@ -57,7 +57,7 @@ var EventForm = React.createClass({
 						</div>
 
 						<div className='form-group'>
-							<div className="input-group">
+							<div className="input-group full-width">
 					          <DatePicker
 						        key="example3"
 						        selected={this.state.new_date}
@@ -77,7 +77,7 @@ var EventForm = React.createClass({
 						</div>
 
 						<div className='form-group'>
-							<input type='text' className='form-control' id='description' placeholder='Description'/>
+							<textArea type='text' className='form-control' id='description' placeholder='Description'/>
 						</div>
 						<div className="form-group">
 

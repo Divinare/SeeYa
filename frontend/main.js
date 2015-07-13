@@ -3,6 +3,9 @@ window.$ = window.jQuery = require('jquery');
 var React = require('react/addons');
 
 var Router = require('react-router');
+//var History = Router.HistoryLocation;   // require('react-router/lib/BrowserHistory');
+//import { history } from 'react-router/lib/BrowserHistory';
+
 
 var Route = Router.Route, RouteHandler = Router.RouteHandler, DefaultRoute = Router.DefaultRoute, Link = Router.Link;
 
@@ -56,13 +59,13 @@ var EventListsWrapper = React.createClass({
 
 
 var routes = (
-  <Route path="/" handler={Main}>
-    <DefaultRoute name="home" handler={EventListsWrapper} />
-    <Route name="about" handler={About} />
-    <Route name="eventForm" handler={EventForm} />
-  </Route>
+    <Route path="/" handler={Main}>
+      <DefaultRoute name="home" handler={EventListsWrapper} />
+      <Route name="about" handler={About} />
+      <Route name="eventForm" handler={EventForm} />
+    </Route>
 );
 
-Router.run(routes, function (Handler) {
+Router.run(routes, Router.HistoryLocation, function (Handler) {
   React.render(<Handler/>, document.body);
 });
