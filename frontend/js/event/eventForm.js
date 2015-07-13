@@ -47,7 +47,7 @@ var EventForm = React.createClass({
 				</div>
 				<div id='centerPane' className='col-xs-12 col-md-6'>
 
-					<h1 className="centeredHeader">Create new event</h1>
+					<h1 className="text-center">Create new event</h1>
 					<form className='form' role='form'>
 						<div className='form-group'>
 							<input type='text' className='form-control' id='name' placeholder='Event name'/>
