@@ -1,6 +1,7 @@
 var React = require('react');
 var DatePicker = require('react-datepicker');
 var Select = require('react-select');
+var Moment = require('moment')
 //var $ = require('jquery-autocomplete-js');
 
 var URL = require('../url.js');
@@ -32,6 +33,11 @@ var EventForm = React.createClass({
 
 	handleTimeChange: function(value){
 		this.setState({timeValue: value})
+	},
+
+	setCurrentTime: function() {
+		var str = Moment().format('HH:mm');
+		$('#time').val(str);
 	},
 
 	render: function(){
@@ -71,7 +77,7 @@ var EventForm = React.createClass({
 							<div className='input-group'>
 								<input type='text' className='form-control' id='time' placeholder="Time: hh:mm"/>
 								<span className="input-group-btn">
-									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-time"></i></button>
+									 <button className="btn btn-default" onClick={this.setCurrentTime} type="button"><i className="glyphicon glyphicon-time"></i></button>
 								</span>
 							</div>
 						</div>
