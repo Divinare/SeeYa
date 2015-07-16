@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>70</y>
+      <w>390</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>Event
+--
+id: long (NOT NULL)
+name: String
+description: String 
+geom: Point (NOT NULL) (to be decided later)
+date: Date
+created_at: Date (probably automatically created by sails)
+registrations: List&lt;Registration&gt;
+longitude: long
+latitude: long 
+requiresRegistration: boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>60</x>
+      <y>390</y>
+      <w>390</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Registration
+--
+id: long (NOT NULL)
+name: String (NOT NULL)
+registrationDate: Date (NOT NULL)
+comment: String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>270</y>
+      <w>50</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=1
+m1=0..*
+</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>70</y>
+      <w>390</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Address
+--
+id: long (NOT NULL)
+streetAddress: String
+zipCode: String
+country: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>140</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=1
+m1=1..*
+</panel_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+</diagram>

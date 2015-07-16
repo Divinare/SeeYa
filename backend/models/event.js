@@ -3,10 +3,11 @@
 module.exports = function(sequelize, DataTypes) {
 	var Event = sequelize.define("Event", {
     name: { type: DataTypes.STRING, allowNull: false, validate: { len: { args: [3,30], msg: "Name must be at least 3-30 characters long"} } },
-
     description: { type: DataTypes.STRING, allowNull: true },
-    date: { type: DataTypes.DATE, allowNull: false }
-
+    date: { type: DataTypes.DATE, allowNull: false },
+    lon: { type: DataTypes.FLOAT },
+    lat: { type: DataTypes.FLOAT },
+    requiresRegistration: { type: DataTypes.BOOLEAN }
   }, {
         timestamps: true,
         classMethods: {

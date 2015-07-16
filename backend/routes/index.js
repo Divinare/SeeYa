@@ -21,6 +21,9 @@ router.get('/', function(req, res) {
 */
 
 router.get('/events', EventCtrl.findAll);
+router.get('events/:id', EventCtrl.findOne);
+router.post('/events', EventCtrl.create);
+router.post('/events/:id', EventCtrl.update);
 
 
 
