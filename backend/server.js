@@ -12,7 +12,7 @@ var debug = require("debug")("EventMeetup");
 //require("babel/register");
 
 //require('./routes');
-
+var util = require('util');
 var routes = require('./routes/index');
 //var users  = require('./routes/users');
 
@@ -28,19 +28,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 //app.use(express.static(path.join(__dirname, 'public'))); // dist?
 //app.use(express.static(path.join(__dirname, 'public'))); // dist?
-app.use(express["static"](dist));
-/*
-console.log(dist + '/index.html');
-app.use(express.static(path.join(__dirname, 'dist')));
-app.get('*', function(req, res) {
-    res.sendFile(dist + '/index.html');
-});
-*/
+//app.use(express["static"](dist));
+
+var rest = '/api';
+app.use(rest, routes);
+
+
 //var port = process.env.PORT || 1337;
 
 //var router = express.Router(); 
-var rest = '/api';
-app.use(rest, routes);
 
 
 
@@ -75,32 +71,70 @@ router.get('/api/events', function(req, res) {
 
 //app.set("port", process.env.PORT || 1337);
 
+var paths = ['/about', '/eventForm']; 
+
+app.use(express["static"](dist));
+//app.use(express.static(path.join(__dirname, 'dist'))); // dist?
+/*
+app.get('/about', function(req, res) {
+console.log(util.inspect(req));
+
+  res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+});
+
+app.get('/eventForm', function(req, res) {
+  res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+});
+*/
 
 
+app.get('*', function(req, res) {
+    //res.sendFile(dist + '/index.html');
+   // var fileName = dist + '/index.html';
+   var currentPath = req._parsedUrl.pathname;
+   var pathFound = false;
+   paths.map(function(existingPath) {
+        if(existingPath == currentPath) {
+            console.log("AAAAAAAAAAAAAAAAAAA");
+              res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+              pathFound = true;
+        }
+   });
+   if(!pathFound) {
+       res.sendFile(path.join(__dirname, 'notFound.html'));
+   }
+ //  res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+   /*
+    var fileName = __dirname + '/../frontend/index.html';
+    res.set('content-type', 'text/html');
+    res.sendFile(fileName, function (err) {
+        if (err) {
+          console.log(err);
+          res.status(err.status).end();
+        }
+        else {
+          console.log('Sent:', fileName);
+        }
+    });
+
+*/
+
+});
 
 /*
-rest.initialize({
-    app: app,
-    base: '/rest',
-    sequelize: models.sequelize
+app.get('/', function(req, res) {
+    //res.sendFile(dist + '/index.html');
+   // var fileName = dist + '/index.html';
+   res.redirect('/error');
+   res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+
+
 });
-
-
-var events = rest.resource({
-    model: models.Event,
-    include: [models.Address],
-    endpoints: ['/events', '/events/:id']
-});
-
-var address = rest.resource({
-    model: models.Address,
-    include: [models.Event],
-    endpoints: ['/address', '/address/:id']
-}); */
-
-
+*/
 
 app.use(function(req, res, next) {
+ // res.redirect('/error');
+ // res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
   var err;
   err = new Error("Not Found");
   err.status = 404;
@@ -126,8 +160,9 @@ app.use(function(err, req, res, next) {
 });
 
 
-
 app.set('port', process.env.PORT || 1337);
+
+
 
 models.sequelize.sync().then(function () {
   var server = app.listen(app.get('port'), function() {

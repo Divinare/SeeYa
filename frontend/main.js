@@ -8,11 +8,12 @@ var Router = require('react-router');
 
 
 var Route = Router.Route, RouteHandler = Router.RouteHandler, DefaultRoute = Router.DefaultRoute, Link = Router.Link;
-
+var NotFoundRoute = Router.NotFoundRoute;
 
 var Header = require('./js/header.js');
 var Map = require('./js/map.js');
 var About = require('./js/about.js');
+var NoMatch = require('./js/noMatch.js');
 var EventList = require('./js/event/eventList.js');
 var EventForm = require('./js/event/eventForm.js');
 
@@ -59,13 +60,31 @@ var EventListsWrapper = React.createClass({
 
 
 var routes = (
+    <Route handler={Main}>
+      <DefaultRoute name="home" handler={EventListsWrapper} />
+      <Route name="about" handler={About} />
+      <Route name="eventForm" handler={EventForm} />
+      <Route path="error" handler={NoMatch} />
+      <NotFoundRoute handler={NoMatch}/>
+    </Route>
+);
+
+
+/*
     <Route path="/" handler={Main}>
       <DefaultRoute name="home" handler={EventListsWrapper} />
       <Route name="about" handler={About} />
       <Route name="eventForm" handler={EventForm} />
+      <NotFoundRoute handler={NoMatch}/>
     </Route>
-);
+
+    */
+
+
+////      <Route name="*" handler={NoMatch} />
 
 Router.run(routes, Router.HistoryLocation, function (Handler) {
   React.render(<Handler/>, document.body);
 });
+
+//React.render(<Application />, document.body); 
