@@ -6,13 +6,6 @@ body {
 	margin-bottom: 0 !important;
 }
 
-.bottomListTopic {
-	margin: auto;
-	display: block;
-	padding-left: 15px;
-	padding-right: 15px;
-}
-
 /* Navbar header */
 .app-name-navbar > a {
     text-decoration:  none;

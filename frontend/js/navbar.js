@@ -26,6 +26,33 @@ module.exports = React.createClass({
 			    <CollapsibleNav eventKey={0}>
 				     <Nav navbar>
 				  	    <NavItem eventKey={1} href='/' onClick={this.showEventList}>EventMeetup</NavItem>
+				        <NavItem eventKey={2} href={toggleEventFormHref} onClick={this.toggleShowEventForm}>{toggleEventFormLinkText}</NavItem>
+				    </Nav>
+				      <Nav navbar right>
+				      	 <DropdownButton eventKey={3} title='Dropdown'>
+				          <MenuItem eventKey='1'>Action</MenuItem>
+				          <MenuItem eventKey='2'>Another action</MenuItem>
+				          <MenuItem eventKey='3'>Something else here</MenuItem>
+				          <MenuItem divider />
+				          <MenuItem eventKey='4'>Separated link</MenuItem>
+				        </DropdownButton>
+				        <NavItem eventKey={1} href='/about'>About</NavItem>
+				    </Nav>
+			    </CollapsibleNav>
+		    </Navbar>
+
+		)
+	}
+
+});
+
+/*
+Versio, joka sisältää signin ja register:
+
+			<Navbar brand='' href='/' toggleNavKey={0}>
+			    <CollapsibleNav eventKey={0}>
+				     <Nav navbar>
+				  	    <NavItem eventKey={1} href='/' onClick={this.showEventList}>EventMeetup</NavItem>
 				        <NavItem eventKey={1} href='/about'>About</NavItem>
 				        <NavItem eventKey={2} href={toggleEventFormHref} onClick={this.toggleShowEventForm}>{toggleEventFormLinkText}</NavItem>
 				    </Nav>
@@ -43,7 +70,4 @@ module.exports = React.createClass({
 			    </CollapsibleNav>
 		    </Navbar>
 
-		)
-	}
-
-});
+*/

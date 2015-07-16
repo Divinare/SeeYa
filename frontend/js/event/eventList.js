@@ -74,7 +74,7 @@ var EventList = React.createClass({
 
 		return (
 			<div id="eventList">
-				<h1 className='bottomListTopic'>Events</h1>
+				<h1>Events</h1>
 
 			</div>
 			)

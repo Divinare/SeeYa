@@ -3,11 +3,11 @@ window.$ = window.jQuery = require('jquery');
 var React = require('react/addons');
 
 var Router = require('react-router');
-//var History = Router.HistoryLocation;   // require('react-router/lib/BrowserHistory');
-//import { history } from 'react-router/lib/BrowserHistory';
 
-
-var Route = Router.Route, RouteHandler = Router.RouteHandler, DefaultRoute = Router.DefaultRoute, Link = Router.Link;
+var Route = Router.Route
+var RouteHandler = Router.RouteHandler
+var DefaultRoute = Router.DefaultRoute
+var Link = Router.Link;
 var NotFoundRoute = Router.NotFoundRoute;
 
 var Header = require('./js/header.js');
@@ -56,9 +56,6 @@ var EventListsWrapper = React.createClass({
   }
 });
 
-
-
-
 var routes = (
     <Route handler={Main}>
       <DefaultRoute name="home" handler={EventListsWrapper} />
@@ -69,22 +66,6 @@ var routes = (
     </Route>
 );
 
-
-/*
-    <Route path="/" handler={Main}>
-      <DefaultRoute name="home" handler={EventListsWrapper} />
-      <Route name="about" handler={About} />
-      <Route name="eventForm" handler={EventForm} />
-      <NotFoundRoute handler={NoMatch}/>
-    </Route>
-
-    */
-
-
-////      <Route name="*" handler={NoMatch} />
-
 Router.run(routes, Router.HistoryLocation, function (Handler) {
   React.render(<Handler/>, document.body);
 });
-
-//React.render(<Application />, document.body); 
