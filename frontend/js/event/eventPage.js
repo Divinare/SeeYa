@@ -1,11 +1,9 @@
 var React = require('react');
-var $ = require('jquery');
-var URL = require('../../url.js');
-var utils = require('../../utils.js');
+var URL = require('../url.js');
+var utils = require('../utils.js');
 
 
 var Map = require('../map.js');
-var Router = require('react-router-component');
 var EventPage = React.createClass({
 
 

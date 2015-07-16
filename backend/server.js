@@ -20,22 +20,33 @@ app.use(cookieParser());
 var rest = '/api';
 app.use(rest, routes);
 
-var paths = ['/about', '/eventForm']; 
+var paths = ['/about', '/eventForm', '/test']; 
 
 app.use(express["static"](dist));
 
 app.get('*', function(req, res) {
-
+  console.log("app.get method");
    var currentPath = req._parsedUrl.pathname;
    var pathFound = false;
    paths.map(function(existingPath) {
         if(existingPath == currentPath) {
-              res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+              console.log("path exists");
               pathFound = true;
         }
    });
-   if(!pathFound) {
-       res.sendFile(path.join(__dirname, 'notFound.html'));
+   var eventUrlRegex = /^\/event\/\d+(\/$|$)/
+   console.log("currentPath: " + currentPath)
+   if(currentPath.search(eventUrlRegex) !== -1){
+      console.log("found event url");
+      pathFound = true;
+   }
+   if(pathFound) {
+    console.log("path found!!");
+    res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+       
+   }else{
+    console.log("path not found, returning error page");
+    res.sendFile(path.join(__dirname, 'notFound.html'));
    }
 
 });

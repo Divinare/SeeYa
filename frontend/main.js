@@ -16,6 +16,7 @@ var About = require('./js/about.js');
 var NoMatch = require('./js/noMatch.js');
 var EventList = require('./js/event/eventList.js');
 var EventForm = require('./js/event/eventForm.js');
+var EventPage = require('./js/event/eventPage.js');
 
 var Main = React.createClass({
 
@@ -61,6 +62,7 @@ var routes = (
       <DefaultRoute name="home" handler={EventListsWrapper} />
       <Route name="about" handler={About} />
       <Route name="eventForm" handler={EventForm} />
+
       <Route path="error" handler={NoMatch} />
       <NotFoundRoute handler={NoMatch}/>
     </Route>
