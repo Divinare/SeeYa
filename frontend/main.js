@@ -57,17 +57,42 @@ var EventListsWrapper = React.createClass({
   }
 });
 
+
+var Asd = React.createClass({
+  render: function () {
+    return (
+      <div>
+        <h1>moiii</h1>
+        <a href="event/1">täää</a>
+        </div>
+    );
+  }
+});
+
+//React.render( <Asd />, document.body );
+
+
+
 var routes = (
     <Route handler={Main}>
       <DefaultRoute name="home" handler={EventListsWrapper} />
       <Route name="about" handler={About} />
       <Route name="eventForm" handler={EventForm} />
-
+      <Route path="/events/:id" handler={EventPage} />
       <Route path="error" handler={NoMatch} />
       <NotFoundRoute handler={NoMatch}/>
     </Route>
 );
 
+// <Route name='events' path='/events/:id' handler={EventPage} />
+/*
+Router.run(routes, function (Handler) {  
+  React.render(<Handler/>, document.body);
+});
+*/
+
+
 Router.run(routes, Router.HistoryLocation, function (Handler) {
   React.render(<Handler/>, document.body);
 });
+

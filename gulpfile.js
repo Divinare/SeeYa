@@ -68,7 +68,7 @@ var webpack = function(name, ext, watch) {
           exclude: [new RegExp(modules_path), new RegExp(components_path)],
           loader: "babel-loader"
         }, {
-          test: /\.cjsx$/,
+          test: /\.jsx$/, // .cjsx$/,
           loader: "transform?coffee-reactify"
         }
       ]

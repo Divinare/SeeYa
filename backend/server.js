@@ -20,9 +20,33 @@ app.use(cookieParser());
 var rest = '/api';
 app.use(rest, routes);
 
-var paths = ['/about', '/eventForm', '/test']; 
+app.get('/favicon.ico', function(req, res) {
+  console.log("WTF");
+  res.send('');
+});
+
+
+var paths = ['/about', '/eventForm', '/test', '/', '/events/1', '/events/main.css', '/events/main.js']; 
 
 app.use(express["static"](dist));
+//app.use(express.static(__dirname + '/dist'));
+/*
+app.get('/about/about/', function(req, res) {
+  console.log("LOL");
+  res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+
+});
+*/
+console.log(__dirname + '/../dist/index.html');
+/*
+app.get('/events/:id', function(req, res) {
+  console.log("LOL???");
+  res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+
+
+});
+*/
+/*
 
 app.get('*', function(req, res) {
   console.log("app.get method");
@@ -42,7 +66,9 @@ app.get('*', function(req, res) {
    }
    if(pathFound) {
     console.log("path found!!");
-    res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+    res.send({message: 'Hello'});
+   // res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+    //res.render(__dirname + '/../dist/index.html');
        
    }else{
     console.log("path not found, returning error page");
@@ -50,12 +76,18 @@ app.get('*', function(req, res) {
    }
 
 });
+*/
+
 
 app.use(function(req, res, next) {
+  console.log("NOOOOOOOOOOT FOUND");
+ // res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+  
   var err;
   err = new Error("Not Found");
   err.status = 404;
   return next(err);
+  
 });
 
 if (app.get("env") === "development") {
