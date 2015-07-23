@@ -6,7 +6,7 @@ var EventCtrl = require('../controllers/EventController.js');
 var AddressCtrl = require('../controllers/AddressController.js');
 var RegistrationCtrl = require('../controllers/RegistrationController.js');
 
-
+/*
 router.post('/create', function(req, res) {
   models.User.create({
     username: req.param('username')
@@ -14,6 +14,7 @@ router.post('/create', function(req, res) {
     res.redirect('/');
   });
 });
+*/
 /*
 router.get('/', function(req, res) {
 
@@ -21,13 +22,13 @@ router.get('/', function(req, res) {
 */
 
 router.get('/events', EventCtrl.findAll);
-router.get('events/:id', EventCtrl.findOne);
+router.get('/events/:id', EventCtrl.findOne);
 router.post('/events', EventCtrl.create);
 router.post('/events/:id', EventCtrl.update);
 
 
 
-
+/*
 router.get('/:user_id/destroy', function(req, res) {
   models.User.destroy({
     where: {
@@ -56,6 +57,6 @@ router.get('/:user_id/tasks/:task_id/destroy', function (req, res) {
     res.redirect('/');
   });
 });
-
+*/
 
 module.exports = router;

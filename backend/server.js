@@ -7,21 +7,22 @@ var models = require("./models");
 var debug = require("debug")("EventMeetup");
 var util = require('util');
 
-var routes = require('./routes/index');
+var routes = require('./routes');
 var dist = path.join(__dirname, '/../dist');
 var app = express();
 
+app.set('views', dist);
+app.set('view engine', 'jsx');
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 
 var rest = '/api';
 app.use(rest, routes);
 
 app.get('/favicon.ico', function(req, res) {
-  console.log("WTF");
   res.send('');
 });
 
@@ -29,25 +30,14 @@ app.get('/favicon.ico', function(req, res) {
 var paths = ['/about', '/eventForm', '/test', '/', '/events/1', '/events/main.css', '/events/main.js']; 
 
 app.use(express["static"](dist));
-//app.use(express.static(__dirname + '/dist'));
-/*
-app.get('/about/about/', function(req, res) {
-  console.log("LOL");
-  res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
 
+
+app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
 });
-*/
-console.log(__dirname + '/../dist/index.html');
+
+
 /*
-app.get('/events/:id', function(req, res) {
-  console.log("LOL???");
-  res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
-
-
-});
-*/
-/*
-
 app.get('*', function(req, res) {
   console.log("app.get method");
    var currentPath = req._parsedUrl.pathname;
@@ -66,8 +56,8 @@ app.get('*', function(req, res) {
    }
    if(pathFound) {
     console.log("path found!!");
-    res.send({message: 'Hello'});
-   // res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+ //  res.send({message: 'Hello'});
+    res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
     //res.render(__dirname + '/../dist/index.html');
        
    }else{
@@ -80,7 +70,7 @@ app.get('*', function(req, res) {
 
 
 app.use(function(req, res, next) {
-  console.log("NOOOOOOOOOOT FOUND");
+ // res.sendFile(path.join(__dirname, '/../dist', 'main.js'));
  // res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
   
   var err;
