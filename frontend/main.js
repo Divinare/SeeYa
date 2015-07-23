@@ -21,9 +21,9 @@ var EventPage = require('./js/event/eventPage.js');
 
 var Router = require('react-router')
   , RouteHandler = Router.RouteHandler
-  , Route = Router.Route;
-
-
+  , Route = Router.Route
+  , DefaultRoute = Router.DefaultRoute
+  , History = Router.History;
 /*
 TOIMIVA ESIMERKKI REACT ROUTERISTA:
 
@@ -112,7 +112,7 @@ var Main = React.createClass({
 
     return (
           <div>
-            
+            <Header />
             <Map />
             <div className="container">
 
@@ -146,29 +146,46 @@ var routes = (
 );
 */
 
-
+//       <DefaultRoute name="home" handler={EventListsWrapper} />
 // <Route name='events' path='/events/:id' handler={EventPage} />
 
-var Destination = React.createClass({
+/*
+React.render((
+  <Router history={History}>
+    <Route path="/" component={Main}>
+      <Route path="home" component={EventListsWrapper}/>
+      <Route path="about" component={About}/>
+      <Route name="eventPage" path="events/:someparam" handler={EventPage} />
+      <Route path="*" component={NoMatch}/>
+    </Route>
+  </Router>
+), document.getElementById('container'));
 
-  render: function() {
+*/
 
-    return <div>You made it!</div>;
-  }
-});
+
 
 // <Route name="eventPage" path="events/:someparam" handler={Destination} />
 var routes = (
   <Route handler={Main} path="/">
+    <DefaultRoute name="home" handler={EventListsWrapper} />
     <Route name="eventPage" path="events/:someparam" handler={EventPage} />
+    <Route name="eventForm" handler={EventForm} />
+    <Route name="about" handler={About} />
   </Route>
 );
 
-
-Router.run(routes, function (Handler) {
-  React.render(<Handler/>, document.body);
+// Router.HistoryLocation
+Router.run(routes, Router.HistoryLocation, function (Handler) {
+  React.render(<Handler/>, document.getElementById('container'));
 });
 
+
+/*
+      <Route path="users" component={Users}>
+        <Route path="/user/:userId" component={User}/>
+      </Route>
+*/
 
 
 
