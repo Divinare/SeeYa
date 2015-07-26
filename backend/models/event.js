@@ -5,9 +5,10 @@ module.exports = function(sequelize, DataTypes) {
     name: { type: DataTypes.STRING, allowNull: false, validate: { len: { args: [3,30], msg: "Name must be at least 3-30 characters long"} } },
     description: { type: DataTypes.STRING, allowNull: true },
     date: { type: DataTypes.DATE, allowNull: false },
-    lon: { type: DataTypes.FLOAT },
-    lat: { type: DataTypes.FLOAT },
-    requiresRegistration: { type: DataTypes.BOOLEAN }
+    lon: { type: DataTypes.FLOAT, allowNull: false },
+    lat: { type: DataTypes.FLOAT, allowNull: false },
+    requiresRegistration: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
+    time: { type: DataTypes.TIME, allowNull:false}
   }, {
         timestamps: true,
         classMethods: {

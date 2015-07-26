@@ -53,7 +53,8 @@ module.exports = {
   		date: eventToAdd.date,
   		lat: eventToAdd.lat,
   		lon: eventToAdd.lon,
-  		requiresRegistration: eventToAdd.requiresRegistration,
+      time: eventToAdd.time,
+      //requiresRegistration = eventToAdd.requiresRegistration,
     	address: address
       }).then(function(model) {
     		console.log(model.name + ' created successfully');
@@ -74,7 +75,7 @@ module.exports = {
  		event.date = req.body['date']
  		event.lat = req.body['lat']
  		event.lon = req.body['lon']
- 		event.requiresRegistration = req.body['requiresRegistration']
+ 	//	event.requiresRegistration = req.body['requiresRegistration']
  		event.save(function(err) {
  			if (err) {
  				return res.send(err);
