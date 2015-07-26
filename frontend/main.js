@@ -3,12 +3,79 @@ window.$ = window.jQuery = require('jquery');
 var React = require('react');
 
 /*
+import { Router, Route, Link } from 'react-router';
+import { history } from 'react-router/lib/BrowserHistory';
+
+
+
+
+var Users = React.createClass({
+  render() {
+    return (
+      <div>
+        <h1>Users</h1>
+        <div className="master">
+          <ul>
+
+            {this.state.users.map(user => (
+              <li><Link to={`/users/${users.id}`}>{user.name}</Link></li>
+            ))}
+          </ul>
+        </div>
+        <div className="detail">
+          {this.props.children}
+        </div>
+      </div>
+    );
+  }
+});
+
+var User = React.createClass({
+  componentDidMount() {
+    this.setState({
+      // route components are rendered with useful information, like URL params
+      user: findUserById(this.props.params.userId)
+    });
+  },
+
+  render() {
+    return (
+      <div>
+        <h2>{this.state.user.name}</h2>
+
+      </div>
+    );
+  }
+});
+
+// Declarative route configuration (could also load this config lazily
+// instead, all you really need is a single root route, you don't need to
+// colocate the entire config).
+React.render((
+  <Router history={history}>
+    <Route path="/" component={App}>
+      <Route path="about" component={About}/>
+      <Route path="users" component={Users}>
+        <Route path="/user/:userId" component={User}/>
+      </Route>
+      <Route path="*" component={NoMatch}/>
+    </Route>
+  </Router>
+), document.body);
+
+
+*/
+
+
+
+/*
 var Router = require('react-router');
 var Route = Router.Route
 var RouteHandler = Router.RouteHandler
 var DefaultRoute = Router.DefaultRoute
 var Link = Router.Link;
 var NotFoundRoute = Router.NotFoundRoute;
+
 */
 
 var Header = require('./js/header.js');
@@ -23,7 +90,12 @@ var Router = require('react-router')
   , RouteHandler = Router.RouteHandler
   , Route = Router.Route
   , DefaultRoute = Router.DefaultRoute
-  , History = Router.History;
+  , BrowserHistory = Router.History;
+
+//var BrowserHistory = require('react-router/lib/BrowserHistory').default;
+
+
+
 /*
 TOIMIVA ESIMERKKI REACT ROUTERISTA:
 
@@ -87,6 +159,7 @@ Router.run(routes, function (Handler) {
 
 */
 
+
 var Main = React.createClass({
 
   getInitialState: function() {
@@ -132,6 +205,7 @@ var EventListsWrapper = React.createClass({
 });
 
 
+
 /*
 
 var routes = (
@@ -151,7 +225,7 @@ var routes = (
 
 /*
 React.render((
-  <Router history={History}>
+  <Router history={BrowserHistory}>
     <Route path="/" component={Main}>
       <Route path="home" component={EventListsWrapper}/>
       <Route path="about" component={About}/>
@@ -160,12 +234,53 @@ React.render((
     </Route>
   </Router>
 ), document.getElementById('container'));
-
 */
 
 
 
 // <Route name="eventPage" path="events/:someparam" handler={Destination} />
+
+var Events = React.createClass({
+
+  render: function() {
+    
+ // <Header />
+// <RouteHandler eventList={this.state.eventList} />
+
+    return (
+          <div>
+            <div className="container">
+              <RouteHandler />
+            </div>
+        </div>
+    );
+  }
+});  // <RouteHandler {...@props}/>
+
+var EventListsWrapper = React.createClass({
+  render: function () {
+    return (
+        <EventList eventList={this.props.eventList} />
+    );
+  }
+});
+
+/*
+TEST:
+var routes = (
+  <Route handler={Main} path="/">
+    <DefaultRoute name="home" handler={EventListsWrapper} />
+    <Route handler={Events} path="/events">
+       <Route name="eventPage" path="/asd" handler={EventPage} />
+       <Route path="*" component={NoMatch}/>
+    </Route>
+    <Route name="eventForm" handler={EventForm} />
+    <Route name="about" handler={About} />
+  </Route>
+);
+*/
+
+
 var routes = (
   <Route handler={Main} path="/">
     <DefaultRoute name="home" handler={EventListsWrapper} />
@@ -175,9 +290,12 @@ var routes = (
   </Route>
 );
 
-// Router.HistoryLocation
-Router.run(routes, Router.HistoryLocation, function (Handler) {
-  React.render(<Handler/>, document.getElementById('container'));
+// Router.HistoryLocation, 
+
+$(document).ready(function () {
+  Router.run(routes, Router.HistoryLocation, function (Handler) {
+    React.render(<Handler/>, document.body);
+  });
 });
 
 
@@ -185,7 +303,27 @@ Router.run(routes, Router.HistoryLocation, function (Handler) {
       <Route path="users" component={Users}>
         <Route path="/user/:userId" component={User}/>
       </Route>
+
 */
 
+var CommentBox = React.createClass({
+  render: function() {
+    return (
+      <div className="commentBox">
+        Hello, world! I am a CommentBox.
+      </div>
+    );
+  }
+});
+/*
+React.render(
+  <CommentBox />,
+  document.getElementById('container')
+);
+*/
+/*
+$(document).ready(function () {
+  React.render(<CommentBox />, document.body);
+});
 
-
+*/

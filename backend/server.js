@@ -10,32 +10,61 @@ var util = require('util');
 var routes = require('./routes');
 var dist = path.join(__dirname, '/../dist');
 var app = express();
+var router = express.Router();
 
-app.set('views', dist);
-app.set('view engine', 'jsx');
+// view engine setup
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('views', dist);
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+//app.set('view engine', 'jade');
+/*
+app.set('views', __dirname + '/components');
+app.engine('jsx', ReactEngine());
+app.engine('jsx', ReactEngine({wrapper: 'html.jsx'}));
+*/
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+//app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, '/views')));
+app.use(express.static(dist));
+//app.use(express.static(path.join(__dirname, 'public')));
 
-var rest = '/api';
-app.use(rest, routes);
-
+console.log("aaaaaaaaaa");
+console.log(dist);
+console.log(path.join(__dirname + '/views'));
+//var rest = '/api';
+//app.use(rest, routes);
+/*
 app.get('/favicon.ico', function(req, res) {
   res.send('');
 });
+*/
 
 
-var paths = ['/about', '/eventForm', '/test', '/', '/events/1', '/events/main.css', '/events/main.js']; 
+//app.use(express["static"](dist));
+//app.use(express.static(path.join(dist, 'public')));
 
-app.use(express["static"](dist));
+app.get('*', function (req, res) {
+  console.log("???");
+  res.render('index');
+  //res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+ // res.render('index.jsx');
 
-
-app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
 });
 
+/*
+app.get('*', function(req, res) {
+  console.log("send index!");
+  res.render('index.jsx');
+ // res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
+});
+*/
 
 /*
 app.get('*', function(req, res) {
@@ -105,3 +134,28 @@ models.sequelize.sync().then(function () {
     debug('Express server listening on port ' + server.address().port);
   });
 });
+
+
+
+
+
+
+
+/*
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EventMeetup</title>
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <h1>mooo</h1>
+  <div id="container"></div>
+
+
+ <script src="main.js"></script>
+</body>
+</html>
+
+*/
