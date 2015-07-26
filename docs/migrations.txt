@@ -1,0 +1,22 @@
+MIGRATIONS: http://docs.sequelizejs.com/en/1.7.0/docs/migrations/ -To start using migrations, run commands:
+
+::: npm install -g sequelize-cli
+
+This command creates a migration folder
+::: sequelize init:migrations
+
+-Create migration file, for example:
+
+::: sequelize migration:create --name add-time-to-event
+
+To run all of the pending migrations, enter
+
+::: sequelize db:migrate
+
+To undo the latest migration, enter
+
+::: sequelize db:migration:undo
+
+To undo all of the migrations, enter
+
+::: sequelize db:migration:undo:all
