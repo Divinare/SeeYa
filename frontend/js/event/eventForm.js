@@ -35,6 +35,10 @@ var EventForm = React.createClass({
 		this.setState({timeValue: value})
 	},
 
+	createEvent: function() {
+		console.log("Creating event");
+	},
+
 	setCurrentTime: function() {
 		var str = Moment().format('HH:mm');
 		$('#time').val(str);
@@ -87,7 +91,7 @@ var EventForm = React.createClass({
 						</div>
 						<div className="form-group">
 
-				            <button type="submit" className="btn btn-default">Submit</button>
+				            <button type="submit" className="btn btn-default" onClick={this.createEvent}>Submit</button>
 					    </div>
 					
 					 </form>

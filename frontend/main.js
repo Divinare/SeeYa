@@ -2,82 +2,6 @@ window.$ = window.jQuery = require('jquery');
 
 var React = require('react');
 
-/*
-import { Router, Route, Link } from 'react-router';
-import { history } from 'react-router/lib/BrowserHistory';
-
-
-
-
-var Users = React.createClass({
-  render() {
-    return (
-      <div>
-        <h1>Users</h1>
-        <div className="master">
-          <ul>
-
-            {this.state.users.map(user => (
-              <li><Link to={`/users/${users.id}`}>{user.name}</Link></li>
-            ))}
-          </ul>
-        </div>
-        <div className="detail">
-          {this.props.children}
-        </div>
-      </div>
-    );
-  }
-});
-
-var User = React.createClass({
-  componentDidMount() {
-    this.setState({
-      // route components are rendered with useful information, like URL params
-      user: findUserById(this.props.params.userId)
-    });
-  },
-
-  render() {
-    return (
-      <div>
-        <h2>{this.state.user.name}</h2>
-
-      </div>
-    );
-  }
-});
-
-// Declarative route configuration (could also load this config lazily
-// instead, all you really need is a single root route, you don't need to
-// colocate the entire config).
-React.render((
-  <Router history={history}>
-    <Route path="/" component={App}>
-      <Route path="about" component={About}/>
-      <Route path="users" component={Users}>
-        <Route path="/user/:userId" component={User}/>
-      </Route>
-      <Route path="*" component={NoMatch}/>
-    </Route>
-  </Router>
-), document.body);
-
-
-*/
-
-
-
-/*
-var Router = require('react-router');
-var Route = Router.Route
-var RouteHandler = Router.RouteHandler
-var DefaultRoute = Router.DefaultRoute
-var Link = Router.Link;
-var NotFoundRoute = Router.NotFoundRoute;
-
-*/
-
 var Header = require('./js/header.js');
 var Map = require('./js/map.js');
 var About = require('./js/about.js');
@@ -91,74 +15,6 @@ var Router = require('react-router')
   , Route = Router.Route
   , DefaultRoute = Router.DefaultRoute
   , BrowserHistory = Router.History;
-
-//var BrowserHistory = require('react-router/lib/BrowserHistory').default;
-
-
-
-/*
-TOIMIVA ESIMERKKI REACT ROUTERISTA:
-
-var ReactBootstrap = require('react-bootstrap')
-  , Nav = ReactBootstrap.Nav
-  , ListGroup = ReactBootstrap.ListGroup;
-
-var ReactRouterBootstrap = require('react-router-bootstrap')
-  , NavItemLink = ReactRouterBootstrap.NavItemLink
-  , ButtonLink = ReactRouterBootstrap.ButtonLink
-  , ListGroupItemLink = ReactRouterBootstrap.ListGroupItemLink;
-
-var App = React.createClass({
-  render: function() {
-    return (
-      <div>
-        NavItemLink<br />
-        <Nav>
-          <NavItemLink
-            to="destination"
-            params={{ someparam: 'hello' }}>
-            Linky!
-          </NavItemLink>
-        </Nav>
-        <br />
-        ButtonLink<br />
-        <ButtonLink
-          to="destination"
-          params={{ someparam: 'hello' }}>
-          Linky!
-        </ButtonLink>
-        <br />
-        <ListGroup>
-          <ListGroupItemLink
-            to="destination"
-            params={{ someparam: '1' }}>
-            Linky!
-          </ListGroupItemLink>
-        </ListGroup>
-        <RouteHandler />
-      </div>
-    );
-  }
-});
-
-var Destination = React.createClass({
-  render: function() {
-    return <div>You made it!</div>;
-  }
-});
-
-var routes = (
-  <Route handler={App} path="/">
-    <Route name="destination" path="destination/:someparam" handler={Destination} />
-  </Route>
-);
-
-Router.run(routes, function (Handler) {
-  React.render(<Handler/>, document.body);
-});
-
-*/
-
 
 var Main = React.createClass({
 
@@ -189,7 +45,7 @@ var Main = React.createClass({
             <Map />
             <div className="container">
 
-              <RouteHandler />
+              <RouteHandler eventList={this.state.eventList} />
             </div>
         </div>
     );
@@ -238,52 +94,10 @@ React.render((
 
 
 
-// <Route name="eventPage" path="events/:someparam" handler={Destination} />
-
-var Events = React.createClass({
-
-  render: function() {
-    
- // <Header />
-// <RouteHandler eventList={this.state.eventList} />
-
-    return (
-          <div>
-            <div className="container">
-              <RouteHandler />
-            </div>
-        </div>
-    );
-  }
-});  // <RouteHandler {...@props}/>
-
-var EventListsWrapper = React.createClass({
-  render: function () {
-    return (
-        <EventList eventList={this.props.eventList} />
-    );
-  }
-});
-
-/*
-TEST:
-var routes = (
-  <Route handler={Main} path="/">
-    <DefaultRoute name="home" handler={EventListsWrapper} />
-    <Route handler={Events} path="/events">
-       <Route name="eventPage" path="/asd" handler={EventPage} />
-       <Route path="*" component={NoMatch}/>
-    </Route>
-    <Route name="eventForm" handler={EventForm} />
-    <Route name="about" handler={About} />
-  </Route>
-);
-*/
-
 
 var routes = (
   <Route handler={Main} path="/">
-    <DefaultRoute name="home" handler={EventListsWrapper} />
+    <DefaultRoute name="home" path="/" handler={EventListsWrapper} />
     <Route name="eventPage" path="events/:someparam" handler={EventPage} />
     <Route name="eventForm" handler={EventForm} />
     <Route name="about" handler={About} />
