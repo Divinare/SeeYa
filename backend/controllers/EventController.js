@@ -4,13 +4,11 @@ var models  = require('../models');
 module.exports = {
 
  	findOne: function (req, res) {
-    console.log("FIND ONE?");
  		var eventId = req.params.id;
  		models.Event.findOne({
  			where: { id: eventId }
  		})
  		.then(function (event) {
- 			console.log(event);
  			res.send(event);
  		});
  	},
