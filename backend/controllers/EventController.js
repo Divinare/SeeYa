@@ -28,12 +28,14 @@ module.exports = {
   */
 
   findAll: function (req, res) {
-      models.Event.findAll().then(function (error, events) {
+      models.Event.findAll().then(function (events) {
+        /*
           if (error) {
             res.status(500).send(error);
             return;
           }
-          res.json(events);
+          */
+          res.send(events);
       });
   },
  	 
