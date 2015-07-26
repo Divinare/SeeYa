@@ -15,8 +15,8 @@ To run all of the pending migrations, enter
 
 To undo the latest migration, enter
 
-::: sequelize db:migration:undo
+::: sequelize db:migrate:undo
 
 To undo all of the migrations, enter
 
-::: sequelize db:migration:undo:all
+::: sequelize db:migrate:undo:all
