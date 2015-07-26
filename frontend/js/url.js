@@ -3,6 +3,7 @@ var REST = base + '/api';
 
 module.exports = {
 	'base': base,
-	'REST': REST
+	'REST': REST,
+	'eventsAll' : REST + '/events'
 
 };

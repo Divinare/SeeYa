@@ -9,6 +9,7 @@ var NoMatch = require('./js/noMatch.js');
 var EventList = require('./js/event/eventList.js');
 var EventForm = require('./js/event/eventForm.js');
 var EventPage = require('./js/event/eventPage.js');
+var URL = require('./js/url.js');
 
 var Router = require('react-router')
   , RouteHandler = Router.RouteHandler
@@ -26,12 +27,23 @@ var Main = React.createClass({
 
   },
   componentWillMount: function() {
-       this.state.eventList.push("jee");
-       
+    console.log(URL.eventsAll);
+    var that = this;
+    $.ajax({ 
+      type: 'GET', 
+      url: URL.eventsAll,
+      dataType: 'json',
+      success: function (data) { 
+        that.setState({
+          eventList: data
+        })
+        console.log(data);
+      }
+    });
   },
 
   componentDidMount: function() {
-      
+          console.log("hmm2");
   },
 
 
