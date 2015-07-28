@@ -7,8 +7,7 @@ module.exports = function(sequelize, DataTypes) {
     date: { type: DataTypes.DATE, allowNull: false },
     lon: { type: DataTypes.FLOAT, allowNull: false },
     lat: { type: DataTypes.FLOAT, allowNull: false },
-    requiresRegistration: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
-    time: { type: DataTypes.TIME, allowNull:false}
+    requiresRegistration: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false}
   }, {
         timestamps: true,
         classMethods: {

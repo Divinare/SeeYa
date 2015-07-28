@@ -1,6 +1,4 @@
 var React = require('react');
-var URL = require('./url.js');
-
 
 var NoMatch = React.createClass({
 

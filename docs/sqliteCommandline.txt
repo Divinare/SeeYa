@@ -1,0 +1,5 @@
+PRAGMA table_info('events');
+
+.table
+.schema
+.fullschema

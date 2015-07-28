@@ -66,7 +66,7 @@ var EventList = React.createClass({
 
 	//var eventList = this.data;
 	console.log(this.props.eventList);
-	console.log("^");
+
 	//var eventList = this.createEventList(events);
 
 
@@ -75,8 +75,13 @@ var EventList = React.createClass({
 		return (
 			<div id="eventList">
 				<h1>Events</h1>
-				<a href="events/1">events/1 click here</a> <br />
-				<a href="about">about here</a> 
+				{
+					this.props.eventList.map(function(event) {
+						return <li><a href={"events/" + event.id}>{event.name}</a></li>
+					})
+				}
+
+
 			</div>
 			)
 	}
