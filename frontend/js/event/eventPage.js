@@ -1,7 +1,6 @@
 var React = require('react');
-var URL = require('../url.js');
-var utils = require('../utils.js');
 
+var utils = require('../utils.js');
 
 var Map = require('../map.js');
 var EventPage = React.createClass({
@@ -21,7 +20,7 @@ var EventPage = React.createClass({
 		var eventId = tokens[tokens.length - 1];
 		$.ajax({ 
 			type: 'GET', 
-			url: URL.REST + '/events/1',
+			url: REST.event + '1',
 			dataType: 'json',
 			success: function (data) { 
 				that.setState({

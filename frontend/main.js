@@ -1,4 +1,5 @@
 window.$ = window.jQuery = require('jquery');
+window.REST = require('./js/url.js');
 
 var React = require('react');
 
@@ -9,7 +10,6 @@ var NoMatch = require('./js/noMatch.js');
 var EventList = require('./js/event/eventList.js');
 var EventForm = require('./js/event/eventForm.js');
 var EventPage = require('./js/event/eventPage.js');
-var URL = require('./js/url.js');
 
 var Router = require('react-router')
   , RouteHandler = Router.RouteHandler
@@ -31,13 +31,12 @@ var Main = React.createClass({
     var that = this;
     $.ajax({ 
       type: 'GET', 
-      url: URL.eventsAll,
+      url: REST.allEvents,
       dataType: 'json',
       success: function (data) { 
         that.setState({
           eventList: data
         })
-        console.log(data);
       }
     });
   },
