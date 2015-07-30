@@ -4,14 +4,14 @@ GET: http://localhost:1337/api/events/1
 
 POST: http://localhost:1337/api/events
 
-{ "name": "testi100",
+{ "name": "db testi",
   "address":{
-   "streetAddress":"leppäsuonkatu 3",
+   "streetAddress":"mustikkamaa",
    "country":"Finland",
-   "zipCode":"00500"
+   "zipCode":"00100"
  },
- "description":"test description",
- "date":"2015-06-29",
+ "description":"testi db nyt backendin alla",
  "lat":"20.102",
  "lon":"62.123",
-   "requiresRegistration":"true"}
+  "requiresRegistration":"true",
+ "timestamp":"1438277401719"}
