@@ -1,23 +1,23 @@
 var React = require('react/addons');
 
 var Router = require('react-router')
-  , RouteHandler = Router.RouteHandler
-  , Route = Router.Route;
+    , RouteHandler = Router.RouteHandler
+    , Route = Router.Route;
 
 var ReactBootstrap = require('react-bootstrap')
-  , Nav = ReactBootstrap.Nav
-  , Navbar = ReactBootstrap.Navbar
-  , ListGroup = ReactBootstrap.ListGroup
-  , CollapsibleNav = ReactBootstrap.CollapsibleNav
-  , NavItem = ReactBootstrap.NavItem
-  , DropdownButton = ReactBootstrap.DropdownButton
-  , MenuItem = ReactBootstrap.MenuItem;
+    , Nav = ReactBootstrap.Nav
+    , Navbar = ReactBootstrap.Navbar
+    , ListGroup = ReactBootstrap.ListGroup
+    , CollapsibleNav = ReactBootstrap.CollapsibleNav
+    , NavItem = ReactBootstrap.NavItem
+    , DropdownButton = ReactBootstrap.DropdownButton
+    , MenuItem = ReactBootstrap.MenuItem;
 
 var ReactRouterBootstrap = require('react-router-bootstrap')
-  , NavItemLink = ReactRouterBootstrap.NavItemLink
-  , ButtonLink = ReactRouterBootstrap.ButtonLink
-  , ListGroupItemLink = ReactRouterBootstrap.ListGroupItemLink
-  , Link = ReactRouterBootstrap.Link;
+    , NavItemLink = ReactRouterBootstrap.NavItemLink
+    , ButtonLink = ReactRouterBootstrap.ButtonLink
+    , ListGroupItemLink = ReactRouterBootstrap.ListGroupItemLink
+    , Link = ReactRouterBootstrap.Link;
 
 
 module.exports = React.createClass({
@@ -33,28 +33,26 @@ module.exports = React.createClass({
 	render: function(){
 		var toggleEventFormLinkText = this.props.showEventForm ? 'Browse events' : 'Create new event';
 		var toggleEventFormHref = this.props.showEventForm ? 'event/new' : '/';
-		
-    var Brand = <NavItemLink to='home' className='nav navbar-nav app-name-navbar'>EventMeetup</NavItemLink>;
+        var Brand = <NavItemLink to='home' className='nav navbar-nav app-name-navbar'>EventMeetup</NavItemLink>;
 
-    return (
-      <Navbar brand={Brand} toggleNavKey={0}>
-          <CollapsibleNav eventKey={0}>
-             <Nav navbar>
-                <NavItemLink
-                  to="about"
-                  params={{ someparam: 'hello' }}>
-                  About
-                </NavItemLink>
-                <NavItemLink
-                  to="eventForm"
-                  params={{ someparam: 'hello' }}>
-                  Create new event
-                </NavItemLink>
-            </Nav>
-          </CollapsibleNav>
-        </Navbar>
-
-		)
+        return (
+           <Navbar brand={Brand} toggleNavKey={0}>
+               <CollapsibleNav eventKey={0}>
+                   <Nav navbar>
+                        <NavItemLink
+                          to="about"
+                          params={{ someparam: 'hello' }}>
+                          About
+                        </NavItemLink>
+                        <NavItemLink
+                          to="eventForm"
+                          params={{ someparam: 'hello' }}>
+                          Create new event
+                        </NavItemLink>
+                    </Nav>
+                </CollapsibleNav>
+            </Navbar>
+    		)
 	}
 
 });

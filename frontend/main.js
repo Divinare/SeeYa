@@ -27,7 +27,6 @@ var Main = React.createClass({
 
   },
   componentWillMount: function() {
-    console.log(URL.eventsAll);
     var that = this;
     $.ajax({ 
       type: 'GET', 
@@ -42,7 +41,6 @@ var Main = React.createClass({
   },
 
   componentDidMount: function() {
-          console.log("hmm2");
   },
 
 
@@ -51,7 +49,7 @@ var Main = React.createClass({
     return (
           <div>
             <Header />
-            <Map />
+            <MapWrapper eventList={this.state.eventList} />
             <div className="container">
 
               <RouteHandler eventList={this.state.eventList} />
@@ -65,6 +63,14 @@ var EventListsWrapper = React.createClass({
   render: function () {
     return (
         <EventList eventList={this.props.eventList} />
+    );
+  }
+});
+
+var MapWrapper = React.createClass({
+  render: function () {
+    return (
+        <Map eventList={this.props.eventList} />
     );
   }
 });

@@ -12,11 +12,11 @@ var clock24hour = require('../utils/clocktimes.js').hour24;
 var EventForm = React.createClass({
 	mixins: [ Router.Navigation ],
 
-  getInitialState: function() {
-    return {
+    getInitialState: function() {
+	    return {
 
-    };
-  },
+	    };
+	},
 	componentWillMount: function() {
 
 	},
