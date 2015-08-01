@@ -4,7 +4,7 @@ var router  = express.Router();
 
 var EventCtrl = require('../controllers/EventController.js');
 var AddressCtrl = require('../controllers/AddressController.js');
-var RegistrationCtrl = require('../controllers/RegistrationController.js');
+var AttendanceCtrl = require('../controllers/AttendanceController.js');
 
 /*
 router.post('/create', function(req, res) {
@@ -25,6 +25,10 @@ router.get('/events', EventCtrl.findAll);
 router.get('/events/:id', EventCtrl.findOne);
 router.post('/events', EventCtrl.create);
 router.post('/events/:id', EventCtrl.update);
+
+router.get('/attendances', AttendanceCtrl.findAll);
+router.get('/attendances/:id', AttendanceCtrl.findOne);
+router.post('/attendances', AttendanceCtrl.create);
 
 
 
