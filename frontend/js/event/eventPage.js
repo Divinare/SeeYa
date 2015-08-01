@@ -3,6 +3,8 @@ var React = require('react');
 var utils = require('../utils.js');
 
 var Map = require('../map.js');
+var URL = require('../url.js')
+
 var EventPage = React.createClass({
 
 
@@ -14,13 +16,16 @@ var EventPage = React.createClass({
 
 	},
 	componentWillMount: function() {
-		console.log(URL.REST + '/events/1'); // TODO: eventId
+		console.log(URL.base + '/events/1'); // TODO: eventId
 		var that = this;
 		var tokens = utils.urlTokens();
 		var eventId = tokens[tokens.length - 1];
+		var url = URL.REST + '/events/' + eventId
+		console.log("url: " + url) 
+
 		$.ajax({ 
 			type: 'GET', 
-			url: REST.event + '1',
+			url: url,
 			dataType: 'json',
 			success: function (data) { 
 				that.setState({
@@ -39,30 +44,27 @@ var EventPage = React.createClass({
 		//console.log("result: " + utils.urlTokens())
 
 		var event = this.state.event
+		console.log("event name: " + event.name)
+		console.log(event)
 		//console.log("type: " + typeof event.address)
-		if(typeof event.address !== 'undefined'){
-			console.log(event.address)
-			console.log(event.address[0])
-			console.log(event.address.streetAddress)
-			console.log(event.address['streetAddress'])
-		}
-
-		//console.log("name: " + event.name)
-/*
 		if(typeof event.address === 'undefined'){
-			return (
-				<div>empty event address</div>
+			console.log("no address")
+			return(
+			<div>
+				<h1>{event.name}</h1>
+				Date: {event.timestamp}<br/>
+				Description: {event.description}
+			</div>
 				)
 		}
-		*/
-		// TODO: Address: {event.address.streetAddress}<br/>
-		//ZipCode: {event.address.ZipCode}<br/>
-		//Country: {event.address.country}<br/>
-		//Date: {utils.formatDate(event.date)}<br/>
+
 		return (
 			<div>
 				<h1>{event.name}</h1>
-				
+				Address: {event.address.streetAddress}<br/>
+				ZipCode: {event.address.ZipCode}<br/>
+				Country: {event.address.country}<br/>
+				Date: {event.timestamp}<br/>
 				Description: {event.description}
 			</div>
 			)
