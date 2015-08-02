@@ -1,9 +1,9 @@
 var React = require('react');
-
 var utils = require('../utils.js');
-
 var Map = require('../map.js');
-var URL = require('../url.js')
+var URL = require('../url.js');
+var Moment = require('moment');
+var Underscore = require('underscore.string')
 
 var EventPage = React.createClass({
 
@@ -16,56 +16,91 @@ var EventPage = React.createClass({
 
 	},
 	componentWillMount: function() {
-		console.log(URL.base + '/events/1'); // TODO: eventId
+	},
+
+	componentDidMount: function() {
 		var that = this;
 		var tokens = utils.urlTokens();
 		var eventId = tokens[tokens.length - 1];
 		var url = URL.REST + '/events/' + eventId
 		console.log("url: " + url) 
 
-		$.ajax({ 
-			type: 'GET', 
-			url: url,
-			dataType: 'json',
-			success: function (data) { 
-				that.setState({
-					event: data
-				})
+	/*	$.get(url, function(result){
+			if(this.isMounted()){
+				this.setState({
+					event: result
+				});
 			}
-		});
-	},
+		}.bind(this));*/
 
-	componentDidMount: function() {
+$.ajax({ 
+	type: 'GET', 
+	url: url,
+	dataType: 'json',
+	success: function (data) { 
+		if(that.isMounted()){
+			that.setState({
+				event: data
+			})
+		}
 
+	}
+});
 
-	},
+},
 
-	render: function(){
+render: function(){
 		//console.log("result: " + utils.urlTokens())
 
 		var event = this.state.event
+		var date = Moment.unix(event.timestamp/1000).format("ddd DD.MM.YYYY");
+		var time = Moment.unix(event.timestamp/1000).format("HH:mm")
+		console.log("timestamp: " + event.timestamp)
+		console.log(event)
+		console.log("milliseconds now: " + new Date().getTime())
+
 		console.log("event name: " + event.name)
 		console.log(event)
+		console.log(event.Address)
 		//console.log("type: " + typeof event.address)
-		if(typeof event.address === 'undefined'){
-			console.log("no address")
-			return(
-			<div>
-				<h1>{event.name}</h1>
-				Date: {event.timestamp}<br/>
-				Description: {event.description}
-			</div>
-				)
+
+		var address;
+		
+
+		if(typeof event.Address === 'undefined'){
+			address = <div></div>
+		}else{
+			var addressStr = '';
+
+			if(!Underscore.isBlank(event.Address.streetAddress)){
+				addressStr = event.Address.streetAddress + ", "
+			}
+			if(!Underscore.isBlank(event.Address.zipCode)){
+				addressStr += event.Address.zipCode + ", "
+			}
+			if(!Underscore.isBlank(event.Address.city)){
+				addressStr += event.Address.city + ", "
+			}
+			if(!Underscore.isBlank(event.Address.country)){
+				addressStr += event.Address.country
+			}
+			addressStr = Underscore.trim(addressStr, ", ")
+		
+			address = <div><b>Address:</b> {addressStr}</div>
+
+			console.log('-----------------')
+			console.log(address)
+
 		}
 
 		return (
 			<div>
-				<h1>{event.name}</h1>
-				Address: {event.address.streetAddress}<br/>
-				ZipCode: {event.address.ZipCode}<br/>
-				Country: {event.address.country}<br/>
-				Date: {event.timestamp}<br/>
-				Description: {event.description}
+			<h1>{event.name}</h1>
+			<b>Date:</b> {date}<br/>
+			<b>Time:</b> {time}<br/>
+			<b>Description:</b> {event.description}
+			{address}
+
 			</div>
 			)
 	}

@@ -15,3 +15,15 @@ POST: http://localhost:1337/api/events
  "lon":"62.123",
   "requiresRegistration":"true",
  "timestamp":"1438277401719"}
+
+
+
+http://localhost:1337/api/attendances
+ { "attendeeName": "yrjö",
+ "email":"test@testing.com",
+ "comment": "testi kommentti",
+ "event":{
+   "id": "2"
+   
+ }
+}
