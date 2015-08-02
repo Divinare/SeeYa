@@ -9,6 +9,7 @@ module.exports = {
      models.Event.findOne({
         where: { id: eventId },
         include: [ models.Address ]
+        
     })
      .then(function (event) {
         res.send(event);
@@ -45,6 +46,7 @@ module.exports = {
 
 create: function (req, res) {
  var eventToAdd = req.body;
+ console.log(eventToAdd)
  console.log(eventToAdd.address)
 
  models.Address.findOrCreate({where: {

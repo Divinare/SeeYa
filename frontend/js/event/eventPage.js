@@ -33,21 +33,20 @@ var EventPage = React.createClass({
 			}
 		}.bind(this));*/
 
-$.ajax({ 
-	type: 'GET', 
-	url: url,
-	dataType: 'json',
-	success: function (data) { 
-		if(that.isMounted()){
-			that.setState({
-				event: data
-			})
-		}
+		$.ajax({ 
+			type: 'GET', 
+			url: url,
+			dataType: 'json',
+			success: function (data) { 
+				if(that.isMounted()){
+					that.setState({
+						event: data
+					})
+				}
+			}
+	});
 
-	}
-});
-
-},
+	},
 
 render: function(){
 		//console.log("result: " + utils.urlTokens())
@@ -95,13 +94,24 @@ render: function(){
 
 		return (
 			<div>
-			<h1>{event.name}</h1>
-			<b>Date:</b> {date}<br/>
-			<b>Time:</b> {time}<br/>
-			<b>Description:</b> {event.description}
-			{address}
+				<div id='leftPane' className='col-xs-12 col-md-6'>
+					<h1>{event.name}</h1>
+					<b>Date:</b> {date}<br/>
+					<b>Time:</b> {time}<br/>
+					<b>Description:</b> {event.description}
+					{address}
+				</div>
+				<div id='rightPane' className='col-xs-12 col-md-6'>
+					<h1>Attend to the event</h1>
+					<form className='form' role='form' onSubmit={ this.handleSubmit }>
+					</form>
+				</div>
+
 
 			</div>
+
+
+
 			)
 	}
 

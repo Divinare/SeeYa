@@ -42,6 +42,7 @@ var EventForm = React.createClass({
 	},
 
 	handleSubmit: function(e) {
+		var that = this;
 		e.preventDefault();
 		console.log("add " + this.state.address);
 		var address = {
@@ -68,10 +69,11 @@ var EventForm = React.createClass({
 		    type: 'POST',
 		    dataType: 'json',
 		    url: URL.allEvents,
-		    data: data,
-		    contentType: 'application/x-www-form-urlencoded',
+		    data: JSON.stringify(data),
+		    contentType: "application/json; charset=utf-8",
+		    //contentType: 'application/x-www-form-urlencoded',
 		    success: function(){
-		        this.transitionTo('home');
+		        that.transitionTo('home');
 		    },
 		    error: function( jqXhr, textStatus, errorThrown ){
 		        console.log( errorThrown );
