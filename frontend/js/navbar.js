@@ -26,7 +26,7 @@ module.exports = React.createClass({
 			    <CollapsibleNav eventKey={0}>
 				     <Nav navbar>
 				  	    <NavItem eventKey={1} href='/' onClick={this.showEventList}>EventMeetup</NavItem>
-				        <NavItem eventKey={2} href={toggleEventFormHref} onClick={this.toggleShowEventForm}>{toggleEventFormLinkText}</NavItem>
+				        <NavItem eventKey={2} href={toggleEventFormHref} onClick={this.toggleShowEventForm}>Create new event</NavItem>
 				    </Nav>
 				      <Nav navbar right>
 				      	 <DropdownButton eventKey={3} title='Dropdown'>

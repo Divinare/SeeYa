@@ -1,4 +1,5 @@
 var React = require('react');
+var Router = require('react-router');
 
 var $ = require('jquery');
 
@@ -6,16 +7,11 @@ var FixedDataTable = require('fixed-data-table');
 var Table = FixedDataTable.Table;
 var Column = FixedDataTable.Column;
 
-var rows = [
-  ['a1', 'b1', 'c1'],
-  ['a2', 'b3', 'c2'],
-  ['a3', 'b3', 'c3'],
-];
+var tableWidth = window.innerWidth*0.9;
+var tableHeight = 300; //(window.innerHeight-350)-120*0.8;
 
-function rowGetter(rowIndex) {
-	console.log("row getter");
-  return  <a href={"events/" + 1}>{"event nimi"}</a>; //rows[rowIndex];
-}
+var tableHeaders = ['name', 'address', 'timestamp', 'description'];
+
 /*
 function renderRow(rows, rowIndex) {
 	console.log(rows[rowIndex]);
@@ -39,15 +35,33 @@ function handleDoubleClick(index, event) {
 
 
 var EventList = React.createClass({
-
+	mixins: [ Router.Navigation ],
 
 	getInitialState: function() {
 
-		return {
+		var colWidths = {
+		  name: tableWidth*0.25,
+		  address: tableWidth*0.25,
+		  time: tableWidth*0.25,
+		  description: tableWidth*0.25,
+		};
 
+		return {
+			isColumnResizing: false,
+			columnWidths: colWidths
 		};
 
 	},
+
+    rowGetter: function(rowIndex) {
+		console.log("row getter");
+		var eventList = this.props.eventList;
+		if($.isEmptyObject(eventList)) {
+			return null
+		}
+	  return  eventList[rowIndex] //<a href={"events/" + 1}>{"event nimi"}</a>; //rows[rowIndex];
+	},
+
 	componentWillMount: function() {
 
 	},
@@ -61,86 +75,134 @@ var EventList = React.createClass({
 		events.map(function(event) {
 			eventList.push(event);
 		});
+		console.log("CREATED EVENT");
+		console.log(eventList);
+
 		return eventList;
 	},
 
-	handleRowClick: function(index) {
+	handleCellClick: function(headerName, eventId) {
+		var that = this;
 		console.log("event clicked");
-		console.log(index);
-	},
-	cellRenderer: function(e, e2, e3, e4, e5, e6) {
-		var index = 1;
-		console.log("jee:");
-		console.log(e);
-		console.log(e2);
-		console.log(e3);
-		console.log("INDEX? " + e4);
-		console.log(e5);
-		console.log(e6); // onClick={this.handleRowClick.bind(null, e4)}
-		return <a styles={{height: '100%'}} href={"events/" + e4}>'event nimi'</a>
-	},
-/*
+		console.log(headerName);
+		console.log("EVENT ID " + eventId);
+		this.transitionTo('eventPage', {id: eventId});
+	//	if(headerName == 'name') {
+		//this.transitionTo('eventPage', {id: 1});
+			//this.transitionTo('home');
 
-			    <DataTable
-			      className="container"
-			      keys={[ 'name', 'address', 'id' ]}
-			      columns={columns}
-			      initialData={eventList}
-			      initialPageLength={5}
-			      initialSortBy={{ prop: 'city', order: 'descending' }}
-			      pageLengthOptions={[ 5, 20, 50 ]}
-			    />
-			    */
+			//this.transitionTo('eventPage', {id: 1});
+		//	this.transition('eventPage', {id: 1});
+
+			//this.transition.redirect('eventPage', {id: 1});
+			//transition.redirect('events', {id: 1});
+//		}
+
+		//href={"events/" + eventId}
+	},
+	cellRenderer: function(e, col, e3, row, e5, e6) {
+		var eventList = this.props.eventList;
+
+		var headerName = tableHeaders[col];
+
+		var eventId = eventList[row]["id"];
+		var content = "";
+
+
+
+		return <div styles={{height: '100%'}} onClick={this.handleCellClick.bind(null, headerName, eventId)}>{eventList[row][headerName]}</div>
+	},
+
+
+	onColumnResizeEndCallback: function(newColumnWidth, dataKey) {
+	  //  columnWidths[dataKey] = newColumnWidth;
+	  //  console.log("col width change: " + newColumnWidth);
+	 //   console.log("col width change: " + columnWidths[dataKey]);
+	    var colWidths = this.state.columnWidths;
+	    colWidths[dataKey] = newColumnWidth;
+	    //isColumnResizing = false;
+	    this.setState({
+	    	isColumnResizing: false,
+	    	columnWidths: colWidths
+	    });
+	    
+	 },
+
+	 onContentHeightChange: function(contentHeight) {
+	    this.props.onContentDimensionsChange &&
+	      this.props.onContentDimensionsChange(
+	        contentHeight,
+	        Math.max(600, this.props.tableWidth)
+	      );
+	  },
 
 	render: function(){
 
 
-	//var eventList = this.data;
-	console.log(this.props.eventList);
+	var eventList = this.createEventList(this.props.eventList);
+	console.log("EVENT LIST::::::::");
+	console.log(eventList);
 
-	//var eventList = this.createEventList(events);
-
-
-
-
+	// Display loading text while loading eventList
+	if($.isEmptyObject(eventList)) {
+		return (
+			<div>"Loading..."</div>
+			)
+	// Return event table with real data
+	} else {
 		return (
 			<div id="eventList">
 				<h1>Events</h1>
 
 				<Table
-				    rowHeight={50}
-				    rowGetter={rowGetter}
-				    rowsCount={rows.length}
-				    width={window.innerWidth*0.6}
-				    height={window.innerHeight*0.3}
-				    headerHeight={50}>
+					headerHeight={50}
+				    rowHeight={30}
+				    rowGetter={this.rowGetter}
+				    rowsCount={eventList.length}
+				    width={tableWidth}
+				    height={tableHeight}
+				    onContentHeightChange={this.onContentHeightChange}
+			        isColumnResizing={this.state.isColumnResizing}
+			        onColumnResizeEndCallback={this.onColumnResizeEndCallback}>
+
 
 				    <Column
-				      label="Name"
-				      width={100}
+				      label='Name'
+				      width={this.state.columnWidths['name']}
 				      dataKey={0}
 				      cellRenderer={this.cellRenderer}
+				      isResizable={true}
 				    />
 				    <Column
-				      label="Address"
-				      width={100}
+				      label='Address'
+				      width={this.state.columnWidths['address']}
 				      dataKey={1}
 				      cellRenderer={this.cellRenderer}
+				      isResizable={true}
 				    />
 				    <Column
-				      label="Time"
-				      width={100}
+				      label='Time'
+				      width={this.state.columnWidths['time']}
 				      dataKey={2}
+				      cellRenderer={this.cellRenderer}
+				      isResizable={true}
 				    />
 				    <Column
-				      label="Description"
-				      width={100}
+				      label='Description'
+				      width={this.state.columnWidths['description']}
 				      dataKey={3}
+				      cellRenderer={this.cellRenderer}
+				      isResizable={true}
 				    />
-				  </Table>
+				</Table>
 
 			</div>
 			)
+
+
+	}
+
+		
 	}
 
 });

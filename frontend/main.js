@@ -27,6 +27,7 @@ var Main = React.createClass({
 
   },
   componentWillMount: function() {
+
     var that = this;
     $.ajax({ 
       type: 'GET', 
@@ -38,9 +39,11 @@ var Main = React.createClass({
         })
       }
     });
+
   },
 
   componentDidMount: function() {
+
   },
 
 
@@ -78,7 +81,7 @@ var MapWrapper = React.createClass({
 var routes = (
   <Route handler={Main} path="/">
     <Route name="home" path="/" handler={EventListsWrapper} />
-    <Route name="eventPage" path="events/:someparam" handler={EventPage} />
+    <Route name="eventPage" path="events/:id" handler={EventPage} />
     <Route name="eventForm" handler={EventForm} />
     <Route name="about" handler={About} />
     <Route path="*" handler={NoMatch}/>
