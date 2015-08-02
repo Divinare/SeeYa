@@ -5,5 +5,6 @@ module.exports = {
 	'base': base,
 	'REST': REST,
 	'allEvents' : REST + '/events',
-	'event' : REST + '/events'
+	'event' : REST + '/events',
+	'attendance' : REST + '/attendances'
 };

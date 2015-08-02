@@ -4,7 +4,6 @@ var Sequelize = require('sequelize')
 var Attendance = models.Attendance
 
 module.exports = {
-	
 	findOne: function (req, res) {
 		var attendanceId = req.params.id;
 		Attendance.findOne({
