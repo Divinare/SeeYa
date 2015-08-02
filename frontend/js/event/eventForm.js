@@ -49,13 +49,18 @@ var EventForm = React.createClass({
 			country: 'helsinki',
 			zipCode: "00100",
 		}
+		console.log(address);
+		console.log("asd");
+		console.log(address.streetAddress);
 
 		var data = {
 			name: this.state.name,
 			address: address,
-			date: this.state.date.unix(),
-			time: this.state.time,
-			description: this.state.description
+			description: this.state.description,
+			timestamp: this.state.date.unix(),
+			lat: 66.102,
+			lon: 27.123
+			//time: this.state.time,
 		};
 		console.log(data);
 		
