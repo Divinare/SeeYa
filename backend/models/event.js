@@ -13,6 +13,11 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
         associate: function(models) {
           Event.belongsTo(models.Address);
+          Event.hasMany(models.Attendance, {
+            foreignKey: 'EventId'
+            
+          });
+
       }
     }
   });

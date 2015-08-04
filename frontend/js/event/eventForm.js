@@ -37,6 +37,7 @@ var EventForm = React.createClass({
 
 	handleTimeChange: function(e){
 		console.log("???");
+		console.log(e)
 		console.log(e.target.value);
 		this.setState({time: e.target.value})
 	},
@@ -52,13 +53,34 @@ var EventForm = React.createClass({
 		}
 		console.log(address);
 		console.log("asd");
+		console.log("time: " + this.state.time);
 		console.log(address.streetAddress);
+		console.log("date: " + this.state.date.format('YYYY-MM-DD HH:mm'));
+		
+		console.log(this.state)
+
+		var moment = this.state.date
+		var hours = parseInt(this.state.time.substring(0, 2))
+		console.log("hours: " + hours)
+		var minutes = parseInt(this.state.time.substring(3, 5))
+		console.log("minutes: " + minutes)
+
+		moment.minutes(minutes)
+		moment.hours(hours)
+
+		console.log("date with added time: "  + moment.format('YYYY-MM-DD HH:mm'))
+
+		var timedate = Date.parse(this.state.time)
+		console.log("timedate: " + timedate)
+
+		console.log("unix moment: " + moment.unix())
+
 
 		var data = {
 			name: this.state.name,
 			address: address,
 			description: this.state.description,
-			timestamp: this.state.date.unix(),
+			timestamp: moment.unix()*1000,
 			lat: 66.102,
 			lon: 27.123
 			//time: this.state.time,
@@ -93,6 +115,7 @@ var EventForm = React.createClass({
 	setCurrentTime: function() {
 		var str = Moment().format('HH:mm');
 		$('#time').val(str);
+		this.setState({time: str})
 	},
 
 	render: function(){

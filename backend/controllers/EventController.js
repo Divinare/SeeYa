@@ -8,7 +8,8 @@ module.exports = {
      var eventId = req.params.id;
      models.Event.findOne({
         where: { id: eventId },
-        include: [ models.Address ]
+        include: [ models.Address,
+                  models.Attendance ]
         
     })
      .then(function (event) {
@@ -32,7 +33,8 @@ module.exports = {
 
   findAll: function (req, res) {
     models.Event.findAll({
-      include: [ models.Address ]
+      include: [ models.Address,
+                  models.Attendance ]
   }).then(function (events) {
         /*
           if (error) {
@@ -48,6 +50,7 @@ create: function (req, res) {
  var eventToAdd = req.body;
  console.log(eventToAdd)
  console.log(eventToAdd.address)
+ console.log("time stamp" + eventToAdd.timestamp)
 
  models.Address.findOrCreate({where: {
     streetAddress: eventToAdd.address.streetAddress,
