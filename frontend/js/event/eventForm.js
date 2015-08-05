@@ -3,6 +3,7 @@ var Router = require('react-router');
 var DatePicker = require('react-datepicker');
 var Select = require('react-select');
 var Moment = require('moment')
+var validator = require('bootstrap-validator')
 //var $ = require('jquery-autocomplete-js');
 
 
@@ -126,24 +127,27 @@ var EventForm = React.createClass({
 				<div id='centerPane' className='col-xs-12 col-md-6'>
 
 					<h1 className="text-center">Create new event</h1>
-					<form className='form' role='form' onSubmit={ this.handleSubmit }>
-						<div className='form-group'>
-							<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='form-control' id='name' placeholder='Event name'/>
+					<form className='form' data-toggle="validator" data-disable="false" role='form' onSubmit={ this.handleSubmit }>
+						<div className='form-group required'>
+							<div>
+								<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='form-control' id='name' placeholder='Event name' required/>
+							</div>
 						</div>
 
-						<div className='form-group'>
+						<div className='form-group required'>
 							<div className='input-group'>
-								<input type='text' value={this.state.address} onChange={this.handleChange('address')} className='form-control' id='address' placeholder='Address'/>
+								<input type='text' data-minlength="6" value={this.state.address} onChange={this.handleChange('address')} className='form-control' id='address' placeholder='Address' required/>
 								<span className="input-group-btn">
 									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
 								</span>
 							</div>
 						</div>
 
-						<div className='form-group'>
+						<div className='form-group required'>
 							<div className="input-group full-width">
 					          <DatePicker
 					          	selected={this.state.date}
+					          	dateFormat= 'DDDD.MM.YYYY'
 						        key="example3"
 						        onChange={this.handleNewDateChange}
 						        placeholderText="Date: dd:mm:yyyy"
@@ -151,9 +155,9 @@ var EventForm = React.createClass({
 					        </div>
 						</div>
 
-						<div className='form-group'>
+						<div className='form-group required'>
 							<div className='input-group'>
-								<input type='text' value={this.state.time} onChange={this.handleTimeChange} className='form-control' id='time' placeholder="Time: hh:mm"/>
+								<input type='text'  pattern="^([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"  value={this.state.time} onChange={this.handleTimeChange} className='form-control' id='time' placeholder="Time: hh:mm" required/>
 								<span className="input-group-btn">
 									 <button className="btn btn-default" onClick={this.setCurrentTime} type="button"><i className="glyphicon glyphicon-time"></i></button>
 								</span>

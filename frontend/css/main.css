@@ -10,3 +10,14 @@ body {
 .app-name-navbar > a {
     text-decoration:  none;
 }
+
+.required div{
+    position:relative;
+}
+.required div:after{
+    position:absolute;
+    content:'*';
+    color:red;
+    right:-10px;
+    top:0;
+}
