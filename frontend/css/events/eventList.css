@@ -1,0 +1,7 @@
+.eventListNameLink {
+	cursor: pointer;
+}
+
+.eventListNameLink:hover { 
+    text-decoration: underline;
+}

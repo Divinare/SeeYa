@@ -1,60 +1,46 @@
 var React = require('react');
 var Router = require('react-router');
-
-var $ = require('jquery');
+var Moment = require('moment')
 
 var FixedDataTable = require('fixed-data-table');
 var Table = FixedDataTable.Table;
 var Column = FixedDataTable.Column;
 
-var tableWidth = window.innerWidth*0.9;
-var tableHeight = 300; //(window.innerHeight-350)-120*0.8;
-
-var tableHeaders = ['name', 'address', 'timestamp', 'description'];
-
-/*
-function renderRow(rows, rowIndex) {
-	console.log(rows[rowIndex]);
-	rows[rowIndex].map(function(cell, index) {
-		cellRenderer('a', index)
-	})
-}
-
-function cellRenderer(content, index) {
-	console.log("c " + content + " index " + index);
-  return (
-  	'a'
-    //<div styles={{height: '100%'}} onRowClick={handleDoubleClick.bind(null, index)}>{content}</div>
-  );
-}
-
-function handleDoubleClick(index, event) {
-  // handle dbl click
-}
-*/
-
+var SortTypes = {
+  ASC: 'ASC',
+  DESC: 'DESC',
+};
+// must be in the same order as in the database columns
+var tableHeaders = ['name', 'Attendances', 'Address', 'timestamp' ];
 
 var EventList = React.createClass({
 	mixins: [ Router.Navigation ],
 
 	getInitialState: function() {
+		var tableWidth = window.innerWidth*0.5;
+		var tableHeight = 300;
+
+		var timeHeaderWidth = 150;
+		var attendancesWidth = 50;
+		var tableScaleWidth = tableWidth - timeHeaderWidth - attendancesWidth;
+		console.log(tableScaleWidth);
 
 		var colWidths = {
-		  name: tableWidth*0.25,
-		  address: tableWidth*0.25,
-		  time: tableWidth*0.25,
-		  description: tableWidth*0.25,
+		  name: tableScaleWidth*0.4,
+		  address: tableScaleWidth*0.6,
+		  time: timeHeaderWidth,
+		  attendances: attendancesWidth
 		};
 
 		return {
-			isColumnResizing: false,
+			tableWidth: tableWidth,
+			tableHeight: tableHeight,
 			columnWidths: colWidths
 		};
 
 	},
 
     rowGetter: function(rowIndex) {
-		console.log("row getter");
 		var eventList = this.props.eventList;
 		if($.isEmptyObject(eventList)) {
 			return null
@@ -62,23 +48,8 @@ var EventList = React.createClass({
 	  return  eventList[rowIndex] //<a href={"events/" + 1}>{"event nimi"}</a>; //rows[rowIndex];
 	},
 
-	componentWillMount: function() {
-
-	},
-
 	componentDidMount: function() {
-	
-	},
-
-	createEventList: function(events) {
-		var eventList = [];
-		events.map(function(event) {
-			eventList.push(event);
-		});
-		console.log("CREATED EVENT");
-		console.log(eventList);
-
-		return eventList;
+		console.log("component did mount");
 	},
 
 	handleCellClick: function(headerName, eventId) {
@@ -86,125 +57,172 @@ var EventList = React.createClass({
 		console.log("event clicked");
 		console.log(headerName);
 		console.log("EVENT ID " + eventId);
-		this.transitionTo('eventPage', {id: eventId});
-	//	if(headerName == 'name') {
-		//this.transitionTo('eventPage', {id: 1});
-			//this.transitionTo('home');
 
-			//this.transitionTo('eventPage', {id: 1});
-		//	this.transition('eventPage', {id: 1});
 
-			//this.transition.redirect('eventPage', {id: 1});
-			//transition.redirect('events', {id: 1});
-//		}
-
-		//href={"events/" + eventId}
+		if(headerName == 'name') {
+			this.transitionTo('eventPage', {id: eventId});
+		}
 	},
+
+	filterChange: function() {
+		console.log("filter!");
+	},
+
 	cellRenderer: function(e, col, e3, row, e5, e6) {
+		if(row == 0) {
+	    	return <input type='text' styles={{height: '20px'}} onChange={this.filterChange('address')} id='' placeholder='Filter...'></input>
+		}
+
+		//row  = row - 1;
+	//	console.log(e + " " + col + " " + e3 + " " + row + " " + e5 + " " + e6);
 		var eventList = this.props.eventList;
 
-		var headerName = tableHeaders[col];
+		var headerName = col; //tableHeaders[col];
 
 		var eventId = eventList[row]["id"];
-		var content = "";
+		var content = eventList[row][headerName];
+ 		var className = '';
+ 		if(headerName == 'name') {
+ 			className = 'eventListNameLink';
+ 		}
+		if(headerName == 'timestamp') {
+			var date = Moment.unix(content/1000).format("DD.MM.YYYY");
+			var time = Moment.unix(content/1000).format("HH:mm")
+			content = time + ' ' + date;
+		}
+		if (headerName == 'Address') {
+			content = eventList[row][headerName].streetAddress
+		}
+		if(headerName == 'Attendances') {
+			console.log("row? " + row + " headerN? " + headerName);
+			content = eventList[row][headerName].length;
+		}
 
-
-
-		return <div styles={{height: '100%'}} onClick={this.handleCellClick.bind(null, headerName, eventId)}>{eventList[row][headerName]}</div>
+		return <div className={className} styles={{height: '100%'}} onClick={this.handleCellClick.bind(null, headerName, eventId)}>{content}</div>
 	},
 
-
-	onColumnResizeEndCallback: function(newColumnWidth, dataKey) {
-	  //  columnWidths[dataKey] = newColumnWidth;
-	  //  console.log("col width change: " + newColumnWidth);
-	 //   console.log("col width change: " + columnWidths[dataKey]);
-	    var colWidths = this.state.columnWidths;
-	    colWidths[dataKey] = newColumnWidth;
-	    //isColumnResizing = false;
-	    this.setState({
-	    	isColumnResizing: false,
-	    	columnWidths: colWidths
-	    });
+	_sortRowsBy: function(cellDataKey) {
+		var eventListData = this.props.eventListData;
+	    var sortDir = eventListData.sortDir;
+	    var sortBy = cellDataKey;
+	    if (sortBy === eventListData.sortBy) {
+	        sortDir = sortDir === SortTypes.ASC ? SortTypes.DESC : SortTypes.ASC;
+	    } else {
+	        sortDir = SortTypes.DESC;
+	    }
 	    
-	 },
-
-	 onContentHeightChange: function(contentHeight) {
-	    this.props.onContentDimensionsChange &&
-	      this.props.onContentDimensionsChange(
-	        contentHeight,
-	        Math.max(600, this.props.tableWidth)
-	      );
+	    var rows = this.props.eventList.slice();
+	    if(sortBy == 'Address') {
+		    rows.sort((a, b) => {
+			    var sortVal = 0;
+			    if(typeof a[sortBy] != 'undefined') {
+		        if (a[sortBy].streetAddress > b[sortBy].streetAddress) {
+		            sortVal = 1;
+		        }
+		        if (a[sortBy].streetAddress < b[sortBy].streetAddress) {
+		            sortVal = -1;
+		        }
+		      
+		        if (sortDir === SortTypes.DESC) {
+		            sortVal = sortVal * -1;
+		        }
+		    	}
+		      
+		        return sortVal;
+		    });
+		} else {
+		    rows.sort((a, b) => {
+		      var sortVal = 0;
+		      if (a[sortBy] > b[sortBy]) {
+		        sortVal = 1;
+		      }
+		      if (a[sortBy] < b[sortBy]) {
+		        sortVal = -1;
+		      }
+		      
+		      if (sortDir === SortTypes.DESC) {
+		        sortVal = sortVal * -1;
+		      }
+		      
+		      return sortVal;
+		    });
+		}
+	    this.props.updateEventList(rows);
+	    this.props.updateEventListData('sortBy', sortBy);
+	    this.props.updateEventListData('sortDir', sortDir);
+	    
 	  },
 
-	render: function(){
-
-
-	var eventList = this.createEventList(this.props.eventList);
-	console.log("EVENT LIST::::::::");
-	console.log(eventList);
-
-	// Display loading text while loading eventList
-	if($.isEmptyObject(eventList)) {
+	 _renderHeader: function(label, cellDataKey) {
 		return (
-			<div>"Loading..."</div>
-			)
-	// Return event table with real data
-	} else {
-		return (
-			<div id="eventList">
-				<h1>Events</h1>
+			<a onClick={this._sortRowsBy.bind(null, cellDataKey)}>{label}</a>
+		);
+	 },
 
-				<Table
-					headerHeight={50}
-				    rowHeight={30}
-				    rowGetter={this.rowGetter}
-				    rowsCount={eventList.length}
-				    width={tableWidth}
-				    height={tableHeight}
-				    onContentHeightChange={this.onContentHeightChange}
-			        isColumnResizing={this.state.isColumnResizing}
-			        onColumnResizeEndCallback={this.onColumnResizeEndCallback}>
+	render: function() {
+		var eventList = this.props.eventList;
+		var eventListData = this.props.eventListData;
 
+	    var sortDirArrow = '';
+	    var sortBy = eventListData.sortBy;
+	    var sortDir = eventListData.sortDir;
 
-				    <Column
-				      label='Name'
-				      width={this.state.columnWidths['name']}
-				      dataKey={0}
-				      cellRenderer={this.cellRenderer}
-				      isResizable={true}
-				    />
-				    <Column
-				      label='Address'
-				      width={this.state.columnWidths['address']}
-				      dataKey={1}
-				      cellRenderer={this.cellRenderer}
-				      isResizable={true}
-				    />
-				    <Column
-				      label='Time'
-				      width={this.state.columnWidths['time']}
-				      dataKey={2}
-				      cellRenderer={this.cellRenderer}
-				      isResizable={true}
-				    />
-				    <Column
-				      label='Description'
-				      width={this.state.columnWidths['description']}
-				      dataKey={3}
-				      cellRenderer={this.cellRenderer}
-				      isResizable={true}
-				    />
-				</Table>
+	    if (sortDir !== null){
+	      sortDirArrow = sortDir === SortTypes.DESC ? ' ↓' : ' ↑';
+	    }
 
-			</div>
-			)
+		// Display loading text while loading eventList
+		if($.isEmptyObject(eventList)) {
+			return (
+				<div>"Loading..."</div>
+				)
+		// Return event table with real data
+		} else {
+			return (
+				<div id="eventList">
+					<h1>Events</h1>
 
+					<Table
+						headerHeight={50}
+					    rowHeight={30}
+					    rowGetter={this.rowGetter}
+					    rowsCount={eventList.length+1}
+					    width={this.state.tableWidth}
+					    height={this.state.tableHeight}>
 
-	}
-
-		
-	}
-
+					    <Column
+					      headerRenderer={this._renderHeader}
+					      label={'Name' + (sortBy === 'name' ? sortDirArrow : '')}
+					      width={this.state.columnWidths['name']}
+					      dataKey={'name'}
+					      cellRenderer={this.cellRenderer}
+					    />
+					    <Column
+					      headerRenderer={this._renderHeader}
+					      label={'o/' + (sortBy === 'Attendances' ? sortDirArrow : '')}
+					      width={this.state.columnWidths['attendances']}
+					      dataKey={'Attendances'}
+					      cellRenderer={this.cellRenderer}
+					    />
+					    <Column
+					      headerRenderer={this._renderHeader}
+					      label={'Address' + (sortBy === 'Address' ? sortDirArrow : '')}
+					      width={this.state.columnWidths['address']}
+					      dataKey={'Address'}
+					      cellRenderer={this.cellRenderer}
+					    />
+					    <Column
+					      headerRenderer={this._renderHeader}
+					      label={'Time' + (sortBy === 'timestamp' ? sortDirArrow : '')}
+					      width={this.state.columnWidths['time']}
+					      dataKey={'timestamp'}
+					      cellRenderer={this.cellRenderer}
+					    />
+					</Table>
+				</div>
+				)
+			}		
+		}
 });
 
 module.exports = EventList;

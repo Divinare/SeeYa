@@ -19,77 +19,106 @@ var Router = require('react-router')
 
 var Main = React.createClass({
 
-  getInitialState: function() {
+    getInitialState: function() {
 
-    return {
-        eventList: []
-    };
+        var eventListData = [];
+        eventListData['sortBy'] = 'name';
+        eventListData['sortDir'] = null;
 
-  },
-  componentWillMount: function() {
+        return {
+            eventList: [],
+            eventListData: eventListData
+        };
 
-    var that = this;
-    $.ajax({ 
-      type: 'GET', 
-      url: REST.allEvents,
-      dataType: 'json',
-      success: function (data) { 
-        that.setState({
-          eventList: data
+    },
+    componentWillMount: function() {
+
+        var that = this;
+        $.ajax({ 
+            type: 'GET', 
+            url: REST.allEvents,
+            dataType: 'json',
+            success: function (data) { 
+                data.unshift({});
+              that.setState({
+                eventList: data
+              })
+            }
+        });
+
+    },
+
+    componentDidMount: function() {
+
+    },
+
+    updateEventList: function(eventList) {
+        this.setState({
+            eventList: eventList
         })
-      }
-    });
+    },
 
-  },
+    updateEventListData: function(key, value) {
+        var currentData = this.state.eventListData;
+        currentData[key] = value;
+        this.setState({
+            eventListData: currentData
+        })
+    },
 
-  componentDidMount: function() {
 
-  },
+    render: function() {
 
-
-  render: function() {
-    
     return (
           <div>
             <Header />
             <MapWrapper eventList={this.state.eventList} />
             <div className="container">
 
-              <RouteHandler eventList={this.state.eventList} />
+            <RouteHandler
+              eventList={this.state.eventList}
+              eventListData={this.state.eventListData}
+              updateEventList={this.updateEventList}
+              updateEventListData={this.updateEventListData} />
             </div>
         </div>
     );
-  }
-});  // <RouteHandler {...@props}/>
+    }
+    });  // <RouteHandler {...@props}/>
 
-var EventListsWrapper = React.createClass({
-  render: function () {
-    return (
-        <EventList eventList={this.props.eventList} />
+    var EventListsWrapper = React.createClass({
+
+        render: function () {
+            return (
+                <EventList
+                  eventList={this.props.eventList}
+                  eventListData={this.props.eventListData}
+                  updateEventList={this.props.updateEventList}
+                  updateEventListData={this.props.updateEventListData} />
+            );
+        }
+    });
+
+    var MapWrapper = React.createClass({
+        render: function () {
+            return (
+                <Map eventList={this.props.eventList} />
+            );
+        }
+    });
+
+    var routes = (
+        <Route handler={Main} path="/">
+        <Route name="home" path="/" handler={EventListsWrapper} />
+        <Route name="eventPage" path="events/:id" handler={EventPage} />
+        <Route name="eventForm" handler={EventForm} />
+        <Route name="about" handler={About} />
+        <Route path="*" handler={NoMatch}/>
+        </Route>
     );
-  }
-});
-
-var MapWrapper = React.createClass({
-  render: function () {
-    return (
-        <Map eventList={this.props.eventList} />
-    );
-  }
-});
-
-var routes = (
-  <Route handler={Main} path="/">
-    <Route name="home" path="/" handler={EventListsWrapper} />
-    <Route name="eventPage" path="events/:id" handler={EventPage} />
-    <Route name="eventForm" handler={EventForm} />
-    <Route name="about" handler={About} />
-    <Route path="*" handler={NoMatch}/>
-  </Route>
-);
 
 $(document).ready(function () {
-  Router.run(routes, Router.HistoryLocation, function (Handler) {
-    React.render(<Handler/>, document.body);
-  });
+    Router.run(routes, Router.HistoryLocation, function (Handler) {
+        React.render(<Handler/>, document.body);
+    });
 });

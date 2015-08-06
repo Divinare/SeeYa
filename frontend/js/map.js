@@ -51,13 +51,16 @@ var Map = React.createClass({
         var that = this;
         var eventList = this.props.eventList;
         eventList.map(function(event) {
-            that.addMarker({ lat: event.lat, lng: event.lon }, map);
+            if(!$.isEmptyObject(event)) {
+
+            
+               that.addMarker({ lat: event.lat, lng: event.lon }, map);
+            }
         });
 
     },
 
     addMarker: function(location, map) {
-        console.log(location);
         var marker = new google.maps.Marker({
             position: location,
             map: map
