@@ -24,9 +24,11 @@ var Main = React.createClass({
         var eventListData = [];
         eventListData['sortBy'] = 'name';
         eventListData['sortDir'] = null;
-
+        eventListData['filters'] = [];
+        eventListData['tableHeaders'] = ['name', 'attendances', 'address', 'timestamp'];
         return {
             eventList: [],
+            filteredEventList: [],
             eventListData: eventListData
         };
 
@@ -38,15 +40,54 @@ var Main = React.createClass({
             type: 'GET', 
             url: REST.allEvents,
             dataType: 'json',
-            success: function (data) { 
-                data.unshift({});
+            success: function (eventList) { 
               that.setState({
-                eventList: data
+                eventList: eventList,
+                filteredEventList: eventList
               })
             }
         });
 
     },
+    /* Parses eventList to contain only the things that EventList needs 
+       in a array['property'] format (so no arrays inside arrays) */
+   /*
+    parseEventList: function(eventList) {
+        console.log(eventList);
+        var that = this;
+        var parsedEventList = [];
+
+        eventList.map(function(event) {
+            var newEvent = {};
+            for(var prop in event) {
+                var propName = prop;
+                prop = prop.toLowerCase();
+                // Only push in parsed eventList if prop is id or it is in tableHeaders list
+                if(prop == 'id' || $.inArray(prop, that.state.eventListData['tableHeaders']) != -1) {
+                    
+                    console.log(propName);
+                    // Special handler for Address object
+                    if(propName == 'Address') {
+                        newEvent[prop] = event[propName].streetAddress;
+                    // Special handler for Attendances object
+                    } else if(propName == 'Attendances') {
+                        newEvent[prop] = event[propName].length;
+                    } else {
+
+                    newEvent[prop] = event[propName];
+                    }
+                }
+            }
+            parsedEventList.push(newEvent);
+
+        });
+        console.log("-------------------------------");
+        console.log(parsedEventList);
+
+
+        return parsedEventList;
+    },
+    */
 
     componentDidMount: function() {
 
@@ -58,9 +99,20 @@ var Main = React.createClass({
         })
     },
 
-    updateEventListData: function(key, value) {
+    updateFilteredEventList: function(filteredEventList) {
+        this.setState({
+            filteredEventList: filteredEventList
+        })
+    },
+
+    updateEventListData: function(key, value, array) {
         var currentData = this.state.eventListData;
-        currentData[key] = value;
+        console.log("update eventListData, key: " + key + " value: " + value + " array: " + array);
+        if(typeof array != 'undefined') {
+            currentData[array][key] = value
+        } else {
+            currentData[key] = value;
+        }
         this.setState({
             eventListData: currentData
         })
@@ -77,8 +129,10 @@ var Main = React.createClass({
 
             <RouteHandler
               eventList={this.state.eventList}
+              filteredEventList={this.state.filteredEventList}
               eventListData={this.state.eventListData}
               updateEventList={this.updateEventList}
+              updateFilteredEventList={this.updateFilteredEventList}
               updateEventListData={this.updateEventListData} />
             </div>
         </div>
@@ -92,8 +146,10 @@ var Main = React.createClass({
             return (
                 <EventList
                   eventList={this.props.eventList}
+                  filteredEventList={this.props.filteredEventList}
                   eventListData={this.props.eventListData}
                   updateEventList={this.props.updateEventList}
+                  updateFilteredEventList={this.props.updateFilteredEventList}
                   updateEventListData={this.props.updateEventListData} />
             );
         }

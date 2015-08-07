@@ -52,9 +52,9 @@ var Map = React.createClass({
         var eventList = this.props.eventList;
         eventList.map(function(event) {
             if(!$.isEmptyObject(event)) {
-
-            
                that.addMarker({ lat: event.lat, lng: event.lon }, map);
+            } else {
+                console.log("critical error in map.js maybe.");
             }
         });
 

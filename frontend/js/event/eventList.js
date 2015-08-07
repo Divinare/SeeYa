@@ -1,5 +1,6 @@
 var React = require('react');
 var Router = require('react-router');
+var Parser = require('../utils/eventParser.js');
 var Moment = require('moment')
 
 var FixedDataTable = require('fixed-data-table');
@@ -10,6 +11,12 @@ var SortTypes = {
   ASC: 'ASC',
   DESC: 'DESC',
 };
+
+/* NOTE:
+	If function name starts with _ that means it is related to 
+	fixed-data-table API
+*/
+
 // must be in the same order as in the database columns
 var tableHeaders = ['name', 'Attendances', 'Address', 'timestamp' ];
 
@@ -41,7 +48,7 @@ var EventList = React.createClass({
 	},
 
     rowGetter: function(rowIndex) {
-		var eventList = this.props.eventList;
+		var eventList = this.props.filteredEventList;
 		if($.isEmptyObject(eventList)) {
 			return null
 		}
@@ -64,18 +71,9 @@ var EventList = React.createClass({
 		}
 	},
 
-	filterChange: function() {
-		console.log("filter!");
-	},
-
 	cellRenderer: function(e, col, e3, row, e5, e6) {
-		if(row == 0) {
-	    	return <input type='text' styles={{height: '20px'}} onChange={this.filterChange('address')} id='' placeholder='Filter...'></input>
-		}
-
-		//row  = row - 1;
 	//	console.log(e + " " + col + " " + e3 + " " + row + " " + e5 + " " + e6);
-		var eventList = this.props.eventList;
+		var eventList = this.props.filteredEventList;
 
 		var headerName = col; //tableHeaders[col];
 
@@ -94,7 +92,6 @@ var EventList = React.createClass({
 			content = eventList[row][headerName].streetAddress
 		}
 		if(headerName == 'Attendances') {
-			console.log("row? " + row + " headerN? " + headerName);
 			content = eventList[row][headerName].length;
 		}
 
@@ -103,6 +100,7 @@ var EventList = React.createClass({
 
 	_sortRowsBy: function(cellDataKey) {
 		var eventListData = this.props.eventListData;
+		var rows = this.props.filteredEventList.slice();
 	    var sortDir = eventListData.sortDir;
 	    var sortBy = cellDataKey;
 	    if (sortBy === eventListData.sortBy) {
@@ -111,7 +109,6 @@ var EventList = React.createClass({
 	        sortDir = SortTypes.DESC;
 	    }
 	    
-	    var rows = this.props.eventList.slice();
 	    if(sortBy == 'Address') {
 		    rows.sort((a, b) => {
 			    var sortVal = 0;
@@ -147,7 +144,8 @@ var EventList = React.createClass({
 		      return sortVal;
 		    });
 		}
-	    this.props.updateEventList(rows);
+		console.log("UPD?!");
+	    this.props.updateFilteredEventList(rows);
 	    this.props.updateEventListData('sortBy', sortBy);
 	    this.props.updateEventListData('sortDir', sortDir);
 	    
@@ -159,34 +157,78 @@ var EventList = React.createClass({
 		);
 	 },
 
+	filterRowsBy: function(filterBy, tableHeader) {
+		console.log("filter rows by: " + filterBy);
+	    var rows = this.props.eventList.slice();        
+	    var filteredRows = filterBy ? rows.filter(function(row){
+	    	console.log("Table header:")
+	    	console.log(tableHeader);
+	    	console.log(row);
+	    	console.log(row[tableHeader]);
+	      return row['name'].toLowerCase().indexOf(filterBy.toLowerCase()) >= 0
+	    }) : rows;
+	    this.props.updateFilteredEventList(filteredRows);
+	},
+
+	filterChange: function(tableHeader) {
+		
+		return function (e) {
+	       var value = e.target.value;
+		   this.filterRowsBy(value, tableHeader);
+	       console.log("val change " +tableHeader + " " + value );
+	       this.props.updateEventListData(tableHeader, value, 'filters');
+        }.bind(this);
+
+
+	},
+
+	renderFilterFields: function() {
+	 	var that = this;
+	 	var eventListData = this.props.eventListData;
+	 	return (eventListData.tableHeaders.map(function(tableHeader) {
+	 		//console.log(eventListData['filters']);
+	 		//console.log("table header: " + tableHeader);
+	 		//console.log("VALUE: " + eventListData['filters'][tableHeader]);
+				return (
+					<input type='text' value={eventListData['filters'][tableHeader]} onChange={that.filterChange(tableHeader)} id='' placeholder={tableHeader}></input>
+				);
+			})
+		
+		);
+		
+	},
+
 	render: function() {
-		var eventList = this.props.eventList;
+		Parser.getValue();
+		var that = this;
+		var eventList = this.props.filteredEventList;
 		var eventListData = this.props.eventListData;
 
 	    var sortDirArrow = '';
 	    var sortBy = eventListData.sortBy;
 	    var sortDir = eventListData.sortDir;
+	    console.log("sortBY: " + sortBy + " sortDir: " + sortDir);
 
 	    if (sortDir !== null){
 	      sortDirArrow = sortDir === SortTypes.DESC ? ' ↓' : ' ↑';
 	    }
 
 		// Display loading text while loading eventList
-		if($.isEmptyObject(eventList)) {
-			return (
-				<div>"Loading..."</div>
-				)
+	//	if($.isEmptyObject(eventList)) {
+	//		return (
+	//			<div>"Loading..."</div>
+	//			)
 		// Return event table with real data
-		} else {
+	//	} else {
 			return (
 				<div id="eventList">
 					<h1>Events</h1>
-
+					{this.renderFilterFields()}
 					<Table
 						headerHeight={50}
 					    rowHeight={30}
 					    rowGetter={this.rowGetter}
-					    rowsCount={eventList.length+1}
+					    rowsCount={eventList.length}
 					    width={this.state.tableWidth}
 					    height={this.state.tableHeight}>
 
@@ -221,7 +263,7 @@ var EventList = React.createClass({
 					</Table>
 				</div>
 				)
-			}		
+		//	}		
 		}
 });
 
