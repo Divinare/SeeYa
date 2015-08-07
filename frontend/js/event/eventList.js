@@ -1,7 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
 var Parser = require('../utils/eventParser.js');
-var Moment = require('moment')
+var Moment = require('moment');
 
 var FixedDataTable = require('fixed-data-table');
 var Table = FixedDataTable.Table;
@@ -17,8 +17,8 @@ var SortTypes = {
 	fixed-data-table API
 */
 
-// must be in the same order as in the database columns
-var tableHeaders = ['name', 'Attendances', 'Address', 'timestamp' ];
+// CHANGE THIS NAME LATER TO: "tableContentNames" tjsp
+var tableHeaders = ['name', 'attendances', 'streetAddress', 'timestamp' ];
 
 var EventList = React.createClass({
 	mixins: [ Router.Navigation ],
@@ -88,11 +88,11 @@ var EventList = React.createClass({
 			var time = Moment.unix(content/1000).format("HH:mm")
 			content = time + ' ' + date;
 		}
-		if (headerName == 'Address') {
-			content = eventList[row][headerName].streetAddress
+		if (headerName == 'streetAddress') {
+			content = Parser.getValue(eventList[row], headerName);
 		}
-		if(headerName == 'Attendances') {
-			content = eventList[row][headerName].length;
+		if(headerName == 'attendances') {
+			content = Parser.getValue(eventList[row], headerName);
 		}
 
 		return <div className={className} styles={{height: '100%'}} onClick={this.handleCellClick.bind(null, headerName, eventId)}>{content}</div>
@@ -108,7 +108,25 @@ var EventList = React.createClass({
 	    } else {
 	        sortDir = SortTypes.DESC;
 	    }
-	    
+	    console.log("**************");
+	    rows.sort((eventA, eventB) => {
+	      var sortVal = 0;
+	      if (Parser.getValue(eventA, sortBy) > Parser.getValue(eventB, sortBy)) {
+	        sortVal = 1;
+	      }
+	      if (Parser.getValue(eventA, sortBy) < Parser.getValue(eventB, sortBy)) {
+	        sortVal = -1;
+	      }
+	      
+	      if (sortDir === SortTypes.DESC) {
+	        sortVal = sortVal * -1;
+	      }
+	      
+	      return sortVal;
+	    });
+
+
+	    /*
 	    if(sortBy == 'Address') {
 		    rows.sort((a, b) => {
 			    var sortVal = 0;
@@ -128,22 +146,9 @@ var EventList = React.createClass({
 		        return sortVal;
 		    });
 		} else {
-		    rows.sort((a, b) => {
-		      var sortVal = 0;
-		      if (a[sortBy] > b[sortBy]) {
-		        sortVal = 1;
-		      }
-		      if (a[sortBy] < b[sortBy]) {
-		        sortVal = -1;
-		      }
-		      
-		      if (sortDir === SortTypes.DESC) {
-		        sortVal = sortVal * -1;
-		      }
-		      
-		      return sortVal;
-		    });
-		}
+
+			*/
+		
 		console.log("UPD?!");
 	    this.props.updateFilteredEventList(rows);
 	    this.props.updateEventListData('sortBy', sortBy);
@@ -199,7 +204,6 @@ var EventList = React.createClass({
 	},
 
 	render: function() {
-		Parser.getValue();
 		var that = this;
 		var eventList = this.props.filteredEventList;
 		var eventListData = this.props.eventListData;
@@ -243,14 +247,14 @@ var EventList = React.createClass({
 					      headerRenderer={this._renderHeader}
 					      label={'o/' + (sortBy === 'Attendances' ? sortDirArrow : '')}
 					      width={this.state.columnWidths['attendances']}
-					      dataKey={'Attendances'}
+					      dataKey={'attendances'}
 					      cellRenderer={this.cellRenderer}
 					    />
 					    <Column
 					      headerRenderer={this._renderHeader}
 					      label={'Address' + (sortBy === 'Address' ? sortDirArrow : '')}
 					      width={this.state.columnWidths['address']}
-					      dataKey={'Address'}
+					      dataKey={'streetAddress'}
 					      cellRenderer={this.cellRenderer}
 					    />
 					    <Column

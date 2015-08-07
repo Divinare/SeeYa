@@ -25,7 +25,7 @@ var Main = React.createClass({
         eventListData['sortBy'] = 'name';
         eventListData['sortDir'] = null;
         eventListData['filters'] = [];
-        eventListData['tableHeaders'] = ['name', 'attendances', 'address', 'timestamp'];
+        eventListData['tableHeaders'] = ['name', 'attendances', 'streetAddress', 'timestamp'];
         return {
             eventList: [],
             filteredEventList: [],
