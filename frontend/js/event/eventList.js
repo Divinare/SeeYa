@@ -162,16 +162,22 @@ var EventList = React.createClass({
 		);
 	 },
 
-	filterRowsBy: function(filterBy, tableHeader) {
-		console.log("filter rows by: " + filterBy);
-	    var rows = this.props.eventList.slice();        
-	    var filteredRows = filterBy ? rows.filter(function(row){
-	    	console.log("Table header:")
-	    	console.log(tableHeader);
-	    	console.log(row);
-	    	console.log(row[tableHeader]);
-	      return row['name'].toLowerCase().indexOf(filterBy.toLowerCase()) >= 0
-	    }) : rows;
+	filterRows: function(tableHeader, value) {
+		var eventListData = this.props.eventListData;
+		var filters = eventListData['filters'];
+
+		filters[tableHeader] = value;
+
+	    var rows = this.props.eventList.slice();
+	    var filteredRows = rows;
+	    for(var filter in filters) {
+		    var filterBy = filters[filter];
+		    var tableHeader = filter
+		    filteredRows = filterBy ? filteredRows.filter(function(row){
+		      return Parser.getValue(row, tableHeader).toLowerCase().indexOf(filterBy.toLowerCase()) >= 0
+		    }) : filteredRows;
+		};
+
 	    this.props.updateFilteredEventList(filteredRows);
 	},
 
@@ -179,7 +185,7 @@ var EventList = React.createClass({
 		
 		return function (e) {
 	       var value = e.target.value;
-		   this.filterRowsBy(value, tableHeader);
+		   this.filterRows(tableHeader, value);
 	       console.log("val change " +tableHeader + " " + value );
 	       this.props.updateEventListData(tableHeader, value, 'filters');
         }.bind(this);
@@ -191,9 +197,6 @@ var EventList = React.createClass({
 	 	var that = this;
 	 	var eventListData = this.props.eventListData;
 	 	return (eventListData.tableHeaders.map(function(tableHeader) {
-	 		//console.log(eventListData['filters']);
-	 		//console.log("table header: " + tableHeader);
-	 		//console.log("VALUE: " + eventListData['filters'][tableHeader]);
 				return (
 					<input type='text' value={eventListData['filters'][tableHeader]} onChange={that.filterChange(tableHeader)} id='' placeholder={tableHeader}></input>
 				);
