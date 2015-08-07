@@ -5,6 +5,8 @@ var $ = require('jquery');
 //var Map = ReactGoogleMaps.Map;
 //var Marker = ReactGoogleMaps.Marker;
 
+var markers = [];
+
 var Map = React.createClass({
 
   getDefaultProps: function () {
@@ -19,6 +21,15 @@ var Map = React.createClass({
         this.initMap();
         this.initMarkers();
     },
+
+    componentWillReceiveProps: function() {
+        console.log("map will receive props");
+        this.deleteMarkers();
+        if(this.props.filteredEventList.length > 0) {
+            this.initMarkers(this.state.map);
+        }
+    },
+
     mapCenterLatLng: function () {
         var props = this.props;
         GoogleMapsLoader.load(function(google) {
@@ -49,8 +60,10 @@ var Map = React.createClass({
 
     initMarkers: function(map) {
         var that = this;
-        var eventList = this.props.eventList;
-        eventList.map(function(event) {
+        var filteredEventList = this.props.filteredEventList;
+        console.log("filt:");
+        console.log(filteredEventList);
+        filteredEventList.map(function(event) {
             if(!$.isEmptyObject(event)) {
                that.addMarker({ lat: event.lat, lng: event.lon }, map);
             } else {
@@ -65,6 +78,23 @@ var Map = React.createClass({
             position: location,
             map: map
         });
+        markers.push(marker);
+    },
+
+
+    setAllMap: function(map) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+        }
+    },
+
+    clearMarkers: function() {
+        this.setAllMap(null);
+    },
+
+    deleteMarkers: function() {
+        this.clearMarkers();
+        markers = [];
     },
 
     render: function(){

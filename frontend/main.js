@@ -25,7 +25,7 @@ var Main = React.createClass({
         eventListData['sortBy'] = 'name';
         eventListData['sortDir'] = null;
         eventListData['filters'] = [];
-        eventListData['tableHeaders'] = ['name', 'attendances', 'streetAddress', 'timestamp'];
+        eventListData['tableContentNames'] = ['name', 'attendances', 'streetAddress', 'timestamp'];
         return {
             eventList: [],
             filteredEventList: [],
@@ -124,16 +124,18 @@ var Main = React.createClass({
     return (
           <div>
             <Header />
-            <MapWrapper eventList={this.state.eventList} />
-            <div className="container">
-
-            <RouteHandler
+            <MapWrapper
               eventList={this.state.eventList}
-              filteredEventList={this.state.filteredEventList}
-              eventListData={this.state.eventListData}
-              updateEventList={this.updateEventList}
-              updateFilteredEventList={this.updateFilteredEventList}
-              updateEventListData={this.updateEventListData} />
+              filteredEventList={this.state.filteredEventList} />
+
+            <div className="container">
+                <RouteHandler
+                  eventList={this.state.eventList}
+                  filteredEventList={this.state.filteredEventList}
+                  eventListData={this.state.eventListData}
+                  updateEventList={this.updateEventList}
+                  updateFilteredEventList={this.updateFilteredEventList}
+                  updateEventListData={this.updateEventListData} />
             </div>
         </div>
     );
@@ -158,7 +160,8 @@ var Main = React.createClass({
     var MapWrapper = React.createClass({
         render: function () {
             return (
-                <Map eventList={this.props.eventList} />
+                <Map eventList={this.props.eventList}
+                     filteredEventList={this.props.filteredEventList} />
             );
         }
     });

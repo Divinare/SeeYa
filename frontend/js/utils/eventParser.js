@@ -23,8 +23,23 @@ var getValue = function(event, property) {
 	}
 };
 
+var getTableHeader = function(tableContentName) {
+	if(tableContentName == 'name') {
+		return 'name';
+	} else if(tableContentName == 'attendances') {
+		return 'attendances';
+	} else if(tableContentName == 'streetAddress') {
+		return 'address';
+	} else if(tableContentName == 'timestamp') {
+		return 'time';
+	} else {
+		return 'table header not specified';
+	}
+};
+
 module.exports = {
 
-	getValue: getValue
+	getValue: getValue,
+	getTableHeader: getTableHeader
 	
 }

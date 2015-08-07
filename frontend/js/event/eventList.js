@@ -17,9 +17,6 @@ var SortTypes = {
 	fixed-data-table API
 */
 
-// CHANGE THIS NAME LATER TO: "tableContentNames" tjsp
-var tableHeaders = ['name', 'attendances', 'streetAddress', 'timestamp' ];
-
 var EventList = React.createClass({
 	mixins: [ Router.Navigation ],
 
@@ -196,9 +193,21 @@ var EventList = React.createClass({
 	renderFilterFields: function() {
 	 	var that = this;
 	 	var eventListData = this.props.eventListData;
-	 	return (eventListData.tableHeaders.map(function(tableHeader) {
+
+
+	 	return (eventListData.tableContentNames.map(function(contentName) {
+	 			var tableHeader = Parser.getTableHeader(contentName);
+	 			console.log("TABLE HEADER::: " + tableHeader);
+	 			var columnWidth = that.state.columnWidths[tableHeader];
+	 			console.log(columnWidth + " th " + tableHeader + " asd " + that.state.columnWidths[tableHeader]);
+	 			//{{width: columnWidth + 'px'}}
+	 			var styles={
+	 				width: columnWidth + 'px'
+	 				//marginRight: 2 + 'px'
+	 			};
+
 				return (
-					<input type='text' value={eventListData['filters'][tableHeader]} onChange={that.filterChange(tableHeader)} id='' placeholder={tableHeader}></input>
+					<input type='text' style={styles} value={eventListData['filters'][contentName]} onChange={that.filterChange(contentName)} id='' placeholder='Filter...' />
 				);
 			})
 		
@@ -214,19 +223,18 @@ var EventList = React.createClass({
 	    var sortDirArrow = '';
 	    var sortBy = eventListData.sortBy;
 	    var sortDir = eventListData.sortDir;
-	    console.log("sortBY: " + sortBy + " sortDir: " + sortDir);
 
 	    if (sortDir !== null){
 	      sortDirArrow = sortDir === SortTypes.DESC ? ' ↓' : ' ↑';
 	    }
 
 		// Display loading text while loading eventList
-	//	if($.isEmptyObject(eventList)) {
-	//		return (
-	//			<div>"Loading..."</div>
+		//if($.isEmptyObject(eventList)) {
+		//	return (
+		//		<div>"Loading..."</div>
 	//			)
 		// Return event table with real data
-	//	} else {
+		//} else {
 			return (
 				<div id="eventList">
 					<h1>Events</h1>
@@ -270,7 +278,7 @@ var EventList = React.createClass({
 					</Table>
 				</div>
 				)
-		//	}		
+	//		}		
 		}
 });
 
