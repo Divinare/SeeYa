@@ -24,7 +24,11 @@ body {
 
 .red-border{
 	border-style: solid !important;
-    border-color: darkRed !important;
+    border-color: red !important;
+}
+
+.has-error .form-control {
+    border-color: red !important;
 }
 
 .no.border{
