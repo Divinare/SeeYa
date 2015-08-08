@@ -26,6 +26,7 @@ var Main = React.createClass({
         eventListData['sortDir'] = null;
         eventListData['filters'] = [];
         eventListData['tableContentNames'] = ['name', 'attendances', 'streetAddress', 'timestamp'];
+        
         return {
             eventList: [],
             filteredEventList: [],
@@ -100,9 +101,11 @@ var Main = React.createClass({
     },
 
     updateFilteredEventList: function(filteredEventList) {
+        console.log("UPDDDDD");
         this.setState({
             filteredEventList: filteredEventList
         })
+        this.forceUpdate();
     },
 
     updateEventListData: function(key, value, array) {
@@ -124,7 +127,7 @@ var Main = React.createClass({
     return (
           <div>
             <Header />
-            <MapWrapper
+            <Map
               eventList={this.state.eventList}
               filteredEventList={this.state.filteredEventList} />
 
@@ -156,6 +159,7 @@ var Main = React.createClass({
             );
         }
     });
+/*
 
     var MapWrapper = React.createClass({
         render: function () {
@@ -165,7 +169,7 @@ var Main = React.createClass({
             );
         }
     });
-
+*/
     var routes = (
         <Route handler={Main} path="/">
         <Route name="home" path="/" handler={EventListsWrapper} />

@@ -197,9 +197,7 @@ var EventList = React.createClass({
 
 	 	return (eventListData.tableContentNames.map(function(contentName) {
 	 			var tableHeader = Parser.getTableHeader(contentName);
-	 			console.log("TABLE HEADER::: " + tableHeader);
 	 			var columnWidth = that.state.columnWidths[tableHeader];
-	 			console.log(columnWidth + " th " + tableHeader + " asd " + that.state.columnWidths[tableHeader]);
 	 			//{{width: columnWidth + 'px'}}
 	 			var styles={
 	 				width: columnWidth + 'px'
