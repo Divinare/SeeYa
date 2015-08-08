@@ -2,6 +2,7 @@ window.$ = window.jQuery = require('jquery');
 window.REST = require('./js/url.js');
 
 var React = require('react');
+//var GoogleMapsLoader = require('google-maps');
 
 var Header = require('./js/header.js');
 var Map = require('./js/map.js');
@@ -18,6 +19,9 @@ var Router = require('react-router')
   , BrowserHistory = Router.History;
 
 var Main = React.createClass({
+
+
+
 
     getInitialState: function() {
 
@@ -91,7 +95,7 @@ var Main = React.createClass({
     */
 
     componentDidMount: function() {
-
+        console.log("comppppppppppp");
     },
 
     updateEventList: function(eventList) {
@@ -128,6 +132,7 @@ var Main = React.createClass({
           <div>
             <Header />
             <Map
+              google={this.state.google}
               eventList={this.state.eventList}
               filteredEventList={this.state.filteredEventList} />
 
