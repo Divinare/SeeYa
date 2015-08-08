@@ -11,10 +11,10 @@ body {
     text-decoration:  none;
 }
 
-.required div{
+.required{
     position:relative;
 }
-.required div:after{
+.required:after{
     position:absolute;
     content:'*';
     color:red;

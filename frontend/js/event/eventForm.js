@@ -28,38 +28,35 @@ var EventForm = React.createClass({
 	},
 
     handleNewDateChange: function(moment) {
-    	showValidationInfoForDatePicker();
     	//var d = moment.format('MM-DD-YYYY'))
 	   // console.log(moment.format('MM-DD-YYYY'));
+	   console.log("handling date change, date:");
+	   console.log(moment);
 	    this.setState({
 	        date: moment
 	    });
+	    console.log("date in handle change function: ")
+	    console.log(this.state.date)
+	    this.showValidationInfoForDatePicker(moment);
 
     },
 
 	handleTimeChange: function(e){
-		console.log("???");
-		console.log(e)
-		console.log(e.target.value);
 		this.setState({time: e.target.value})
 	},
 
 	removeRedBorderFromInput: function(elem){
-		console.log("classnames: " + elem.className)
 		elem.className = 'datepicker__input'
-		console.log("classnames: " + elem.className)
 	},
 
 	addRedBorderToInput: function(elem){
-		console.log("AAaaaaaaaaaaaaaaaaaaaaaa")
 		elem.className += " red-border"
 	},
 
 	handleSubmit: function(e) {
-		if(showValidationInfoForDatePicker()){
-			this.addRedBorderToInput(document.querySelectorAll(".datepicker__input")[0])
-		}else{
-			this.removeRedBorderFromInput(document.querySelectorAll(".datepicker__input")[0])
+		console.log("submit function")
+		console.log(this.state.date)
+		if(this.showValidationInfoForDatePicker()){
 			var that = this;
 			e.preventDefault();
 			console.log("add " + this.state.address);
@@ -104,6 +101,10 @@ var EventForm = React.createClass({
 			        console.log( errorThrown );
 			    }
 			})
+		
+		}else{
+			console.log("do not send the form")
+			e.preventDefault();
 		}
 	},
 
@@ -131,24 +132,26 @@ var EventForm = React.createClass({
 	},
 
 
-	showValidationInfoForDatePicker: function(){	//returns true if the field is filled
+	showValidationInfoForDatePicker: function(moment){	//returns true if the field is filled
+		console.log("toggling the border")
+		console.log("moment: "+ moment)
+		if(moment == null){
+			moment = this.state.date
+		}
 		var dateField = document.querySelectorAll(".datepicker__input")[0];
-		if(typeof this.state.date == 'undefined'){
+		console.log(dateField.value)
+		console.log("date: ")
+		console.log(this.state.date)
+		if(typeof moment == 'undefined' || moment == null){
 			this.addRedBorderToInput(dateField)
+			console.log("date was not selected returning false")
 			return false;
 		}
+		console.log("date filled, returning true")
+		this.removeRedBorderFromInput(dateField)
 		return true;
 	},
 
-
-
-	setRedBorder: function(){
-		this.addRedBorderToInput(document.querySelectorAll(".datepicker__input")[0])
-	},
-
-	removeRedBorder: function(){
-		this.removeRedBorderFromInput(document.querySelectorAll(".datepicker__input")[0])
-	},
 
 	render: function(){
 		return (
@@ -159,11 +162,11 @@ var EventForm = React.createClass({
 
 					<h1 className="text-center">Create new event</h1>
 					<form id='form' className='form' data-toggle="validator" data-disable="false" role='form' onSubmit={ this.handleSubmit }>
-						<div className='form-group required'>
-							<div>
+						<div className='form-group'>
+							<div className='required'>
 								<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='test form-control' id='name' placeholder='Event name' required/>
 							</div>
-							<span className="help-block with-errors"></span>
+							<div className="help-block with-errors"></div>
 						</div>
 
 						<div className='form-group required'>
@@ -173,6 +176,7 @@ var EventForm = React.createClass({
 									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
 								</span>
 							</div>
+							<div className="help-block with-errors"></div>
 						</div>
 
 						<div className='form-group required'>
@@ -194,13 +198,13 @@ var EventForm = React.createClass({
 									 <button className="btn btn-default" onClick={this.setCurrentTime} type="button"><i className="glyphicon glyphicon-time"></i></button>
 								</span>
 							</div>
+							<div className="help-block with-errors"></div>
 						</div>
 
 						<div className='form-group'>
 							<textArea type='text' value={this.state.description} onChange={this.handleChange('description')} className='form-control' id='description' placeholder='Description'/>
 						</div>
 						<div className="form-group">
-
 				            <button className="btn btn-default" type="submit">Submit</button>
 					    </div>
 					
