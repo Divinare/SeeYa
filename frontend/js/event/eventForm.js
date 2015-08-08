@@ -15,7 +15,6 @@ var EventForm = React.createClass({
 
     getInitialState: function() {
 	    return {
-
 	    };
 	},
 	componentWillMount: function() {
@@ -23,11 +22,13 @@ var EventForm = React.createClass({
 	},
 
 	componentDidMount: function() {
-
+		console.log("mounted")
+		this.state.dateFieldClicked = false
+		document.querySelectorAll(".datepicker__input")[0].addEventListener('onblur', this.handleOnBlur());
 	},
 
     handleNewDateChange: function(moment) {
-    	
+    	showValidationInfoForDatePicker();
     	//var d = moment.format('MM-DD-YYYY'))
 	   // console.log(moment.format('MM-DD-YYYY'));
 	    this.setState({
@@ -43,66 +44,67 @@ var EventForm = React.createClass({
 		this.setState({time: e.target.value})
 	},
 
+	removeRedBorderFromInput: function(elem){
+		console.log("classnames: " + elem.className)
+		elem.className = 'datepicker__input'
+		console.log("classnames: " + elem.className)
+	},
+
+	addRedBorderToInput: function(elem){
+		console.log("AAaaaaaaaaaaaaaaaaaaaaaa")
+		elem.className += " red-border"
+	},
+
 	handleSubmit: function(e) {
-		var that = this;
-		e.preventDefault();
-		console.log("add " + this.state.address);
-		var address = {
-			streetAddress: this.state.address,
-			country: 'helsinki',
-			zipCode: "00100",
+		if(showValidationInfoForDatePicker()){
+			this.addRedBorderToInput(document.querySelectorAll(".datepicker__input")[0])
+		}else{
+			this.removeRedBorderFromInput(document.querySelectorAll(".datepicker__input")[0])
+			var that = this;
+			e.preventDefault();
+			console.log("add " + this.state.address);
+			var address = {
+				streetAddress: this.state.address,
+				country: 'helsinki',
+				zipCode: "00100",
+			}
+
+			var moment = this.state.date
+			var hours = parseInt(this.state.time.substring(0, 2))
+			var minutes = parseInt(this.state.time.substring(3, 5))
+
+			moment.minutes(minutes)
+			moment.hours(hours)
+
+			var timedate = Date.parse(this.state.time)
+
+
+			var data = {
+				name: this.state.name,
+				address: address,
+				description: this.state.description,
+				timestamp: moment.unix()*1000,
+				lat: 66.102,
+				lon: 27.123
+				//time: this.state.time,
+			};
+			console.log(data);
+			
+			$.ajax({
+			    type: 'POST',
+			    dataType: 'json',
+			    url: URL.allEvents,
+			    data: JSON.stringify(data),
+			    contentType: "application/json; charset=utf-8",
+			    //contentType: 'application/x-www-form-urlencoded',
+			    success: function(){
+			        that.transitionTo('home');
+			    },
+			    error: function( jqXhr, textStatus, errorThrown ){
+			        console.log( errorThrown );
+			    }
+			})
 		}
-		console.log(address);
-		console.log("asd");
-		console.log("time: " + this.state.time);
-		console.log(address.streetAddress);
-		console.log("date: " + this.state.date.format('YYYY-MM-DD HH:mm'));
-		
-		console.log(this.state)
-
-		var moment = this.state.date
-		var hours = parseInt(this.state.time.substring(0, 2))
-		console.log("hours: " + hours)
-		var minutes = parseInt(this.state.time.substring(3, 5))
-		console.log("minutes: " + minutes)
-
-		moment.minutes(minutes)
-		moment.hours(hours)
-
-		console.log("date with added time: "  + moment.format('YYYY-MM-DD HH:mm'))
-
-		var timedate = Date.parse(this.state.time)
-		console.log("timedate: " + timedate)
-
-		console.log("unix moment: " + moment.unix())
-
-
-		var data = {
-			name: this.state.name,
-			address: address,
-			description: this.state.description,
-			timestamp: moment.unix()*1000,
-			lat: 66.102,
-			lon: 27.123
-			//time: this.state.time,
-		};
-		console.log(data);
-		
-		$.ajax({
-		    type: 'POST',
-		    dataType: 'json',
-		    url: URL.allEvents,
-		    data: JSON.stringify(data),
-		    contentType: "application/json; charset=utf-8",
-		    //contentType: 'application/x-www-form-urlencoded',
-		    success: function(){
-		        that.transitionTo('home');
-		    },
-		    error: function( jqXhr, textStatus, errorThrown ){
-		        console.log( errorThrown );
-		    }
-		})
-		
 	},
 
 	handleChange: function(key) {
@@ -119,6 +121,35 @@ var EventForm = React.createClass({
 		this.setState({time: str})
 	},
 
+	handleOnBlur: function(date){
+		console.log("onblur")
+		if(this.state.dateFieldClicked){
+			this.showValidationInfoForDatePicker();
+		}
+
+		this.state.dateFieldClicked = true;
+	},
+
+
+	showValidationInfoForDatePicker: function(){	//returns true if the field is filled
+		var dateField = document.querySelectorAll(".datepicker__input")[0];
+		if(typeof this.state.date == 'undefined'){
+			this.addRedBorderToInput(dateField)
+			return false;
+		}
+		return true;
+	},
+
+
+
+	setRedBorder: function(){
+		this.addRedBorderToInput(document.querySelectorAll(".datepicker__input")[0])
+	},
+
+	removeRedBorder: function(){
+		this.removeRedBorderFromInput(document.querySelectorAll(".datepicker__input")[0])
+	},
+
 	render: function(){
 		return (
 			<div id="eventForm">
@@ -127,11 +158,12 @@ var EventForm = React.createClass({
 				<div id='centerPane' className='col-xs-12 col-md-6'>
 
 					<h1 className="text-center">Create new event</h1>
-					<form className='form' data-toggle="validator" data-disable="false" role='form' onSubmit={ this.handleSubmit }>
+					<form id='form' className='form' data-toggle="validator" data-disable="false" role='form' onSubmit={ this.handleSubmit }>
 						<div className='form-group required'>
 							<div>
-								<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='form-control' id='name' placeholder='Event name' required/>
+								<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='test form-control' id='name' placeholder='Event name' required/>
 							</div>
+							<span className="help-block with-errors"></span>
 						</div>
 
 						<div className='form-group required'>
@@ -147,11 +179,11 @@ var EventForm = React.createClass({
 							<div className="input-group full-width">
 					          <DatePicker
 					          	selected={this.state.date}
-					          	dateFormat= 'DDDD.MM.YYYY'
+					          	dateFormat= 'DD.MM.YYYY'
 						        key="example3"
 						        onChange={this.handleNewDateChange}
 						        placeholderText="Date: dd:mm:yyyy"
-						      />
+						        onBlur={this.handleOnBlur} />
 					        </div>
 						</div>
 

@@ -21,3 +21,12 @@ body {
     right:-10px;
     top:0;
 }
+
+.red-border{
+	border-style: solid !important;
+    border-color: darkRed !important;
+}
+
+.no.border{
+	
+}
