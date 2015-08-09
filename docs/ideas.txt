@@ -1,0 +1,17 @@
+List ideas here:
+
+
+### Overall ###
+
+- Small window somewhere which contains some history of the latest events viewed.
+
+
+
+### EventList ###
+- What about column of some icons that you can click and it will center map on the event?
+
+
+### Map ###
+- First click opens up "create new event here"
+- Second click somewhere takes off the marker and popup
+- Third click again opens up "create new event here"

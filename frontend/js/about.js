@@ -1,7 +1,4 @@
 var React = require('react');
-var $ = require('jquery');
-var URL = require('./url.js');
-
 
 var About = React.createClass({
 

@@ -1,6 +1,8 @@
 var React = require('react');
 var Router = require('react-router');
-var Parser = require('./utils/eventParser');
+var Parser = require('../utils/eventParser');
+
+var CreateNewEventPopup = require('./createNewEventPopup.js');
 // https://developers.google.com/maps/documentation/javascript/examples/marker-animations
 
 var Map = React.createClass({
@@ -87,6 +89,7 @@ var Map = React.createClass({
     },
 
     addMarker: function(location, map, event) {
+        var that = this;
         var marker = new google.maps.Marker({
             position: location,
             map: map
@@ -95,7 +98,15 @@ var Map = React.createClass({
 
         var markerContent = '';
         if(event == null) {
-            markerContent = '<h2 onClick={function() { console.log("jee")}}>Create new event here</h2>'
+            var markerContent = document.createElement('div');
+            markerContent.className = "link";
+            markerContent.innerHTML = 'Create new event here';
+            markerContent.onclick = function(){
+                that.transitionToEventForm();
+            };
+
+
+
         } else {
             var time = Parser.getValue(event, 'timestamp');
             var streetAddress = Parser.getValue(event, 'streetAddress');

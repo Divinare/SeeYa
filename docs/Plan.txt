@@ -15,8 +15,6 @@ Optional headers:
 * Description (maybe)
 
 
-
-
 ### GOLD ACCOUNTS ###
 
 Gold account

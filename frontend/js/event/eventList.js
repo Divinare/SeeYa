@@ -71,27 +71,16 @@ var EventList = React.createClass({
 	cellRenderer: function(e, col, e3, row, e5, e6) {
 	//	console.log(e + " " + col + " " + e3 + " " + row + " " + e5 + " " + e6);
 		var eventList = this.props.filteredEventList;
+		var contentName = col;
+		var headerName = Parser.getTableHeader(contentName); //tableHeaders[col];
 
-		var headerName = col; //tableHeaders[col];
-
+		console.log("header name is: " + headerName + " col is " + col);
 		var eventId = eventList[row]["id"];
-		var content = eventList[row][headerName];
+		var content = Parser.getValue(eventList[row], contentName);
  		var className = '';
  		if(headerName == 'name') {
- 			className = 'eventListNameLink';
+ 			className = 'link';
  		}
-		if(headerName == 'timestamp') {
-			var date = Moment.unix(content/1000).format("DD.MM.YYYY");
-			var time = Moment.unix(content/1000).format("HH:mm")
-			content = time + ' ' + date;
-		}
-		if (headerName == 'streetAddress') {
-			content = Parser.getValue(eventList[row], headerName);
-		}
-		if(headerName == 'attendances') {
-			content = Parser.getValue(eventList[row], headerName);
-		}
-
 		return <div className={className} styles={{height: '100%'}} onClick={this.handleCellClick.bind(null, headerName, eventId)}>{content}</div>
 	},
 
@@ -155,7 +144,7 @@ var EventList = React.createClass({
 
 	 _renderHeader: function(label, cellDataKey) {
 		return (
-			<a onClick={this._sortRowsBy.bind(null, cellDataKey)}>{label}</a>
+			<div className='link' onClick={this._sortRowsBy.bind(null, cellDataKey)}>{label}</div>
 		);
 	 },
 
