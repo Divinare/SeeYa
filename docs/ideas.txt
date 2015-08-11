@@ -4,14 +4,23 @@ List ideas here:
 ### Overall ###
 
 - Small window somewhere which contains some history of the latest events viewed.
-
+   * cookies could use this
 
 
 ### EventList ###
-- What about column of some icons that you can click and it will center map on the event?
-
+- Next to address: icon to center on map
+- Click on address to open popup that contains city and city code and "click to show on map" -button
 
 ### Map ###
 - First click opens up "create new event here"
 - Second click somewhere takes off the marker and popup
 - Third click again opens up "create new event here"
+
+
+
+
+
+
+### EventForm ###
+
+- Animation when address is filled
