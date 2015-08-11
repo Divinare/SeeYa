@@ -23,6 +23,7 @@ var EventForm = React.createClass({
 
 	componentDidMount: function() {
 		console.log("mounted")
+		$('#form').validator()
 		this.state.dateFieldClicked = false
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
 		dateInput.addEventListener('onblur', this.handleOnBlur);
@@ -156,6 +157,10 @@ var EventForm = React.createClass({
 		errorDiv.style.display = 'block';
 	},
 
+	searchByAddress: function(address){
+		console.log("search by address called!")
+	},
+
 	render: function(){
 		console.log("rendering..")
 		return (
@@ -175,9 +180,9 @@ var EventForm = React.createClass({
 
 						<div className='form-group required'>
 							<div className='input-group'>
-								<input type='text' data-minlength="6" value={this.state.address} onChange={this.handleChange('address')} className='form-control' id='address' placeholder='Address' required/>
-								<span className="input-group-btn">
-									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
+								<input type='text' data-minlength="6" value={this.state.address} onChange={this.handleChange('address')} className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
+								<span className="input-group-addon add-on white-background" onClick={this.searchByAddress}>
+									 <span className="glyphicon glyphicon-search"></span>
 								</span>
 							</div>
 							<div className="help-block with-errors"></div>
@@ -199,8 +204,8 @@ var EventForm = React.createClass({
 						<div className='form-group required'>
 							<div className='input-group'>
 								<input type='text'  pattern="^([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"  value={this.state.time} onChange={this.handleTimeChange} className='form-control' id='time' placeholder="Time: hh:mm" required/>
-								<span className="input-group-btn">
-									 <button className="btn btn-default" onClick={this.setCurrentTime} type="button"><i className="glyphicon glyphicon-time"></i></button>
+								<span className="input-group-addon add-on white-background"  onClick={this.setCurrentTime}>
+									<span className="glyphicon glyphicon-time"></span>
 								</span>
 							</div>
 							<div className="help-block with-errors"></div>

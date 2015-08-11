@@ -44,3 +44,13 @@ body {
 .dark-red-text{
 	color: darkRed !important;
 }
+
+.white-background{
+    background-color:white !important;
+    
+}
+
+.white-background:hover {
+    background-color: #eee !important;
+    cursor: pointer;
+}

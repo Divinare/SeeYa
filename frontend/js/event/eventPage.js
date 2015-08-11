@@ -2,6 +2,7 @@ var React = require('react');
 var utils = require('../utils.js');
 var Moment = require('moment');
 var Underscore = require('underscore.string')
+var validator = require('bootstrap-validator')
 
 var EventPage = React.createClass({
 
@@ -17,6 +18,7 @@ var EventPage = React.createClass({
 	},
 
 	componentDidMount: function() {
+		$('#form').validator()
 		var that = this;
 		var tokens = utils.urlTokens();
 		var eventId = tokens[tokens.length - 1];
@@ -131,12 +133,14 @@ render: function(){
 				</div>
 				<div id='rightPane' className='col-xs-12 col-md-6'>
 					<h1>Attend the event</h1>
-					<form className='form' role='form' onSubmit={ this.handleSubmit }>
-						<div className='form-group'>
-							<input type='text' value={this.state.attendeeName} onChange={this.handleChange('attendeeName')} className='form-control' id='attendeeName' placeholder='Your name'/>
+					<form className='form' id='form' role='form' onSubmit={ this.handleSubmit } data-toggle="validator" data-disable="false">
+						<div className='form-group required'>
+							<input type='text' value={this.state.attendeeName} onChange={this.handleChange('attendeeName')} className='form-control' id='attendeeName' placeholder='Your name' required/>
+							<div className="help-block with-errors"></div>
 						</div>
 						<div className='form-group'>
-							<input type='text' value={this.state.email} onChange={this.handleChange('email')} className='form-control' id='email' placeholder='Email address'/>
+							<input type='text' pattern="\\S+@\\S+\\.\\S+" value={this.state.email} onChange={this.handleChange('email')} className='form-control' id='email' placeholder='Email address'/>
+							<div className="help-block with-errors"></div>
 						</div>
 						<div className='form-group'>
 							<textArea type='text' value={this.state.description} onChange={this.handleChange('comment')} className='form-control' id='comment' placeholder='Comment'/>
