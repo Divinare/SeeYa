@@ -24,7 +24,15 @@ var EventForm = React.createClass({
 	componentDidMount: function() {
 		console.log("mounted")
 		this.state.dateFieldClicked = false
-		document.querySelectorAll(".datepicker__input")[0].addEventListener('onblur', this.handleOnBlur());
+		var dateInput = document.querySelectorAll(".datepicker__input")[0]
+		dateInput.addEventListener('onblur', this.handleOnBlur);
+		this.hideRedBorderAndErrorText(dateInput, document.getElementById('errorDivForDateField'));
+		console.log(document.getElementById("form"))
+		document.getElementById("form").addEventListener("validate", this.test);
+	},
+
+	test: function(){
+		console.log("test")
 	},
 
     handleNewDateChange: function(moment) {
@@ -43,14 +51,6 @@ var EventForm = React.createClass({
 
 	handleTimeChange: function(e){
 		this.setState({time: e.target.value})
-	},
-
-	removeRedBorderFromInput: function(elem){
-		elem.className = 'datepicker__input'
-	},
-
-	addRedBorderToInput: function(elem){
-		elem.className += " red-border"
 	},
 
 	handleSubmit: function(e) {
@@ -133,27 +133,31 @@ var EventForm = React.createClass({
 
 
 	showValidationInfoForDatePicker: function(moment){	//returns true if the field is filled
-		console.log("toggling the border")
-		console.log("moment: "+ moment)
 		if(moment == null){
 			moment = this.state.date
 		}
 		var dateField = document.querySelectorAll(".datepicker__input")[0];
-		console.log(dateField.value)
-		console.log("date: ")
-		console.log(this.state.date)
 		if(typeof moment == 'undefined' || moment == null){
-			this.addRedBorderToInput(dateField)
-			console.log("date was not selected returning false")
+			this.showRedBorderAndErrorText(dateField, document.getElementById('errorDivForDateField'))
+			
 			return false;
 		}
-		console.log("date filled, returning true")
-		this.removeRedBorderFromInput(dateField)
+		this.hideRedBorderAndErrorText(dateField, document.getElementById('errorDivForDateField'))
 		return true;
 	},
 
+	hideRedBorderAndErrorText: function(elem, errorDiv){
+		elem.className = 'datepicker__input'
+		errorDiv.style.display = 'none';
+	},
+
+	showRedBorderAndErrorText: function(elem, errorDiv){
+		elem.className += " red-border"
+		errorDiv.style.display = 'block';
+	},
 
 	render: function(){
+		console.log("rendering..")
 		return (
 			<div id="eventForm">
 				<div id='leftPane' className='col-xs-0 col-md-3'>
@@ -178,7 +182,7 @@ var EventForm = React.createClass({
 							</div>
 							<div className="help-block with-errors"></div>
 						</div>
-
+ 	
 						<div className='form-group required'>
 							<div className="input-group full-width">
 					          <DatePicker
@@ -189,6 +193,7 @@ var EventForm = React.createClass({
 						        placeholderText="Date: dd:mm:yyyy"
 						        onBlur={this.handleOnBlur} />
 					        </div>
+					        <div id="errorDivForDateField" className="help-block with-errors dark-red-text">Please fill out this field</div>
 						</div>
 
 						<div className='form-group required'>
@@ -227,14 +232,12 @@ module.exports = EventForm;
 				<div id='leftPane' className='col-xs-0 col-md-3'>
 				</div>
 				<div id='centerPane' className='col-xs-12 col-md-6'>
-
 					<h1 className="centeredHeader">Create new event</h1>
 					<form className='form' role='form'>
 						<div className='form-group'>
 							<label for='name'>Name</label>
 							<input type='text' className='form-control' id='name'/>
 						</div>
-
 						<div className='form-group'>
 							<label for='address'>Address</label>
 							<div className='input-group'>
@@ -244,7 +247,6 @@ module.exports = EventForm;
 								</span>
 							</div>
 						</div>
-
 						<div className='form-group'>
 							<label for='date'>Date</label>
 							<div className="input-group">
@@ -256,7 +258,6 @@ module.exports = EventForm;
 						      />
 					        </div>
 						</div>
-
 						<div className='form-group'>
 							<label for='time'>Time</label>
 							<div className='input-group'>
@@ -266,13 +267,11 @@ module.exports = EventForm;
 								</span>
 							</div>
 						</div>
-
 						<div className='form-group'>
 							<label for='description'>Description</label>
 							<input type='text' className='form-control' id='description'/>
 						</div>
 						<div className="form-group">
-
 				            <button type="submit" className="btn btn-default">Submit</button>
 					    </div>
 					

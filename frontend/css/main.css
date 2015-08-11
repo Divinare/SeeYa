@@ -31,6 +31,6 @@ body {
     border-color: red !important;
 }
 
-.no.border{
-	
+.dark-red-text{
+	color: darkRed !important;
 }
