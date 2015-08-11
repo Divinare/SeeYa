@@ -1,7 +1,5 @@
 var React = require('react');
 var utils = require('../utils.js');
-var Map = require('../map.js');
-var URL = require('../url.js');
 var Moment = require('moment');
 var Underscore = require('underscore.string')
 
@@ -22,8 +20,7 @@ var EventPage = React.createClass({
 		var that = this;
 		var tokens = utils.urlTokens();
 		var eventId = tokens[tokens.length - 1];
-		var url = URL.REST + '/events/' + eventId
-		console.log("url: " + url) 
+		var url = REST.event + eventId
 
 	/*	$.get(url, function(result){
 			if(this.isMounted()){
@@ -63,7 +60,7 @@ handleSubmit: function(e) {
 	$.ajax({
 	    type: 'POST',
 	    dataType: 'json',
-	    url: URL.attendance,
+	    url: REST.attendance,
 	    data: JSON.stringify(data),
 	    contentType: "application/json; charset=utf-8",
 	    //contentType: 'application/x-www-form-urlencoded',

@@ -1,7 +1,9 @@
 .eventListNameLink {
 	cursor: pointer;
+	color: #337ab7;
 }
 
 .eventListNameLink:hover { 
     text-decoration: underline;
+    color: #23527c;
 }

@@ -5,7 +5,7 @@ var React = require('react');
 //var GoogleMapsLoader = require('google-maps');
 
 var Header = require('./js/header.js');
-var Map = require('./js/map.js');
+var Map = require('./js/map/map.js');
 var About = require('./js/about.js');
 var NoMatch = require('./js/noMatch.js');
 var EventList = require('./js/event/eventList.js');
