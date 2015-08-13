@@ -1,5 +1,6 @@
 window.$ = window.jQuery = require('jquery');
 window.REST = require('./js/url.js');
+window.UTILS = require('./js/utils.js');
 
 var React = require('react');
 //var GoogleMapsLoader = require('google-maps');
@@ -20,9 +21,6 @@ var Router = require('react-router')
 
 var Main = React.createClass({
 
-
-
-
     getInitialState: function() {
 
         var eventListData = [];
@@ -34,7 +32,7 @@ var Main = React.createClass({
         return {
             eventList: [],
             filteredEventList: [],
-            eventListData: eventListData
+            eventListData: eventListData,
         };
 
     },
@@ -96,6 +94,19 @@ var Main = React.createClass({
 
     componentDidMount: function() {
         console.log("comppppppppppp");
+        window.addEventListener('resize', this.handleResize);
+    },
+
+    handleResize: function(e) {
+        console.log("resize..")
+        if(window.UTILS.isMobile()){
+            console.log("mobile resize..")
+            $("#map-canvas").css('height', window.innerHeight/2);
+        }else{
+            console.log("not mobile resize..")
+            $("#map-canvas").css('height', window.innerHeight * window.UTILS.mapDefaultSize);
+        }
+        
     },
 
     updateEventList: function(eventList) {

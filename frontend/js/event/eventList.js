@@ -21,10 +21,10 @@ var EventList = React.createClass({
 	mixins: [ Router.Navigation ],
 
 	getInitialState: function() {
-		var tableWidth = window.innerWidth*0.5;
+		var tableWidth =  window.innerWidth*0.39;
 		var tableHeight = 300;
 
-		var timeHeaderWidth = 150;
+		var timeHeaderWidth = 150;	
 		var attendancesWidth = 50;
 		var tableScaleWidth = tableWidth - timeHeaderWidth - attendancesWidth;
 		console.log(tableScaleWidth);
@@ -214,7 +214,7 @@ var EventList = React.createClass({
 		// Return event table with real data
 		//} else {
 			return (
-				<div id="eventList">
+				<div id="eventList" className="col-md-6">
 					<h1>Events</h1>
 					{this.renderFilterFields()}
 					<Table
