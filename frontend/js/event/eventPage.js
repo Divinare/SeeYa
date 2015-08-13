@@ -48,6 +48,7 @@ $.ajax({
 },
 
 handleSubmit: function(e) {
+	console.log("submitting...")
 	var that = this;
 	var event = this.state.event;
 	console.log("name: " + this.state.event.name)

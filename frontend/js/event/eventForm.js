@@ -24,6 +24,14 @@ var EventForm = React.createClass({
 	componentDidMount: function() {
 		console.log("mounted")
 		$('#form').validator()
+
+		$('#form').validator().on('submit', function (e) {
+  		if (e.isDefaultPrevented()) {
+   			console.log("invalid form")
+ 		 } else {
+   			this.handleSubmit()
+		  }
+		})
 		this.state.dateFieldClicked = false
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
 		dateInput.addEventListener('onblur', this.handleOnBlur);
@@ -57,7 +65,7 @@ var EventForm = React.createClass({
 	handleSubmit: function(e) {
 		console.log("submit function")
 		console.log(this.state.date)
-		if(this.showValidationInfoForDatePicker()){
+		if(this.showValidationInfoForDatePicker()){		//only send the form if also the date field has been filled
 			var that = this;
 			e.preventDefault();
 			console.log("add " + this.state.address);
@@ -170,7 +178,7 @@ var EventForm = React.createClass({
 				<div id='centerPane' className='col-xs-12 col-md-6'>
 
 					<h1 className="text-center">Create new event</h1>
-					<form id='form' className='form' data-toggle="validator" data-disable="false" role='form' onSubmit={ this.handleSubmit }>
+					<form id='form' className='form' data-toggle="validator" data-disable="false" role='form'>
 						<div className='form-group'>
 							<div className='required'>
 								<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='test form-control' id='name' placeholder='Event name' required/>
