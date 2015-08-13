@@ -52,17 +52,8 @@ var EventList = React.createClass({
 	  return  eventList[rowIndex] //<a href={"events/" + 1}>{"event nimi"}</a>; //rows[rowIndex];
 	},
 
-	componentDidMount: function() {
-		console.log("component did mount");
-	},
-
 	handleCellClick: function(headerName, eventId) {
 		var that = this;
-		console.log("event clicked");
-		console.log(headerName);
-		console.log("EVENT ID " + eventId);
-
-
 		if(headerName == 'name') {
 			this.transitionTo('eventPage', {id: eventId});
 		}
@@ -74,8 +65,8 @@ var EventList = React.createClass({
 		var contentName = col;
 		var headerName = Parser.getTableHeader(contentName); //tableHeaders[col];
 
-		console.log("header name is: " + headerName + " col is " + col);
 		var eventId = eventList[row]["id"];
+		
 		var content = Parser.getValue(eventList[row], contentName);
  		var className = '';
  		if(headerName == 'name') {

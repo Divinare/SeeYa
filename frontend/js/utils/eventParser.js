@@ -8,7 +8,7 @@ var getValue = function(event, property) {
 	//console.log(property);
 	// Handle special cases
 	if(property == 'address') {
-		return event['Address']
+		return event['Address'];
 	} else if (property == 'streetAddress') {
 		return event['Address'].streetAddress;
 	} else if(property == 'attendances') {

@@ -90,8 +90,8 @@ var EventForm = React.createClass({
 				address: address,
 				description: this.state.description,
 				timestamp: moment.unix()*1000,
-				lat: 66.102,
-				lon: 27.123
+				lat: 62.102,
+				lon: 21.123
 				//time: this.state.time,
 			};
 			console.log(data);
