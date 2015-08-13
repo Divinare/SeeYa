@@ -46,7 +46,7 @@ module.exports = React.createClass({
                         </NavItemLink>
                         <NavItemLink
                           to="eventForm"
-                          params={{ someparam: 'hello' }}>
+                          params={{ latlng: "lat=123&lon=000666" }}>
                           Create new event
                         </NavItemLink>
                     </Nav>

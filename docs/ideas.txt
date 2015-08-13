@@ -1,4 +1,4 @@
-List ideas here:
+List ideas here that arent implented yet:
 
 
 ### Overall ###
@@ -10,17 +10,21 @@ List ideas here:
 ### EventList ###
 - Next to address: icon to center on map
 - Click on address to open popup that contains city and city code and "click to show on map" -button
+- when event is created
+
 
 ### Map ###
-- First click opens up "create new event here"
-- Second click somewhere takes off the marker and popup
-- Third click again opens up "create new event here"
+- Make map bigger
 
-
-
-
-
+- Right click -> open menu
+   the menu would have:
+   	  - Create event here
+   	  - "Search for events around here"
+   	  - Zoom
+   	  - etc.
+   ^ how can this be done in mobile version?
 
 ### EventForm ###
 
 - Animation when address is filled
+- When going back to frontpage, create event here marker disappears?

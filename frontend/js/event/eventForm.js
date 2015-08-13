@@ -36,12 +36,7 @@ var EventForm = React.createClass({
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
 		dateInput.addEventListener('onblur', this.handleOnBlur);
 		this.hideRedBorderAndErrorText(dateInput, document.getElementById('errorDivForDateField'));
-		console.log(document.getElementById("form"))
-		document.getElementById("form").addEventListener("validate", this.test);
-	},
-
-	test: function(){
-		console.log("test")
+		console.log("PARAMS:");
 	},
 
     handleNewDateChange: function(moment) {
@@ -84,16 +79,22 @@ var EventForm = React.createClass({
 
 			var timedate = Date.parse(this.state.time)
 
+			var newEventMarker = this.props.newEventMarker;
+			var lat = newEventMarker.position.G;
+			var lon = newEventMarker.position.K;
 
 			var data = {
 				name: this.state.name,
 				address: address,
 				description: this.state.description,
 				timestamp: moment.unix()*1000,
-				lat: 62.102,
-				lon: 21.123
+				lat: lat,
+				lon: lon
 				//time: this.state.time,
 			};
+			// Remove the newEventMarker
+			this.props.updateNewEventMarker({});
+			console.log("New event created:");
 			console.log(data);
 			
 			$.ajax({
@@ -170,7 +171,7 @@ var EventForm = React.createClass({
 	},
 
 	render: function(){
-		console.log("rendering..")
+		console.log("rendering eventForm");
 		return (
 			<div id="eventForm">
 				<div id='leftPane' className='col-xs-0 col-md-3'>
