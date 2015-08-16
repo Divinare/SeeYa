@@ -23,20 +23,23 @@ var EventForm = React.createClass({
 
 	componentDidMount: function() {
 		console.log("mounted")
+		var that = this;
 		$('#form').validator()
 
 		$('#form').validator().on('submit', function (e) {
-  		if (e.isDefaultPrevented()) {
-   			console.log("invalid form")
- 		 } else {
-   			this.handleSubmit()
-		  }
+			if(!that.showValidationInfoForDatePicker()){
+				e.preventDefault();
+			}
+	  		if (e.isDefaultPrevented()) {
+	   			console.log("invalid form");
+	 		 } else {
+	 		 	that.handleSubmit();
+			 }
 		})
 		this.state.dateFieldClicked = false
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
 		dateInput.addEventListener('onblur', this.handleOnBlur);
 		this.hideRedBorderAndErrorText(dateInput, document.getElementById('errorDivForDateField'));
-		console.log("PARAMS:");
 	},
 
     handleNewDateChange: function(moment) {
@@ -62,7 +65,7 @@ var EventForm = React.createClass({
 		console.log(this.state.date)
 		if(this.showValidationInfoForDatePicker()){		//only send the form if also the date field has been filled
 			var that = this;
-			e.preventDefault();
+			//e.preventDefault();
 			console.log("add " + this.state.address);
 			var address = {
 				streetAddress: this.state.address,
@@ -114,7 +117,7 @@ var EventForm = React.createClass({
 		
 		}else{
 			console.log("do not send the form")
-			e.preventDefault();
+			//e.preventDefault();
 		}
 	},
 
@@ -143,13 +146,13 @@ var EventForm = React.createClass({
 
 
 	showValidationInfoForDatePicker: function(moment){	//returns true if the field is filled
+		console.log("show validation info")
 		if(moment == null){
 			moment = this.state.date
 		}
 		var dateField = document.querySelectorAll(".datepicker__input")[0];
 		if(typeof moment == 'undefined' || moment == null){
 			this.showRedBorderAndErrorText(dateField, document.getElementById('errorDivForDateField'))
-			
 			return false;
 		}
 		this.hideRedBorderAndErrorText(dateField, document.getElementById('errorDivForDateField'))
