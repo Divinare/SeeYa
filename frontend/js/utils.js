@@ -1,15 +1,6 @@
 var URL = require('./url.js');
 
-		//bootstrap break points
-var extraSmallScreenMaxWidth = 768;  
-var smallScreenMinWidth = 768;
-var mediumScreenMinWidth = 992;
-var largeScreenMinWidth = 1170;
-
-var mapDefaultSize = 0.8; //how much of the height the map takes when we are not on mobile
-
 module.exports = {
-	'mapDefaultSize': mapDefaultSize,
 
 	formatDate: function(dateStr){
 		var dateObj = new Date(dateStr)
@@ -34,7 +25,11 @@ module.exports = {
 	},
 
 	isMobile: function(){
-		return window.innerWidth < mediumScreenMinWidth
+		return window.innerWidth < window.CONFIGS.mediumScreenMinWidth
+	},
+
+	getMapSizeOnDesktop: function(){
+		return window.innerHeight - window.CONFIGS.navbarHeight - window.CONFIGS.mapBottomMargin
 	}
 
 };

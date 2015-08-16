@@ -1,6 +1,7 @@
 window.$ = window.jQuery = require('jquery');
 window.REST = require('./js/url.js');
 window.UTILS = require('./js/utils.js');
+window.CONFIGS = require('./configs/config.js')
 
 var React = require('react');
 //var GoogleMapsLoader = require('google-maps');
@@ -56,16 +57,14 @@ var Main = React.createClass({
     componentDidMount: function() {
         console.log("comppppppppppp");
         window.addEventListener('resize', this.handleResize);
+        this.handleResize();
     },
 
     handleResize: function(e) {
-        console.log("resize..")
         if(window.UTILS.isMobile()){
-            console.log("mobile resize..")
             $("#map-canvas").css('height', window.innerHeight/2);
         }else{
-            console.log("not mobile resize..")
-            $("#map-canvas").css('height', window.innerHeight * window.UTILS.mapDefaultSize);
+            $("#map-canvas").css('height', window.UTILS.getMapSizeOnDesktop());
         }
     },
 
