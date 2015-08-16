@@ -27,7 +27,7 @@ var EventForm = React.createClass({
   		if (e.isDefaultPrevented()) {
    			console.log("invalid form")
  		 } else {
-   			this.handleSubmit()
+   			that.handleSubmit()
 		  }
 		})
 		this.state.dateFieldClicked = false
@@ -57,6 +57,10 @@ var EventForm = React.createClass({
 	},
 
 	handleSubmit: function(e) {
+		console.log("PARAMS AT SUBMIT:");
+		console.log(this.props.newEventMarker);
+
+
 		console.log("submit function")
 		console.log(this.state.date)
 		if(this.showValidationInfoForDatePicker()){		//only send the form if also the date field has been filled

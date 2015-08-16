@@ -42,18 +42,14 @@ var Main = React.createClass({
         console.log("UTILS:::");
         console.log(UTILS);
         var that = this;
-        $.ajax({ 
-            type: 'GET', 
-            url: REST.allEvents,
-            dataType: 'json',
-            success: function (eventList) { 
+
+        var onSuccess = function(eventList) {
               that.setState({
                 eventList: eventList,
                 filteredEventList: eventList
               })
-            }
-        });
-
+        }
+        UTILS.REST.getAllEvents(onSuccess);
     },
 
     componentDidMount: function() {
