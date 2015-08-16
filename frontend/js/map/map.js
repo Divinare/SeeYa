@@ -1,6 +1,5 @@
 var React = require('react');
 var Router = require('react-router');
-var Parser = require('../utils/eventParser');
 
 var CreateNewEventPopup = require('./createNewEventPopup.js');
 // https://developers.google.com/maps/documentation/javascript/examples/marker-animations
@@ -124,12 +123,9 @@ var Map = React.createClass({
             that.deleteMarker(marker);
         });
 
-        var currentEventMarker = this.props.newEventMarker;
-        console.log(currentEventMarker);
-        if(!$.isEmptyObject(currentEventMarker)) {
-            this.deleteMarker(currentEventMarker);
-        }
-       // this.props.updateNewEventMarker(marker);
+        // Delete current eventMarker if there is one
+        this.deleteNewEventMarker();
+        // Update the new eventMarker
         this.props.updateAppStatus('newEventMarker', marker);
     },
 
@@ -160,9 +156,9 @@ var Map = React.createClass({
 
 
         } else {
-            var time = Parser.getValue(event, 'timestamp');
-            var streetAddress = Parser.getValue(event, 'streetAddress');
-            var attendances = Parser.getValue(event, 'attendances');
+            var time = UTILS.eventParser.getValue(event, 'timestamp');
+            var streetAddress = UTILS.eventParser.getValue(event, 'streetAddress');
+            var attendances = UTILS.eventParser.getValue(event, 'attendances');
             infowindowContent = '<h3>' + event.name + '</h3>'
                             + '<a> Join to this event</a>'
                             + '<p>' + time + '</p>'
@@ -212,11 +208,15 @@ var Map = React.createClass({
     },
 
     deleteNewEventMarker: function() {
-        this.deleteMarker(marker);
-        // Also empty the newEventMarker
-        this.setState({
-            newEventMarker: {}
-        })
+        var marker = this.props.newEventMarker;
+        if(!$.isEmptyObject(marker)) {
+            console.log("WASNT EMPTY");
+            this.deleteMarker(marker);
+            // Also empty the newEventMarker
+            this.props.updateAppStatus('newEventMarker', {});
+        } else {
+            console.log("WAS EMPTY");
+        }
     },
 
     render: function(){

@@ -6,8 +6,6 @@ var Moment = require('moment')
 var validator = require('bootstrap-validator')
 //var $ = require('jquery-autocomplete-js');
 
-
-var URL = require('../url.js');
 var clock24hour = require('../utils/clocktimes.js').hour24;
 
 var EventForm = React.createClass({
@@ -37,6 +35,7 @@ var EventForm = React.createClass({
 		dateInput.addEventListener('onblur', this.handleOnBlur);
 		this.hideRedBorderAndErrorText(dateInput, document.getElementById('errorDivForDateField'));
 		console.log("PARAMS:");
+		console.log(this.props.newEventMarker);
 	},
 
     handleNewDateChange: function(moment) {
@@ -100,7 +99,7 @@ var EventForm = React.createClass({
 			$.ajax({
 			    type: 'POST',
 			    dataType: 'json',
-			    url: URL.allEvents,
+			    url: REST.allEvents,
 			    data: JSON.stringify(data),
 			    contentType: "application/json; charset=utf-8",
 			    //contentType: 'application/x-www-form-urlencoded',
