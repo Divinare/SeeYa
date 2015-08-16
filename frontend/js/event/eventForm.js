@@ -6,8 +6,6 @@ var Moment = require('moment')
 var validator = require('bootstrap-validator')
 //var $ = require('jquery-autocomplete-js');
 
-
-var URL = require('../url.js');
 var clock24hour = require('../utils/clocktimes.js').hour24;
 
 var EventForm = React.createClass({
@@ -29,6 +27,7 @@ var EventForm = React.createClass({
 		$('#form').validator().on('submit', function (e) {
 			if(!that.showValidationInfoForDatePicker()){
 				e.preventDefault();
+				console.log("default prevented")
 			}
 	  		if (e.isDefaultPrevented()) {
 	   			console.log("invalid form");
@@ -61,6 +60,10 @@ var EventForm = React.createClass({
 	},
 
 	handleSubmit: function(e) {
+		console.log("PARAMS AT SUBMIT:");
+		console.log(this.props.newEventMarker);
+
+
 		console.log("submit function")
 		console.log(this.state.date)
 		if(this.showValidationInfoForDatePicker()){		//only send the form if also the date field has been filled
@@ -103,7 +106,7 @@ var EventForm = React.createClass({
 			$.ajax({
 			    type: 'POST',
 			    dataType: 'json',
-			    url: URL.allEvents,
+			    url: REST.allEvents,
 			    data: JSON.stringify(data),
 			    contentType: "application/json; charset=utf-8",
 			    //contentType: 'application/x-www-form-urlencoded',

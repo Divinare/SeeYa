@@ -1,6 +1,5 @@
 var React = require('react');
 var Router = require('react-router');
-var Parser = require('../utils/eventParser.js');
 var Moment = require('moment');
 
 var FixedDataTable = require('fixed-data-table');
@@ -63,11 +62,11 @@ var EventList = React.createClass({
 	//	console.log(e + " " + col + " " + e3 + " " + row + " " + e5 + " " + e6);
 		var eventList = this.props.filteredEventList;
 		var contentName = col;
-		var headerName = Parser.getTableHeader(contentName); //tableHeaders[col];
+		var headerName = UTILS.eventParser.getTableHeader(contentName); //tableHeaders[col];
 
 		var eventId = eventList[row]["id"];
 		
-		var content = Parser.getValue(eventList[row], contentName);
+		var content = UTILS.eventParser.getValue(eventList[row], contentName);
  		var className = '';
  		if(headerName == 'name') {
  			className = 'link';
@@ -88,10 +87,10 @@ var EventList = React.createClass({
 	    console.log("**************");
 	    rows.sort((eventA, eventB) => {
 	      var sortVal = 0;
-	      if (Parser.getValue(eventA, sortBy) > Parser.getValue(eventB, sortBy)) {
+	      if (UTILS.eventParser.getValue(eventA, sortBy) > UTILS.eventParser.getValue(eventB, sortBy)) {
 	        sortVal = 1;
 	      }
-	      if (Parser.getValue(eventA, sortBy) < Parser.getValue(eventB, sortBy)) {
+	      if (UTILS.eventParser.getValue(eventA, sortBy) < UTILS.eventParser.getValue(eventB, sortBy)) {
 	        sortVal = -1;
 	      }
 	      
@@ -127,7 +126,7 @@ var EventList = React.createClass({
 			*/
 		
 		console.log("UPD?!");
-	    this.props.updateFilteredEventList(rows);
+		this.props.updateAppStatus('filteredEventList', rows);
 	    this.props.updateEventListData('sortBy', sortBy);
 	    this.props.updateEventListData('sortDir', sortDir);
 	    
@@ -151,11 +150,11 @@ var EventList = React.createClass({
 		    var filterBy = filters[filter];
 		    var tableHeader = filter
 		    filteredRows = filterBy ? filteredRows.filter(function(row){
-		      return Parser.getValue(row, tableHeader).toLowerCase().indexOf(filterBy.toLowerCase()) >= 0
+		      return UTILS.eventParser.getValue(row, tableHeader).toLowerCase().indexOf(filterBy.toLowerCase()) >= 0
 		    }) : filteredRows;
 		};
 
-	    this.props.updateFilteredEventList(filteredRows);
+		this.props.updateAppStatus('filteredEventList', filteredRows);
 	},
 
 	filterChange: function(tableHeader) {
@@ -176,7 +175,7 @@ var EventList = React.createClass({
 
 
 	 	return (eventListData.tableContentNames.map(function(contentName) {
-	 			var tableHeader = Parser.getTableHeader(contentName);
+	 			var tableHeader = UTILS.eventParser.getTableHeader(contentName);
 	 			var columnWidth = that.state.columnWidths[tableHeader];
 	 			//{{width: columnWidth + 'px'}}
 	 			var styles={

@@ -1,7 +1,7 @@
 window.$ = window.jQuery = require('jquery');
-window.REST = require('./js/url.js');
-window.UTILS = require('./js/utils.js');
 window.CONFIGS = require('./configs/config.js')
+window.UTILS = require('./js/utils');
+window.REST = UTILS.url;
 
 var React = require('react');
 //var GoogleMapsLoader = require('google-maps');
@@ -34,24 +34,22 @@ var Main = React.createClass({
             eventList: [],
             filteredEventList: [],
             eventListData: eventListData,
+            newEventMarker: {}
         };
 
     },
     componentWillMount: function() {
-
+        console.log("UTILS:::");
+        console.log(UTILS);
         var that = this;
-        $.ajax({ 
-            type: 'GET', 
-            url: REST.allEvents,
-            dataType: 'json',
-            success: function (eventList) { 
+
+        var onSuccess = function(eventList) {
               that.setState({
                 eventList: eventList,
                 filteredEventList: eventList
               })
-            }
-        });
-
+        }
+        UTILS.REST.getAllEvents(onSuccess);
     },
 
     componentDidMount: function() {
@@ -61,10 +59,13 @@ var Main = React.createClass({
     },
 
     handleResize: function(e) {
-        if(window.UTILS.isMobile()){
+        console.log("resize..")
+        if(UTILS.helper.isMobile()){
+            console.log("mobile resize..")
             $("#map-canvas").css('height', window.innerHeight/2);
         }else{
-            $("#map-canvas").css('height', window.UTILS.getMapSizeOnDesktop());
+            console.log("not mobile resize..")
+            $("#map-canvas").css('height', UTILS.helper.getMapSizeOnDesktop());
         }
     },
 
@@ -72,18 +73,6 @@ var Main = React.createClass({
         var state = {};
         state[propName] = newValue;
         this.setState(state);
-    },
-
-    updateEventList: function(eventList) {
-        this.setState({
-            eventList: eventList
-        });
-    },
-
-    updateFilteredEventList: function(filteredEventList) {
-        this.setState({
-            filteredEventList: filteredEventList
-        });
     },
 
     updateEventListData: function(key, value, array) {
@@ -119,8 +108,7 @@ var Main = React.createClass({
                         eventListData={this.state.eventListData}
                         newEventMarker={this.state.newEventMarker}
 
-                        updateEventList={this.updateEventList}
-                        updateFilteredEventList={this.updateFilteredEventList}
+                        updateAppStatus={this.updateAppStatus}
                         updateEventListData={this.updateEventListData} />
                 </div>
             </div>
@@ -137,8 +125,7 @@ var EventListsWrapper = React.createClass({
                 filteredEventList={this.props.filteredEventList}
                 eventListData={this.props.eventListData}
 
-                updateEventList={this.props.updateEventList}
-                updateFilteredEventList={this.props.updateFilteredEventList}
+                updateAppStatus={this.props.updateAppStatus}
                 updateEventListData={this.props.updateEventListData} />
         );
     }
@@ -160,7 +147,7 @@ var EventFormWrapper = React.createClass({
         <Route handler={Main} path="/">
         <Route name="home" path="/" handler={EventListsWrapper} />
         <Route name="eventPage" path="events/:id" handler={EventPage} />
-        <Route name="eventForm" path="eventForm/:latlng" handler={EventFormWrapper} />
+        <Route name="eventForm" path="eventForm/" handler={EventFormWrapper} />
         <Route name="about" handler={About} />
         <Route path="*" handler={NoMatch}/>
         </Route>

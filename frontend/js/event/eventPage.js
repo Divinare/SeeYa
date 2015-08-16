@@ -1,5 +1,4 @@
 var React = require('react');
-var utils = require('../utils.js');
 var Moment = require('moment');
 var Underscore = require('underscore.string')
 var validator = require('bootstrap-validator')
@@ -20,7 +19,7 @@ var EventPage = React.createClass({
 	componentDidMount: function() {
 		$('#form').validator()
 		var that = this;
-		var tokens = utils.urlTokens();
+		var tokens = UTILS.helper.urlTokens();
 		var eventId = tokens[tokens.length - 1];
 		var url = REST.event + eventId
 
