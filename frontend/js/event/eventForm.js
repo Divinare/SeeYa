@@ -6,8 +6,6 @@ var Moment = require('moment')
 var validator = require('bootstrap-validator')
 //var $ = require('jquery-autocomplete-js');
 
-var clock24hour = require('../utils/clocktimes.js').hour24;
-
 var EventForm = React.createClass({
 	mixins: [ Router.Navigation ],
 
@@ -34,8 +32,6 @@ var EventForm = React.createClass({
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
 		dateInput.addEventListener('onblur', this.handleOnBlur);
 		this.hideRedBorderAndErrorText(dateInput, document.getElementById('errorDivForDateField'));
-		console.log("PARAMS:");
-		console.log(this.props.newEventMarker);
 	},
 
     handleNewDateChange: function(moment) {
@@ -57,10 +53,6 @@ var EventForm = React.createClass({
 	},
 
 	handleSubmit: function(e) {
-		console.log("PARAMS AT SUBMIT:");
-		console.log(this.props.newEventMarker);
-
-
 		console.log("submit function")
 		console.log(this.state.date)
 		if(this.showValidationInfoForDatePicker()){		//only send the form if also the date field has been filled
@@ -82,23 +74,23 @@ var EventForm = React.createClass({
 
 			var timedate = Date.parse(this.state.time)
 
-			var newEventMarker = this.props.newEventMarker;
-			var lat = newEventMarker.position.G;
-			var lon = newEventMarker.position.K;
+			var latLng = UTILS.helper.getLatLon(this.props.newEventMarker);
 
 			var data = {
 				name: this.state.name,
 				address: address,
 				description: this.state.description,
 				timestamp: moment.unix()*1000,
-				lat: lat,
-				lon: lon
+				lat: latLng[0],
+				lon: latLng[1]
 				//time: this.state.time,
 			};
 			// Remove the newEventMarker
 			this.props.updateNewEventMarker({});
 			console.log("New event created:");
 			console.log(data);
+
+
 			
 			$.ajax({
 			    type: 'POST',

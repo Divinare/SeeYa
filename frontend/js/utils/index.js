@@ -1,9 +1,8 @@
 module.exports = {
 
-	REST: require('./rest'),
+	rest: require('./rest'),
 	url: require('./url'),
 	helper: require('./helper'),
-	eventParser: require('./eventParser'),
-	clocktimes: require('./clocktimes')
+	eventParser: require('./eventParser')
 
 }

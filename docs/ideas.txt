@@ -6,6 +6,7 @@ List ideas here that arent implented yet:
 - Small window somewhere which contains some history of the latest events viewed.
    * cookies could use this
 
+- Some quick search settings for users. For example fills search properties automatically "Category: baseball, time: 0d-10d from now, Address: near current location"
 
 ### EventList ###
 - Next to address: icon to center on map

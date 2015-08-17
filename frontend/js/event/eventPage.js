@@ -23,70 +23,57 @@ var EventPage = React.createClass({
 		var eventId = tokens[tokens.length - 1];
 		var url = REST.event + eventId
 
-	/*	$.get(url, function(result){
-			if(this.isMounted()){
-				this.setState({
-					event: result
-				});
+		var onSuccess = function (data) { 
+			if(that.isMounted()){
+				that.setState({
+					event: data
+				})
 			}
-		}.bind(this));*/
+		};
+		UTILS.rest.getEvent(url, onSuccess);
+	},
 
-$.ajax({ 
-	type: 'GET', 
-	url: url,
-	dataType: 'json',
-	success: function (data) { 
-		if(that.isMounted()){
-			that.setState({
-				event: data
-			})
+	handleSubmit: function(e) {
+		console.log("submitting...")
+		var that = this;
+		var event = this.state.event;
+		console.log("name: " + this.state.event.name)
+		e.preventDefault();
+		var data = {
+			attendeeName: this.state.attendeeName,
+			email: this.state.email,
+			comment: this.state.comment,
+			event: event
 		}
-	}
-});
+		
+		$.ajax({
+		    type: 'POST',
+		    dataType: 'json',
+		    url: REST.attendance,
+		    data: JSON.stringify(data),
+		    contentType: "application/json; charset=utf-8",
+		    //contentType: 'application/x-www-form-urlencoded',
+		    success: function(){
+		       // that.transitionTo('home');
+		    },
+		    error: function( jqXhr, textStatus, errorThrown ){
+		        console.log( errorThrown );
+		    }
+		})
 
-},
+	},
 
-handleSubmit: function(e) {
-	console.log("submitting...")
-	var that = this;
-	var event = this.state.event;
-	console.log("name: " + this.state.event.name)
-	e.preventDefault();
-	var data = {
-		attendeeName: this.state.attendeeName,
-		email: this.state.email,
-		comment: this.state.comment,
-		event: event
-	}
-	
-	$.ajax({
-	    type: 'POST',
-	    dataType: 'json',
-	    url: REST.attendance,
-	    data: JSON.stringify(data),
-	    contentType: "application/json; charset=utf-8",
-	    //contentType: 'application/x-www-form-urlencoded',
-	    success: function(){
-	       // that.transitionTo('home');
-	    },
-	    error: function( jqXhr, textStatus, errorThrown ){
-	        console.log( errorThrown );
-	    }
-	})
+	handleChange: function(key) {
+		console.log("handle change")
+		console.log(this.state.attendeeName)
+		return function (e) {
+			var state = {};
+			state[key] = e.target.value;
+			this.setState(state);
+		}.bind(this);
+	},
 
-},
-
-handleChange: function(key) {
-	console.log("handle change")
-	console.log(this.state.attendeeName)
-	return function (e) {
-		var state = {};
-		state[key] = e.target.value;
-		this.setState(state);
-	}.bind(this);
-},
-
-render: function(){
+	render: function(){
 		//console.log("result: " + utils.urlTokens())
 
 		var event = this.state.event
@@ -96,9 +83,9 @@ render: function(){
 
 		var address;
 
-		if(typeof event.Address === 'undefined'){
+		if (typeof event.Address === 'undefined'){
 			address = <div></div>
-		}else{
+		} else{
 			var addressStr = '';
 
 			if(!Underscore.isBlank(event.Address.streetAddress)){
@@ -152,10 +139,7 @@ render: function(){
 					</form>
 				</div>
 			</div>
-
-
-
-			)
+		)
 	}
 
 });

@@ -45,7 +45,16 @@ module.exports = {
 	},
 	/* Returns lat and lon as array from marker */
 	getLatLon: function(marker) {
-
+		if(typeof marker == 'undefined') {
+			console.log("getLatLon - marker was undefined");
+			return null;
+		} else {
+			console.log(marker.position);
+			var array = [];
+			array.push(marker.position.G);
+			array.push(marker.position.K);
+			return array;
+		}
 	}
 
 };
