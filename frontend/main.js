@@ -58,13 +58,13 @@ var Main = React.createClass({
 
     handleResize: function(e) {
         console.log("resize..")
-        if (UTILS.helper.isMobile()){
+        if (UTILS.styleHelper.isMobile()){
             console.log("mobile resize..")
             $("#map-canvas").css('height', window.innerHeight/2);
         } else{
             console.log("not mobile resize..")
-            this.updateEventListData('tableHeight', (UTILS.helper.getMapSizeOnDesktop()-95));
-            $("#map-canvas").css('height', UTILS.helper.getMapSizeOnDesktop());
+            this.updateEventListData('tableHeight', UTILS.styleHelper.getEventListHeight('desktop'));
+            $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight('desktop'));
         }
     },
 
