@@ -17,7 +17,7 @@ module.exports = {
 		return formatted;
 	},
 
-	urlTokens: function(){
+	getUrlTokens: function(){
 		// The base url starts with this, we want to extract the rest of the base url
 		var http = "http://"
 		var url = window.location.href;

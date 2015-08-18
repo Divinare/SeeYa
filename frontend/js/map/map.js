@@ -23,17 +23,28 @@ var Map = React.createClass({
     componentDidMount: function () {
         var map = this.initMap();
 
-        this.addAllMarkers(this.props, map);
+
     },
 
     componentWillReceiveProps: function(nextProps) {
         this.deleteMarkers(this.state.markers);
         console.log("map will receive props");
+
+
+        var urlTokens = UTILS.helper.getUrlTokens();
+        console.log("URL TOKENS:");
+        console.log(urlTokens);
+        console.log(urlTokens[0]);
+
+        var allowDrawMarkers = (urlTokens[0] != 'eventForm') ? true : false;
+
         if(this.state != null && nextProps.filteredEventList.length > 0) {
+            
             console.log("NEXT PROPS:");
             console.log(nextProps);
-            
-            this.addAllMarkers(nextProps, this.state.map);
+            if(allowDrawMarkers) {
+                this.addAllMarkers(nextProps, this.state.map);
+            }
         }
         
     },

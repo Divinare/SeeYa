@@ -19,7 +19,7 @@ var EventPage = React.createClass({
 	componentDidMount: function() {
 		$('#form').validator()
 		var that = this;
-		var tokens = UTILS.helper.urlTokens();
+		var tokens = UTILS.helper.getUrlTokens();
 		var eventId = tokens[tokens.length - 1];
 		var url = REST.event + eventId
 
@@ -74,7 +74,7 @@ var EventPage = React.createClass({
 	},
 
 	render: function(){
-		//console.log("result: " + utils.urlTokens())
+		//console.log("result: " + utils.getUrlTokens())
 
 		var event = this.state.event
 		var date = Moment.unix(event.timestamp/1000).format("ddd DD.MM.YYYY");

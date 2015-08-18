@@ -150,7 +150,7 @@ var EventFormWrapper = React.createClass({
         <Route handler={Main} path="/">
         <Route name="home" path="/" handler={EventListsWrapper} />
         <Route name="eventPage" path="events/:id" handler={EventPage} />
-        <Route name="eventForm" path="eventForm/" handler={EventFormWrapper} />
+        <Route name="eventForm" path="eventForm" handler={EventFormWrapper} />
         <Route name="about" handler={About} />
         <Route path="*" handler={NoMatch}/>
         </Route>
