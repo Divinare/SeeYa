@@ -1,5 +1,3 @@
-//getMapSizeOnDesktop
-
 module.exports = {
 
 	isMobile: function(){
@@ -14,21 +12,10 @@ module.exports = {
 
 	getEventListHeight: function(screenType) {
 		if(screenType == 'desktop') {	
-			console.log("HEIGH?????????????");
 			var eventListHeight = window.innerHeight;
-			console.log(eventListHeight);
-			
 			eventListHeight -= window.CONFIGS.navbarHeight;
-			console.log(eventListHeight);
-			
 			eventListHeight -= window.CONFIGS.eventsListTopicHeight;
-			console.log(eventListHeight);
-
-			eventListHeight -= window.CONFIGS.mapBottomMargin;
-			console.log(eventListHeight);
 			return eventListHeight;
 		}
 	}
-
-
 }
