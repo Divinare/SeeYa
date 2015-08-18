@@ -30,32 +30,19 @@ var EventPage = React.createClass({
 
 			 }
 		})
-		var tokens = UTILS.helper.urlTokens();
+		var tokens = UTILS.helper.getUrlTokens();
 		var eventId = tokens[tokens.length - 1];
 		var url = REST.event + eventId
 
-	/*	$.get(url, function(result){
-			if(this.isMounted()){
-				this.setState({
-					event: result
-				});
+		var onSuccess = function (data) { 
+			if(that.isMounted()){
+				that.setState({
+					event: data
+				})
 			}
-		}.bind(this));*/
-
-$.ajax({ 
-	type: 'GET', 
-	url: url,
-	dataType: 'json',
-	success: function (data) { 
-		if(that.isMounted()){
-			that.setState({
-				event: data
-			})
-		}
-	}
-});
-
-},
+		};
+		UTILS.rest.getEvent(url, onSuccess);
+	},
 
 handleSubmit: function(e) {
 	console.log("submitting...")
@@ -102,13 +89,14 @@ render: function(){
 		var eventVar = this.state.event
 		var date = Moment.unix(eventVar.timestamp/1000).format("ddd DD.MM.YYYY");
 		var time = Moment.unix(eventVar.timestamp/1000).format("HH:mm")
+
 		//console.log("type: " + typeof event.address)
 
 		var address;
 
 		if(typeof eventVar.Address === 'undefined'){
 			address = <div></div>
-		}else{
+		} else{
 			var addressStr = '';
 
 			if(!Underscore.isBlank(eventVar.Address.streetAddress)){
@@ -162,10 +150,7 @@ render: function(){
 					</form>
 				</div>
 			</div>
-
-
-
-			)
+		)
 	}
 
 });

@@ -26,7 +26,6 @@ var EventList = React.createClass({
 		var timeHeaderWidth = 150;	
 		var attendancesWidth = 50;
 		var tableScaleWidth = tableWidth - timeHeaderWidth - attendancesWidth;
-		console.log(tableScaleWidth);
 
 		var colWidths = {
 		  name: tableScaleWidth*0.4,
@@ -54,8 +53,24 @@ var EventList = React.createClass({
 	handleCellClick: function(headerName, eventId) {
 		var that = this;
 		if(headerName == 'name') {
+			this.centerMapToMarker(eventId, 12);
 			this.transitionTo('eventPage', {id: eventId});
+		} else if (headerName == 'address') {
+			this.centerMapToMarker(eventId, -1);
 		}
+	},
+
+	centerMapToMarker: function(eventId, zoomLevel) {
+			// Find event by id
+			var event = $.grep(this.props.eventList, function(e){ return e.id == eventId; });
+			var lat = event[0].lat;
+			var lon = event[0].lon;
+			var pt = new google.maps.LatLng(lat, lon);
+			map.setCenter(pt);
+			if(zoomLevel != -1) {
+				map.setZoom(zoomLevel);
+			}
+
 	},
 
 	cellRenderer: function(e, col, e3, row, e5, e6) {
@@ -68,7 +83,7 @@ var EventList = React.createClass({
 		
 		var content = UTILS.eventParser.getValue(eventList[row], contentName);
  		var className = '';
- 		if(headerName == 'name') {
+ 		if(headerName == 'name' || headerName == 'address') {
  			className = 'link';
  		}
 		return <div className={className} styles={{height: '100%'}} onClick={this.handleCellClick.bind(null, headerName, eventId)}>{content}</div>
@@ -84,7 +99,6 @@ var EventList = React.createClass({
 	    } else {
 	        sortDir = SortTypes.DESC;
 	    }
-	    console.log("**************");
 	    rows.sort((eventA, eventB) => {
 	      var sortVal = 0;
 	      if (UTILS.eventParser.getValue(eventA, sortBy) > UTILS.eventParser.getValue(eventB, sortBy)) {
@@ -101,31 +115,6 @@ var EventList = React.createClass({
 	      return sortVal;
 	    });
 
-
-	    /*
-	    if(sortBy == 'Address') {
-		    rows.sort((a, b) => {
-			    var sortVal = 0;
-			    if(typeof a[sortBy] != 'undefined') {
-		        if (a[sortBy].streetAddress > b[sortBy].streetAddress) {
-		            sortVal = 1;
-		        }
-		        if (a[sortBy].streetAddress < b[sortBy].streetAddress) {
-		            sortVal = -1;
-		        }
-		      
-		        if (sortDir === SortTypes.DESC) {
-		            sortVal = sortVal * -1;
-		        }
-		    	}
-		      
-		        return sortVal;
-		    });
-		} else {
-
-			*/
-		
-		console.log("UPD?!");
 		this.props.updateAppStatus('filteredEventList', rows);
 	    this.props.updateEventListData('sortBy', sortBy);
 	    this.props.updateEventListData('sortDir', sortDir);
@@ -162,7 +151,6 @@ var EventList = React.createClass({
 		return function (e) {
 	       var value = e.target.value;
 		   this.filterRows(tableHeader, value);
-	       console.log("val change " +tableHeader + " " + value );
 	       this.props.updateEventListData(tableHeader, value, 'filters');
         }.bind(this);
 
@@ -222,36 +210,32 @@ var EventList = React.createClass({
 					    rowGetter={this.rowGetter}
 					    rowsCount={eventList.length}
 					    width={this.state.tableWidth}
-					    height={this.state.tableHeight}>
+					    height={this.props.eventListData.tableHeight}>
 
 					    <Column
-					      headerRenderer={this._renderHeader}
-					      label={'Name' + (sortBy === 'name' ? sortDirArrow : '')}
-					      width={this.state.columnWidths['name']}
-					      dataKey={'name'}
-					      cellRenderer={this.cellRenderer}
-					    />
+						    headerRenderer={this._renderHeader}
+						    label={'Name' + (sortBy === 'name' ? sortDirArrow : '')}
+						    width={this.state.columnWidths['name']}
+						    dataKey={'name'}
+						    cellRenderer={this.cellRenderer} />
 					    <Column
-					      headerRenderer={this._renderHeader}
-					      label={'o/' + (sortBy === 'Attendances' ? sortDirArrow : '')}
-					      width={this.state.columnWidths['attendances']}
-					      dataKey={'attendances'}
-					      cellRenderer={this.cellRenderer}
-					    />
+						    headerRenderer={this._renderHeader}
+						    label={'o/' + (sortBy === 'Attendances' ? sortDirArrow : '')}
+						    width={this.state.columnWidths['attendances']}
+						    dataKey={'attendances'}
+						    cellRenderer={this.cellRenderer} />
 					    <Column
-					      headerRenderer={this._renderHeader}
-					      label={'Address' + (sortBy === 'Address' ? sortDirArrow : '')}
-					      width={this.state.columnWidths['address']}
-					      dataKey={'streetAddress'}
-					      cellRenderer={this.cellRenderer}
-					    />
+						    headerRenderer={this._renderHeader}
+						    label={'Address' + (sortBy === 'Address' ? sortDirArrow : '')}
+						    width={this.state.columnWidths['address']}
+						    dataKey={'streetAddress'}
+						    cellRenderer={this.cellRenderer} />
 					    <Column
-					      headerRenderer={this._renderHeader}
-					      label={'Time' + (sortBy === 'timestamp' ? sortDirArrow : '')}
-					      width={this.state.columnWidths['time']}
-					      dataKey={'timestamp'}
-					      cellRenderer={this.cellRenderer}
-					    />
+						    headerRenderer={this._renderHeader}
+						    label={'Time' + (sortBy === 'timestamp' ? sortDirArrow : '')}
+						    width={this.state.columnWidths['time']}
+						    dataKey={'timestamp'}
+						    cellRenderer={this.cellRenderer} />
 					</Table>
 				</div>
 				)

@@ -17,7 +17,7 @@ module.exports = {
 		return formatted;
 	},
 
-	urlTokens: function(){
+	getUrlTokens: function(){
 		// The base url starts with this, we want to extract the rest of the base url
 		var http = "http://"
 		var url = window.location.href;
@@ -35,17 +35,17 @@ module.exports = {
 		} 
 		return new Array();
 	},
-
-	isMobile: function(){
-		return window.innerWidth < window.CONFIGS.mediumScreenMinWidth
-	},
-
-	getMapSizeOnDesktop: function(){
-		return window.innerHeight - window.CONFIGS.navbarHeight - window.CONFIGS.mapBottomMargin
-	},
 	/* Returns lat and lon as array from marker */
 	getLatLon: function(marker) {
-
+		if(typeof marker == 'undefined') {
+			console.log("getLatLon - marker was undefined");
+			return null;
+		} else {
+			var array = [];
+			array.push(marker.position.G);
+			array.push(marker.position.K);
+			return array;
+		}
 	}
 
 };

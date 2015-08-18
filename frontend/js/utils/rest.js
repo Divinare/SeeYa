@@ -10,9 +10,20 @@ var getAllEvents = function(onSuccess, onError) {
     });
 }
 
+var getEvent = function(url, onSuccess, onError) {
+	$.ajax({ 
+		type: 'GET', 
+		url: url,
+		dataType: 'json',
+		success: onSuccess,
+        error: onError
+	});
+}
+
 
 module.exports = {
 
-    getAllEvents: getAllEvents
+    getAllEvents: getAllEvents,
+    getEvent: getEvent
 
 }

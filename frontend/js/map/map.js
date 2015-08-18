@@ -15,24 +15,36 @@ var Map = React.createClass({
             initialZoom: 8,
             mapCenterLat: 60,
             mapCenterLng: 20,
-            markers: [],
             openedInfowindow: {},
-            newEventMarker: {}
+            newEventMarker: {},
+            markers: []
         };
     },
     componentDidMount: function () {
         var map = this.initMap();
 
-        this.addAllMarkers(this.props, map);
+
     },
 
     componentWillReceiveProps: function(nextProps) {
         this.deleteMarkers(this.state.markers);
         console.log("map will receive props");
+
+
+        var urlTokens = UTILS.helper.getUrlTokens();
+        console.log("URL TOKENS:");
+        console.log(urlTokens);
+        console.log(urlTokens[0]);
+
+        var allowDrawMarkers = (urlTokens[0] != 'eventForm') ? true : false;
+
         if(this.state != null && nextProps.filteredEventList.length > 0) {
-            console.log(nextProps);
             
-            this.addAllMarkers(nextProps, this.state.map);
+            console.log("NEXT PROPS:");
+            console.log(nextProps);
+            if(allowDrawMarkers) {
+                this.addAllMarkers(nextProps, this.state.map);
+            }
         }
         
     },
@@ -58,7 +70,7 @@ var Map = React.createClass({
         };
         console.log(google);
 
-        var map = new google.maps.Map(this.getDOMNode(), mapOptions);
+        window.map = new google.maps.Map(this.getDOMNode(), mapOptions);
         this.setState({
             map: map
         });
@@ -78,6 +90,7 @@ var Map = React.createClass({
     addAllMarkers: function(props, map) {
         var that = this;
         var filteredEventList = props.filteredEventList;
+        var createdMarkers = [];
 
         filteredEventList.map(function(event) {
             if(!$.isEmptyObject(event)) {
@@ -87,15 +100,22 @@ var Map = React.createClass({
                     that.openInfowindow(map, marker, infowindow);
                     that.deleteNewEventMarker();
                 });
+                createdMarkers.push(marker);
 
 
-                that.setState((state) => {
-                    markers: state.markers.push(marker);
-                });
+
             } else {
                 console.log("critical error in map.js maybe.");
             }
         });
+                    
+        if(!$.isEmptyObject(createdMarkers)) {
+//            this.props.updateAppStatus('markers', createdMarkers);
+            this.setState({
+                markers: createdMarkers
+            })
+        }
+
 
 
     },

@@ -25,6 +25,7 @@ var Main = React.createClass({
     getInitialState: function() {
 
         var eventListData = [];
+        eventListData['tableHeight'] = 400;
         eventListData['sortBy'] = 'name';
         eventListData['sortDir'] = null;
         eventListData['filters'] = [];
@@ -34,26 +35,23 @@ var Main = React.createClass({
             eventList: [],
             filteredEventList: [],
             eventListData: eventListData,
-            newEventMarker: {}
+            newEventMarker: {},
+            markers: []
         };
 
     },
     componentWillMount: function() {
-        console.log("UTILS:::");
-        console.log(UTILS);
         var that = this;
-
         var onSuccess = function(eventList) {
               that.setState({
                 eventList: eventList,
                 filteredEventList: eventList
               })
         }
-        UTILS.REST.getAllEvents(onSuccess);
+        UTILS.rest.getAllEvents(onSuccess);
     },
 
     componentDidMount: function() {
-        console.log("comppppppppppp");
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
     },
@@ -73,6 +71,7 @@ var Main = React.createClass({
     },
 
     updateEventListData: function(key, value, array) {
+        console.log("upd event list data " + value);
         var currentData = this.state.eventListData;
         if(typeof array != 'undefined') {
             currentData[array][key] = value
@@ -95,7 +94,8 @@ var Main = React.createClass({
                     eventList={this.state.eventList}
                     filteredEventList={this.state.filteredEventList}
                     newEventMarker={this.state.newEventMarker}
-
+                    markers={this.state.markers}
+                    
                     updateAppStatus={this.updateAppStatus} />
 
                 <div className="container">
@@ -133,7 +133,9 @@ var EventFormWrapper = React.createClass({
     render: function () {
         return (
             <EventForm
-                newEventMarker={this.props.newEventMarker} />
+                newEventMarker={this.props.newEventMarker}
+
+                updateAppStatus={this.props.updateAppStatus} />
         );
     }
 });
@@ -144,7 +146,7 @@ var EventFormWrapper = React.createClass({
         <Route handler={Main} path="/">
         <Route name="home" path="/" handler={EventListsWrapper} />
         <Route name="eventPage" path="events/:id" handler={EventPage} />
-        <Route name="eventForm" path="eventForm/" handler={EventFormWrapper} />
+        <Route name="eventForm" path="eventForm" handler={EventFormWrapper} />
         <Route name="about" handler={About} />
         <Route path="*" handler={NoMatch}/>
         </Route>
