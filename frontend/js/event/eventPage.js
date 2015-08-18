@@ -1,10 +1,11 @@
 var React = require('react');
+var Router = require('react-router');
 var Moment = require('moment');
 var Underscore = require('underscore.string')
 var validator = require('bootstrap-validator')
 
 var EventPage = React.createClass({
-
+	mixins: [ Router.Navigation ],
 
 	getInitialState: function() {
 
@@ -17,8 +18,18 @@ var EventPage = React.createClass({
 	},
 
 	componentDidMount: function() {
-		$('#form').validator()
 		var that = this;
+		$('#form').validator()
+		$('#form').validator().on('submit', function (e) {
+	  		if (e.isDefaultPrevented()) {
+	   			console.log("invalid form");
+	 		 } else {
+	 		 	console.log("moroooooo")
+	 		 	e.preventDefault();
+	 		 	that.handleSubmit();
+
+			 }
+		})
 		var tokens = UTILS.helper.urlTokens();
 		var eventId = tokens[tokens.length - 1];
 		var url = REST.event + eventId
@@ -51,7 +62,6 @@ handleSubmit: function(e) {
 	var that = this;
 	var event = this.state.event;
 	console.log("name: " + this.state.event.name)
-	e.preventDefault();
 	var data = {
 		attendeeName: this.state.attendeeName,
 		email: this.state.email,
@@ -67,7 +77,7 @@ handleSubmit: function(e) {
 	    contentType: "application/json; charset=utf-8",
 	    //contentType: 'application/x-www-form-urlencoded',
 	    success: function(){
-	       // that.transitionTo('home');
+	        that.transitionTo('home');
 	    },
 	    error: function( jqXhr, textStatus, errorThrown ){
 	        console.log( errorThrown );
@@ -88,30 +98,30 @@ handleChange: function(key) {
 
 render: function(){
 		//console.log("result: " + utils.urlTokens())
-
-		var event = this.state.event
-		var date = Moment.unix(event.timestamp/1000).format("ddd DD.MM.YYYY");
-		var time = Moment.unix(event.timestamp/1000).format("HH:mm")
+		//cannot use variable name event here because we need to refer to something else with event in the format
+		var eventVar = this.state.event
+		var date = Moment.unix(eventVar.timestamp/1000).format("ddd DD.MM.YYYY");
+		var time = Moment.unix(eventVar.timestamp/1000).format("HH:mm")
 		//console.log("type: " + typeof event.address)
 
 		var address;
 
-		if(typeof event.Address === 'undefined'){
+		if(typeof eventVar.Address === 'undefined'){
 			address = <div></div>
 		}else{
 			var addressStr = '';
 
-			if(!Underscore.isBlank(event.Address.streetAddress)){
-				addressStr = event.Address.streetAddress + ", "
+			if(!Underscore.isBlank(eventVar.Address.streetAddress)){
+				addressStr = eventVar.Address.streetAddress + ", "
 			}
-			if(!Underscore.isBlank(event.Address.zipCode)){
-				addressStr += event.Address.zipCode + ", "
+			if(!Underscore.isBlank(eventVar.Address.zipCode)){
+				addressStr += eventVar.Address.zipCode + ", "
 			}
-			if(!Underscore.isBlank(event.Address.city)){
-				addressStr += event.Address.city + ", "
+			if(!Underscore.isBlank(eventVar.Address.city)){
+				addressStr += eventVar.Address.city + ", "
 			}
-			if(!Underscore.isBlank(event.Address.country)){
-				addressStr += event.Address.country
+			if(!Underscore.isBlank(eventVar.Address.country)){
+				addressStr += eventVar.Address.country
 			}
 			addressStr = Underscore.trim(addressStr, ", ")
 
@@ -125,21 +135,21 @@ render: function(){
 		return (
 			<div>
 				<div id='leftPane' className='col-xs-12 col-md-6'>
-					<h1>{event.name}</h1>
+					<h1>{eventVar.name}</h1>
 					<b>Date:</b> {date}<br/>
 					<b>Time:</b> {time}<br/>
-					<b>Description:</b> {event.description}
+					<b>Description:</b> {eventVar.description}
 					{address}
 				</div>
 				<div id='rightPane' className='col-xs-12 col-md-6'>
 					<h1>Attend the event</h1>
-					<form className='form' id='form' role='form' onSubmit={ this.handleSubmit } data-toggle="validator" data-disable="false">
+					<form className='form' id='form' role='form' data-toggle="validator" data-disable="false" onSubmit={event.preventDefault()}>
 						<div className='form-group required'>
 							<input type='text' value={this.state.attendeeName} onChange={this.handleChange('attendeeName')} className='form-control' id='attendeeName' placeholder='Your name' required/>
 							<div className="help-block with-errors"></div>
 						</div>
 						<div className='form-group'>
-							<input type='text' pattern="\\S+@\\S+\\.\\S+" value={this.state.email} onChange={this.handleChange('email')} className='form-control' id='email' placeholder='Email address'/>
+							<input type='text' pattern="^\S+@\S+\.\S+$" value={this.state.email} onChange={this.handleChange('email')} className='form-control' id='email' placeholder='Email address'/>
 							<div className="help-block with-errors"></div>
 						</div>
 						<div className='form-group'>

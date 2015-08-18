@@ -32,6 +32,7 @@ var EventForm = React.createClass({
 	  		if (e.isDefaultPrevented()) {
 	   			console.log("invalid form");
 	 		 } else {
+	 		 	e.preventDefault();
 	 		 	that.handleSubmit();
 			 }
 		})
@@ -66,62 +67,57 @@ var EventForm = React.createClass({
 
 		console.log("submit function")
 		console.log(this.state.date)
-		if(this.showValidationInfoForDatePicker()){		//only send the form if also the date field has been filled
-			var that = this;
-			//e.preventDefault();
-			console.log("add " + this.state.address);
-			var address = {
-				streetAddress: this.state.address,
-				country: 'helsinki',
-				zipCode: "00100",
-			}
-
-			var moment = this.state.date
-			var hours = parseInt(this.state.time.substring(0, 2))
-			var minutes = parseInt(this.state.time.substring(3, 5))
-
-			moment.minutes(minutes)
-			moment.hours(hours)
-
-			var timedate = Date.parse(this.state.time)
-
-			var newEventMarker = this.props.newEventMarker;
-			var lat = newEventMarker.position.G;
-			var lon = newEventMarker.position.K;
-
-			var data = {
-				name: this.state.name,
-				address: address,
-				description: this.state.description,
-				timestamp: moment.unix()*1000,
-				lat: lat,
-				lon: lon
-				//time: this.state.time,
-			};
-			// Remove the newEventMarker
-			this.props.updateNewEventMarker({});
-			console.log("New event created:");
-			console.log(data);
-			
-			$.ajax({
-			    type: 'POST',
-			    dataType: 'json',
-			    url: REST.allEvents,
-			    data: JSON.stringify(data),
-			    contentType: "application/json; charset=utf-8",
-			    //contentType: 'application/x-www-form-urlencoded',
-			    success: function(){
-			        that.transitionTo('home');
-			    },
-			    error: function( jqXhr, textStatus, errorThrown ){
-			        console.log( errorThrown );
-			    }
-			})
-		
-		}else{
-			console.log("do not send the form")
-			//e.preventDefault();
+		var that = this;
+		//e.preventDefault();
+		console.log("add " + this.state.address);
+		var address = {
+			streetAddress: this.state.address,
+			country: 'helsinki',
+			zipCode: "00100",
 		}
+
+		var moment = this.state.date
+		var hours = parseInt(this.state.time.substring(0, 2))
+		var minutes = parseInt(this.state.time.substring(3, 5))
+
+		moment.minutes(minutes)
+		moment.hours(hours)
+
+		var timedate = Date.parse(this.state.time)
+
+		var newEventMarker = this.props.newEventMarker;
+		var lat = newEventMarker.position.G;
+		var lon = newEventMarker.position.K;
+
+		var data = {
+			name: this.state.name,
+			address: address,
+			description: this.state.description,
+			timestamp: moment.unix()*1000,
+			lat: lat,
+			lon: lon
+			//time: this.state.time,
+		};
+		// Remove the newEventMarker
+		this.props.updateNewEventMarker({});
+		console.log("New event created:");
+		console.log(data);
+		
+		$.ajax({
+		    type: 'POST',
+		    dataType: 'json',
+		    url: REST.allEvents,
+		    data: JSON.stringify(data),
+		    contentType: "application/json; charset=utf-8",
+		    //contentType: 'application/x-www-form-urlencoded',
+		    success: function(){
+		        that.transitionTo('home');
+		    },
+		    error: function( jqXhr, textStatus, errorThrown ){
+		        console.log( errorThrown );
+		    }
+		})
+		
 	},
 
 	handleChange: function(key) {
@@ -185,7 +181,7 @@ var EventForm = React.createClass({
 				<div id='centerPane' className='col-xs-12 col-md-6'>
 
 					<h1 className="text-center">Create new event</h1>
-					<form id='form' className='form' data-toggle="validator" data-disable="false" role='form'>
+					<form id='form' className='form' data-toggle="validator" data-disable="false" role='form' onSubmit={event.preventDefault()}>
 						<div className='form-group'>
 							<div className='required'>
 								<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='test form-control' id='name' placeholder='Event name' required/>
