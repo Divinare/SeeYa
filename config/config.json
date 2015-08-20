@@ -1,7 +1,12 @@
 {
   "development": {
-    "dialect": "sqlite",
-    "storage": "./db.development.sqlite"
+    "username": null,
+    "password": null,
+    "dialect": "postgres",
+    "database":"devdb",
+    "protocol": "postgres",
+    "port": 5432,
+    "host": "localhost"
   },
   "test": {
     "username": "root",

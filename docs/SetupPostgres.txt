@@ -1,0 +1,14 @@
+Instructions to get postgres running on your local environment:
+
+1. Install postgres in your system (maybe it is enough also to install with npm install but I googled it.. maybe http://www.postgresql.org/download/)
+
+2. Put postgres bin folder in your path so that you can use psql from command line (needed at least on windows)
+
+3. Create the database and database role with following commands:
+(replace "Pete" in the second command with the name that is needed in your system. If you try to run gulp before creating the role, you should get error message telling that something like that a role "xyz" has not been defined, where "xyz" was "Pete" in my system)
+
+CREATE DATABASE devdb;
+CREATE ROLE "Pete" WITH LOGIN;
+
+Now you should be finished. Running gulp should work.
+
