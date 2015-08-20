@@ -1,21 +1,81 @@
+var marginWidth = 10;
+
 module.exports = {
 
-	isMobile: function(){
+	isTablet: function() {
+		console.log("IS TABLET: " + window.innerWidth < window.CONFIGS.mediumScreenMinWidth);
 		return window.innerWidth < window.CONFIGS.mediumScreenMinWidth;
+
+
 	},
 
-	getMapHeight: function(screenType){
+	getMapHeight: function() {
+		var screenType = this.getScreenType();
+
 		if(screenType == 'desktop') {
-			return window.innerHeight - window.CONFIGS.navbarHeight - window.CONFIGS.mapBottomMargin;
+			var mapHeight = window.innerHeight;
+			mapHeight -= window.CONFIGS.navbarHeight;
+			mapHeight -= window.CONFIGS.mapBottomMargin;
+			return mapHeight;
+		} else if (screenType == 'tablet') {
+			var mapHeight = window.innerHeight;
+			mapHeight -= window.CONFIGS.navbarHeight;
+			mapHeight -= window.CONFIGS.eventsListTopicHeight;
+			mapHeight = mapHeight/2;
+			mapHeight -= 20;
+			return mapHeight;
 		}
 	},
 
-	getEventListHeight: function(screenType) {
+	getMapWidth: function() {
+		var screenType = this.getScreenType();
+
+		if(screenType == 'desktop') {
+			return window.innerWidth/2;
+		} else if(screenType == 'tablet') {
+			return window.innerWidth;
+		}
+	},
+
+	getEventListHeight: function() {
+		var screenType = this.getScreenType();
+
 		if(screenType == 'desktop') {	
 			var eventListHeight = window.innerHeight;
 			eventListHeight -= window.CONFIGS.navbarHeight;
 			eventListHeight -= window.CONFIGS.eventsListTopicHeight;
 			return eventListHeight;
+		} else if( screenType == 'tablet') {
+			var eventListHeight = window.innerHeight;
+			eventListHeight -= window.CONFIGS.navbarHeight;
+			eventListHeight -= window.CONFIGS.eventsListTopicHeight;
+			eventListHeight = eventListHeight/2;
+			//eventListHeight -= (marginWidth*2);
+			return eventListHeight;
+		}
+	},
+
+	getEventListWidth: function() {
+		var screenType = this.getScreenType();
+
+		if(screenType == 'desktop') {	
+			return window.innerWidth/2;
+		} else if(screenType == 'tablet') {
+			var eventListWidth = window.innerWidth;
+			eventListWidth -= (marginWidth*3);
+			return eventListWidth;
+		}
+	},
+
+	getScreenType: function() {
+		if(this.isTablet()) {
+			console.log("was mobile");
+			return 'tablet';
+		}
+		// TODO: also add "isMobile"
+		else {
+			console.log("was desktop");
+			return 'desktop';
 		}
 	}
 }

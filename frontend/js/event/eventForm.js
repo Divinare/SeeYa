@@ -91,7 +91,7 @@ var EventForm = React.createClass({
 			//time: this.state.time,
 		};
 		// Remove the newEventMarker
-		this.props.updateNewEventMarker({});
+		this.props.updateAppStatus('newEventMarker', {});
 		console.log("New event created:");
 		console.log(data);
 

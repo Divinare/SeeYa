@@ -26,6 +26,7 @@ var Main = React.createClass({
 
         var eventListData = [];
         eventListData['tableHeight'] = 400;
+        eventListData['tableWidth'] = 200;
         eventListData['sortBy'] = 'name';
         eventListData['sortDir'] = null;
         eventListData['filters'] = [];
@@ -57,11 +58,23 @@ var Main = React.createClass({
     },
 
     handleResize: function(e) {
-        if(UTILS.helper.isMobile()){
+        $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight());
+        $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
+        this.updateEventListData('tableHeight', UTILS.styleHelper.getEventListHeight());
+        this.updateEventListData('tableWidth', UTILS.styleHelper.getEventListWidth());
+        
+        console.log("map height: " + UTILS.styleHelper.getMapHeight());
+        console.log("map width: " + UTILS.styleHelper.getMapWidth());
+        console.log("event list heigth: " + UTILS.styleHelper.getEventListHeight());
+        console.log("event list width: " + UTILS.styleHelper.getEventListWidth());
+        /*
+        if(UTILS.styleHelper.isMobile()){
             $("#map-canvas").css('height', window.innerHeight/2);
-        }else{
-            $("#map-canvas").css('height', UTILS.helper.getMapSizeOnDesktop());
+        }else {
+            $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight('desktop'));
+            this.updateEventListData('tableHeight', UTILS.styleHelper.getEventListHeight('desktop'));
         }
+        */
     },
 
     updateAppStatus: function(propName, newValue) {
@@ -89,16 +102,18 @@ var Main = React.createClass({
         return (
               <div>
                 <Header />
-                <Map
-                    google={this.state.google}
-                    eventList={this.state.eventList}
-                    filteredEventList={this.state.filteredEventList}
-                    newEventMarker={this.state.newEventMarker}
-                    markers={this.state.markers}
-                    
-                    updateAppStatus={this.updateAppStatus} />
 
-                <div className="container">
+                <div className="content">
+                    <Map
+                        google={this.state.google}
+                        eventList={this.state.eventList}
+                        filteredEventList={this.state.filteredEventList}
+                        newEventMarker={this.state.newEventMarker}
+                        markers={this.state.markers}
+                        
+                        updateAppStatus={this.updateAppStatus} />
+
+                    
                     <RouteHandler
                         eventList={this.state.eventList}
                         filteredEventList={this.state.filteredEventList}
@@ -107,7 +122,8 @@ var Main = React.createClass({
 
                         updateAppStatus={this.updateAppStatus}
                         updateEventListData={this.updateEventListData} />
-                </div>
+
+                </div>    
             </div>
         );
     }

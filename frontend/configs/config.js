@@ -6,7 +6,9 @@ var largeScreenMinWidth = 1170;
 
 var navbarHeight = 50;
 var mapBottomMargin = 20;
-var eventsListTopicHeight = 95;
+var eventsListTopicHeight = 115;
+
+var marginWidth = 10;
 
 module.exports = {
 
@@ -15,8 +17,10 @@ module.exports = {
 	'mediumScreenMinWidth' : mediumScreenMinWidth,
 	'largeScreenMinWidth' : largeScreenMinWidth,
 
-	'navbarHeight' : navbarHeight,
-	'mapBottomMargin' : mapBottomMargin,
-	'eventsListTopicHeight' : eventsListTopicHeight
+	'navbarHeight': navbarHeight,
+	'mapBottomMargin': mapBottomMargin,
+	'eventsListTopicHeight': eventsListTopicHeight,
+
+	'marginWidth': marginWidth
 	
 };

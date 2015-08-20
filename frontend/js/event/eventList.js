@@ -20,26 +20,7 @@ var EventList = React.createClass({
 	mixins: [ Router.Navigation ],
 
 	getInitialState: function() {
-		var tableWidth =  window.innerWidth*0.39;
-		var tableHeight = 300;
-
-		var timeHeaderWidth = 150;	
-		var attendancesWidth = 50;
-		var tableScaleWidth = tableWidth - timeHeaderWidth - attendancesWidth;
-
-		var colWidths = {
-		  name: tableScaleWidth*0.4,
-		  address: tableScaleWidth*0.6,
-		  time: timeHeaderWidth,
-		  attendances: attendancesWidth
-		};
-
-		return {
-			tableWidth: tableWidth,
-			tableHeight: tableHeight,
-			columnWidths: colWidths
-		};
-
+		return {}
 	},
 
     rowGetter: function(rowIndex) {
@@ -164,7 +145,7 @@ var EventList = React.createClass({
 
 	 	return (eventListData.tableContentNames.map(function(contentName) {
 	 			var tableHeader = UTILS.eventParser.getTableHeader(contentName);
-	 			var columnWidth = that.state.columnWidths[tableHeader];
+	 			var columnWidth = that.getTableSizes().columnWidths[tableHeader];
 	 			//{{width: columnWidth + 'px'}}
 	 			var styles={
 	 				width: columnWidth + 'px'
@@ -180,7 +161,30 @@ var EventList = React.createClass({
 		
 	},
 
+	getTableSizes: function() {
+		var tableWidth =  this.props.eventListData.tableWidth;
+		var tableHeight = this.props.eventListData.tableHeight;
+
+		var timeHeaderWidth = 150;	
+		var attendancesWidth = 50;
+		var tableScaleWidth = tableWidth - timeHeaderWidth - attendancesWidth;
+
+		var tableSizes = {};
+
+		tableSizes.columnWidths = {
+		  name: tableScaleWidth*0.4,
+		  address: tableScaleWidth*0.6,
+		  time: timeHeaderWidth,
+		  attendances: attendancesWidth
+		};
+		tableSizes.tableWidth = tableWidth;
+		tableSizes.tableHeight = tableHeight;
+
+		return tableSizes;
+	},
+
 	render: function() {
+		console.log(this.getTableSizes());
 		var that = this;
 		var eventList = this.props.filteredEventList;
 		var eventListData = this.props.eventListData;
@@ -209,31 +213,31 @@ var EventList = React.createClass({
 					    rowHeight={30}
 					    rowGetter={this.rowGetter}
 					    rowsCount={eventList.length}
-					    width={this.state.tableWidth}
+					    width={this.props.eventListData.tableWidth}
 					    height={this.props.eventListData.tableHeight}>
 
 					    <Column
 						    headerRenderer={this._renderHeader}
 						    label={'Name' + (sortBy === 'name' ? sortDirArrow : '')}
-						    width={this.state.columnWidths['name']}
+						    width={this.getTableSizes().columnWidths['name']}
 						    dataKey={'name'}
 						    cellRenderer={this.cellRenderer} />
 					    <Column
 						    headerRenderer={this._renderHeader}
 						    label={'o/' + (sortBy === 'Attendances' ? sortDirArrow : '')}
-						    width={this.state.columnWidths['attendances']}
+						    width={this.getTableSizes().columnWidths['attendances']}
 						    dataKey={'attendances'}
 						    cellRenderer={this.cellRenderer} />
 					    <Column
 						    headerRenderer={this._renderHeader}
 						    label={'Address' + (sortBy === 'Address' ? sortDirArrow : '')}
-						    width={this.state.columnWidths['address']}
+						    width={this.getTableSizes().columnWidths['address']}
 						    dataKey={'streetAddress'}
 						    cellRenderer={this.cellRenderer} />
 					    <Column
 						    headerRenderer={this._renderHeader}
 						    label={'Time' + (sortBy === 'timestamp' ? sortDirArrow : '')}
-						    width={this.state.columnWidths['time']}
+						    width={this.getTableSizes().columnWidths['time']}
 						    dataKey={'timestamp'}
 						    cellRenderer={this.cellRenderer} />
 					</Table>

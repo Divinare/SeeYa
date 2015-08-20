@@ -242,7 +242,7 @@ var Map = React.createClass({
     render: function(){
  
         return (
-            <div id="map-canvas" className="col-md-6"></div>
+            <div id="map-canvas" className="row"></div>
         )
     }
 
