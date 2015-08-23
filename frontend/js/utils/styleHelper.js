@@ -3,7 +3,8 @@ var marginWidth = 10;
 module.exports = {
 
 	isTablet: function() {
-		console.log("IS TABLET: " + window.innerWidth < window.CONFIGS.mediumScreenMinWidth);
+		console.log("hmmmmmm");
+		console.log("IS TABLET: " + (window.innerWidth < window.CONFIGS.mediumScreenMinWidth));
 		return window.innerWidth < window.CONFIGS.mediumScreenMinWidth;
 
 
@@ -31,7 +32,10 @@ module.exports = {
 		var screenType = this.getScreenType();
 
 		if(screenType == 'desktop') {
-			return window.innerWidth/2;
+			var mapWidth = window.innerWidth;
+			mapWidth = mapWidth/2;
+			mapWidth -= (marginWidth*5);
+			return mapWidth;
 		} else if(screenType == 'tablet') {
 			return window.innerWidth;
 		}
@@ -62,7 +66,7 @@ module.exports = {
 			return window.innerWidth/2;
 		} else if(screenType == 'tablet') {
 			var eventListWidth = window.innerWidth;
-			eventListWidth -= (marginWidth*3);
+			eventListWidth -= (marginWidth*4);
 			return eventListWidth;
 		}
 	},

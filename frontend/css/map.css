@@ -1,6 +1,6 @@
 #map-canvas {
-  height: 500px;
   float: left;
+  max-width: none;
 }
 
 .createNewEventMarkerLink {

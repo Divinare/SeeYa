@@ -1,3 +1,5 @@
+WINDOWS
+
 Instructions to get postgres running on your local environment:
 
 1. Install postgres in your system (maybe it is enough also to install with npm install but I googled it.. maybe http://www.postgresql.org/download/)
@@ -12,3 +14,18 @@ CREATE ROLE "Pete" WITH LOGIN;
 
 Now you should be finished. Running gulp should work.
 
+
+
+LINUX/Ubuntu
+
+sudo apt-get update
+sudo apt-get install postgresql postgresql-contrib
+sudo -i -u postgres
+psql
+
+
+CREATE DATABASE devdb;
+CREATE ROLE "Pete" WITH LOGIN;
+
+configure file pg_hba.conf at:
+/etc/postgresql/9.4/main

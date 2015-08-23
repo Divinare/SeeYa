@@ -8,6 +8,13 @@ List ideas here that arent implented yet:
 
 - Some quick search settings for users. For example fills search properties automatically "Category: baseball, time: 0d-10d from now, Address: near current location"
 
+
+
+### Users ###
+
+- User rewards
+	- if user gets from his shared link 3-5 people to join and create account he could get some bonus or profit
+
 ### EventList ###
 - Next to address: icon to center on map
 - Click on address to open popup that contains city and city code and "click to show on map" -button
@@ -15,7 +22,7 @@ List ideas here that arent implented yet:
 
 
 ### Map ###
-- Make map bigger
+- "Button to zoom out / center map location to where user is by using GPS"
 
 - Right click -> open menu
    the menu would have:
@@ -23,7 +30,9 @@ List ideas here that arent implented yet:
    	  - "Search for events around here"
    	  - Zoom
    	  - etc.
-   ^ how can this be done in mobile version?
+   ^ how can this be done in mobile version? <- We need to implement whole new eventList to the mobile version. Maybe at this point make eventList by ourselves
+
+- Events of user shows with his own color
 
 ### EventForm ###
 

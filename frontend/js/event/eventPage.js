@@ -18,6 +18,7 @@ var EventPage = React.createClass({
 	},
 
 	componentDidMount: function() {
+		this.props.handleResize();
 		var that = this;
 		$('#form').validator()
 		$('#form').validator().on('submit', function (e) {
@@ -121,7 +122,7 @@ render: function(){
 		}
 
 		return (
-			<div>
+			<div className='right-container'>
 				<div id='leftPane' className='col-xs-12 col-md-6'>
 					<h1>{eventVar.name}</h1>
 					<b>Date:</b> {date}<br/>

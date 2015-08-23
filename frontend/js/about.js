@@ -21,7 +21,7 @@ var About = React.createClass({
 
 	render: function(){
 		return (
-			<div>
+			<div className='right-container'>
 				<h1>About page comes here</h1>
 			</div>
 			)

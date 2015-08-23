@@ -205,7 +205,7 @@ var EventList = React.createClass({
 		// Return event table with real data
 		//} else {
 			return (
-				<div id="eventList" className="col-md-6">
+				<div className="right-container">
 					<h1>Events</h1>
 					{this.renderFilterFields()}
 					<Table

@@ -25,8 +25,8 @@ var Main = React.createClass({
     getInitialState: function() {
 
         var eventListData = [];
-        eventListData['tableHeight'] = 400;
-        eventListData['tableWidth'] = 200;
+        eventListData['tableHeight'] = 0;
+        eventListData['tableWidth'] = 0;
         eventListData['sortBy'] = 'name';
         eventListData['sortDir'] = null;
         eventListData['filters'] = [];
@@ -60,13 +60,23 @@ var Main = React.createClass({
     handleResize: function(e) {
         $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight());
         $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
-        this.updateEventListData('tableHeight', UTILS.styleHelper.getEventListHeight());
-        this.updateEventListData('tableWidth', UTILS.styleHelper.getEventListWidth());
+        var eventListHeight = UTILS.styleHelper.getEventListHeight();
+        var eventListWidth = UTILS.styleHelper.getEventListWidth();
+        $(".right-container").css('height', eventListHeight);
+        $(".right-container").css('width', eventListWidth);
+
+        this.updateEventListData('tableHeight', eventListHeight);
+        this.updateEventListData('tableWidth', eventListWidth);
         
         console.log("map height: " + UTILS.styleHelper.getMapHeight());
         console.log("map width: " + UTILS.styleHelper.getMapWidth());
         console.log("event list heigth: " + UTILS.styleHelper.getEventListHeight());
         console.log("event list width: " + UTILS.styleHelper.getEventListWidth());
+        
+        google.maps.event.trigger(map,'resize');
+        map.setZoom( map.getZoom() );
+   //     map.checkResize();
+
         /*
         if(UTILS.styleHelper.isMobile()){
             $("#map-canvas").css('height', window.innerHeight/2);
@@ -120,6 +130,7 @@ var Main = React.createClass({
                         eventListData={this.state.eventListData}
                         newEventMarker={this.state.newEventMarker}
 
+                        handleResize={this.handleResize}
                         updateAppStatus={this.updateAppStatus}
                         updateEventListData={this.updateEventListData} />
 
@@ -151,6 +162,18 @@ var EventFormWrapper = React.createClass({
             <EventForm
                 newEventMarker={this.props.newEventMarker}
 
+                handleResize={this.props.handleResize}
+                updateAppStatus={this.props.updateAppStatus} />
+        );
+    }
+});
+
+var EventPageWrapper = React.createClass({
+
+    render: function () {
+        return (
+            <EventPage
+                handleResize={this.props.handleResize}
                 updateAppStatus={this.props.updateAppStatus} />
         );
     }

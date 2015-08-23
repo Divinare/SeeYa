@@ -18,7 +18,7 @@ var EventForm = React.createClass({
 	},
 
 	componentDidMount: function() {
-		console.log("mounted")
+		this.props.handleResize();
 		var that = this;
 		$('#form').validator()
 
@@ -169,10 +169,10 @@ var EventForm = React.createClass({
 	render: function(){
 		console.log("rendering eventForm");
 		return (
-			<div id="eventForm">
-				<div id='leftPane' className='col-xs-0 col-md-3'>
+			<div className='right-container'>
+				<div id='leftPane' className='col-xs-0 col-md-2'>
 				</div>
-				<div id='centerPane' className='col-xs-12 col-md-6'>
+				<div id='centerPane' className='col-xs-12 col-md-8'>
 
 					<h1 className="text-center">Create new event</h1>
 					<form id='form' className='form' data-toggle="validator" data-disable="false" role='form' onSubmit={event.preventDefault()}>
@@ -226,7 +226,7 @@ var EventForm = React.createClass({
 					 </form>
 
 				</div>
-				<div id='rightPane' className='col-xs-0 col-md-3'>
+				<div id='rightPane' className='col-xs-0 col-md-2'>
 				</div>
 			</div>
 		)
