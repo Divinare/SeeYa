@@ -21,11 +21,23 @@ LINUX/Ubuntu
 sudo apt-get update
 sudo apt-get install postgresql postgresql-contrib
 sudo -i -u postgres
-psql
 
+postgres@desktop:~$ createuser -P joe
+--> enter password
+
+postgres@desktop:~$ createdb -O joe devdb
 
 CREATE DATABASE devdb;
 CREATE ROLE "Pete" WITH LOGIN;
 
 configure file pg_hba.conf at:
 /etc/postgresql/9.4/main
+
+Find line:
+local   all             all                                     peer
+
+Insert this line above that^ line:
+local   all             all                                     md5
+
+Save the file and then restart postgresql:
+joe@joe-All-Series:~/EventMeetup$ sudo service postgresql restart
