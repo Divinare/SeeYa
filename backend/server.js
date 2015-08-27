@@ -82,6 +82,18 @@ if (app.get("env") === "development") {
   });
 }
 
+if (app.get("env") === "production") {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    return res.send({
+      message: err.message,
+      status: err.status,
+      stack: err.stack
+    });
+  });
+}
+
+
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   return res.send({
