@@ -3,22 +3,25 @@
 var fs        = require("fs");
 var path      = require("path");
 var Sequelize = require("sequelize");
-var env       = "production"; //process.env.NODE_ENV || "development";
+var env       = process.env.NODE_ENV || "development";  //"production";
 var config    = require(__dirname + '/../../config/config.json')[env];
 //var sequelize = new Sequelize(config.database, config.username, config.password, config);
 var db        = {};
 var sequelize = null;
 
 if (env == "production") {
+    console.log("****************** ENV " + env)
+    
         // the application is executed on Heroku ... use the postgres database
         sequelize = new Sequelize(process.env.PRODUCTION_DB_URL, {
         dialect:  'postgres',
         protocol: 'postgres',
         port:     5432,
-        host:     'localhost',
+        host:     'ec2-54-163-238-96.compute-1.amazonaws.com',
         logging:  true //false
     });
   } else {
+    console.log("****************** ENV " + env)
     sequelize = new Sequelize(config.database, config.username, config.password, {
         host: config.host,
         dialect: config.dialect,
