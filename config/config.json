@@ -11,14 +11,14 @@
   "test": {
     "username": "root",
     "password": null,
-    "database": "dev_test",
+    "database": "test_db",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": null,
-    "database": "DATABASE_URL",
+    "database": "production_db",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }

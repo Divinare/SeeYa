@@ -7,5 +7,11 @@ $ git push heroku master
 $ heroku ps:scale web=1
 $ heroku open
 
+
+heroku addons | grep POSTGRES
 // Adds postgresql database to heroku
-heroku addons:create heroku-postgresql:dev
+
+heroku addons:create heroku-postgresql:hobby-dev
+
+//custom name:
+heroku addons:create heroku-postgresql:hobby-dev --as USERS_DB
