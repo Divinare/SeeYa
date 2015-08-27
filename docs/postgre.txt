@@ -1,0 +1,21 @@
+Connects to database:
+\connect devdb
+
+
+
+List all tables:
+\d
+\d+
+\l+
+
+Select all events:
+select * from "Events";
+
+
+
+
+
+
+
+
+

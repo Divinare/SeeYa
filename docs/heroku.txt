@@ -1,0 +1,11 @@
+
+$ git init
+$ git add .
+$ git commit -m "initial commit"
+$ heroku create
+$ git push heroku master
+$ heroku ps:scale web=1
+$ heroku open
+
+// Adds postgresql database to heroku
+heroku addons:create heroku-postgresql:dev
