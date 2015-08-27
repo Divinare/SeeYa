@@ -10,8 +10,7 @@ var db        = {};
 var sequelize = null;
 
 if (env == "production") {
-    console.log("****************** ENV " + env)
-    
+    console.log("Env ********* " + env);
         // the application is executed on Heroku ... use the postgres database
         sequelize = new Sequelize(process.env.PRODUCTION_DB_URL, {
         dialect:  'postgres',
@@ -21,7 +20,8 @@ if (env == "production") {
         logging:  true //false
     });
   } else {
-    console.log("****************** ENV " + env)
+    console.log("Env ********* " + env);
+    
     sequelize = new Sequelize(config.database, config.username, config.password, {
         host: config.host,
         dialect: config.dialect,

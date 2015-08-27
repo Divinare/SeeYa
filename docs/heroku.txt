@@ -14,4 +14,4 @@ heroku addons | grep POSTGRES
 heroku addons:create heroku-postgresql:hobby-dev
 
 //custom name:
-heroku addons:create heroku-postgresql:hobby-dev --as USERS_DB
+heroku addons:create heroku-postgresql:hobby-dev --as production_db

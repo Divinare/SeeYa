@@ -6,6 +6,9 @@ window.REST = UTILS.url;
 var React = require('react');
 //var GoogleMapsLoader = require('google-maps');
 
+var environment = require('./configs/environment.js');
+
+
 var Header = require('./js/header.js');
 var Map = require('./js/map/map.js');
 var About = require('./js/about.js');
@@ -53,6 +56,9 @@ var Main = React.createClass({
     },
 
     componentDidMount: function() {
+        console.log("ENV BASE::::::::::::??????????????????????????");
+        console.log(environment.base);
+
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
     },

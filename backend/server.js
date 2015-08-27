@@ -8,6 +8,9 @@ var debug = require("debug")("EventMeetup");
 var util = require('util');
 
 var routes = require('./routes');
+
+console.log("ENV::::::::::::::: " + process.env.NODE_ENV);
+
 var dist = path.join(__dirname, '/../dist');
 var app = express();
 var router = express.Router();
@@ -30,38 +33,6 @@ app.get('*', function (req, res) {
   res.render('index');
 
 });
-
-/*
-app.get('*', function(req, res) {
-  console.log("app.get method");
-   var currentPath = req._parsedUrl.pathname;
-   var pathFound = false;
-   paths.map(function(existingPath) {
-        if(existingPath == currentPath) {
-              console.log("path exists");
-              pathFound = true;
-        }
-   });
-   var eventUrlRegex = /^\/event\/\d+(\/$|$)/
-   console.log("currentPath: " + currentPath)
-   if(currentPath.search(eventUrlRegex) !== -1){
-      console.log("found event url");
-      pathFound = true;
-   }
-   if(pathFound) {
-    console.log("path found!!");
- //  res.send({message: 'Hello'});
-    res.sendFile(path.join(__dirname, '/../dist', 'index.html'));
-    //res.render(__dirname + '/../dist/index.html');
-       
-   }else{
-    console.log("path not found, returning error page");
-    res.sendFile(path.join(__dirname, 'notFound.html'));
-   }
-
-});
-*/
-
 
 app.use(function(req, res, next) { 
   var err;
