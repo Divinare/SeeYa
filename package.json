@@ -61,5 +61,13 @@
   },
   "devDependencies": {
     "gulp": "^3.9.0"
+  }, 
+  "scripts": {
+    "start": "gulp"
+  },
+  "engines": {
+    "node": "0.12.2",
+    "npm": "2.7.4"
   }
+  
 }
