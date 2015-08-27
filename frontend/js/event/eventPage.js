@@ -51,7 +51,7 @@ handleSubmit: function(e) {
 	var event = this.state.event;
 	console.log("name: " + this.state.event.name)
 	var data = {
-		attendeeName: this.state.attendeeName,
+		name: this.state.name,
 		email: this.state.email,
 		comment: this.state.comment,
 		event: event
@@ -76,7 +76,7 @@ handleSubmit: function(e) {
 
 handleChange: function(key) {
 	console.log("handle change")
-	console.log(this.state.attendeeName)
+	console.log(this.state.name)
 	return function (e) {
 		var state = {};
 		state[key] = e.target.value;
@@ -134,7 +134,7 @@ render: function(){
 					<h1>Attend the event</h1>
 					<form className='form' id='form' role='form' data-toggle="validator" data-disable="false" onSubmit={event.preventDefault()}>
 						<div className='form-group required'>
-							<input type='text' value={this.state.attendeeName} onChange={this.handleChange('attendeeName')} className='form-control' id='attendeeName' placeholder='Your name' required/>
+							<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='form-control' id='name' placeholder='Your name' required/>
 							<div className="help-block with-errors"></div>
 						</div>
 						<div className='form-group'>

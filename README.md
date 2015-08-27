@@ -8,6 +8,7 @@ How to run the app locally (Windows):
 SETTING UP THE ENVIRONMENT:
 
 - Install node.js https://nodejs.org/
+- Clone the project from https://github.com/Divinare/EventMeetup
 - Open command line and go to the folder where you cloned the project
 - When you are in the folder run command:
 
@@ -20,6 +21,8 @@ This install gulp globally to your machine. At least on windows you might have t
 npm install
 
 - Your environment is all set
+
+- Install postgres, see more detailed instructions from docs/SetupPostgres.txt
 
 RUNNING THE APP:
 

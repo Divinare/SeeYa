@@ -33,7 +33,7 @@ module.exports = {
 		console.log(attendanceToAdd)
 
 		Attendance.create({
-			attendeeName: attendanceToAdd.attendeeName,
+			name: attendanceToAdd.name,
 			email: attendanceToAdd.email,
 			comment: attendanceToAdd.comment
 		}).then(function(attendance) {
