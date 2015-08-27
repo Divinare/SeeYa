@@ -14,38 +14,38 @@ if (env == "production") {
         sequelize = new Sequelize(process.env.PRODUCTION_DB_URL, {
         dialect:  'postgres',
         protocol: 'postgres',
-        port:     match[4],
-        host:     match[3],
+        port:     5432,
+        host:     'localhost',
         logging:  true //false
-    })
+    });
   } else {
-      sequelize = new Sequelize(config.database, config.username, config.password, {
+    sequelize = new Sequelize(config.database, config.username, config.password, {
         host: config.host,
         dialect: config.dialect,
 
         pool: {
-          max: 5,
-          min: 0,
-          idle: 10000
+            max: 5,
+            min: 0,
+            idle: 10000
         }
-      });
+    });
 }
   //var sequelize = new Sequelize('postgres://null:localhost:5432/dbname');
 
 fs
-  .readdirSync(__dirname)
-  .filter(function(file) {
-    return (file.indexOf(".") !== 0) && (file !== "index.js");
-  })
-  .forEach(function(file) {
-    var model = sequelize.import(path.join(__dirname, file));
-    db[model.name] = model;
-  });
+    .readdirSync(__dirname)
+    .filter(function(file) {
+        return (file.indexOf(".") !== 0) && (file !== "index.js");
+    })
+    .forEach(function(file) {
+        var model = sequelize.import(path.join(__dirname, file));
+        db[model.name] = model;
+    });
 
 Object.keys(db).forEach(function(modelName) {
-  if ("associate" in db[modelName]) {
-    db[modelName].associate(db);
-  }
+    if ("associate" in db[modelName]) {
+        db[modelName].associate(db);
+    }
 });
 
 db.sequelize = sequelize;
