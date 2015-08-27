@@ -18,7 +18,7 @@
   "production": {
     "username": "root",
     "password": null,
-    "database": "db_production",
+    "database": "HEROKU_POSTGRESQL_BROWN_URL",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }
