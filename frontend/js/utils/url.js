@@ -1,4 +1,4 @@
-var base = 'http://localhost:1337';
+var base = 'https://event-meetup.herokuapp.com'; // 'http://localhost:1337';
 var REST = base + '/api';
 
 module.exports = {
