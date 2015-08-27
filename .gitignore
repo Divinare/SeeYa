@@ -5,4 +5,3 @@ npm-debug.log
 *~
 dist
 db.development.sqlite
-frontend/configs/environment.js

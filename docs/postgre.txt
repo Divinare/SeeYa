@@ -1,7 +1,11 @@
 Connects to database:
 \connect devdb
 
+Drops a database:
+DROP DATABASE devdb;
 
+Creates a database:
+CREATE DATABASE devdb;
 
 List all tables:
 \d
