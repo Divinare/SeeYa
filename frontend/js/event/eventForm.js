@@ -36,8 +36,13 @@ var EventForm = React.createClass({
 		})
 		this.state.dateFieldClicked = false
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
-		dateInput.addEventListener('onblur', this.handleOnBlur);
+		dateInput.setAttribute("data-validateDate", this.validateDate)
+		dateInput.addEventListener('blur', this.handleOnBlur);
 		this.hideRedBorderAndErrorText(dateInput, document.getElementById('errorDivForDateField'));
+	},
+
+	validateDate: function(date){
+		console.log("validating date...")
 	},
 
     handleNewDateChange: function(moment) {
@@ -126,6 +131,7 @@ var EventForm = React.createClass({
 		var str = Moment().format('HH:mm');
 		$('#time').val(str);
 		this.setState({time: str})
+		$('#time').blur();
 	},
 
 	handleOnBlur: function(date){
@@ -199,9 +205,10 @@ var EventForm = React.createClass({
 					          	selected={this.state.date}
 					          	dateFormat= 'DD.MM.YYYY'
 						        key="example3"
+						        minDate={Moment()}
 						        onChange={this.handleNewDateChange}
 						        placeholderText="Date: dd:mm:yyyy"
-						        onBlur={this.handleOnBlur} />
+						       />
 					        </div>
 					        <div id="errorDivForDateField" className="help-block with-errors dark-red-text">Please fill out this field</div>
 						</div>

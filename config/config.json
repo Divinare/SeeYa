@@ -6,7 +6,7 @@
     "database":"devdb",
     "protocol": "postgres",
     "port": 5432,
-    "host": "127.0.0.1 localhost"
+    "host": "127.0.0.1"
   },
   "test": {
     "username": "root",

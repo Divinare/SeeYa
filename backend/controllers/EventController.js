@@ -59,24 +59,34 @@ create: function (req, res) {
 }
 
 }).spread(function(address, created){
-  console.log("--------------------------------------------------------")
-  console.log("address id: " + address.id)
-  console.log(address)
-  console.log("created: " + created)
+    console.log("--------------------------------------------------------")
+    console.log("address id: " + address.id)
+    console.log(address)
+    console.log("created: " + created)
+    console.log("------------------------------------------------------------")
+    if(address){
+        models.Event.create({
+        name: eventToAdd.name,
+        description: eventToAdd.description,
+        lat: eventToAdd.lat,
+        lon: eventToAdd.lon,
+        timestamp: eventToAdd.timestamp,
+        //requiresRegistration = eventToAdd.requiresRegistration,
+    }).then(function(event) {
+    if(event){
+        event.setAddress(address)
+        console.log(event.name + ' created successfully');
+        res.send(event); 
+    }else{
+        console.log("error in creating event, sending error code")
+        res.send(400)
+    }
 
-  console.log("------------------------------------------------------------")
-  models.Event.create({
-    name: eventToAdd.name,
-    description: eventToAdd.description,
-    lat: eventToAdd.lat,
-    lon: eventToAdd.lon,
-    timestamp: eventToAdd.timestamp,
-          //requiresRegistration = eventToAdd.requiresRegistration,
-      }).then(function(event) {
-          event.setAddress(address)
-          console.log(event.name + ' created successfully');
-          res.send(event);
-      });
+    });
+  }else{
+    res.send(400)
+  }
+
 
   });
 },
