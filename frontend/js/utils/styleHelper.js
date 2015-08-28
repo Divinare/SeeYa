@@ -3,8 +3,6 @@ var marginWidth = 10;
 module.exports = {
 
 	isTablet: function() {
-		console.log("hmmmmmm");
-		console.log("IS TABLET: " + (window.innerWidth < window.CONFIGS.mediumScreenMinWidth));
 		return window.innerWidth < window.CONFIGS.mediumScreenMinWidth;
 
 
@@ -73,12 +71,10 @@ module.exports = {
 
 	getScreenType: function() {
 		if(this.isTablet()) {
-			console.log("was mobile");
 			return 'tablet';
 		}
 		// TODO: also add "isMobile"
 		else {
-			console.log("was desktop");
 			return 'desktop';
 		}
 	}
