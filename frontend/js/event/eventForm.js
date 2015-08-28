@@ -18,6 +18,7 @@ var EventForm = React.createClass({
 	},
 
 	componentDidMount: function() {
+
 		this.props.handleResize();
 		var that = this;
 		$('#form').validator()
@@ -25,10 +26,10 @@ var EventForm = React.createClass({
 		$('#form').validator().on('submit', function (e) {
 			if(!that.showValidationInfoForDatePicker()){
 				e.preventDefault();
-				console.log("default prevented")
+				//console.log("default prevented")
 			}
 	  		if (e.isDefaultPrevented()) {
-	   			console.log("invalid form");
+	   			//console.log("invalid form");
 	 		 } else {
 	 		 	e.preventDefault();
 	 		 	that.handleSubmit();
@@ -48,13 +49,9 @@ var EventForm = React.createClass({
     handleNewDateChange: function(moment) {
     	//var d = moment.format('MM-DD-YYYY'))
 	   // console.log(moment.format('MM-DD-YYYY'));
-	   console.log("handling date change, date:");
-	   console.log(moment);
 	    this.setState({
 	        date: moment
 	    });
-	    console.log("date in handle change function: ")
-	    console.log(this.state.date)
 	    this.showValidationInfoForDatePicker(moment);
 
     },
@@ -64,11 +61,8 @@ var EventForm = React.createClass({
 	},
 
 	handleSubmit: function(e) {
-		console.log("submit function")
-		console.log(this.state.date)
 		var that = this;
 		//e.preventDefault();
-		console.log("add " + this.state.address);
 		var address = {
 			streetAddress: this.state.address,
 			country: 'helsinki',
@@ -95,8 +89,6 @@ var EventForm = React.createClass({
 			lon: latLng[1]
 			//time: this.state.time,
 		};
-		// Remove the newEventMarker
-		this.props.updateAppStatus('newEventMarker', {});
 		console.log("New event created:");
 		console.log(data);
 
@@ -109,7 +101,18 @@ var EventForm = React.createClass({
 		    data: JSON.stringify(data),
 		    contentType: "application/json; charset=utf-8",
 		    //contentType: 'application/x-www-form-urlencoded',
-		    success: function(){
+		    success: function(createdEventData){
+		    	console.log("Address:");
+		    	console.log(address);
+
+		    	// Adding the missing fields of the created event:
+		    	createdEventData.Address = address;
+		    	createdEventData.Attendances = [];
+		    	console.log("adding");
+		    	console.log(createdEventData);
+
+		    	that.props.deleteNewEventMarker();
+		    	that.props.addEventToFilteredEventList(createdEventData);
 		        that.transitionTo('home');
 		    },
 		    error: function( jqXhr, textStatus, errorThrown ){
@@ -135,7 +138,6 @@ var EventForm = React.createClass({
 	},
 
 	handleOnBlur: function(date){
-		console.log("onblur")
 		if(this.state.dateFieldClicked){
 			this.showValidationInfoForDatePicker();
 		}
@@ -145,7 +147,6 @@ var EventForm = React.createClass({
 
 
 	showValidationInfoForDatePicker: function(moment){	//returns true if the field is filled
-		console.log("show validation info")
 		if(moment == null){
 			moment = this.state.date
 		}
@@ -173,7 +174,7 @@ var EventForm = React.createClass({
 	},
 
 	render: function(){
-		console.log("rendering eventForm");
+		 // form tagista onSubmit={event.preventDefault()}, otettu pois, (bugas firefoxissa)
 		return (
 			<div className='right-container'>
 				<div id='leftPane' className='col-xs-0 col-md-2'>
@@ -181,7 +182,7 @@ var EventForm = React.createClass({
 				<div id='centerPane' className='col-xs-12 col-md-8'>
 
 					<h1 className="text-center">Create new event</h1>
-					<form id='form' className='form' data-toggle="validator" data-disable="false" role='form' onSubmit={event.preventDefault()}>
+					<form id='form' className='form' data-toggle="validator" data-disable="false" role='form'>
 						<div className='form-group'>
 							<div className='required'>
 								<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='test form-control' id='name' placeholder='Event name' required/>

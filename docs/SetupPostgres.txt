@@ -11,6 +11,7 @@ Instructions to get postgres running on your local environment:
 
 CREATE DATABASE devdb;
 CREATE ROLE "Pete" WITH LOGIN;
+ALTER USER Pete PASSWORD 'insert password here';
 
 4. Update pg_hba.conf, which should be located in postgres installation directory in data folder
 
@@ -43,7 +44,8 @@ postgres@desktop:~$ createuser -P joe
 postgres@desktop:~$ createdb -O joe devdb
 
 CREATE DATABASE devdb;
-CREATE ROLE "Pete" WITH LOGIN;
+CREATE ROLE "joe" WITH LOGIN;
+ALTER USER joe PASSWORD 'insert password here';
 
 configure file pg_hba.conf at:
 /etc/postgresql/9.4/main

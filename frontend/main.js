@@ -53,12 +53,10 @@ var Main = React.createClass({
               })
         }
         UTILS.rest.getAllEvents(onSuccess);
+
     },
 
     componentDidMount: function() {
-        console.log("ENV BASE::::::::::::??????????????????????????");
-        console.log(environment.base);
-
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
     },
@@ -74,33 +72,19 @@ var Main = React.createClass({
         this.updateEventListData('tableHeight', eventListHeight);
         this.updateEventListData('tableWidth', eventListWidth);
         
-        console.log("map height: " + UTILS.styleHelper.getMapHeight());
-        console.log("map width: " + UTILS.styleHelper.getMapWidth());
-        console.log("event list heigth: " + UTILS.styleHelper.getEventListHeight());
-        console.log("event list width: " + UTILS.styleHelper.getEventListWidth());
-        
         google.maps.event.trigger(map,'resize');
         map.setZoom( map.getZoom() );
-   //     map.checkResize();
 
-        /*
-        if(UTILS.styleHelper.isMobile()){
-            $("#map-canvas").css('height', window.innerHeight/2);
-        }else {
-            $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight('desktop'));
-            this.updateEventListData('tableHeight', UTILS.styleHelper.getEventListHeight('desktop'));
-        }
-        */
     },
 
     updateAppStatus: function(propName, newValue) {
+        console.log("upd app status!!");
         var state = {};
         state[propName] = newValue;
         this.setState(state);
     },
 
     updateEventListData: function(key, value, array) {
-        console.log("upd event list data " + value);
         var currentData = this.state.eventListData;
         if(typeof array != 'undefined') {
             currentData[array][key] = value
@@ -112,6 +96,21 @@ var Main = React.createClass({
         })
     },
 
+    addEventToFilteredEventList: function(event) {
+        var filteredEventList = this.state.filteredEventList.slice();    
+        filteredEventList.push(event);   
+        this.setState({filteredEventList: filteredEventList})
+    },
+
+    deleteNewEventMarker: function() {
+        var newEventMarker = this.state.newEventMarker;
+        if(!$.isEmptyObject(newEventMarker)) {
+            newEventMarker.setMap(null);
+            this.setState({
+                newEventMarker: {}
+            });
+        }
+    },
 
     render: function() {
 
@@ -138,8 +137,9 @@ var Main = React.createClass({
 
                         handleResize={this.handleResize}
                         updateAppStatus={this.updateAppStatus}
-                        updateEventListData={this.updateEventListData} />
-
+                        updateEventListData={this.updateEventListData}
+                        deleteNewEventMarker={this.deleteNewEventMarker}
+                        addEventToFilteredEventList={this.addEventToFilteredEventList} />
                 </div>    
             </div>
         );
@@ -169,7 +169,9 @@ var EventFormWrapper = React.createClass({
                 newEventMarker={this.props.newEventMarker}
 
                 handleResize={this.props.handleResize}
-                updateAppStatus={this.props.updateAppStatus} />
+                updateAppStatus={this.props.updateAppStatus}
+                addEventToFilteredEventList={this.props.addEventToFilteredEventList}
+                deleteNewEventMarker={this.props.deleteNewEventMarker} />
         );
     }
 });

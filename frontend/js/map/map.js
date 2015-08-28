@@ -8,7 +8,6 @@ var Map = React.createClass({
     mixins: [ Router.Navigation ],
 
     getInitialState: function() {
-        console.log("getInitialState");
 
         return {
             map: {},
@@ -27,36 +26,23 @@ var Map = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
+        console.log("map will receive props!!!");
         this.deleteMarkers(this.state.markers);
-        console.log("map will receive props");
-
-
         var urlTokens = UTILS.helper.getUrlTokens();
-        console.log("URL TOKENS:");
-        console.log(urlTokens);
-        console.log(urlTokens[0]);
 
         var allowDrawMarkers = (urlTokens[0] != 'eventForm') ? true : false;
 
         if(this.state != null && nextProps.filteredEventList.length > 0) {
             
-            console.log("NEXT PROPS:");
-            console.log(nextProps);
             if(allowDrawMarkers) {
                 this.addAllMarkers(nextProps, this.state.map);
             }
         }
-        
-    },
 
-    mapCenterLatLng: function () {
-        console.log("map center lat lng");
-        /*
-        var props = this.props;
-        GoogleMapsLoader.load(function(google) {
-          return new google.maps.LatLng(props.mapCenterLat, props.mapCenterLng);
-        });
-*/
+        if(nextProps.newEventMarker == null) {
+            console.log("removing new eventMarker!");
+        }
+        
     },
 
     initMap: function() {
@@ -68,7 +54,6 @@ var Map = React.createClass({
             zoom: 5,
             minZoom: 3
         };
-        console.log(google);
 
         window.map = new google.maps.Map(this.getDOMNode(), mapOptions);
         this.setState({
@@ -121,7 +106,6 @@ var Map = React.createClass({
     },
 
     transitionToEventForm: function() {
-        console.log('event form transition');
         this.transitionTo('eventForm', {id: 10});
     },
 
@@ -230,12 +214,10 @@ var Map = React.createClass({
     deleteNewEventMarker: function() {
         var marker = this.props.newEventMarker;
         if(!$.isEmptyObject(marker)) {
-            console.log("WASNT EMPTY");
             this.deleteMarker(marker);
             // Also empty the newEventMarker
             this.props.updateAppStatus('newEventMarker', {});
         } else {
-            console.log("WAS EMPTY");
         }
     },
 
