@@ -102,16 +102,6 @@ var Main = React.createClass({
         this.setState({filteredEventList: filteredEventList})
     },
 
-    deleteNewEventMarker: function() {
-        var newEventMarker = this.state.newEventMarker;
-        if(!$.isEmptyObject(newEventMarker)) {
-            newEventMarker.setMap(null);
-            this.setState({
-                newEventMarker: {}
-            });
-        }
-    },
-
     render: function() {
 
         return (
@@ -138,7 +128,6 @@ var Main = React.createClass({
                         handleResize={this.handleResize}
                         updateAppStatus={this.updateAppStatus}
                         updateEventListData={this.updateEventListData}
-                        deleteNewEventMarker={this.deleteNewEventMarker}
                         addEventToFilteredEventList={this.addEventToFilteredEventList} />
                 </div>    
             </div>
@@ -170,8 +159,7 @@ var EventFormWrapper = React.createClass({
 
                 handleResize={this.props.handleResize}
                 updateAppStatus={this.props.updateAppStatus}
-                addEventToFilteredEventList={this.props.addEventToFilteredEventList}
-                deleteNewEventMarker={this.props.deleteNewEventMarker} />
+                addEventToFilteredEventList={this.props.addEventToFilteredEventList} />
         );
     }
 });

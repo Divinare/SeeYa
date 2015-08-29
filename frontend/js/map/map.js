@@ -59,12 +59,16 @@ var Map = React.createClass({
         this.setState({
             map: map
         });
-
-        google.maps.event.addListener(map, 'click', function(event) {
+/*
+        google.maps.event.addListener(map, 'rightclick', function(event) {
             that.addEventMarker(event.latLng, map);
         });
+*/
 
-        google.maps.event.addListener(map, 'rightclick', function(event) {
+
+
+
+        google.maps.event.addListener(map, 'click', function(event) {
             that.closeOpenedInfowindow();
             that.deleteNewEventMarker();
         });
@@ -175,10 +179,6 @@ var Map = React.createClass({
             content: infowindowContent
         });
         return infowindow;
-
-       // google.maps.event.addListener(marker, 'click', function() {
-     //       that.openInfowindow(map, marker, infowindow);
-     //   });
     },
 
     openInfowindow: function(map, marker, infowindow) {

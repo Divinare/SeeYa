@@ -9,7 +9,6 @@ List ideas here that arent implented yet:
 - Some quick search settings for users. For example fills search properties automatically "Category: baseball, time: 0d-10d from now, Address: near current location"
 
 
-
 ### Users ###
 
 - User rewards
@@ -33,6 +32,8 @@ List ideas here that arent implented yet:
    ^ how can this be done in mobile version? <- We need to implement whole new eventList to the mobile version. Maybe at this point make eventList by ourselves
 
 - Events of user shows with his own color
+
+- At google maps streetview, make markers bigger and clickable
 
 ### EventForm ###
 
