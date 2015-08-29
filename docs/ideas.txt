@@ -35,6 +35,8 @@ List ideas here that arent implented yet:
 
 - At google maps streetview, make markers bigger and clickable
 
+- Event's location could be updated by the creator by dragging and dropping
+
 ### EventForm ###
 
 - Animation when address is filled

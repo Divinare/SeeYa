@@ -1,0 +1,1 @@
+- Kinga: Map is too small. Maybe have the map for example below the list and show only the first entries in the list on the first page.

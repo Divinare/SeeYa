@@ -25,6 +25,7 @@ router.get('/events', EventCtrl.findAll);
 router.get('/events/:id', EventCtrl.findOne);
 router.post('/events', EventCtrl.create);
 router.post('/events/:id', EventCtrl.update);
+router.delete('/events/:id', EventCtrl.delete);
 
 router.get('/attendances', AttendanceCtrl.findAll);
 router.get('/attendances/:id', AttendanceCtrl.findOne);

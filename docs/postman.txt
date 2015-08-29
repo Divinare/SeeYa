@@ -2,6 +2,7 @@ EVENT:
 GET: http://localhost:1337/api/events
 GET: http://localhost:1337/api/events/1
 
+CREATING NEW EVENTS:
 POST: http://localhost:1337/api/events
 
 { "name": "db testi",
@@ -18,6 +19,7 @@ POST: http://localhost:1337/api/events
 
 
 
+CREATING NEW ATTENDANCES:
 http://localhost:1337/api/attendances
  { "attendeeName": "yrjö",
  "email":"test@testing.com",
@@ -27,3 +29,16 @@ http://localhost:1337/api/attendances
    
  }
 }
+
+MODIFYING EVENTS:
+POST: http://localhost:1337/api/events/1
+{ "name": "MODIFIED",
+  "address":{
+   "streetAddress":"mustikkamaa",
+   "country":"Finland",
+   "zipCode":"00100"
+ },
+ "description":"Moikka",
+ "lon":"69.05",
+ "lat":"60.23",
+ "timestamp":"1438277401719"}
