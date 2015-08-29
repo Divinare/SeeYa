@@ -42,3 +42,8 @@ POST: http://localhost:1337/api/events/1
  "lon":"69.05",
  "lat":"60.23",
  "timestamp":"1438277401719"}
+
+ DELETING EVENTS:
+ http://localhost:1337/api/events/3
+
+ (no need for any json)
