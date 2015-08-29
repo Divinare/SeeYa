@@ -1,0 +1,394 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: Addresses; Type: TABLE; Schema: public; Owner: joe; Tablespace: 
+--
+
+CREATE TABLE "Addresses" (
+    id integer NOT NULL,
+    "streetAddress" character varying(255) NOT NULL,
+    country character varying(255) NOT NULL,
+    city character varying(255),
+    "zipCode" character varying(255) NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE "Addresses" OWNER TO joe;
+
+--
+-- Name: Addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: joe
+--
+
+CREATE SEQUENCE "Addresses_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "Addresses_id_seq" OWNER TO joe;
+
+--
+-- Name: Addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: joe
+--
+
+ALTER SEQUENCE "Addresses_id_seq" OWNED BY "Addresses".id;
+
+
+--
+-- Name: Attendances; Type: TABLE; Schema: public; Owner: joe; Tablespace: 
+--
+
+CREATE TABLE "Attendances" (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    email character varying(255),
+    comment character varying(255),
+    "sendEmail" boolean DEFAULT false,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    "EventId" integer
+);
+
+
+ALTER TABLE "Attendances" OWNER TO joe;
+
+--
+-- Name: Attendances_id_seq; Type: SEQUENCE; Schema: public; Owner: joe
+--
+
+CREATE SEQUENCE "Attendances_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "Attendances_id_seq" OWNER TO joe;
+
+--
+-- Name: Attendances_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: joe
+--
+
+ALTER SEQUENCE "Attendances_id_seq" OWNED BY "Attendances".id;
+
+
+--
+-- Name: Events; Type: TABLE; Schema: public; Owner: joe; Tablespace: 
+--
+
+CREATE TABLE "Events" (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    description character varying(255),
+    lon double precision NOT NULL,
+    lat double precision NOT NULL,
+    "requiresRegistration" boolean DEFAULT false NOT NULL,
+    "timestamp" bigint NOT NULL,
+    "maxAttendees" integer,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    "AddressId" integer
+);
+
+
+ALTER TABLE "Events" OWNER TO joe;
+
+--
+-- Name: Events_id_seq; Type: SEQUENCE; Schema: public; Owner: joe
+--
+
+CREATE SEQUENCE "Events_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "Events_id_seq" OWNER TO joe;
+
+--
+-- Name: Events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: joe
+--
+
+ALTER SEQUENCE "Events_id_seq" OWNED BY "Events".id;
+
+
+--
+-- Name: Users; Type: TABLE; Schema: public; Owner: joe; Tablespace: 
+--
+
+CREATE TABLE "Users" (
+    id integer NOT NULL,
+    username character varying(255),
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE "Users" OWNER TO joe;
+
+--
+-- Name: Users_id_seq; Type: SEQUENCE; Schema: public; Owner: joe
+--
+
+CREATE SEQUENCE "Users_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "Users_id_seq" OWNER TO joe;
+
+--
+-- Name: Users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: joe
+--
+
+ALTER SEQUENCE "Users_id_seq" OWNED BY "Users".id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: joe
+--
+
+ALTER TABLE ONLY "Addresses" ALTER COLUMN id SET DEFAULT nextval('"Addresses_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: joe
+--
+
+ALTER TABLE ONLY "Attendances" ALTER COLUMN id SET DEFAULT nextval('"Attendances_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: joe
+--
+
+ALTER TABLE ONLY "Events" ALTER COLUMN id SET DEFAULT nextval('"Events_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: joe
+--
+
+ALTER TABLE ONLY "Users" ALTER COLUMN id SET DEFAULT nextval('"Users_id_seq"'::regclass);
+
+
+--
+-- Data for Name: Addresses; Type: TABLE DATA; Schema: public; Owner: joe
+--
+
+COPY "Addresses" (id, "streetAddress", country, city, "zipCode", "createdAt", "updatedAt") FROM stdin;
+1	Hietaniemi	helsinki	\N	00100	2015-08-27 18:21:39.735+03	2015-08-27 18:21:39.735+03
+2	Kaivopuisto	helsinki	\N	00100	2015-08-27 18:23:51.645+03	2015-08-27 18:23:51.645+03
+3	Pyhäjärvi	helsinki	\N	00100	2015-08-27 18:26:10.084+03	2015-08-27 18:26:10.084+03
+4	Iso Omena, Espoo	helsinki	\N	00100	2015-08-27 18:26:52.432+03	2015-08-27 18:26:52.432+03
+5	Mustikkamaa	helsinki	\N	00100	2015-08-27 18:36:22.216+03	2015-08-27 18:36:22.216+03
+6	Puolukkamaa	helsinki	\N	00100	2015-08-27 18:38:07.498+03	2015-08-27 18:38:07.498+03
+7	Tallinna, Superalko	helsinki	\N	00100	2015-08-27 18:40:50.504+03	2015-08-27 18:40:50.504+03
+8	Baffin Bay	helsinki	\N	00100	2015-08-27 18:43:49.148+03	2015-08-27 18:43:49.148+03
+9	California	helsinki	\N	00100	2015-08-27 18:45:53.987+03	2015-08-27 18:45:53.987+03
+10	testtttt	helsinki	\N	00100	2015-08-28 19:08:45.539+03	2015-08-28 19:08:45.539+03
+11	vaaemt	helsinki	\N	00100	2015-08-28 19:51:58.311+03	2015-08-28 19:51:58.311+03
+12	hmhmhmhm	helsinki	\N	00100	2015-08-28 19:58:22.701+03	2015-08-28 19:58:22.701+03
+13	jeejeeee	helsinki	\N	00100	2015-08-28 20:00:02.39+03	2015-08-28 20:00:02.39+03
+14	aaaaaaaaaaaa	helsinki	\N	00100	2015-08-28 20:00:47.496+03	2015-08-28 20:00:47.496+03
+15	fasfasfsafas	helsinki	\N	00100	2015-08-28 20:02:42.551+03	2015-08-28 20:02:42.551+03
+16	dsadasdasd	helsinki	\N	00100	2015-08-28 20:04:22.327+03	2015-08-28 20:04:22.327+03
+17	dfsfsdfsdf	helsinki	\N	00100	2015-08-28 20:05:10.426+03	2015-08-28 20:05:10.426+03
+18	afasasfasf	helsinki	\N	00100	2015-08-28 20:07:11.727+03	2015-08-28 20:07:11.727+03
+19	sadasdasda	helsinki	\N	00100	2015-08-28 20:25:03.53+03	2015-08-28 20:25:03.53+03
+20	asfasfasfas	helsinki	\N	00100	2015-08-28 20:25:51.49+03	2015-08-28 20:25:51.49+03
+21	dasdasdas	helsinki	\N	00100	2015-08-28 20:26:37.81+03	2015-08-28 20:26:37.81+03
+22	asdasdasdasdas	helsinki	\N	00100	2015-08-28 20:27:26.629+03	2015-08-28 20:27:26.629+03
+23	asfasdasd	helsinki	\N	00100	2015-08-28 20:28:17.251+03	2015-08-28 20:28:17.251+03
+24	asfasfasf	helsinki	\N	00100	2015-08-28 20:29:07.627+03	2015-08-28 20:29:07.627+03
+25	asdasdasd	helsinki	\N	00100	2015-08-28 20:29:25.03+03	2015-08-28 20:29:25.03+03
+26	asdsadsadsa	helsinki	\N	00100	2015-08-29 10:27:59.348+03	2015-08-29 10:27:59.348+03
+27	fasfsfasfs	helsinki	\N	00100	2015-08-29 10:29:51.912+03	2015-08-29 10:29:51.912+03
+28	asafsafasfs	helsinki	\N	00100	2015-08-29 10:33:52.606+03	2015-08-29 10:33:52.606+03
+29	asdsadasd	helsinki	\N	00100	2015-08-29 10:34:02.995+03	2015-08-29 10:34:02.995+03
+\.
+
+
+--
+-- Name: Addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: joe
+--
+
+SELECT pg_catalog.setval('"Addresses_id_seq"', 29, true);
+
+
+--
+-- Data for Name: Attendances; Type: TABLE DATA; Schema: public; Owner: joe
+--
+
+COPY "Attendances" (id, name, email, comment, "sendEmail", "createdAt", "updatedAt", "EventId") FROM stdin;
+1	Joku	jokuosote@jee.fi	hmm	f	2015-08-27 18:42:30.415+03	2015-08-27 18:42:30.424+03	7
+\.
+
+
+--
+-- Name: Attendances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: joe
+--
+
+SELECT pg_catalog.setval('"Attendances_id_seq"', 1, true);
+
+
+--
+-- Data for Name: Events; Type: TABLE DATA; Schema: public; Owner: joe
+--
+
+COPY "Events" (id, name, description, lon, lat, "requiresRegistration", "timestamp", "maxAttendees", "createdAt", "updatedAt", "AddressId") FROM stdin;
+1	Beach volley	Joku ottaa lentopallon mukaan.	24.904632568359375	60.1730896025188571	f	1441526400000	\N	2015-08-27 18:21:39.758+03	2015-08-27 18:21:39.764+03	1
+2	Kaljottelua	Tulkaa paikalle, jos aurinko paistaa eikä sada.	24.9561309814453125	60.1559021437028036	f	1441378800000	\N	2015-08-27 18:23:51.656+03	2015-08-27 18:23:51.661+03	2
+3	Kalastusta	Oma vene messiin.	22.2802734375	61.0104007272707705	f	1441034760000	\N	2015-08-27 18:26:10.1+03	2015-08-27 18:26:10.106+03	3
+4	Shoppailua	Ottakaa rahaa mukaan :)	24.73846435546875	60.1644009177224319	f	1440750360000	\N	2015-08-27 18:26:52.45+03	2015-08-27 18:26:52.457+03	4
+5	Poimitaan mustikoita	Tulkaa ihmeessä poimimaan mustikoita!	23.642578125	61.9905877362041053	f	1440257760000	\N	2015-08-27 18:36:22.232+03	2015-08-27 18:36:22.24+03	5
+6	Poimitaan puolukoita	Parempaa tapahtumaa saa etsiä!	27.04559326171875	61.6103143370810642	f	1440862620000	\N	2015-08-27 18:38:07.516+03	2015-08-27 18:38:07.522+03	6
+7	Viinaralli	Ostetaan koko superalko tyhjäksi viinasta! Saa jakaa!	24.7570037841796875	59.4422824563365282	f	1440756000000	\N	2015-08-27 18:40:50.513+03	2015-08-27 18:40:50.517+03	7
+8	Uimaan	Tulkaa uimaan!	-67.67578125	74.0195433115022752	f	1440862980000	\N	2015-08-27 18:43:49.156+03	2015-08-27 18:43:49.161+03	8
+9	420 Day	420	-113.466796875	28.0331978476763766	f	1440061200000	\N	2015-08-27 18:45:54+03	2015-08-27 18:45:54.003+03	9
+10	Test	sadsasafasfa	28.2568359375	60.7806188034589354	f	1440864480000	\N	2015-08-28 19:08:45.561+03	2015-08-28 19:08:45.569+03	10
+11	jotain	hmmmmmmmmmmm	29.5751953125	63.937372467914841	f	1441558260000	\N	2015-08-28 19:51:58.328+03	2015-08-28 19:51:58.333+03	11
+12	test	asdfasfasf	25.83984375	64.4348920430406054	f	1440953880000	\N	2015-08-28 19:58:22.709+03	2015-08-28 19:58:22.713+03	12
+13	jeeee	asasfasfas	26.89453125	63.6852480803071401	f	1440954000000	\N	2015-08-28 20:00:02.398+03	2015-08-28 20:00:02.402+03	13
+14	asfsafsaf	fsafsafas	21.884765625	63.4701447465654454	f	1439485200000	\N	2015-08-28 20:00:47.504+03	2015-08-28 20:00:47.508+03	14
+15	asdasdasdas	fasfasfsa	31.5087890625	62.4107287530685966	f	1440954120000	\N	2015-08-28 20:02:42.561+03	2015-08-28 20:02:42.565+03	15
+16	safsadasdas	fasfasfas	31.8603515625	60.5653785046418065	f	1440867840000	\N	2015-08-28 20:04:22.336+03	2015-08-28 20:04:22.34+03	16
+17	fsafasfasf	gdgsdg	29.443359375	58.7225988280433668	f	1440954300000	\N	2015-08-28 20:05:10.434+03	2015-08-28 20:05:10.438+03	17
+18	dffasf	asfafasf	31.6845703125	57.279042764977774	f	1440695220000	\N	2015-08-28 20:07:11.737+03	2015-08-28 20:07:11.74+03	18
+19	dsadasdas	fasfasf	25.3564453125	57.0168140173911056	f	1440350700000	\N	2015-08-28 20:25:03.539+03	2015-08-28 20:25:03.542+03	19
+20	asdasdasd	asfasf	18.6328125	57.4449494358398454	f	1440005100000	\N	2015-08-28 20:25:51.496+03	2015-08-28 20:25:51.502+03	20
+21	dasddas	sagfasfdas	14.677734375	61.3124515748382137	f	1439659560000	\N	2015-08-28 20:26:37.818+03	2015-08-28 20:26:37.821+03	21
+22	sadasdasd	fsdfsafsa	17.314453125	65.5129625532948978	f	1440264420000	\N	2015-08-28 20:27:26.637+03	2015-08-28 20:27:26.64+03	22
+23	safdasdasdasd	asdasdasd	21.7529296875	66.8610823022461176	f	1440178080000	\N	2015-08-28 20:28:17.258+03	2015-08-28 20:28:17.262+03	23
+24	afasfasf	asfsaas	30.41015625	65.3301779152685498	f	1439486940000	\N	2015-08-28 20:29:07.635+03	2015-08-28 20:29:07.639+03	24
+25	asdasdsad	asfsafas	32.2998046875	63.5485522320364424	f	1439400540000	\N	2015-08-28 20:29:25.037+03	2015-08-28 20:29:25.041+03	25
+26	sadsadsaas	sdasdasdas	33.4423828125	62.3087936910280504	f	1441351620000	\N	2015-08-29 10:27:59.376+03	2015-08-29 10:27:59.384+03	26
+27	asdsadaasdsa	asdsadsaa	31.025390625	62.8751883799330926	f	1441524540000	\N	2015-08-29 10:29:51.926+03	2015-08-29 10:29:51.933+03	27
+28	adsadasdasd	asfsafsafas	24.4775390625	54.1366964568700197	f	1441438380000	\N	2015-08-29 10:33:52.614+03	2015-08-29 10:33:52.619+03	28
+29	dasdasdsada	asdasdasds	38.583984375	58.35563036280967	f	1441265640000	\N	2015-08-29 10:34:03.009+03	2015-08-29 10:34:03.012+03	29
+\.
+
+
+--
+-- Name: Events_id_seq; Type: SEQUENCE SET; Schema: public; Owner: joe
+--
+
+SELECT pg_catalog.setval('"Events_id_seq"', 29, true);
+
+
+--
+-- Data for Name: Users; Type: TABLE DATA; Schema: public; Owner: joe
+--
+
+COPY "Users" (id, username, "createdAt", "updatedAt") FROM stdin;
+\.
+
+
+--
+-- Name: Users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: joe
+--
+
+SELECT pg_catalog.setval('"Users_id_seq"', 1, false);
+
+
+--
+-- Name: Addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: joe; Tablespace: 
+--
+
+ALTER TABLE ONLY "Addresses"
+    ADD CONSTRAINT "Addresses_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Attendances_pkey; Type: CONSTRAINT; Schema: public; Owner: joe; Tablespace: 
+--
+
+ALTER TABLE ONLY "Attendances"
+    ADD CONSTRAINT "Attendances_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Events_pkey; Type: CONSTRAINT; Schema: public; Owner: joe; Tablespace: 
+--
+
+ALTER TABLE ONLY "Events"
+    ADD CONSTRAINT "Events_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Users_pkey; Type: CONSTRAINT; Schema: public; Owner: joe; Tablespace: 
+--
+
+ALTER TABLE ONLY "Users"
+    ADD CONSTRAINT "Users_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Attendances_EventId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: joe
+--
+
+ALTER TABLE ONLY "Attendances"
+    ADD CONSTRAINT "Attendances_EventId_fkey" FOREIGN KEY ("EventId") REFERENCES "Events"(id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: Events_AddressId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: joe
+--
+
+ALTER TABLE ONLY "Events"
+    ADD CONSTRAINT "Events_AddressId_fkey" FOREIGN KEY ("AddressId") REFERENCES "Addresses"(id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
