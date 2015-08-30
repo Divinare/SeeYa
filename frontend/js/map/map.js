@@ -1,5 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
+var ContextMenu = require('./contextMenu.js');
+
 
 var CreateNewEventPopup = require('./createNewEventPopup.js');
 // https://developers.google.com/maps/documentation/javascript/examples/marker-animations
@@ -15,33 +17,37 @@ var Map = React.createClass({
             mapCenterLat: 60,
             mapCenterLng: 20,
             openedInfowindow: {},
-            newEventMarker: {},
             markers: []
         };
     },
     componentDidMount: function () {
+        console.log("------------------------------------------");
         var map = this.initMap();
 
 
     },
 
     componentWillReceiveProps: function(nextProps) {
-        console.log("map will receive props!!!");
+        
         this.deleteMarkers(this.state.markers);
-        var urlTokens = UTILS.helper.getUrlTokens();
-
-        var allowDrawMarkers = (urlTokens[0] != 'eventForm') ? true : false;
+        var allowDrawMarkers = UTILS.helper.atEventForm() ? false : true;
 
         if(this.state != null && nextProps.filteredEventList.length > 0) {
             
             if(allowDrawMarkers) {
                 this.addAllMarkers(nextProps, this.state.map);
+
+                var newEventMarker = this.props.newEventMarker;
+                if(!$.isEmptyObject(newEventMarker)) {
+                    this.props.newEventMarker.setMap(null);
+                }
             }
         }
 
         if(nextProps.newEventMarker == null) {
             console.log("removing new eventMarker!");
         }
+        
         
     },
 
@@ -59,20 +65,83 @@ var Map = React.createClass({
         this.setState({
             map: map
         });
-/*
-        google.maps.event.addListener(map, 'rightclick', function(event) {
-            that.addEventMarker(event.latLng, map);
-        });
-*/
-
-
-
 
         google.maps.event.addListener(map, 'click', function(event) {
             that.closeOpenedInfowindow();
-            that.deleteNewEventMarker();
+            console.log(UTILS.helper.atEventForm());
+            if(UTILS.helper.atEventForm()) {
+                console.log("Adding eventmAKRER");
+                that.addNewEventMarker(event.latLng, map);
+            }
+
+
+            //that.deleteNewEventMarker();
         });
 
+
+
+
+
+
+
+    //  create a basic map
+    var mapOptions={};
+  //  mapOptions.zoom=8;
+  //  mapOptions.center=new google.maps.LatLng(52.7545, 0.3957);
+ //   mapOptions.mapTypeId=google.maps.MapTypeId.ROADMAP;
+    
+  //  var map=new google.maps.Map(document.getElementById('map_container'), mapOptions);
+    
+    //  create the ContextMenuOptions object
+    var contextMenuOptions={};
+    contextMenuOptions.classNames={menu:'context_menu', menuSeparator:'context_menu_separator'};
+    
+    //  create an array of ContextMenuItem objects
+    var menuItems=[];
+    menuItems.push({className:'context_menu_item link', eventName:'create_event', label:'Create Event'});
+    menuItems.push({className:'context_menu_item link', eventName:'zoom_in_click', label:'Zoom in'});
+    menuItems.push({className:'context_menu_item link', eventName:'zoom_out_click', label:'Zoom out'});
+    //  a menuItem with no properties will be rendered as a separator
+    menuItems.push({});
+    menuItems.push({className:'context_menu_item link', eventName:'center_map_click', label:'Center map here'});
+    contextMenuOptions.menuItems=menuItems;
+    
+    //  create the ContextMenu object
+    console.log(ContextMenu);
+    var contextMenu = new ContextMenu(map, contextMenuOptions);
+    
+    //  display the ContextMenu on a Map right click
+    google.maps.event.addListener(map, 'rightclick', function(mouseEvent){
+        contextMenu.show(mouseEvent.latLng);
+    });
+    
+    //  listen for the ContextMenu 'menu_item_selected' event
+    google.maps.event.addListener(contextMenu, 'menu_item_selected', function(latLng, eventName){
+        switch(eventName){
+            case 'create_event':
+                console.log("AAAAAAAAAAAAAAAAAAA");
+                console.log(latLng.G);
+                var latLngObj = {
+                    lat: latLng.G,
+                    lng: latLng.K
+                }
+                console.log("##########################");
+                that.addNewEventMarker(latLngObj, map);
+                that.transitionToEventForm();
+                break;
+            case 'zoom_in_click':
+                map.setZoom(map.getZoom()+1);
+                break;
+            case 'zoom_out_click':
+
+                map.setZoom(map.getZoom()-1);
+                break;
+            case 'center_map_click':
+
+                map.panTo(latLng);
+                break;
+        }
+    });
         return map;
      },
 
@@ -87,7 +156,7 @@ var Map = React.createClass({
                 var infowindow =  that.createInfowindow(map, marker, event);
                 google.maps.event.addListener(marker, 'click', function() {
                     that.openInfowindow(map, marker, infowindow);
-                    that.deleteNewEventMarker();
+                    //that.deleteNewEventMarker();
                 });
                 createdMarkers.push(marker);
 
@@ -113,26 +182,27 @@ var Map = React.createClass({
         this.transitionTo('eventForm', {id: 10});
     },
 
-    addEventMarker: function(latLng, map) {
+    addNewEventMarker: function(latLng, map) {
+        console.log("LAT LGN");
+        console.log(latLng);
+        console.log(map);
         var that = this;
         var icon = 'http://maps.google.com/mapfiles/ms/icons/grn-pushpin.png';
         var marker = this.createMarker(latLng, map, icon);
         var infowindow =  this.createInfowindow(map, marker, null);
         this.openInfowindow(map, marker, infowindow);
-        google.maps.event.addListener(marker, 'click', function() {
-            // TODO: go to eventform
-        });
 
         //var pt = new google.maps.LatLng(lat, lng);
      //   map.setCenter(latLng);
      //   map.setZoom(8);
-
+/*
         google.maps.event.addListener(infowindow, 'closeclick', function () {
             that.deleteMarker(marker);
         });
-
+*/
         // Delete current eventMarker if there is one
         this.deleteNewEventMarker();
+
         // Update the new eventMarker
         this.props.updateAppStatus('newEventMarker', marker);
     },
@@ -146,7 +216,6 @@ var Map = React.createClass({
         if(typeof icon != 'undefined') {
             marker.setIcon(icon);
         }
-
         return marker;
     },
 
@@ -212,6 +281,7 @@ var Map = React.createClass({
     },
 
     deleteNewEventMarker: function() {
+        
         var marker = this.props.newEventMarker;
         if(!$.isEmptyObject(marker)) {
             this.deleteMarker(marker);
@@ -219,6 +289,7 @@ var Map = React.createClass({
             this.props.updateAppStatus('newEventMarker', {});
         } else {
         }
+        
     },
 
     render: function(){

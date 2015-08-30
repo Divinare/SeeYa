@@ -6,3 +6,13 @@
 .createNewEventMarkerLink {
 	color: #397AB7;
 }
+
+
+.context_menu_item {
+	font-size: 150%;
+}
+
+.context_menu {
+	background-color: #FFF;
+	padding: 5px;
+}

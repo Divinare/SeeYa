@@ -35,6 +35,12 @@ module.exports = {
 		} 
 		return new Array();
 	},
+
+	atEventForm: function() {
+		var urlTokens = this.getUrlTokens();
+		return (urlTokens[0] == 'eventForm') ? true : false;
+	},
+
 	/* Returns lat and lon as array from marker */
 	getLatLon: function(marker) {
 		if(typeof marker == 'undefined') {

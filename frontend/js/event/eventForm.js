@@ -111,10 +111,8 @@ var EventForm = React.createClass({
 		    	console.log("adding");
 		    	console.log(createdEventData);
 
-		    	var newEventMarker = that.props.newEventMarker;
-		    	newEventMarker.setMap(null);
+		    	that.props.newEventMarker.setMap(null);
 		    	that.props.updateAppStatus('newEventMarker', {});
-		    	//that.props.deleteNewEventMarker();
 		    	that.props.addEventToFilteredEventList(createdEventData);
 		        that.transitionTo('home');
 		    },
