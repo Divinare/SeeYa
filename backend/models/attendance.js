@@ -10,7 +10,9 @@ module.exports = function(sequelize, DataTypes) {
         timestamps: true,
         classMethods: {
         associate: function(models) {
-          Attendance.belongsTo(models.Event);
+          Attendance.belongsTo(models.Event, {
+            onDelete: 'cascade'
+          });
       }
     }
   });

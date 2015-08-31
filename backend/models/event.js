@@ -16,7 +16,6 @@ module.exports = function(sequelize, DataTypes) {
           Event.belongsTo(models.Address);
           Event.hasMany(models.Attendance, {
             foreignKey: 'EventId'
-            
           });
 
       }
