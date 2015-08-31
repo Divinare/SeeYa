@@ -8,5 +8,6 @@ module.exports = {
 	'REST': REST,
 	'allEvents' : REST + '/events/',
 	'event' : REST + '/events/',
-	'attendance' : REST + '/attendances'
+	'attendance' : REST + '/attendances',
+	'deleteEvent' : REST + '/events/'
 };

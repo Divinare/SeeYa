@@ -53,7 +53,6 @@ var Main = React.createClass({
               })
         }
         UTILS.rest.getAllEvents(onSuccess);
-
     },
 
     componentDidMount: function() {
@@ -102,8 +101,18 @@ var Main = React.createClass({
         this.setState({filteredEventList: filteredEventList})
     },
 
-    render: function() {
+    removeEventFromFilteredEventList: function(eventToRemove){
+        var list = this.state.filteredEventList.slice();
+        for(var i= 0; i < list.length; i++){
+            if(list[i].id === eventToRemove.id){
+                list.splice(i, 1);
+            }
+        }
+        this.setState({filteredEventList: list})
+    },
 
+    render: function() {
+        var that = this;
         return (
               <div>
                 <Header />
@@ -128,8 +137,9 @@ var Main = React.createClass({
                         handleResize={this.handleResize}
                         updateAppStatus={this.updateAppStatus}
                         updateEventListData={this.updateEventListData}
-                        addEventToFilteredEventList={this.addEventToFilteredEventList} />
-                </div>    
+                        addEventToFilteredEventList={this.addEventToFilteredEventList} 
+                        removeEventFromFilteredEventList = {this.removeEventFromFilteredEventList}/>
+                </div>  
             </div>
         );
     }
@@ -170,7 +180,8 @@ var EventPageWrapper = React.createClass({
         return (
             <EventPage
                 handleResize={this.props.handleResize}
-                updateAppStatus={this.props.updateAppStatus} />
+                updateAppStatus={this.props.updateAppStatus}
+                removeEventFromFilteredEventList = {this.props.removeEventFromFilteredEventList} />
         );
     }
 });

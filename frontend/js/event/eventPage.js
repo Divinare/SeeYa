@@ -3,6 +3,7 @@ var Router = require('react-router');
 var Moment = require('moment');
 var Underscore = require('underscore.string')
 var validator = require('bootstrap-validator')
+$ = window.jQuery = require('jquery');
 
 var EventPage = React.createClass({
 	mixins: [ Router.Navigation ],
@@ -43,6 +44,7 @@ var EventPage = React.createClass({
 			}
 		};
 		UTILS.rest.getEvent(url, onSuccess);
+
 	},
 
 handleSubmit: function(e) {
@@ -56,7 +58,6 @@ handleSubmit: function(e) {
 		comment: this.state.comment,
 		event: event
 	}
-	
 	$.ajax({
 	    type: 'POST',
 	    dataType: 'json',
@@ -71,7 +72,27 @@ handleSubmit: function(e) {
 	        console.log( errorThrown );
 	    }
 	})
+},
 
+handleRemove: function(){
+	var that = this;
+	var deleteConfirmed = confirm("Are you sure you want to delete the event?")
+	var eventToRemove = this.state.event;
+	if(deleteConfirmed){
+		$.ajax({
+			type: 'DELETE',
+		    url: REST.deleteEvent + this.state.event.id,
+		    contentType: "application/json; charset=utf-8",
+		    //contentType: 'application/x-www-form-urlencoded',
+		    success: function(){
+		    	that.props.removeEventFromFilteredEventList(eventToRemove)
+		        that.transitionTo('home');
+		    },
+		    error: function( jqXhr, textStatus, errorThrown ){
+		        console.log( errorThrown );
+		    }
+		});
+	}
 },
 
 handleChange: function(key) {
@@ -120,6 +141,7 @@ render: function(){
 			console.log(address)
 
 		}
+		var that = this;
 
 		return (
 			<div className='right-container'>
@@ -128,7 +150,12 @@ render: function(){
 					<b>Date:</b> {date}<br/>
 					<b>Time:</b> {time}<br/>
 					<b>Description:</b> {eventVar.description}
-					{address}
+					{address}<br/>
+					<div className="btn-group">
+						<button className="btn btn-danger" onClick={that.handleRemove}>Delete</button>
+						<button className="btn btn-default">Edit</button>
+					</div>
+
 				</div>
 				<div id='rightPane' className='col-xs-12 col-md-6'>
 					<h1>Attend the event</h1>
