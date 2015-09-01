@@ -30,6 +30,7 @@ router.delete('/events/:id', EventCtrl.delete);
 router.get('/attendances', AttendanceCtrl.findAll);
 router.get('/attendances/:id', AttendanceCtrl.findOne);
 router.post('/attendances', AttendanceCtrl.create);
+router.delete('/attendances/:id', AttendanceCtrl.delete)
 
 
 

@@ -30,7 +30,6 @@ module.exports = {
             include: [ models.Address,
                   models.Attendance ]
         }).then(function (events) {
-
             res.send(events);
         });
     },
@@ -49,11 +48,6 @@ module.exports = {
         }
 
         }).spread(function(address, created){
-            console.log("--------------------------------------------------------")
-            console.log("address id: " + address.id)
-            console.log(address)
-            console.log("created: " + created)
-            console.log("------------------------------------------------------------")
             models.Event.create({
                 name: eventToAdd.name,
                 description: eventToAdd.description,
@@ -61,6 +55,7 @@ module.exports = {
                 lon: eventToAdd.lon,
                 timestamp: eventToAdd.timestamp,
                 //requiresRegistration = eventToAdd.requiresRegistration,
+                //maxAttendees = eventToAdd.maxAttendees
                 }).then(function(event) {
                     event.setAddress(address)
                     console.log(event.name + ' created successfully');
@@ -120,8 +115,8 @@ module.exports = {
         }).then(function(){
             res.status(200).send();
         }).catch(function(err){
-                    helper.sendErr(res, 400, err);
-            });
+            helper.sendErr(res, 400, err);
+        });
     }
 
    /* sendErr: function(statusCode, err){
