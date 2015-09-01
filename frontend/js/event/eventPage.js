@@ -24,30 +24,32 @@ var EventPage = React.createClass({
 		$('#form').validator()
 		$('#form').validator().on('submit', function (e) {
 	  		if (e.isDefaultPrevented()) {
-	   			console.log("invalid form");
 	 		 } else {
-	 		 	console.log("moroooooo")
 	 		 	e.preventDefault();
-	 		 	that.handleSubmit();
+	 		 	that.addAttendance();
 
 			 }
 		})
 		var tokens = UTILS.helper.getUrlTokens();
 		var eventId = tokens[tokens.length - 1];
-		var url = REST.event + eventId
 
-		var onSuccess = function (data) { 
+		var onSuccess = function (data) {
+			console.log("DATA:::");
+			console.log(data);
 			if(that.isMounted()){
 				that.setState({
 					event: data
 				})
 			}
 		};
-		UTILS.rest.getEvent(url, onSuccess);
+		var onError = function() {
+			console.log("Error on fetching event!");
+		}
+		UTILS.rest.getEntry('event', eventId, onSuccess, onError);
 
 	},
 
-handleSubmit: function(e) {
+addAttendance: function(e) {
 	console.log("submitting...")
 	var that = this;
 	var event = this.state.event;
@@ -58,20 +60,13 @@ handleSubmit: function(e) {
 		comment: this.state.comment,
 		event: event
 	}
-	$.ajax({
-	    type: 'POST',
-	    dataType: 'json',
-	    url: REST.attendance,
-	    data: JSON.stringify(data),
-	    contentType: "application/json; charset=utf-8",
-	    //contentType: 'application/x-www-form-urlencoded',
-	    success: function(){
+	var success = function(){
 	        that.transitionTo('home');
-	    },
-	    error: function( jqXhr, textStatus, errorThrown ){
+	};
+	var error = function( jqXhr, textStatus, errorThrown ){
 	        console.log( errorThrown );
-	    }
-	})
+	}
+	UTILS.rest.addEntry('attendance', data, success, error);
 },
 
 handleRemove: function(){
@@ -79,25 +74,18 @@ handleRemove: function(){
 	var deleteConfirmed = confirm("Are you sure you want to delete the event?")
 	var eventToRemove = this.state.event;
 	if(deleteConfirmed){
-		$.ajax({
-			type: 'DELETE',
-		    url: REST.deleteEvent + this.state.event.id,
-		    contentType: "application/json; charset=utf-8",
-		    //contentType: 'application/x-www-form-urlencoded',
-		    success: function(){
+		var success = function(){
 		    	that.props.removeEventFromFilteredEventList(eventToRemove)
 		        that.transitionTo('home');
-		    },
-		    error: function( jqXhr, textStatus, errorThrown ){
+		}
+		var error = function( jqXhr, textStatus, errorThrown ){
 		        console.log( errorThrown );
 		    }
-		});
+		UTILS.rest.removeEntry('event', this.state.event.id, success, error);	
 	}
 },
 
 handleChange: function(key) {
-	console.log("handle change")
-	console.log(this.state.name)
 	return function (e) {
 		var state = {};
 		state[key] = e.target.value;
@@ -136,9 +124,6 @@ render: function(){
 			addressStr = Underscore.trim(addressStr, ", ")
 
 			address = <div><b>Address:</b> {addressStr}</div>
-
-			console.log('-----------------')
-			console.log(address)
 
 		}
 		var that = this;

@@ -6,8 +6,20 @@ var REST = base + '/api';
 module.exports = {
 	'base': base,
 	'REST': REST,
-	'allEvents' : REST + '/events/',
-	'event' : REST + '/events/',
-	'attendance' : REST + '/attendances',
-	'deleteEvent' : REST + '/events/'
+	'allEntries': {
+		'event': REST + '/events/',
+		'attendance': REST + '/attendances/'
+	},
+	'getEntry' : {
+		'event': REST + '/events/',
+		'attendance': REST + '/attendances/'
+	},
+	'addEntry': {
+		'event': REST + '/events/',
+		'attendance': REST + '/attendances/'
+	},
+	'removeEntry': {
+		'event': REST + '/events/',
+		'attendance': REST + '/attendances/'
+	}
 };
