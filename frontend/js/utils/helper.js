@@ -41,6 +41,11 @@ module.exports = {
 		return (urlTokens[0] == 'eventForm') ? true : false;
 	},
 
+	isAtLocation: function(routeName) {
+
+
+	},
+
 	/* Returns lat and lon as array from marker */
 	getLatLon: function(marker) {
 		if(typeof marker == 'undefined') {

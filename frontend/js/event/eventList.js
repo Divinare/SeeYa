@@ -146,14 +146,12 @@ var EventList = React.createClass({
 	 	return (eventListData.tableContentNames.map(function(contentName) {
 	 			var tableHeader = UTILS.eventParser.getTableHeader(contentName);
 	 			var columnWidth = that.getTableSizes().columnWidths[tableHeader];
-	 			//{{width: columnWidth + 'px'}}
 	 			var styles={
 	 				width: columnWidth + 'px'
-	 				//marginRight: 2 + 'px'
 	 			};
-
+	 			// TODO: causes warning:
 				return (
-					<input type='text' style={styles} value={eventListData['filters'][contentName]} onChange={that.filterChange(contentName)} id='' placeholder='Filter...' />
+					<input type='text' style={styles} value={eventListData['filters'][contentName]} onChange={that.filterChange(contentName)} placeholder='Filter...' />
 				);
 			})
 		

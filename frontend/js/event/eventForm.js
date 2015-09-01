@@ -87,24 +87,9 @@ var EventForm = React.createClass({
 			timestamp: moment.unix()*1000,
 			lat: latLng[0],
 			lon: latLng[1]
-			//time: this.state.time,
 		};
-		console.log("New event created:");
-		console.log(data);
-
-
 		
-		$.ajax({
-		    type: 'POST',
-		    dataType: 'json',
-		    url: REST.allEvents,
-		    data: JSON.stringify(data),
-		    contentType: "application/json; charset=utf-8",
-		    //contentType: 'application/x-www-form-urlencoded',
-		    success: function(createdEventData){
-		    	console.log("Address:");
-		    	console.log(address);
-
+		var success = function(createdEventData) {
 		    	// Adding the missing fields of the created event:
 		    	createdEventData.Address = address;
 		    	createdEventData.Attendances = [];
@@ -115,12 +100,11 @@ var EventForm = React.createClass({
 		    	that.props.updateAppStatus('newEventMarker', {});
 		    	that.props.addEventToFilteredEventList(createdEventData);
 		        that.transitionTo('home');
-		    },
-		    error: function( jqXhr, textStatus, errorThrown ){
+		};
+		var error = function( jqXhr, textStatus, errorThrown ){
 		        console.log( errorThrown );
-		    }
-		})
-	
+		};
+		UTILS.rest.addEntry('event', data, success, error);
 	},
 
 	handleChange: function(key) {

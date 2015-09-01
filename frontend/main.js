@@ -1,7 +1,7 @@
 window.$ = window.jQuery = require('jquery');
 window.CONFIGS = require('./configs/config.js')
 window.UTILS = require('./js/utils');
-window.REST = UTILS.url;
+window.URL = UTILS.url;
 
 var React = require('react');
 //var GoogleMapsLoader = require('google-maps');
@@ -45,14 +45,7 @@ var Main = React.createClass({
 
     },
     componentWillMount: function() {
-        var that = this;
-        var onSuccess = function(eventList) {
-              that.setState({
-                eventList: eventList,
-                filteredEventList: eventList
-              })
-        }
-        UTILS.rest.getAllEvents(onSuccess);
+        this.getEvents();
     },
 
     componentDidMount: function() {
@@ -74,6 +67,17 @@ var Main = React.createClass({
         google.maps.event.trigger(map,'resize');
         map.setZoom( map.getZoom() );
 
+    },
+
+    getEvents: function() {
+        var that = this;
+        var onSuccess = function(eventList) {
+              that.setState({
+                eventList: eventList,
+                filteredEventList: eventList
+              })
+        }
+        UTILS.rest.getAllEntries('event', onSuccess);
     },
 
     updateAppStatus: function(propName, newValue) {
@@ -135,6 +139,7 @@ var Main = React.createClass({
                         newEventMarker={this.state.newEventMarker}
 
                         handleResize={this.handleResize}
+                        getEvents={this.getEvents}
                         updateAppStatus={this.updateAppStatus}
                         updateEventListData={this.updateEventListData}
                         addEventToFilteredEventList={this.addEventToFilteredEventList} 
@@ -168,6 +173,7 @@ var EventFormWrapper = React.createClass({
                 newEventMarker={this.props.newEventMarker}
 
                 handleResize={this.props.handleResize}
+                getEvents={this.props.getEvents}
                 updateAppStatus={this.props.updateAppStatus}
                 addEventToFilteredEventList={this.props.addEventToFilteredEventList} />
         );
@@ -180,6 +186,7 @@ var EventPageWrapper = React.createClass({
         return (
             <EventPage
                 handleResize={this.props.handleResize}
+                getEvents={this.props.getEvents}
                 updateAppStatus={this.props.updateAppStatus}
                 removeEventFromFilteredEventList = {this.props.removeEventFromFilteredEventList} />
         );
@@ -192,6 +199,7 @@ var EventPageWrapper = React.createClass({
         <Route handler={Main} path="/">
         <Route name="home" path="/" handler={EventListsWrapper} />
         <Route name="eventPage" path="events/:id" handler={EventPage} />
+        <Route name="eventEdit" path="events/:id/edit" handler={EventFormWrapper} />
         <Route name="eventForm" path="eventForm" handler={EventFormWrapper} />
         <Route name="about" handler={About} />
         <Route path="*" handler={NoMatch}/>

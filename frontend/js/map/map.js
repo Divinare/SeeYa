@@ -66,6 +66,18 @@ var Map = React.createClass({
             map: map
         });
 
+        /*
+        var onClick = function(event) {
+            that.closeOpenedInfowindow();
+            console.log(UTILS.helper.atEventForm());
+            if(UTILS.helper.atEventForm()) {
+                console.log("Adding eventmAKRER");
+                that.addNewEventMarker(event.latLng, map);
+            }
+        };
+        map.addClick(onClick);
+        */
+
         google.maps.event.addListener(map, 'click', function(event) {
             that.closeOpenedInfowindow();
             console.log(UTILS.helper.atEventForm());
@@ -79,19 +91,8 @@ var Map = React.createClass({
         });
 
 
-
-
-
-
-
-    //  create a basic map
     var mapOptions={};
-  //  mapOptions.zoom=8;
-  //  mapOptions.center=new google.maps.LatLng(52.7545, 0.3957);
- //   mapOptions.mapTypeId=google.maps.MapTypeId.ROADMAP;
-    
-  //  var map=new google.maps.Map(document.getElementById('map_container'), mapOptions);
-    
+
     //  create the ContextMenuOptions object
     var contextMenuOptions={};
     contextMenuOptions.classNames={menu:'context_menu', menuSeparator:'context_menu_separator'};
@@ -119,13 +120,10 @@ var Map = React.createClass({
     google.maps.event.addListener(contextMenu, 'menu_item_selected', function(latLng, eventName){
         switch(eventName){
             case 'create_event':
-                console.log("AAAAAAAAAAAAAAAAAAA");
-                console.log(latLng.G);
                 var latLngObj = {
                     lat: latLng.G,
                     lng: latLng.K
                 }
-                console.log("##########################");
                 that.addNewEventMarker(latLngObj, map);
                 that.transitionToEventForm();
                 break;
@@ -183,14 +181,11 @@ var Map = React.createClass({
     },
 
     addNewEventMarker: function(latLng, map) {
-        console.log("LAT LGN");
-        console.log(latLng);
-        console.log(map);
         var that = this;
         var icon = 'http://maps.google.com/mapfiles/ms/icons/grn-pushpin.png';
         var marker = this.createMarker(latLng, map, icon);
-        var infowindow =  this.createInfowindow(map, marker, null);
-        this.openInfowindow(map, marker, infowindow);
+        //var infowindow =  this.createInfowindow(map, marker, null);
+        //this.openInfowindow(map, marker, infowindow);
 
         //var pt = new google.maps.LatLng(lat, lng);
      //   map.setCenter(latLng);
