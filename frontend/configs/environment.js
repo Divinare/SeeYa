@@ -1,5 +1,5 @@
 module.exports = {
-	environment: 'development',
+	environment: 'production',
 	base: function() {
 		if(this.environment == 'development') {
 			return '//localhost:1337';
