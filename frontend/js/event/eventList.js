@@ -23,6 +23,36 @@ var EventList = React.createClass({
 		return {}
 	},
 
+	componentDidMount: function() {
+		var that = this;
+		console.log("mounteDDDDDDDDDDDDDD");
+		//	filterRows: function(tableHeader, value) {
+
+		var filters = this.props.eventListData['filters'];
+		/*
+		for(var index in filters) {
+			if(filters.hasOwnProperty(index) && filters[index] != "") {
+				console.log(filters[index]);
+				console.log("jeejee")
+			}
+		}
+		*/
+
+
+		Object.getOwnPropertyNames(filters).forEach(function(val) {
+			if(filters[val] != "") {
+				console.log(filters[val]);
+				that.filterRows(val, filters[val]);
+			}
+		});
+		this.forceUpdate();
+
+		console.log(this.props.eventListData);
+	},
+
+	componentWillReceiveProps: function() {
+	},
+
     rowGetter: function(rowIndex) {
 		var eventList = this.props.filteredEventList;
 		if($.isEmptyObject(eventList)) {
@@ -109,6 +139,7 @@ var EventList = React.createClass({
 	 },
 
 	filterRows: function(tableHeader, value) {
+		console.log("filtering rows! " + tableHeader + " " + value);
 		var eventListData = this.props.eventListData;
 		var filters = eventListData['filters'];
 
@@ -182,9 +213,11 @@ var EventList = React.createClass({
 	},
 
 	render: function() {
-		console.log(this.getTableSizes());
 		var that = this;
+
+		// Use eventList if filteredEventList is empty
 		var eventList = this.props.filteredEventList;
+		console.log(eventList);
 		var eventListData = this.props.eventListData;
 
 	    var sortDirArrow = '';

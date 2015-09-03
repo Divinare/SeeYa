@@ -32,7 +32,12 @@ var Main = React.createClass({
         eventListData['tableWidth'] = 0;
         eventListData['sortBy'] = 'name';
         eventListData['sortDir'] = null;
-        eventListData['filters'] = [];
+        eventListData['filters'] = {
+            name: "",
+            attendances: "",
+            streetAddress: "",
+            timestamp: ""
+        };
         eventListData['tableContentNames'] = ['name', 'attendances', 'streetAddress', 'timestamp'];
         
         return {
@@ -80,8 +85,21 @@ var Main = React.createClass({
         UTILS.rest.getAllEntries('event', onSuccess);
     },
 
+    addEventToFilteredEventList: function(addedEvent) {
+        var that = this;
+        var filteredEventList = this.state.filteredEventList.slice();    
+        filteredEventList.push(addedEvent);   
+
+        var onSuccess = function(eventList) {
+              that.setState({
+                eventList: eventList,
+                filteredEventList: filteredEventList
+              })
+        }
+        UTILS.rest.getAllEntries('event', onSuccess);
+    },
+
     updateAppStatus: function(propName, newValue) {
-        console.log("upd app status!!");
         var state = {};
         state[propName] = newValue;
         this.setState(state);
@@ -97,12 +115,6 @@ var Main = React.createClass({
         this.setState({
             eventListData: currentData
         })
-    },
-
-    addEventToFilteredEventList: function(event) {
-        var filteredEventList = this.state.filteredEventList.slice();    
-        filteredEventList.push(event);   
-        this.setState({filteredEventList: filteredEventList})
     },
 
     removeEventFromFilteredEventList: function(eventToRemove){
@@ -139,7 +151,6 @@ var Main = React.createClass({
                         newEventMarker={this.state.newEventMarker}
 
                         handleResize={this.handleResize}
-                        getEvents={this.getEvents}
                         updateAppStatus={this.updateAppStatus}
                         updateEventListData={this.updateEventListData}
                         addEventToFilteredEventList={this.addEventToFilteredEventList} 

@@ -90,16 +90,13 @@ var EventForm = React.createClass({
 		};
 		
 		var success = function(createdEventData) {
-		    	// Adding the missing fields of the created event:
-		    	createdEventData.Address = address;
-		    	createdEventData.Attendances = [];
-		    	console.log("adding");
-		    	console.log(createdEventData);
-
-		    	that.props.newEventMarker.setMap(null);
-		    	that.props.updateAppStatus('newEventMarker', {});
-		    	that.props.addEventToFilteredEventList(createdEventData);
-		        that.transitionTo('home');
+	    	// Adding the missing fields of the created event:
+	    	createdEventData.Address = address;
+	    	createdEventData.Attendances = [];
+	    	that.props.newEventMarker.setMap(null);
+	    	that.props.updateAppStatus('newEventMarker', {});
+	        that.props.addEventToFilteredEventList(createdEventData);
+	        that.transitionTo('home');
 		};
 		var error = function( jqXhr, textStatus, errorThrown ){
 		        console.log( errorThrown );

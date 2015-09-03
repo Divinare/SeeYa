@@ -16,6 +16,7 @@ var EventPage = React.createClass({
 
 	},
 	componentWillMount: function() {
+		
 	},
 
 	componentDidMount: function() {

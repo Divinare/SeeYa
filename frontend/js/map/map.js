@@ -2,7 +2,6 @@ var React = require('react');
 var Router = require('react-router');
 var ContextMenu = require('./contextMenu.js');
 
-
 var CreateNewEventPopup = require('./createNewEventPopup.js');
 // https://developers.google.com/maps/documentation/javascript/examples/marker-animations
 
@@ -12,7 +11,6 @@ var Map = React.createClass({
     getInitialState: function() {
 
         return {
-            map: {},
             initialZoom: 8,
             mapCenterLat: 60,
             mapCenterLng: 20,
@@ -21,10 +19,7 @@ var Map = React.createClass({
         };
     },
     componentDidMount: function () {
-        console.log("------------------------------------------");
-        var map = this.initMap();
-
-
+        this.initMap();
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -35,7 +30,7 @@ var Map = React.createClass({
         if(this.state != null && nextProps.filteredEventList.length > 0) {
             
             if(allowDrawMarkers) {
-                this.addAllMarkers(nextProps, this.state.map);
+                this.addAllMarkers(nextProps);
 
                 var newEventMarker = this.props.newEventMarker;
                 if(!$.isEmptyObject(newEventMarker)) {
@@ -52,7 +47,6 @@ var Map = React.createClass({
     },
 
     initMap: function() {
-
         var that = this;
 
         var mapOptions = {
@@ -61,23 +55,8 @@ var Map = React.createClass({
             minZoom: 3
         };
 
-        window.map = new google.maps.Map(this.getDOMNode(), mapOptions);
-        this.setState({
-            map: map
-        });
-
-        /*
-        var onClick = function(event) {
-            that.closeOpenedInfowindow();
-            console.log(UTILS.helper.atEventForm());
-            if(UTILS.helper.atEventForm()) {
-                console.log("Adding eventmAKRER");
-                that.addNewEventMarker(event.latLng, map);
-            }
-        };
-        map.addClick(onClick);
-        */
-
+        window.map = new google.maps.Map(this.getDOMNode(), mapOptions);       
+    
         google.maps.event.addListener(map, 'click', function(event) {
             that.closeOpenedInfowindow();
             console.log(UTILS.helper.atEventForm());
@@ -85,65 +64,62 @@ var Map = React.createClass({
                 console.log("Adding eventmAKRER");
                 that.addNewEventMarker(event.latLng, map);
             }
+        });
+    
 
+        var mapOptions={};
 
-            //that.deleteNewEventMarker();
+        //  create the ContextMenuOptions object
+        var contextMenuOptions={};
+        contextMenuOptions.classNames={menu:'context_menu', menuSeparator:'context_menu_separator'};
+        
+        //  create an array of ContextMenuItem objects
+        var menuItems=[];
+        menuItems.push({className:'context_menu_item link', eventName:'create_event', label:'Create Event'});
+        menuItems.push({className:'context_menu_item link', eventName:'zoom_in_click', label:'Zoom in'});
+        menuItems.push({className:'context_menu_item link', eventName:'zoom_out_click', label:'Zoom out'});
+        //  a menuItem with no properties will be rendered as a separator
+        menuItems.push({});
+        menuItems.push({className:'context_menu_item link', eventName:'center_map_click', label:'Center map here'});
+        contextMenuOptions.menuItems=menuItems;
+        
+        //  create the ContextMenu object
+        console.log(ContextMenu);
+        var contextMenu = new ContextMenu(map, contextMenuOptions);
+        
+        //  display the ContextMenu on a Map right click
+        google.maps.event.addListener(map, 'rightclick', function(mouseEvent){
+            contextMenu.show(mouseEvent.latLng);
+        });
+        
+        //  listen for the ContextMenu 'menu_item_selected' event
+        google.maps.event.addListener(contextMenu, 'menu_item_selected', function(latLng, eventName){
+            switch(eventName){
+                case 'create_event':
+                    var latLngObj = {
+                        lat: latLng.G,
+                        lng: latLng.K
+                    }
+                    that.addNewEventMarker(latLngObj, map);
+                    that.transitionToEventForm();
+                    break;
+                case 'zoom_in_click':
+                    map.setZoom(map.getZoom()+1);
+                    break;
+                case 'zoom_out_click':
+
+                    map.setZoom(map.getZoom()-1);
+                    break;
+                case 'center_map_click':
+
+                    map.panTo(latLng);
+                    break;
+            }
         });
 
+    },
 
-    var mapOptions={};
-
-    //  create the ContextMenuOptions object
-    var contextMenuOptions={};
-    contextMenuOptions.classNames={menu:'context_menu', menuSeparator:'context_menu_separator'};
-    
-    //  create an array of ContextMenuItem objects
-    var menuItems=[];
-    menuItems.push({className:'context_menu_item link', eventName:'create_event', label:'Create Event'});
-    menuItems.push({className:'context_menu_item link', eventName:'zoom_in_click', label:'Zoom in'});
-    menuItems.push({className:'context_menu_item link', eventName:'zoom_out_click', label:'Zoom out'});
-    //  a menuItem with no properties will be rendered as a separator
-    menuItems.push({});
-    menuItems.push({className:'context_menu_item link', eventName:'center_map_click', label:'Center map here'});
-    contextMenuOptions.menuItems=menuItems;
-    
-    //  create the ContextMenu object
-    console.log(ContextMenu);
-    var contextMenu = new ContextMenu(map, contextMenuOptions);
-    
-    //  display the ContextMenu on a Map right click
-    google.maps.event.addListener(map, 'rightclick', function(mouseEvent){
-        contextMenu.show(mouseEvent.latLng);
-    });
-    
-    //  listen for the ContextMenu 'menu_item_selected' event
-    google.maps.event.addListener(contextMenu, 'menu_item_selected', function(latLng, eventName){
-        switch(eventName){
-            case 'create_event':
-                var latLngObj = {
-                    lat: latLng.G,
-                    lng: latLng.K
-                }
-                that.addNewEventMarker(latLngObj, map);
-                that.transitionToEventForm();
-                break;
-            case 'zoom_in_click':
-                map.setZoom(map.getZoom()+1);
-                break;
-            case 'zoom_out_click':
-
-                map.setZoom(map.getZoom()-1);
-                break;
-            case 'center_map_click':
-
-                map.panTo(latLng);
-                break;
-        }
-    });
-        return map;
-     },
-
-    addAllMarkers: function(props, map) {
+    addAllMarkers: function(props) {
         var that = this;
         var filteredEventList = props.filteredEventList;
         var createdMarkers = [];

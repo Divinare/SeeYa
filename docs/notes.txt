@@ -2,3 +2,16 @@
 
 Add this to eventlist column attribute?
 fixed={true}
+
+
+
+
+
+
+
+
+
+Miksi map.js ja mapView.js ei refaktoroitu erilleen?
+-> rupesi tulemaan liikaa spagettia, map.js:lle olisi pitänyt antaa usein funktioita, joissa oli kutsuja mapView sisäisiin funktioihin jne
+
+-> hankalaa esim. joku context menun valintojen tekeminen kun pitää antaa funktoina taas joku tietorakenne, mitä tapahtuu kun zoomataan, tehdään eventti jne.. Funktioissa, jotka map.js:lle annetaan on suurimmaksi osaksi sama koodi kuin mapViewissä, joten tämä menee vaan sekavammaksi ja turhaksi
