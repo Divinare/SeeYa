@@ -24,30 +24,13 @@ var EventList = React.createClass({
 	},
 
 	componentDidMount: function() {
+
+	},
+
+	componentWillMount :function() {
+		console.log("upd props");
 		var that = this;
 		console.log("mounteDDDDDDDDDDDDDD");
-		//	filterRows: function(tableHeader, value) {
-
-		var filters = this.props.eventListData['filters'];
-		/*
-		for(var index in filters) {
-			if(filters.hasOwnProperty(index) && filters[index] != "") {
-				console.log(filters[index]);
-				console.log("jeejee")
-			}
-		}
-		*/
-
-
-		Object.getOwnPropertyNames(filters).forEach(function(val) {
-			if(filters[val] != "") {
-				console.log(filters[val]);
-				that.filterRows(val, filters[val]);
-			}
-		});
-		this.forceUpdate();
-
-		console.log(this.props.eventListData);
 	},
 
 	componentWillReceiveProps: function() {
@@ -127,9 +110,14 @@ var EventList = React.createClass({
 	    });
 
 		this.props.updateAppStatus('filteredEventList', rows);
-	    this.props.updateEventListData('sortBy', sortBy);
-	    this.props.updateEventListData('sortDir', sortDir);
-	    
+
+
+
+
+        var currentData = this.state.eventListData;
+        eventListData['sortBy'] = sortBy;
+        eventListData['sortDir'] = sortDir;
+        this.props.updateAppStatus('eventListData', eventListData);
 	  },
 
 	 _renderHeader: function(label, cellDataKey) {
@@ -138,32 +126,17 @@ var EventList = React.createClass({
 		);
 	 },
 
-	filterRows: function(tableHeader, value) {
-		console.log("filtering rows! " + tableHeader + " " + value);
-		var eventListData = this.props.eventListData;
-		var filters = eventListData['filters'];
-
-		filters[tableHeader] = value;
-
-	    var rows = this.props.eventList.slice();
-	    var filteredRows = rows;
-	    for(var filter in filters) {
-		    var filterBy = filters[filter];
-		    var tableHeader = filter
-		    filteredRows = filterBy ? filteredRows.filter(function(row){
-		      return UTILS.eventParser.getValue(row, tableHeader).toLowerCase().indexOf(filterBy.toLowerCase()) >= 0
-		    }) : filteredRows;
-		};
-
-		this.props.updateAppStatus('filteredEventList', filteredRows);
-	},
-
 	filterChange: function(tableHeader) {
 		
 		return function (e) {
 	       var value = e.target.value;
-		   this.filterRows(tableHeader, value);
-	       this.props.updateEventListData(tableHeader, value, 'filters');
+	       var eventList = this.props.eventList;
+	       var eventListData = this.props.eventListData;
+		   var filteredRows = UTILS.eventFilter.filterColumn(eventList, eventListData, tableHeader, value);
+
+		   this.props.updateAppStatus('filteredEventList', filteredRows);
+		   eventListData['filters'][tableHeader] = value;
+		   this.props.updateAppStatus('filters', eventListData);
         }.bind(this);
 
 
@@ -217,7 +190,6 @@ var EventList = React.createClass({
 
 		// Use eventList if filteredEventList is empty
 		var eventList = this.props.filteredEventList;
-		console.log(eventList);
 		var eventListData = this.props.eventListData;
 
 	    var sortDirArrow = '';

@@ -95,7 +95,8 @@ var EventForm = React.createClass({
 	    	createdEventData.Attendances = [];
 	    	that.props.newEventMarker.setMap(null);
 	    	that.props.updateAppStatus('newEventMarker', {});
-	        that.props.addEventToFilteredEventList(createdEventData);
+	        //that.props.addEventToFilteredEventList(createdEventData);
+	        that.props.getEvents();
 	        that.transitionTo('home');
 		};
 		var error = function( jqXhr, textStatus, errorThrown ){

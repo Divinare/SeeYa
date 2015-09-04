@@ -66,8 +66,11 @@ var Main = React.createClass({
         $(".right-container").css('height', eventListHeight);
         $(".right-container").css('width', eventListWidth);
 
-        this.updateEventListData('tableHeight', eventListHeight);
-        this.updateEventListData('tableWidth', eventListWidth);
+
+        var eventListData = this.state.eventListData;
+        eventListData['tableHeight'] = eventListHeight;
+        eventListData['tableWidth'] = eventListWidth;
+        this.updateAppStatus('eventListData', eventListData);
         
         google.maps.event.trigger(map,'resize');
         map.setZoom( map.getZoom() );
@@ -77,24 +80,12 @@ var Main = React.createClass({
     getEvents: function() {
         var that = this;
         var onSuccess = function(eventList) {
-              that.setState({
-                eventList: eventList,
-                filteredEventList: eventList
-              })
-        }
-        UTILS.rest.getAllEntries('event', onSuccess);
-    },
-
-    addEventToFilteredEventList: function(addedEvent) {
-        var that = this;
-        var filteredEventList = this.state.filteredEventList.slice();    
-        filteredEventList.push(addedEvent);   
-
-        var onSuccess = function(eventList) {
-              that.setState({
+            var eventListData = that.state.eventListData;
+            var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
+            that.setState({
                 eventList: eventList,
                 filteredEventList: filteredEventList
-              })
+            })
         }
         UTILS.rest.getAllEntries('event', onSuccess);
     },
@@ -103,28 +94,6 @@ var Main = React.createClass({
         var state = {};
         state[propName] = newValue;
         this.setState(state);
-    },
-
-    updateEventListData: function(key, value, array) {
-        var currentData = this.state.eventListData;
-        if(typeof array != 'undefined') {
-            currentData[array][key] = value
-        } else {
-            currentData[key] = value;
-        }
-        this.setState({
-            eventListData: currentData
-        })
-    },
-
-    removeEventFromFilteredEventList: function(eventToRemove){
-        var list = this.state.filteredEventList.slice();
-        for(var i= 0; i < list.length; i++){
-            if(list[i].id === eventToRemove.id){
-                list.splice(i, 1);
-            }
-        }
-        this.setState({filteredEventList: list})
     },
 
     render: function() {
@@ -152,9 +121,7 @@ var Main = React.createClass({
 
                         handleResize={this.handleResize}
                         updateAppStatus={this.updateAppStatus}
-                        updateEventListData={this.updateEventListData}
-                        addEventToFilteredEventList={this.addEventToFilteredEventList} 
-                        removeEventFromFilteredEventList = {this.removeEventFromFilteredEventList}/>
+                        getEvents={this.getEvents} />
                 </div>  
             </div>
         );
@@ -170,8 +137,7 @@ var EventListsWrapper = React.createClass({
                 filteredEventList={this.props.filteredEventList}
                 eventListData={this.props.eventListData}
 
-                updateAppStatus={this.props.updateAppStatus}
-                updateEventListData={this.props.updateEventListData} />
+                updateAppStatus={this.props.updateAppStatus} />
         );
     }
 });
@@ -185,8 +151,7 @@ var EventFormWrapper = React.createClass({
 
                 handleResize={this.props.handleResize}
                 getEvents={this.props.getEvents}
-                updateAppStatus={this.props.updateAppStatus}
-                addEventToFilteredEventList={this.props.addEventToFilteredEventList} />
+                updateAppStatus={this.props.updateAppStatus} />
         );
     }
 });
@@ -198,8 +163,7 @@ var EventPageWrapper = React.createClass({
             <EventPage
                 handleResize={this.props.handleResize}
                 getEvents={this.props.getEvents}
-                updateAppStatus={this.props.updateAppStatus}
-                removeEventFromFilteredEventList = {this.props.removeEventFromFilteredEventList} />
+                updateAppStatus={this.props.updateAppStatus} />
         );
     }
 });

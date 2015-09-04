@@ -76,7 +76,8 @@ handleRemove: function(){
 	var eventToRemove = this.state.event;
 	if(deleteConfirmed){
 		var success = function(){
-		    	that.props.removeEventFromFilteredEventList(eventToRemove)
+				that.props.getEvents();
+		    	//that.props.removeEventFromFilteredEventList(eventToRemove)
 		        that.transitionTo('home');
 		}
 		var error = function( jqXhr, textStatus, errorThrown ){
