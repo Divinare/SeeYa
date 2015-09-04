@@ -28,9 +28,6 @@ var EventList = React.createClass({
 	},
 
 	componentWillMount :function() {
-		console.log("upd props");
-		var that = this;
-		console.log("mounteDDDDDDDDDDDDDD");
 	},
 
 	componentWillReceiveProps: function() {

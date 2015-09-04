@@ -32,11 +32,24 @@ body {
     top:0;
 }
 
-.right-container {
-    position: relative;
-    float: left;
-    left: 23px; /* So that the container and map wouldnt overlap each other */
+
+
+@media (max-width: 991px) {
+    .right-container {
+        position: relative;
+        float: left;
+        left: 20px; /* So that the container and map wouldnt overlap each other */
+    }
 }
+
+@media (min-width: 992px) {
+    .right-container {
+        position: relative;
+        float: left;
+        left: 50px; /* So that the container and map wouldnt overlap each other */
+    }
+}
+
 
 .red-border{
 	border-style: solid !important;

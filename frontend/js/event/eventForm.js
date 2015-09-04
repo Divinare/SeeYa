@@ -208,7 +208,7 @@ var EventForm = React.createClass({
 						</div>
 
 						<div className='form-group'>
-							<textArea type='text' value={this.state.description} onChange={this.handleChange('description')} className='form-control' id='description' placeholder='Description'/>
+							<textArea type='text' value={this.state.description} onChange={this.handleChange('description')} className='form-control description' id='description' placeholder='Description'/>
 						</div>
 						<div className="form-group">
 				            <button className="btn btn-default" type="submit">Submit</button>

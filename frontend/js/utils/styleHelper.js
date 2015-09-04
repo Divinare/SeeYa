@@ -32,7 +32,7 @@ module.exports = {
 		if(screenType == 'desktop') {
 			var mapWidth = window.innerWidth;
 			mapWidth = mapWidth/2;
-			mapWidth -= (marginWidth*5);
+			mapWidth -= (marginWidth*3);
 			return mapWidth;
 		} else if(screenType == 'tablet') {
 			return window.innerWidth;
@@ -60,8 +60,10 @@ module.exports = {
 	getEventListWidth: function() {
 		var screenType = this.getScreenType();
 
-		if(screenType == 'desktop') {	
-			return window.innerWidth/2;
+		if(screenType == 'desktop') {
+			var eventListWidth =  window.innerWidth/2;
+		//	eventListWidth += 20;
+			return eventListWidth;
 		} else if(screenType == 'tablet') {
 			var eventListWidth = window.innerWidth;
 			eventListWidth -= (marginWidth*4);

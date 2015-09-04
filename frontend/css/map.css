@@ -1,7 +1,19 @@
-#map-canvas {
-  float: left;
-  max-width: none;
+@media (max-width: 991px) {
+    #map-canvas {
+		float: left;
+		max-width: none;
+		left: 15px;
+    }
 }
+
+@media (min-width: 992px) {
+    #map-canvas {
+		float: left;
+		max-width: none;
+		left: 25px;
+    }
+}
+
 
 .createNewEventMarkerLink {
 	color: #397AB7;
