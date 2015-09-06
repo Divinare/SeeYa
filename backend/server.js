@@ -6,6 +6,7 @@ var bodyParser = require("body-parser");
 var models = require("./models");
 var debug = require("debug")("EventMeetup");
 var util = require('util');
+var jade = require('jade');
 
 var routes = require('./routes');
 
@@ -31,6 +32,9 @@ app.use(rest, routes);
 
 app.get('*', function (req, res) {
   res.render('index');
+  //var options = {};
+ // var html = jade.render(path.join(__dirname, 'views'), options);
+  //res.render(path.join(__dirname, 'views'));
 
 });
 

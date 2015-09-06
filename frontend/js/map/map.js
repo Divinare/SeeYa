@@ -47,6 +47,7 @@ var Map = React.createClass({
     },
 
     initMap: function() {
+        console.log("INIT MAP");
         var that = this;
 
         var mapOptions = {
@@ -83,8 +84,6 @@ var Map = React.createClass({
         menuItems.push({className:'context_menu_item link', eventName:'center_map_click', label:'Center map here'});
         contextMenuOptions.menuItems=menuItems;
         
-        //  create the ContextMenu object
-        console.log(ContextMenu);
         var contextMenu = new ContextMenu(map, contextMenuOptions);
         
         //  display the ContextMenu on a Map right click
