@@ -9,7 +9,7 @@ var autocomplete;
 var componentForm = ['street-address', 'country-name', 'postal-code'];
 
 var EventForm = React.createClass({
-	mixins: [ Router.Navigation ],
+	mixins: [ Router.Navigation, Router.State ],
 
     getInitialState: function() {
 	    return {
@@ -20,6 +20,10 @@ var EventForm = React.createClass({
 	},
 
 	componentDidMount: function() {
+		if(this.isEditForm()){
+			console.log("editform")
+			this.autoFillEventDetails();
+		}
 		this.props.handleResize();
 		var that = this;
 		$('#form').validator()
@@ -56,10 +60,20 @@ var EventForm = React.createClass({
 		dateInput.setAttribute("data-validateDate", this.validateDate)
 		dateInput.addEventListener('blur', this.handleOnBlur);
 		this.hideRedBorderAndErrorText(dateInput, document.getElementById('errorDivForDateField'));
-	
-		
 	},
 
+	autoFillEventDetails: function() {
+		var event = this.getQuery().event;
+		var dateInput = document.querySelectorAll(".datepicker__input")[0]
+		this.state.address = event.Address.streetAddress;
+		this.state.name = event.name;
+		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
+		this.state.date = moment;
+		var time = moment.format("HH:mm");
+		this.state.time = time
+		this.state.description = event.description
+
+	},
 	fillInAddress: function() {
   		var place = autocomplete.getPlace();
   		console.log(place);
@@ -125,21 +139,36 @@ var EventForm = React.createClass({
 			lat: latLng[0],
 			lon: latLng[1]
 		};
-		
-		var success = function(createdEventData) {
-	    	// Adding the missing fields of the created event:
-	    	createdEventData.Address = address;
-	    	createdEventData.Attendances = [];
-	    	that.props.newEventMarker.setMap(null);
-	    	that.props.updateAppStatus('newEventMarker', {});
-	        //that.props.addEventToFilteredEventList(createdEventData);
-	        that.props.getEvents();
-	        that.transitionTo('home');
-		};
+
+		var success;
 		var error = function( jqXhr, textStatus, errorThrown ){
-		        console.log( errorThrown );
+		    console.log( errorThrown );
 		};
-		UTILS.rest.addEntry('event', data, success, error);
+
+		//TODO: remove copy paste from the success functions if possible
+		if(this.isEditForm()){
+			success = function(createdEventData) {
+		    	// Adding the missing fields of the created event:
+		    	createdEventData.Address = address;
+		    	that.props.newEventMarker.setMap(null);
+		    	that.props.updateAppStatus('newEventMarker', {});
+		        that.props.getEvents();
+		        that.transitionTo('home');
+			};
+			UTILS.rest.addEntry('event', data, success, error);
+		}else{
+			success = function(createdEventData) {
+		    	// Adding the missing fields of the created event:
+		    	createdEventData.Address = address;
+		    	createdEventData.Attendances = [];
+		    	that.props.newEventMarker.setMap(null);
+		    	that.props.updateAppStatus('newEventMarker', {});
+		        //that.props.addEventToFilteredEventList(createdEventData);
+		        that.props.getEvents();
+		        that.transitionTo('home');
+			};
+			UTILS.rest.addEntry('event', data, success, error);
+		}
 	},
 
 	handleChange: function(key) {
@@ -194,10 +223,15 @@ var EventForm = React.createClass({
 	},
 
 	isEditForm: function(){
-		var tokens = UTILS.helper.getUrlTokens();
-		var edit = tokens[tokens.length - 1];
-		return edit === "edit";
-	}
+		return this.getQuery().edit
+	},
+
+	getEditOrCreateTitle: function(){
+		if(this.isEditForm()){
+			return "Edit event"
+		}
+		return "Create new event"
+	},
 
 	render: function(){
 		 // form tagista onSubmit={event.preventDefault()}, otettu pois, (bugas firefoxissa)
@@ -207,7 +241,7 @@ var EventForm = React.createClass({
 				</div>
 				<div id='centerPane' className='col-xs-12 col-md-8'>
 
-					<h1 className="text-center">Create new event</h1>
+					<h1 className="text-center">{this.getEditOrCreateTitle()}</h1>
 					<form id='form' className='form' data-toggle="validator" data-disable="false" role='form'>
 						<div className='form-group'>
 							<div className='required'>

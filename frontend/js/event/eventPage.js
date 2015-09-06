@@ -90,8 +90,13 @@ handleRemove: function(){
 handleEdit: function(){
 	var tokens = UTILS.helper.getUrlTokens();
 	var eventId = tokens[tokens.length - 1];
-	console.log("editing...")
-	this.transitionTo('eventEdit', {id: eventId});
+
+	var params = {
+		edit: true,
+		streetAddress: this.state.event.Address.streetAddress,
+		event: this.state.event
+	}
+	this.transitionTo('eventEdit', {id: eventId}, params);
 },
 
 handleChange: function(key) {
