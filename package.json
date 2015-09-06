@@ -34,7 +34,7 @@
     "gulp-postcss": "^5.1.6",
     "gulp-util": "^3.0.3",
     "gulp-webpack": "^1.4.0",
-    "jade": "~1.6.0",
+    "jade": "^1.6.0",
     "jquery": "^2.1.4",
     "lodash": "^2.4.1",
     "moment": "^2.10.3",

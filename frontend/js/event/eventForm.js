@@ -5,6 +5,8 @@ var Select = require('react-select');
 var Moment = require('moment')
 var validator = require('bootstrap-validator')
 //var $ = require('jquery-autocomplete-js');
+var autocomplete;
+var componentForm = ['street-address', 'country-name', 'postal-code'];
 
 var EventForm = React.createClass({
 	mixins: [ Router.Navigation ],
@@ -34,11 +36,47 @@ var EventForm = React.createClass({
 	 		 	that.handleSubmit();
 			 }
 		})
+
+		var addressField = document.getElementById('address');
+		var options = {
+			types: ['geocode']
+		};//{componentRestrictions: {country: 'us'}};
+
+		autocomplete = new google.maps.places.Autocomplete(
+			addressField,
+			options
+		);
+
+		// When the user selects an address from the dropdown, populate the address
+		// fields in the form.
+		autocomplete.addListener('place_changed', this.fillInAddress);
+
 		this.state.dateFieldClicked = false
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
 		dateInput.setAttribute("data-validateDate", this.validateDate)
 		dateInput.addEventListener('blur', this.handleOnBlur);
 		this.hideRedBorderAndErrorText(dateInput, document.getElementById('errorDivForDateField'));
+	
+		
+	},
+
+	fillInAddress: function() {
+  		var place = autocomplete.getPlace();
+  		console.log(place);
+	  for (var i = 0; i < componentForm.length; i++) {
+	  	console.log(componentForm[i]);
+	  	console.log(place.adr_address);
+	 // 	console.log($(place.adr_address).find('.streetAddress').val);
+	   // console.log(place.adr_address.getElementsByClassName(componentForm[i]).value);
+	    //document.getElementById(component).disabled = false;
+	  }
+	  	//var address = "jeejee";
+
+		//$('#address').trigger('blur').val(address);
+	// $('#id_address1').val(address);
+      //  $('#id_address1').attr('value', address);
+
+
 	},
 
 	validateDate: function(date){
