@@ -18,7 +18,6 @@ var EventForm = React.createClass({
 	},
 
 	componentDidMount: function() {
-
 		this.props.handleResize();
 		var that = this;
 		$('#form').validator()
@@ -155,6 +154,12 @@ var EventForm = React.createClass({
 	searchByAddress: function(address){
 		console.log("search by address called!")
 	},
+
+	isEditForm: function(){
+		var tokens = UTILS.helper.getUrlTokens();
+		var edit = tokens[tokens.length - 1];
+		return edit === "edit";
+	}
 
 	render: function(){
 		 // form tagista onSubmit={event.preventDefault()}, otettu pois, (bugas firefoxissa)

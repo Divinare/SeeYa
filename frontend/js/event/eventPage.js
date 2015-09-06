@@ -87,6 +87,13 @@ handleRemove: function(){
 	}
 },
 
+handleEdit: function(){
+	var tokens = UTILS.helper.getUrlTokens();
+	var eventId = tokens[tokens.length - 1];
+	console.log("editing...")
+	this.transitionTo('eventEdit', {id: eventId});
+},
+
 handleChange: function(key) {
 	return function (e) {
 		var state = {};
@@ -140,7 +147,7 @@ render: function(){
 					{address}<br/>
 					<div className="btn-group">
 						<button className="btn btn-danger" onClick={that.handleRemove}>Delete</button>
-						<button className="btn btn-default">Edit</button>
+						<button className="btn btn-default" onClick={that.handleEdit}>Edit</button>
 					</div>
 
 				</div>
