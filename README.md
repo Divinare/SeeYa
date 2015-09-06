@@ -6,8 +6,6 @@ API KEY: &key=AIzaSyD1G_IG2lcziaSIQT5m3FCGY2xKSBMssHM
 WORKLOG
 https://docs.google.com/spreadsheets/d/1UvO3rXq2QNohr4bI80ic2XvOpNPf0sl2WTRqVjmFHtA/edit?usp=sharing
 
-
-
 DEVELOPMENT INSTRUCTIONS
 
 How to run the app locally (Windows):
@@ -21,7 +19,7 @@ SETTING UP THE ENVIRONMENT:
 
 npm install -g gulp
 
-This install gulp globally to your machine. At least on windows you might have to restart the command prompt after this.
+This install gulp globally to your machine.
 
 - In the same folder run command:
 

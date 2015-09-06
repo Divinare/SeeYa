@@ -2,7 +2,7 @@ WINDOWS
 
 Instructions to get postgres running on your local environment:
 
-1. Install postgres in your system (maybe it is enough also to install with npm install but I googled it.. maybe http://www.postgresql.org/download/)
+1. Install postgres in your system http://www.postgresql.org/download/)
 
 2. Put postgres bin folder in your path so that you can use psql from command line (needed at least on windows)
 
@@ -11,7 +11,6 @@ Instructions to get postgres running on your local environment:
 
 CREATE DATABASE devdb;
 CREATE ROLE "Pete" WITH LOGIN;
-ALTER USER Pete PASSWORD 'insert password here';
 
 4. Update pg_hba.conf, which should be located in postgres installation directory in data folder
 
