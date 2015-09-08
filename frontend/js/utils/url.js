@@ -21,5 +21,8 @@ module.exports = {
 	'removeEntry': {
 		'event': REST + '/events/',
 		'attendance': REST + '/attendances/'
+	},
+	'editEntry': {
+		'event': REST + '/events/'
 	}
 };

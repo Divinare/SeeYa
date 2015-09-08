@@ -17,7 +17,7 @@ var EventForm = React.createClass({
 	},
 	componentWillMount: function() {
 
-	},
+	},	
 
 	componentDidMount: function() {
 		if(this.isEditForm()){
@@ -72,7 +72,7 @@ var EventForm = React.createClass({
 		var time = moment.format("HH:mm");
 		this.state.time = time
 		this.state.description = event.description
-
+		this.state.latLng = [event.lat, event.lon]
 	},
 	fillInAddress: function() {
   		var place = autocomplete.getPlace();
@@ -127,9 +127,13 @@ var EventForm = React.createClass({
 		moment.minutes(minutes)
 		moment.hours(hours)
 
-		var timedate = Date.parse(this.state.time)
-
-		var latLng = UTILS.helper.getLatLon(this.props.newEventMarker);
+		var timedate = Date.parse(this.state.time);
+		var latLng;
+		if(this.isEditForm()){
+			latLng = this.state.latLng;
+		}else{
+			latLng = UTILS.helper.getLatLon(this.props.newEventMarker);
+		}
 
 		var data = {
 			name: this.state.name,
@@ -139,6 +143,7 @@ var EventForm = React.createClass({
 			lat: latLng[0],
 			lon: latLng[1]
 		};
+
 
 		var success;
 		var error = function( jqXhr, textStatus, errorThrown ){
@@ -150,12 +155,10 @@ var EventForm = React.createClass({
 			success = function(createdEventData) {
 		    	// Adding the missing fields of the created event:
 		    	createdEventData.Address = address;
-		    	that.props.newEventMarker.setMap(null);
-		    	that.props.updateAppStatus('newEventMarker', {});
 		        that.props.getEvents();
 		        that.transitionTo('home');
 			};
-			UTILS.rest.addEntry('event', data, success, error);
+			UTILS.rest.editEntry('event', this.getQuery().event.id, data, success, error);
 		}else{
 			success = function(createdEventData) {
 		    	// Adding the missing fields of the created event:

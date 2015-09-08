@@ -46,7 +46,19 @@ var removeEntry = function(name, id, onSuccess, onError) {
         success: onSuccess,
         error: onError
     });
-    
+}
+
+var editEntry = function(name, id, data, onSuccess, onError){
+    var url = URL.editEntry[name];
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: url + id,
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: onSuccess,
+        error: onError
+    });
 }
 
 module.exports = {
@@ -54,6 +66,8 @@ module.exports = {
     getAllEntries: getAllEntries,
     getEntry: getEntry,
     addEntry: addEntry,
-    removeEntry: removeEntry
+    removeEntry: removeEntry,
+    editEntry: editEntry
+
 
 }
