@@ -120,14 +120,7 @@ var EventForm = React.createClass({
 			zipCode: "00100",
 		}
 
-		var moment = this.state.date
-		var hours = parseInt(this.state.time.substring(0, 2))
-		var minutes = parseInt(this.state.time.substring(3, 5))
-
-		moment.minutes(minutes)
-		moment.hours(hours)
-
-		var timedate = Date.parse(this.state.time);
+		var moment = this.addHoursAndMinsToDate();
 		var latLng;
 		if(this.isEditForm()){
 			latLng = this.state.latLng;
@@ -150,28 +143,43 @@ var EventForm = React.createClass({
 		    console.log( errorThrown );
 		};
 
+		var moveOn = function(){
+			that.props.getEvents();
+		    that.transitionTo('home');
+		}
+
+		var addMissingEventFields = function(createdEventData){
+			// Adding the missing fields of the created event:
+		    createdEventData.Address = address;
+		    createdEventData.Attendances = [];
+		}
+
 		//TODO: remove copy paste from the success functions if possible
 		if(this.isEditForm()){
 			success = function(createdEventData) {
-		    	// Adding the missing fields of the created event:
-		    	createdEventData.Address = address;
-		        that.props.getEvents();
-		        that.transitionTo('home');
+		    	addMissingEventFields(createdEventData);
+		        moveOn();
 			};
 			UTILS.rest.editEntry('event', this.getQuery().event.id, data, success, error);
 		}else{
 			success = function(createdEventData) {
-		    	// Adding the missing fields of the created event:
-		    	createdEventData.Address = address;
-		    	createdEventData.Attendances = [];
+		    	addMissingEventFields(createdEventData);
 		    	that.props.newEventMarker.setMap(null);
 		    	that.props.updateAppStatus('newEventMarker', {});
 		        //that.props.addEventToFilteredEventList(createdEventData);
-		        that.props.getEvents();
-		        that.transitionTo('home');
+		        moveOn();
 			};
 			UTILS.rest.addEntry('event', data, success, error);
 		}
+	},
+
+	addHoursAndMinsToDate: function(){
+		var moment = this.state.date
+		var hours = parseInt(this.state.time.substring(0, 2))
+		var minutes = parseInt(this.state.time.substring(3, 5))
+		moment.minutes(minutes)
+		moment.hours(hours)
+		return moment;
 	},
 
 	handleChange: function(key) {

@@ -66,7 +66,6 @@ var Main = React.createClass({
         $(".right-container").css('height', eventListHeight);
         $(".right-container").css('width', eventListWidth);
 
-
         var eventListData = this.state.eventListData;
         eventListData['tableHeight'] = eventListHeight;
         eventListData['tableWidth'] = eventListWidth;
