@@ -75,11 +75,11 @@ var EventForm = React.createClass({
 		this.state.latLng = [event.lat, event.lon]
 	},
 	fillInAddress: function() {
-  		var place = autocomplete.getPlace();
-  		console.log(place);
-	  for (var i = 0; i < componentForm.length; i++) {
-	  	console.log(componentForm[i]);
-	  	console.log(place.adr_address);
+		var place = autocomplete.getPlace();
+		console.log(place);
+		for (var i = 0; i < componentForm.length; i++) {
+		console.log(componentForm[i]);
+		console.log(place.adr_address);
 	 // 	console.log($(place.adr_address).find('.streetAddress').val);
 	   // console.log(place.adr_address.getElementsByClassName(componentForm[i]).value);
 	    //document.getElementById(component).disabled = false;
