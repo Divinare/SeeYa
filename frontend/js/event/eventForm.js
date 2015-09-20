@@ -126,8 +126,10 @@ var EventForm = React.createClass({
 			//console.log("edit form")
 			latLng = this.state.latLng;
 		}else{
-			console.log("not edit form")
+			//console.log("not edit form")
+			//console.log(this.props.newEventMarker)
 			latLng = UTILS.helper.getLatLon(this.props.newEventMarker);
+			//console.log(latLng)
 		}
 
 		var data = {

@@ -53,8 +53,11 @@ module.exports = {
 			return null;
 		} else {
 			var array = [];
-			array.push(marker.position.G);
-			array.push(marker.position.K);
+			for (var prop in marker.position) {
+				console.log(marker.position[prop])
+				array.push(marker.position[prop])
+			}
+
 			return array;
 		}
 	}
