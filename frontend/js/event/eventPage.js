@@ -3,6 +3,12 @@ var Router = require('react-router');
 var Moment = require('moment');
 var Underscore = require('underscore.string')
 var validator = require('bootstrap-validator')
+var rBootstrap = require('react-bootstrap')
+var Modal = rBootstrap.Modal
+var Button = rBootstrap.Button
+var OverlayTrigger = rBootstrap.OverlayTrigger
+var Popover = rBootstrap.Popover
+var Tooltip = rBootstrap.Tooltip
 $ = window.jQuery = require('jquery');
 
 var EventPage = React.createClass({
@@ -11,10 +17,20 @@ var EventPage = React.createClass({
 	getInitialState: function() {
 
 		return {
-			event: []
+			event: [],
+			 showModal: false
 		};
 
 	},
+  close() {
+    this.setState({ showModal: false });
+  },
+
+  open() {
+    this.setState({ showModal: true });
+  },
+
+
 	componentWillMount: function() {
 		
 	},
@@ -107,6 +123,7 @@ handleChange: function(key) {
 	}.bind(this);
 },
 
+
 render: function(){
 		//console.log("result: " + utils.urlTokens())
 		//cannot use variable name event here because we need to refer to something else with event in the format
@@ -142,44 +159,104 @@ render: function(){
 		}
 		var that = this;
 
-		return (
-			<div className='right-container'>
-				<div id='leftPane' className='col-xs-12 col-md-6'>
-					<h1>{eventVar.name}</h1>
-					<b>Date:</b> {date}<br/>
-					<b>Time:</b> {time}<br/>
-					<b>Description:</b> {eventVar.description}
-					{address}<br/>
-					<div className="btn-group">
-						<button className="btn btn-danger" onClick={that.handleRemove}>Delete</button>
-						<button className="btn btn-default" onClick={that.handleEdit}>Edit</button>
-					</div>
+/*			<ul>
+						{eventVar.Attendances.map(function(attendance){
+				            return <li>{attendance.name}</li>;
+				          })}
+					</ul>*/
+  	let popover = <Popover title="popover">very popover. such engagement</Popover>;
 
-				</div>
-				<div id='rightPane' className='col-xs-12 col-md-6'>
-					<h1>Attend the event</h1>
-					<form className='form' id='form' role='form' data-toggle="validator" data-disable="false" onSubmit={event.preventDefault()}>
-						<div className='form-group required'>
-							<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='form-control' id='name' placeholder='Your name' required/>
-							<div className="help-block with-errors"></div>
-						</div>
-						<div className='form-group'>
-							<input type='text' pattern="^\S+@\S+\.\S+$" value={this.state.email} onChange={this.handleChange('email')} className='form-control' id='email' placeholder='Email address'/>
-							<div className="help-block with-errors"></div>
-						</div>
-						<div className='form-group'>
-							<textArea type='text' value={this.state.description} onChange={this.handleChange('comment')} className='form-control' id='comment' placeholder='Comment'/>
-						</div>
-						<div className="form-group">
-				            <button className="btn btn-default" type="submit">Attend</button>
-					    </div>
+    var btn
+    var peopleAttending = 0
+    var participantList
+    if(typeof eventVar.Attendances !== 'undefined'){
+    	btn = <Button
+		      bsStyle="default"
+		      onClick={this.open}>
+		      Show participants
+		    </Button>
 
-					</form>
+		 peopleAttending = eventVar.Attendances.length
+
+    }
+
+	return (
+		<div className='right-container'>
+			<div id='leftPane' className='col-xs-12 col-md-6'>
+				<h1>{eventVar.name}</h1>
+				<b>Date:</b> {date}<br/>
+				<b>Time:</b> {time}<br/>
+				{address}
+				<b>People attending: </b>{peopleAttending}<br/>
+				<b>Description:</b> {eventVar.description}<br/><br/>
+
+			    <Modal show={this.state.showModal} onHide={this.close}>
+			      <Modal.Header closeButton>
+			        <Modal.Title>People attending in {eventVar.name}</Modal.Title>
+			      </Modal.Header>
+				      <Modal.Body>
+				        	<table className='participantTable'>
+				        	    <tr>
+					            	<th>Name</th>
+					            	<th>Comment</th>
+					            </tr>
+							{typeof eventVar.Attendances !== 'undefined' ? eventVar.Attendances.map(function(attendance){
+					            return <div>
+
+					            <tr>
+					            	<td>{attendance.name}</td>
+					            	<td><p><OverlayTrigger overlay={<Popover title="Comment">{attendance.comment}</Popover>}>
+					            	<a href="#">{attendance.comment}</a></OverlayTrigger></p></td>
+					            </tr>
+					            
+					           </div>
+					          }) : ''}
+							 </table>
+				      </Modal.Body>
+			    </Modal>
+
+			
+				<div className="btn-group">
+					<button className="btn btn-danger" onClick={that.handleRemove}>Delete</button>
+					<button className="btn btn-default" onClick={that.handleEdit}>Edit</button>
+					{ peopleAttending > 0 ? btn : ''}
 				</div>
+
 			</div>
-		)
-	}
+			<div id='rightPane' className='col-xs-12 col-md-6'>
+				<h1>Attend the event</h1>
+				<form className='form' id='form' role='form' data-toggle="validator" data-disable="false" onSubmit={event.preventDefault()}>
+					<div className='form-group required'>
+						<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='form-control' id='name' placeholder='Your name' required/>
+						<div className="help-block with-errors"></div>
+					</div>
+					<div className='form-group'>
+						<input type='text' pattern="^\S+@\S+\.\S+$" value={this.state.email} onChange={this.handleChange('email')} className='form-control' id='email' placeholder='Email address'/>
+						<div className="help-block with-errors"></div>
+					</div>
+					<div className='form-group'>
+						<textArea type='text' value={this.state.description} onChange={this.handleChange('comment')} className='form-control' id='comment' placeholder='Comment'/>
+					</div>
+					<div className="form-group">
+			            <button className="btn btn-default" type="submit">Attend</button>
+				    </div>
 
+				</form>
+			</div>
+		</div>
+	)
+}
+
+});
+
+var nameList = React.createClass({
+  render: function() {
+    return (
+      <div className="commentList">
+        Hello, world! I am a CommentList.
+      </div>
+    );
+  }
 });
 
 module.exports = EventPage;

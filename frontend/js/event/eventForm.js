@@ -291,7 +291,7 @@ var EventForm = React.createClass({
 
 						<div className='form-group required'>
 							<div className='input-group'>
-								<input type='text'  pattern="^([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"  value={this.state.time} onChange={this.handleTimeChange} className='form-control' id='time' placeholder="Time: hh:mm" required/>
+								<input type='text'  pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"  value={this.state.time} onChange={this.handleTimeChange} className='form-control' id='time' placeholder="Time: hh:mm" required/>
 								<span className="input-group-addon add-on white-background"  onClick={this.setCurrentTime}>
 									<span className="glyphicon glyphicon-time"></span>
 								</span>
