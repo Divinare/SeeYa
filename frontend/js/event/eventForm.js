@@ -123,8 +123,10 @@ var EventForm = React.createClass({
 		var moment = this.addHoursAndMinsToDate();
 		var latLng;
 		if(this.isEditForm()){
+			//console.log("edit form")
 			latLng = this.state.latLng;
 		}else{
+			console.log("not edit form")
 			latLng = UTILS.helper.getLatLon(this.props.newEventMarker);
 		}
 
