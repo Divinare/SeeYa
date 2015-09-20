@@ -16,15 +16,12 @@ Select all events:
 select * from "Events";
 
 
-
-
-
 DATABASE management:
 
 We do this by using dump files, read documentation: http://www.postgresql.org/docs/9.4/static/backup-dump.html
 
 Create a dumpfile of a dabatase, outfile = some output filename:
-pg_dump -Fc devdb > seedsdb.dumpoutfile.dump
+pg_dump -Fc devdb > seedsdb.dump
 
 To import into a existing EMPTY database:
 psql devdb < infile.dump

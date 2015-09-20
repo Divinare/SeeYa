@@ -41,9 +41,7 @@ var Map = React.createClass({
 
         if(nextProps.newEventMarker == null) {
             console.log("removing new eventMarker!");
-        }
-        
-        
+        }   
     },
 
     initMap: function() {
@@ -66,6 +64,8 @@ var Map = React.createClass({
                 that.addNewEventMarker(event.latLng, map);
             }
         });
+
+        this.centerMapToUserLocation();
     
 
         var mapOptions={};
@@ -115,7 +115,21 @@ var Map = React.createClass({
                     break;
             }
         });
+    },
 
+    centerMapToUserLocation: function() {
+        if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(this.centerMapLocation);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    },
+    
+    centerMapLocation: function(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        var latLng = new google.maps.LatLng(lat, lon);
+        map.setCenter(latLng);
     },
 
     addAllMarkers: function(props) {

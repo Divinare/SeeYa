@@ -48,6 +48,31 @@ How to add dependencies:
 - Run command npm install
 
 
+MAC:
+Install brew, node, npm:
+http://blog.teamtreehouse.com/install-node-js-npm-mac
+
+Install postgresql:
+http://exponential.io/blog/2015/02/21/install-postgresql-on-mac-os-x-via-brew/
+
+make postgres start when mac OS loads
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+
+
+Starting up postgres server:
+postgres -D /usr/local/var/postgres
+
+
+after database creation:
+to enter psql enter commands:
+
+ createdb
+
+ psql
+
+this connects to a database
+psql -U Username DatabaseName 
+
 
 ### Frontend ###
 
