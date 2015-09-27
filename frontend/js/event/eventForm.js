@@ -17,8 +17,8 @@ var EventForm = React.createClass({
 	},
 	componentWillMount: function() {
 
-	},	
-
+	},
+                
 	componentDidMount: function() {
 		if(this.isEditForm()){
 			console.log("editform")
@@ -139,8 +139,7 @@ var EventForm = React.createClass({
 			timestamp: moment.unix()*1000,
 			lat: latLng[0],
 			lon: latLng[1]
-		};
-
+		};		
 
 		var success;
 		var error = function( jqXhr, textStatus, errorThrown ){
