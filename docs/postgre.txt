@@ -24,4 +24,9 @@ Create a dumpfile of a dabatase, outfile = some output filename:
 pg_dump -Fc devdb > seedsdb.dump
 
 To import into a existing EMPTY database:
-psql devdb < infile.dump
+psql devdb < seedsdb.dump
+
+REMEMBER to change your username, db and the right .dump file
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -U joe -d devdb seedsdb.dump
+
+
