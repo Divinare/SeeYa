@@ -156,7 +156,7 @@ render: function(){
             }
             addressStr = Underscore.trim(addressStr, ", ")
 
-            address = <div><b>Address:</b> {addressStr}</div>
+            address = <div>{addressStr}</div>
 
         }
         var that = this;
@@ -179,18 +179,30 @@ render: function(){
             </Button>
 
          peopleAttending = eventVar.Attendances.length
+    }
 
+    var peopleAttendingStr
+    if(peopleAttending > 0){
+        peopleAttendingStr = peopleAttending + " people"
+    }
+
+    var description
+
+    if(!Underscore.isBlank(eventVar.description)){
+        description = eventVar.description
+    }else{
+        description = ''
     }
 
     return (
         <div className='right-container'>
-            <div id='leftPane' className='col-xs-12 col-md-6'>
+            <div>
                 <h1>{eventVar.name}</h1>
-                <b>Date:</b> {date}<br/>
-                <b>Time:</b> {time}<br/>
+                {date}<br/>
+                {time}<br/>
                 {address}
-                <b>People attending: </b>{peopleAttending}<br/>
-                <b>Description:</b> {eventVar.description}<br/><br/>
+                {peopleAttendingStr}<br/>
+                {description}<br/>
 
                 <Modal bsSize='small' show={this.state.showModal} onHide={this.close}>
                   <Modal.Header closeButton>
@@ -208,14 +220,14 @@ render: function(){
 
             
                 <div className="btn-group">
-                    <button className="btn btn-danger" onClick={that.handleRemove}>Delete</button>
                     <button className="btn btn-default" onClick={that.handleEdit}>Edit</button>
                     { peopleAttending > 0 ? btn : ''}
+                    <button className="btn btn-danger" onClick={that.handleRemove}>Delete</button>
                 </div>
 
             </div>
-            <div id='rightPane' className='col-xs-12 col-md-6'>
-                <h1>Attend the event</h1>
+            <div >
+                <h1>Attend {event.name}</h1>
                 <form className='form' id='form' role='form' data-toggle="validator" data-disable="false" onSubmit={event.preventDefault()}>
                     <div className='form-group required'>
                         <input type='text' value={this.state.name} onChange={this.handleChange('name')} className='form-control' id='name' placeholder='Your name' required/>
