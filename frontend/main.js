@@ -8,7 +8,7 @@ var React = require('react');
 
 var environment = require('./configs/environment.js');
 
-
+var Frontpage = require('./js/frontpage.js');
 var Header = require('./js/header.js');
 var Map = require('./js/map/map.js');
 var About = require('./js/about.js');
@@ -41,6 +41,8 @@ var Main = React.createClass({
         eventListData['tableContentNames'] = ['name', 'attendances', 'streetAddress', 'timestamp'];
         
         return {
+            showFrontpage: true,
+            frontpageLoaded: false,
             eventList: [],
             filteredEventList: [],
             eventListData: eventListData,
@@ -59,20 +61,22 @@ var Main = React.createClass({
     },
 
     handleResize: function(e) {
-        $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight());
-        $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
-        var eventListHeight = UTILS.styleHelper.getEventListHeight();
-        var eventListWidth = UTILS.styleHelper.getEventListWidth();
-        $(".right-container").css('height', eventListHeight);
-        $(".right-container").css('width', eventListWidth);
+        if(typeof map !== 'undefined') {
+            $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight());
+            $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
+            var eventListHeight = UTILS.styleHelper.getEventListHeight();
+            var eventListWidth = UTILS.styleHelper.getEventListWidth();
+            $(".right-container").css('height', eventListHeight);
+            $(".right-container").css('width', eventListWidth);
 
-        var eventListData = this.state.eventListData;
-        eventListData['tableHeight'] = eventListHeight;
-        eventListData['tableWidth'] = eventListWidth;
-        this.updateAppStatus('eventListData', eventListData);
-        
-        google.maps.event.trigger(map,'resize');
-        map.setZoom( map.getZoom() );
+            var eventListData = this.state.eventListData;
+            eventListData['tableHeight'] = eventListHeight;
+            eventListData['tableWidth'] = eventListWidth;
+            this.updateAppStatus('eventListData', eventListData);
+            
+            google.maps.event.trigger(map,'resize');
+            map.setZoom( map.getZoom() );
+        }
 
     },
 
@@ -97,35 +101,50 @@ var Main = React.createClass({
 
     render: function() {
         var that = this;
-        return (
-              <div>
-                <Header />
+        var showFrontpage = this.state.showFrontpage;
+        var frontpageLoaded = this.state.frontpageLoaded;
+        if(!frontpageLoaded) {
+            return (
+                <Frontpage 
+                handleResize={this.handleResize}
+                updateAppStatus={this.updateAppStatus} />
+                )
+        } else {
+            return (
+                <div>
+                    <Frontpage 
+                    handleResize={this.handleResize}
+                    updateAppStatus={this.updateAppStatus} />
 
-                <div className="content">
-                    <Map
-                        google={this.state.google}
-                        eventList={this.state.eventList}
-                        filteredEventList={this.state.filteredEventList}
-                        newEventMarker={this.state.newEventMarker}
-                        markers={this.state.markers}
+                    <Header />
+
+                    <div className="content">
+                        <Map
+                            google={this.state.google}
+                            eventList={this.state.eventList}
+                            filteredEventList={this.state.filteredEventList}
+                            newEventMarker={this.state.newEventMarker}
+                            markers={this.state.markers}
+                            
+                            handleResize={this.handleResize}
+                            updateAppStatus={this.updateAppStatus} />
+
                         
-                        updateAppStatus={this.updateAppStatus} />
+                        <RouteHandler
+                            eventList={this.state.eventList}
+                            filteredEventList={this.state.filteredEventList}
+                            eventListData={this.state.eventListData}
+                            newEventMarker={this.state.newEventMarker}
 
-                    
-                    <RouteHandler
-                        eventList={this.state.eventList}
-                        filteredEventList={this.state.filteredEventList}
-                        eventListData={this.state.eventListData}
-                        newEventMarker={this.state.newEventMarker}
-
-                        handleResize={this.handleResize}
-                        updateAppStatus={this.updateAppStatus}
-                        getEvents={this.getEvents} />
-                </div>  
-            </div>
-        );
+                            handleResize={this.handleResize}
+                            updateAppStatus={this.updateAppStatus}
+                            getEvents={this.getEvents} />
+                    </div>  
+                </div>
+            );
+        }
     }
-});
+});   
 
 var EventListsWrapper = React.createClass({
 

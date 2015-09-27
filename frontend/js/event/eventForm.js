@@ -15,6 +15,7 @@ var EventForm = React.createClass({
 	    return {
 	    };
 	},
+	
 	componentWillMount: function() {
 
 	},

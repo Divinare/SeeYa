@@ -1,5 +1,40 @@
 body {
 	background-color: #FFFFFF;
+
+}
+
+img{
+    height:100%;
+    width:100%;
+
+    position:absolute;
+    /*top:-50%; bottom:-50%;
+    left:-50%; right:-50%;
+
+    height:auto;
+    width:auto;
+
+    */
+     z-index: 999;
+    margin:auto;
+}
+
+.frontpage {
+     position:absolute;
+    height:100%;
+    width:100%;
+     /*z-index: 999;*/
+     overflow-y: hidden;
+   /* max-height: 500px;*/
+
+    transition-property: all;
+    transition-duration: .5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+
+}
+
+.frontpage.closed {
+    max-height: 0;
 }
 
 .link {

@@ -20,6 +20,7 @@ var Map = React.createClass({
     },
     componentDidMount: function () {
         this.initMap();
+        this.props.handleResize();
     },
 
     componentWillReceiveProps: function(nextProps) {
