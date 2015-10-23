@@ -103,46 +103,38 @@ var Main = React.createClass({
         var that = this;
         var showFrontpage = this.state.showFrontpage;
         var frontpageLoaded = this.state.frontpageLoaded;
-        if(!frontpageLoaded) {
-            return (
-                <Frontpage 
-                handleResize={this.handleResize}
-                updateAppStatus={this.updateAppStatus} />
-                )
-        } else {
-            return (
-                <div>
-                    <Frontpage 
-                    handleResize={this.handleResize}
-                    updateAppStatus={this.updateAppStatus} />
 
-                    <Header />
+        return (
+            <div>
 
-                    <div className="content">
-                        <Map
-                            google={this.state.google}
-                            eventList={this.state.eventList}
-                            filteredEventList={this.state.filteredEventList}
-                            newEventMarker={this.state.newEventMarker}
-                            markers={this.state.markers}
-                            
-                            handleResize={this.handleResize}
-                            updateAppStatus={this.updateAppStatus} />
+                <Header />
 
+                <div className="content">
+                    <Map
+                        google={this.state.google}
+                        eventList={this.state.eventList}
+                        filteredEventList={this.state.filteredEventList}
+                        newEventMarker={this.state.newEventMarker}
+                        markers={this.state.markers}
                         
-                        <RouteHandler
-                            eventList={this.state.eventList}
-                            filteredEventList={this.state.filteredEventList}
-                            eventListData={this.state.eventListData}
-                            newEventMarker={this.state.newEventMarker}
+                        handleResize={this.handleResize}
+                        updateAppStatus={this.updateAppStatus} />
 
-                            handleResize={this.handleResize}
-                            updateAppStatus={this.updateAppStatus}
-                            getEvents={this.getEvents} />
-                    </div>  
-                </div>
-            );
-        }
+                    
+                    <RouteHandler
+                        eventList={this.state.eventList}
+                        filteredEventList={this.state.filteredEventList}
+                        eventListData={this.state.eventListData}
+                        newEventMarker={this.state.newEventMarker}
+
+                        handleResize={this.handleResize}
+                        updateAppStatus={this.updateAppStatus}
+                        getEvents={this.getEvents} />
+                </div>  
+                
+            </div>
+        );
+    
     }
 });   
 
