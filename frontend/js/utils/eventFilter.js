@@ -2,6 +2,7 @@
 
 function filterColumns(eventList, eventListData) {
 	console.log("at filterColumns");
+	console.log(eventListData);
 		var filters = eventListData['filters'];
 		var filteredRows = eventList;
 		Object.getOwnPropertyNames(filters).forEach(function(val) {

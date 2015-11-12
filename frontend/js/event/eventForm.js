@@ -41,7 +41,7 @@ var EventForm = React.createClass({
 	 		 	that.handleSubmit();
 			 }
 		})
-
+/*
 		var addressField = document.getElementById('address');
 		var options = {
 			types: ['geocode']
@@ -51,6 +51,44 @@ var EventForm = React.createClass({
 			addressField,
 			options
 		);
+*/
+
+
+// TODO LINK:
+ // http://stackoverflow.com/questions/7865446/google-maps-places-api-v3-autocomplete-select-first-option-on-enter
+
+    var input = document.getElementById('searchTextField');
+
+        // store the original event binding function
+        var _addEventListener = (input.addEventListener) ? input.addEventListener : input.attachEvent;
+
+        function addEventListenerWrapper(type, listener) {
+            // Simulate a 'down arrow' keypress on hitting 'return' when no pac suggestion is selected,
+            // and then trigger the original listener.
+            if (type == "keydown") {
+                var orig_listener = listener;
+                listener = function(event) {
+                    var suggestion_selected = $(".pac-item-selected").length > 0;
+                    if (event.which == 13 && !suggestion_selected) {
+                        var simulated_downarrow = $.Event("keydown", {
+                            keyCode: 40,
+                            which: 40
+                        });
+                        orig_listener.apply(input, [simulated_downarrow]);
+                    }
+
+                    orig_listener.apply(input, [event]);
+                };
+            }
+
+            _addEventListener.apply(input, [type, listener]);
+        }
+
+        input.addEventListener = addEventListenerWrapper;
+        input.attachEvent = addEventListenerWrapper;
+
+        var autocomplete = new google.maps.places.Autocomplete(input);
+
 
 		// When the user selects an address from the dropdown, populate the address
 		// fields in the form.
@@ -76,21 +114,15 @@ var EventForm = React.createClass({
 		this.state.latLng = [event.lat, event.lon]
 	},
 	fillInAddress: function() {
+		console.log("at fill in address");
 		var place = autocomplete.getPlace();
+		console.log("PLACE IS: ");
 		console.log(place);
-		for (var i = 0; i < componentForm.length; i++) {
-		console.log(componentForm[i]);
-		console.log(place.adr_address);
-	 // 	console.log($(place.adr_address).find('.streetAddress').val);
-	   // console.log(place.adr_address.getElementsByClassName(componentForm[i]).value);
-	    //document.getElementById(component).disabled = false;
-	  }
-	  	//var address = "jeejee";
+	    this.makeMarkerFromAddress(place);
 
-		//$('#address').trigger('blur').val(address);
-	// $('#id_address1').val(address);
-      //  $('#id_address1').attr('value', address);
-
+	    // TODO
+	    // To get address from coordinates
+	    // http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=false
 
 	},
 
@@ -165,7 +197,7 @@ var EventForm = React.createClass({
 		        moveOn();
 			};
 			UTILS.rest.editEntry('event', this.getQuery().event.id, data, success, error);
-		}else{
+		} else{
 			success = function(createdEventData) {
 		    	addMissingEventFields(createdEventData);
 		    	that.props.newEventMarker.setMap(null);
@@ -233,8 +265,18 @@ var EventForm = React.createClass({
 		errorDiv.style.display = 'block';
 	},
 
-	searchByAddress: function(address){
+	makeMarkerFromAddress: function(place){
 		console.log("search by address called!")
+		console.log(place);
+		if(typeof(place) == 'undefined' || typeof(place.address_components) == 'undefined') {
+			console.log("Place was undefined. TODO: user should be warned now.")
+		} else {
+			var ad = place.address_components;
+			for (var i = 0; i < ad.length; i++) {
+				console.log(ad[i]);
+				//console.log(place.adr_address);
+		  	}
+		}
 	},
 
 	isEditForm: function(){
@@ -267,8 +309,8 @@ var EventForm = React.createClass({
 
 						<div className='form-group required'>
 							<div className='input-group'>
-								<input type='text' data-minlength="6" value={this.state.address} onChange={this.handleChange('address')} className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
-								<span className="input-group-addon add-on white-background" onClick={this.searchByAddress}>
+								<input type='text' data-minlength="6" value={this.state.address} onChange={this.handleChange('address')} onBlur={this.fillInAddress} className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
+								<span className="input-group-addon add-on white-background" onClick={this.fillInAddress}>
 									 <span className="glyphicon glyphicon-search"></span>
 								</span>
 							</div>

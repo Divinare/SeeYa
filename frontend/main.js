@@ -6,8 +6,6 @@ window.URL = UTILS.url;
 var React = require('react');
 //var GoogleMapsLoader = require('google-maps');
 
-var environment = require('./configs/environment.js');
-
 var Frontpage = require('./js/frontpage.js');
 var Header = require('./js/header.js');
 var Map = require('./js/map/map.js');
@@ -111,7 +109,6 @@ var Main = React.createClass({
 
                 <div className="content">
                     <Map
-                        google={this.state.google}
                         eventList={this.state.eventList}
                         filteredEventList={this.state.filteredEventList}
                         newEventMarker={this.state.newEventMarker}

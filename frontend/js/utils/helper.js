@@ -21,6 +21,8 @@ module.exports = {
 		// The base url starts with this, we want to extract the rest of the base url
 		var http = "http://"
 		var url = window.location.href;
+
+		// TODO: Not in use, ask Petri
 		var baseWithoutHttp = URL.base.slice(http.length)
 		var startIndexOfBase = url.indexOf(baseWithoutHttp)
 

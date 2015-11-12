@@ -11,7 +11,7 @@ var jade = require('jade');
 var routes = require('./routes');
 
 console.log("ENV::::::::::::::: " + process.env.NODE_ENV);
-
+console.log(process.env.PORT);
 var dist = path.join(__dirname, '/../dist');
 var app = express();
 var router = express.Router();

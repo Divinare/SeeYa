@@ -1,10 +1,6 @@
-var environment = require('../../configs/environment.js');
-
-var base = environment.base();
-var REST = base + '/api';
+var REST = '/api';
 
 module.exports = {
-	'base': base,
 	'REST': REST,
 	'allEntries': {
 		'event': REST + '/events/',
