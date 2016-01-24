@@ -280,7 +280,7 @@ var Map = React.createClass({
     render: function(){
  
         return (
-            <div id="map-canvas" className="row"></div>
+            <div id="map-canvas"></div>
         )
     }
 

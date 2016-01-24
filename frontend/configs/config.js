@@ -4,7 +4,7 @@ var smallScreenMinWidth = 768;
 var mediumScreenMinWidth = 992;
 var largeScreenMinWidth = 1170;
 
-var navbarHeight = 50;
+var navbarHeight = 52;
 var mapBottomMargin = 20;
 var eventsListTopicHeight = 115;
 

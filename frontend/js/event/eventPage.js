@@ -197,7 +197,7 @@ render: function(){
     return (
         <div className='right-container'>
             <div>
-                <h1>{eventVar.name}</h1>
+                <h2>{eventVar.name}</h2>
                 {date}<br/>
                 {time}<br/>
                 {address}
@@ -218,7 +218,7 @@ render: function(){
                       </Modal.Body>
                 </Modal>
 
-            
+                <br />
                 <div className="btn-group">
                     <button className="btn btn-default" onClick={that.handleEdit}>Edit</button>
                     { peopleAttending > 0 ? btn : ''}
@@ -227,7 +227,7 @@ render: function(){
 
             </div>
             <div >
-                <h1>Attend {event.name}</h1>
+                <h2>Attend {event.name}</h2>
                 <form className='form' id='form' role='form' data-toggle="validator" data-disable="false" onSubmit={event.preventDefault()}>
                     <div className='form-group required'>
                         <input type='text' value={this.state.name} onChange={this.handleChange('name')} className='form-control' id='name' placeholder='Your name' required/>

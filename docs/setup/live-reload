@@ -1,0 +1,13 @@
+
+
+
+Livereload to ubuntu:
+http://www.thelacunablog.com/install-livereload-ubuntu.html
+
+NOTE: I had to install gems with: 
+rvmsudo gem install guard -V
+
+
+
+
+

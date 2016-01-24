@@ -206,7 +206,7 @@ var EventList = React.createClass({
         //} else {
             return (
                 <div className="right-container">
-                    <h1>Events</h1>
+                    <h2 className="topic">Events</h2>
                     {this.renderFilterFields()}
                     <Table
                         headerHeight={50}
@@ -241,6 +241,8 @@ var EventList = React.createClass({
                             dataKey={'timestamp'}
                             cellRenderer={this.cellRenderer} />
                     </Table>
+
+                
                 </div>              
                 )       
     //      }           
@@ -248,3 +250,44 @@ var EventList = React.createClass({
 });
 
 module.exports = EventList;
+
+
+
+/* OLD TABLE CODE, dont remove. Let Joe remove
+
+{this.renderFilterFields()}
+                    <Table
+                        headerHeight={50}
+                        rowHeight={30}
+                        rowGetter={this.rowGetter}
+                        rowsCount={eventList.length}
+                        width={this.props.eventListData.tableWidth}
+                        height={this.props.eventListData.tableHeight}>
+
+                        <Column
+                            headerRenderer={this._renderHeader}
+                            label={'Name' + (sortBy === 'name' ? sortDirArrow : '')}
+                            width={this.getTableSizes().columnWidths['name']}
+                            dataKey={'name'}
+                            cellRenderer={this.cellRenderer} />
+                        <Column
+                            headerRenderer={this._renderHeader}
+                            label={'o/' + (sortBy === 'Attendances' ? sortDirArrow : '')}
+                            width={this.getTableSizes().columnWidths['attendances']}
+                            dataKey={'attendances'}
+                            cellRenderer={this.cellRenderer} />
+                        <Column
+                            headerRenderer={this._renderHeader}
+                            label={'Address' + (sortBy === 'Address' ? sortDirArrow : '')}
+                            width={this.getTableSizes().columnWidths['address']}
+                            dataKey={'streetAddress'}
+                            cellRenderer={this.cellRenderer} />
+                        <Column
+                            headerRenderer={this._renderHeader}
+                            label={'Time' + (sortBy === 'timestamp' ? sortDirArrow : '')}
+                            width={this.getTableSizes().columnWidths['time']}
+                            dataKey={'timestamp'}
+                            cellRenderer={this.cellRenderer} />
+                    </Table>
+
+                    */

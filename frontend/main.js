@@ -64,8 +64,8 @@ var Main = React.createClass({
             $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
             var eventListHeight = UTILS.styleHelper.getEventListHeight();
             var eventListWidth = UTILS.styleHelper.getEventListWidth();
-            $(".right-container").css('height', eventListHeight);
-            $(".right-container").css('width', eventListWidth);
+            //$(".right-container").css('height', eventListHeight);
+            //$(".right-container").css('width', eventListWidth);
 
             var eventListData = this.state.eventListData;
             eventListData['tableHeight'] = eventListHeight;
@@ -117,16 +117,19 @@ var Main = React.createClass({
                         handleResize={this.handleResize}
                         updateAppStatus={this.updateAppStatus} />
 
-                    
-                    <RouteHandler
-                        eventList={this.state.eventList}
-                        filteredEventList={this.state.filteredEventList}
-                        eventListData={this.state.eventListData}
-                        newEventMarker={this.state.newEventMarker}
+                    <div className="page-container">
 
-                        handleResize={this.handleResize}
-                        updateAppStatus={this.updateAppStatus}
-                        getEvents={this.getEvents} />
+                        <RouteHandler
+                            eventList={this.state.eventList}
+                            filteredEventList={this.state.filteredEventList}
+                            eventListData={this.state.eventListData}
+                            newEventMarker={this.state.newEventMarker}
+
+                            handleResize={this.handleResize}
+                            updateAppStatus={this.updateAppStatus}
+                            getEvents={this.getEvents} />
+                    </div>
+
                 </div>  
                 
             </div>

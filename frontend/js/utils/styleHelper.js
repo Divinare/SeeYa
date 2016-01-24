@@ -9,6 +9,13 @@ module.exports = {
 	},
 
 	getMapHeight: function() {
+		var mapHeight = window.innerHeight;
+		mapHeight -= window.CONFIGS.navbarHeight;
+		console.log(window.CONFIGS.navbarHeight);
+		return mapHeight;
+
+		/*
+		old code:
 		var screenType = this.getScreenType();
 
 		if(screenType == 'desktop') {
@@ -24,9 +31,12 @@ module.exports = {
 			mapHeight -= 20;
 			return mapHeight;
 		}
+		*/
 	},
 
 	getMapWidth: function() {
+		return window.innerWidth;
+		/*
 		var screenType = this.getScreenType();
 
 		if(screenType == 'desktop') {
@@ -37,6 +47,7 @@ module.exports = {
 		} else if(screenType == 'tablet') {
 			return window.innerWidth;
 		}
+		*/
 	},
 
 	getEventListHeight: function() {

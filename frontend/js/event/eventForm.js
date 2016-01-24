@@ -296,65 +296,58 @@ var EventForm = React.createClass({
 		 // form tagista onSubmit={event.preventDefault()}, otettu pois, (bugas firefoxissa)
 		return (
 			<div className='right-container'>
-				<div id='leftPane' className='col-xs-0 col-md-2'>
-				</div>
-				<div id='centerPane' className='col-xs-12 col-md-8'>
-
-					<h1 className="text-center">{this.getEditOrCreateTitle()}</h1>
-					<form id='form' className='form' data-toggle="validator" data-disable="false" role='form'>
-						<div className='form-group'>
-							<div className='required'>
-								<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='test form-control' id='name' placeholder='Event name' required/>
-							</div>
-							<div className="help-block with-errors"></div>
+				<h2 className="text-center">{this.getEditOrCreateTitle()}</h2>
+				<br />
+				<form id='form' className='form' data-toggle="validator" data-disable="false" role='form'>
+					<div className='form-group'>
+						<div className='required'>
+							<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='test form-control' id='name' placeholder='Event name' required/>
 						</div>
+						<div className="help-block with-errors"></div>
+					</div>
 
-						<div className='form-group required'>
-							<div className='input-group'>
-								<input type='text' data-minlength="6" value={this.state.address} onChange={this.handleChange('address')} onBlur={this.fillInAddress} className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
-								<span className="input-group-addon add-on white-background" onClick={this.fillInAddress}>
-									 <span className="glyphicon glyphicon-search"></span>
-								</span>
-							</div>
-							<div className="help-block with-errors"></div>
+					<div className='form-group required'>
+						<div className='input-group'>
+							<input type='text' data-minlength="6" value={this.state.address} onChange={this.handleChange('address')} onBlur={this.fillInAddress} className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
+							<span className="input-group-addon add-on white-background" onClick={this.fillInAddress}>
+								 <span className="glyphicon glyphicon-search"></span>
+							</span>
 						</div>
- 	
-						<div className='form-group required'>
-							<div className="input-group full-width">
-					          <DatePicker
-					          	selected={this.state.date}
-					          	dateFormat= 'DD.MM.YYYY'
-						        key="example3"
-						        minDate={Moment()}
-						        onChange={this.handleNewDateChange}
-						        placeholderText="Date: dd:mm:yyyy"
-						       />
-					        </div>
-					        <div id="errorDivForDateField" className="help-block with-errors dark-red-text">Please fill out this field</div>
-						</div>
+						<div className="help-block with-errors"></div>
+					</div>
+	
+					<div className='form-group required'>
+						<div className="input-group full-width">
+				          <DatePicker
+				          	selected={this.state.date}
+				          	dateFormat= 'DD.MM.YYYY'
+					        key="example3"
+					        minDate={Moment()}
+					        onChange={this.handleNewDateChange}
+					        placeholderText="Date: dd:mm:yyyy"
+					       />
+				        </div>
+				        <div id="errorDivForDateField" className="help-block with-errors dark-red-text">Please fill out this field</div>
+					</div>
 
-						<div className='form-group required'>
-							<div className='input-group'>
-								<input type='text'  pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"  value={this.state.time} onChange={this.handleTimeChange} className='form-control' id='time' placeholder="Time: hh:mm" required/>
-								<span className="input-group-addon add-on white-background"  onClick={this.setCurrentTime}>
-									<span className="glyphicon glyphicon-time"></span>
-								</span>
-							</div>
-							<div className="help-block with-errors"></div>
+					<div className='form-group required'>
+						<div className='input-group'>
+							<input type='text'  pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"  value={this.state.time} onChange={this.handleTimeChange} className='form-control' id='time' placeholder="Time: hh:mm" required/>
+							<span className="input-group-addon add-on white-background"  onClick={this.setCurrentTime}>
+								<span className="glyphicon glyphicon-time"></span>
+							</span>
 						</div>
+						<div className="help-block with-errors"></div>
+					</div>
 
-						<div className='form-group'>
-							<textArea type='text' value={this.state.description} onChange={this.handleChange('description')} className='form-control description' id='description' placeholder='Description'/>
-						</div>
-						<div className="form-group">
-				            <button className="btn btn-default" type="submit">Submit</button>
-					    </div>
-					
-					 </form>
-
-				</div>
-				<div id='rightPane' className='col-xs-0 col-md-2'>
-				</div>
+					<div className='form-group'>
+						<textArea type='text' value={this.state.description} onChange={this.handleChange('description')} className='form-control description' id='description' placeholder='Description'/>
+					</div>
+					<div className="form-group">
+			            <button className="btn btn-default" type="submit">Submit</button>
+				    </div>
+				
+				 </form>
 			</div>
 		)
 	}

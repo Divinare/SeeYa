@@ -1,38 +1,22 @@
 var slice = [].slice;
-
 var gulp = require('gulp');
-
 var gutil = require('gulp-util');
-
 var livereload = require('gulp-livereload');
-
 var nodemon = require('gulp-nodemon');
-
 var plumber = require('gulp-plumber');
-
 var gwebpack = require('gulp-webpack');
-
+var sass = require('gulp-sass');
 var less = require('gulp-less');
-
 var postcss = require('gulp-postcss');
-
 var autoprefixer = require('autoprefixer-core');
-
 var rimraf = require('rimraf');
-
 GLOBAL.Promise = (require('es6-promise')).Promise;
-
 var frontend_path = 'frontend';
 var backend_path = 'backend';
-
 var components_path = "bower_components";
-
 var modules_path = "node_modules";
-
 var semantic_path = modules_path + "/semantic-ui-css";
-
 var dist_path = "dist";
-
 var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
 
@@ -102,6 +86,13 @@ gulp.task('css', function () {
        .pipe(gulp.dest(dist_path));
 });
 
+gulp.task('scss', function () {
+    return gulp.src(frontend_path + '/css/**/*.scss')
+       .pipe(concat('main.css'))
+       .pipe(cssmin())
+       .pipe(gulp.dest(dist_path));
+});
+
 gulp.task('clean', function() {
   return rimraf.sync(dist_path);
 });
@@ -113,7 +104,7 @@ gulp.task('copy', function() {
   return gulp.src(semantic_path + "/themes/default/assets/**/*").pipe(gulp.dest(dist_path + "/themes/default/assets/"));
 });
 
-gulp.task('build', ['clean', 'copy', 'css', 'js']);
+gulp.task('build', ['clean', 'copy', 'scss', 'js']);
 
 server_main = backend_path + "/server.js";
 
@@ -130,12 +121,11 @@ gulp.task('server', function() {
   });
 });
 
-gulp.task('default', ['clean', 'copy', 'css', 'server', 'js-dev', 'watch']);
+gulp.task('default', ['clean', 'copy', 'scss', 'server', 'js-dev', 'watch']);
 
 gulp.task('watch', ['copy'], function() {
   livereload.listen();
   gulp.watch([dist_path + "/**/*"]).on('change', livereload.changed);
-//  gulp.watch([frontend_path + "/**/*.less"], ['css']);
-  gulp.watch([frontend_path + "/**/*.css"], ['css']);
+  gulp.watch([frontend_path + "/**/*.scss"], ['scss']);
   return gulp.watch([frontend_path + "/**/*.html"], ['copy']);
 });
