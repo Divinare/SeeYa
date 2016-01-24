@@ -116,20 +116,15 @@ var Main = React.createClass({
                         
                         handleResize={this.handleResize}
                         updateAppStatus={this.updateAppStatus} />
+                    <RouteHandler
+                        eventList={this.state.eventList}
+                        filteredEventList={this.state.filteredEventList}
+                        eventListData={this.state.eventListData}
+                        newEventMarker={this.state.newEventMarker}
 
-                    <div className="page-container">
-
-                        <RouteHandler
-                            eventList={this.state.eventList}
-                            filteredEventList={this.state.filteredEventList}
-                            eventListData={this.state.eventListData}
-                            newEventMarker={this.state.newEventMarker}
-
-                            handleResize={this.handleResize}
-                            updateAppStatus={this.updateAppStatus}
-                            getEvents={this.getEvents} />
-                    </div>
-
+                        handleResize={this.handleResize}
+                        updateAppStatus={this.updateAppStatus}
+                        getEvents={this.getEvents} />
                 </div>  
                 
             </div>
