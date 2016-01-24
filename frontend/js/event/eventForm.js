@@ -296,6 +296,129 @@ var EventForm = React.createClass({
 		 // form tagista onSubmit={event.preventDefault()}, otettu pois, (bugas firefoxissa)
 		return (
 			<div className='right-container'>
+					<h2 className="centeredHeader">Create new event</h2>
+					<form className='form' role='form'>
+						<div className='form-group'>
+							<span for='name'>Name *</span>
+							<input type='text' className='form-control' id='name'/>
+						</div>
+						<div className='form-group'>
+							<span for='address'>Address *</span>
+							<div className='input-group'>
+								<input type='text' className='form-control' id='address'/>
+								<span className="input-group-btn">
+									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
+								</span>
+							</div>
+						</div>
+
+					<div className='form-group required'>
+						<span for='date'>Date *</span>
+						<div className="input-group full-width">
+				          <DatePicker
+				          	selected={this.state.date}
+				          	dateFormat= 'DD.MM.YYYY'
+					        key="example3"
+					        minDate={Moment()}
+					        onChange={this.handleNewDateChange}
+					        placeholderText="Date: dd:mm:yyyy"
+					       />
+				        </div>
+				        <div id="errorDivForDateField" className="help-block with-errors dark-red-text">Please fill out this field</div>
+					</div>
+
+
+						<div className='form-group'>
+							<span for='time'>Time *</span>
+							<div className='input-group'>
+								<input type='text' className='form-control' id='time' placeholder="hh:mm"/>
+								<span className="input-group-btn">
+									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-time"></i></button>
+								</span>
+							</div>
+						</div>
+						<div className='form-group'>
+							<span for='description'>Description *</span>
+							<input type='text' className='form-control' id='description'/>
+						</div>
+						<div className="form-group">
+				            <button type="submit" className="btn btn-default">Submit</button>
+					    </div>
+					
+					 </form>
+			</div>
+
+		)
+	}
+
+});
+
+module.exports = EventForm;
+
+//FORM WITH LABELS
+/*
+<div id="eventForm">
+					<h2 className="centeredHeader">Create new event</h2>
+					<form className='form' role='form'>
+						<div className='form-group'>
+							<label for='name'>Name</label>
+							<input type='text' className='form-control' id='name'/>
+						</div>
+						<div className='form-group'>
+							<label for='address'>Address</label>
+							<div className='input-group'>
+								<input type='text' className='form-control' id='address'/>
+								<span className="input-group-btn">
+									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
+								</span>
+							</div>
+						</div>
+
+					<div className='form-group required'>
+						<label for='date'>Date</label>
+						<div className="input-group full-width">
+				          <DatePicker
+				          	selected={this.state.date}
+				          	dateFormat= 'DD.MM.YYYY'
+					        key="example3"
+					        minDate={Moment()}
+					        onChange={this.handleNewDateChange}
+					        placeholderText="Date: dd:mm:yyyy"
+					       />
+				        </div>
+				        <div id="errorDivForDateField" className="help-block with-errors dark-red-text">Please fill out this field</div>
+					</div>
+
+
+						<div className='form-group'>
+							<label for='time'>Time</label>
+							<div className='input-group'>
+								<input type='text' className='form-control' id='time' placeholder="hh:mm"/>
+								<span className="input-group-btn">
+									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-time"></i></button>
+								</span>
+							</div>
+						</div>
+						<div className='form-group'>
+							<label for='description'>Description</label>
+							<input type='text' className='form-control' id='description'/>
+						</div>
+						<div className="form-group">
+				            <button type="submit" className="btn btn-default">Submit</button>
+					    </div>
+					
+					 </form>
+				</div>
+
+
+			*/
+
+
+
+			/*
+NO LABELS:
+
+						<div className='right-container'>
 				<h2 className="text-center">{this.getEditOrCreateTitle()}</h2>
 				<br />
 				<form id='form' className='form' data-toggle="validator" data-disable="false" role='form'>
@@ -349,64 +472,20 @@ var EventForm = React.createClass({
 				
 				 </form>
 			</div>
-		)
-	}
 
-});
+			*/
 
-module.exports = EventForm;
 
-//FORM WITH LABELS
-/*
-			<div id="eventForm">
-				<div id='leftPane' className='col-xs-0 col-md-3'>
+			/*
+
+
+			<div id='leftPane' className='col-xs-0 col-md-3'>
 				</div>
 				<div id='centerPane' className='col-xs-12 col-md-6'>
-					<h1 className="centeredHeader">Create new event</h1>
-					<form className='form' role='form'>
-						<div className='form-group'>
-							<label for='name'>Name</label>
-							<input type='text' className='form-control' id='name'/>
-						</div>
-						<div className='form-group'>
-							<label for='address'>Address</label>
-							<div className='input-group'>
-								<input type='text' className='form-control' id='address'/>
-								<span className="input-group-btn">
-									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
-								</span>
-							</div>
-						</div>
-						<div className='form-group'>
-							<label for='date'>Date</label>
-							<div className="input-group">
-					          <DatePicker
-						        key="example3"
-						        selected={this.state.new_date}
-						        onChange={this.handleNewDateChange}
-						        placeholderText="Date: dd:mm:yyyy"
-						      />
-					        </div>
-						</div>
-						<div className='form-group'>
-							<label for='time'>Time</label>
-							<div className='input-group'>
-								<input type='text' className='form-control' id='time' placeholder="hh:mm"/>
-								<span className="input-group-btn">
-									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-time"></i></button>
-								</span>
-							</div>
-						</div>
-						<div className='form-group'>
-							<label for='description'>Description</label>
-							<input type='text' className='form-control' id='description'/>
-						</div>
-						<div className="form-group">
-				            <button type="submit" className="btn btn-default">Submit</button>
-					    </div>
-					
-					 </form>
-				</div>
+
+	</div>
 				<div id='rightPane' className='col-xs-0 col-md-3'>
 				</div>
-			</div>*/
+
+
+				*/
