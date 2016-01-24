@@ -23,7 +23,7 @@ module.exports = {
 		var url = window.location.href;
 
 		// TODO: Not in use, ask Petri
-		var baseWithoutHttp = URL.base.slice(http.length)
+		var baseWithoutHttp = URL.REST.slice(http.length)
 		var startIndexOfBase = url.indexOf(baseWithoutHttp)
 
 		if(startIndexOfBase != -1){

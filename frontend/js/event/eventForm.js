@@ -57,9 +57,10 @@ var EventForm = React.createClass({
 // TODO LINK:
  // http://stackoverflow.com/questions/7865446/google-maps-places-api-v3-autocomplete-select-first-option-on-enter
 
-    var input = document.getElementById('searchTextField');
+    	var input = document.getElementById('searchTextField');
 
         // store the original event binding function
+        /*
         var _addEventListener = (input.addEventListener) ? input.addEventListener : input.attachEvent;
 
         function addEventListenerWrapper(type, listener) {
@@ -93,7 +94,8 @@ var EventForm = React.createClass({
 		// When the user selects an address from the dropdown, populate the address
 		// fields in the form.
 		autocomplete.addListener('place_changed', this.fillInAddress);
-
+	
+		*/
 		this.state.dateFieldClicked = false
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
 		dateInput.setAttribute("data-validateDate", this.validateDate)
