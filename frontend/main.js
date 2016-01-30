@@ -64,7 +64,7 @@ var Main = React.createClass({
             $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
             var eventListHeight = UTILS.styleHelper.getEventListHeight();
             var eventListWidth = UTILS.styleHelper.getEventListWidth();
-            //$(".right-container").css('height', eventListHeight);
+            $(".right-container").css('height', eventListHeight);
             //$(".right-container").css('width', eventListWidth);
 
             var eventListData = this.state.eventListData;

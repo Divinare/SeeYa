@@ -33,7 +33,7 @@ module.exports = React.createClass({
 	render: function(){
 		var toggleEventFormLinkText = this.props.showEventForm ? 'Browse events' : 'Create new event';
 		var toggleEventFormHref = this.props.showEventForm ? 'event/new' : '/';
-        var Brand = <NavItemLink to='home' className='nav navbar-nav app-name-navbar'>EventMeetup</NavItemLink>;
+        var Brand = <NavItemLink to='home' className='nav navbar-nav app-name-navbar'><span id="home">EventMeetup</span></NavItemLink>;
 
         return (
            <Navbar brand={Brand} toggleNavKey={0}>

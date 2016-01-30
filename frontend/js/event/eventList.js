@@ -3,8 +3,8 @@ var Router = require('react-router');
 var Moment = require('moment');
 
 var FixedDataTable = require('fixed-data-table');
-var Table = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
+//var Table = FixedDataTable.Table;
+//var Column = FixedDataTable.Column;
 
 var SortTypes = {
   ASC: 'ASC',
@@ -63,12 +63,9 @@ var EventList = React.createClass({
             }
 
     },
-
+/*
     cellRenderer: function(e, col, e3, row, e5, e6) {
-    //  console.log(e + " " + col + " " + e3 + " " + row + " " + e5 + " " + e6);
         var eventList = this.props.filteredEventList;
-        var contentName = col;
-        var headerName = UTILS.eventParser.getTableHeader(contentName); //tableHeaders[col];
 
         var eventId = eventList[row]["id"];
         
@@ -78,6 +75,16 @@ var EventList = React.createClass({
             className = 'link';
         }
         return <div className={className} styles={{height: '100%'}} onClick={this.handleCellClick.bind(null, headerName, eventId)}>{content}</div>
+    },
+*/
+
+    cellRenderer: function(headerName, content, eventId) {
+        var className = '';
+        if(headerName == 'name' || headerName == 'map') {
+            className = 'link';
+        }
+        return <div className={className} styles={{height: '100%'}} onClick={this.handleCellClick.bind(null, headerName, eventId)}>{content}</div>
+
     },
 
     _sortRowsBy: function(cellDataKey) {
@@ -188,6 +195,8 @@ var EventList = React.createClass({
         // Use eventList if filteredEventList is empty
         var eventList = this.props.filteredEventList;
         var eventListData = this.props.eventListData;
+        console.log(eventList);
+
 
         var sortDirArrow = '';
         var sortBy = eventListData.sortBy;
@@ -205,6 +214,38 @@ var EventList = React.createClass({
         // Return event table with real data
         //} else {
             return (
+                <div className="right-container">
+                    <h2 className="topic">Events</h2>
+
+                       <table className="eventList-table">
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Att</th>
+                        </tr>
+                        {eventList.map(function(event) {
+                            return (
+                            <tr>
+                                <td>x</td>
+                                <td>{that.cellRenderer("name", event.name, event.id)}</td>
+                                <td>{event.Attendances.length}</td>                            
+                            </tr>
+                        );
+                        })}
+                    </table>             
+                </div>              
+                )       
+    //      }           
+        }   
+});
+
+module.exports = EventList;
+
+
+
+/* OLD TABLE CODE, dont remove. Let Joe remove
+
+{this.renderFilterFields()}
                 <div className="right-container">
                     <h2 className="topic">Events</h2>
                     {this.renderFilterFields()}
@@ -243,51 +284,6 @@ var EventList = React.createClass({
                     </Table>
 
                 
-                </div>              
-                )       
-    //      }           
-        }   
-});
-
-module.exports = EventList;
-
-
-
-/* OLD TABLE CODE, dont remove. Let Joe remove
-
-{this.renderFilterFields()}
-                    <Table
-                        headerHeight={50}
-                        rowHeight={30}
-                        rowGetter={this.rowGetter}
-                        rowsCount={eventList.length}
-                        width={this.props.eventListData.tableWidth}
-                        height={this.props.eventListData.tableHeight}>
-
-                        <Column
-                            headerRenderer={this._renderHeader}
-                            label={'Name' + (sortBy === 'name' ? sortDirArrow : '')}
-                            width={this.getTableSizes().columnWidths['name']}
-                            dataKey={'name'}
-                            cellRenderer={this.cellRenderer} />
-                        <Column
-                            headerRenderer={this._renderHeader}
-                            label={'o/' + (sortBy === 'Attendances' ? sortDirArrow : '')}
-                            width={this.getTableSizes().columnWidths['attendances']}
-                            dataKey={'attendances'}
-                            cellRenderer={this.cellRenderer} />
-                        <Column
-                            headerRenderer={this._renderHeader}
-                            label={'Address' + (sortBy === 'Address' ? sortDirArrow : '')}
-                            width={this.getTableSizes().columnWidths['address']}
-                            dataKey={'streetAddress'}
-                            cellRenderer={this.cellRenderer} />
-                        <Column
-                            headerRenderer={this._renderHeader}
-                            label={'Time' + (sortBy === 'timestamp' ? sortDirArrow : '')}
-                            width={this.getTableSizes().columnWidths['time']}
-                            dataKey={'timestamp'}
-                            cellRenderer={this.cellRenderer} />
-                    </Table>
+                </div>  
 
                     */
