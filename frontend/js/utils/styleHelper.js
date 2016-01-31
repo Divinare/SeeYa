@@ -11,7 +11,6 @@ module.exports = {
 	getMapHeight: function() {
 		var mapHeight = window.innerHeight;
 		//mapHeight -= window.CONFIGS.navbarHeight;
-		console.log(window.CONFIGS.navbarHeight);
 		return mapHeight;
 
 		/*

@@ -11,3 +11,15 @@
 .eventList-table {
 	width: 100%;
 }
+
+.eventList-filter-bar {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 60px;
+    width: 100%;
+}

@@ -2,8 +2,8 @@ window.$ = window.jQuery = require('jquery');
 window.CONFIGS = require('./configs/config.js')
 window.UTILS = require('./js/utils');
 window.URL = UTILS.url;
+window.React = require('react');
 
-var React = require('react');
 //var GoogleMapsLoader = require('google-maps');
 
 var Frontpage = require('./js/frontpage.js');
@@ -20,6 +20,12 @@ var Router = require('react-router')
   , Route = Router.Route
   , DefaultRoute = Router.DefaultRoute
   , BrowserHistory = Router.History;
+
+
+$(document).click(function() {
+        $("#categories-content").slideUp(150, function(){
+    });
+});
 
 var Main = React.createClass({
 
@@ -59,6 +65,7 @@ var Main = React.createClass({
     },
 
     handleResize: function(e) {
+
         if(typeof map !== 'undefined') {
             $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight());
             $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());

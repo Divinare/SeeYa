@@ -1,8 +1,27 @@
-var React = require('react');
 var Router = require('react-router');
 var Moment = require('moment');
 
 var FixedDataTable = require('fixed-data-table');
+
+var Dropdown = require('../dropdown.js');
+
+var ReactBootstrap = require('react-bootstrap')
+var ButtonToolbar = ReactBootstrap.ButtonToolbar;
+var MenuItem = ReactBootstrap.MenuItem;
+var SplitButton = ReactBootstrap.SplitButton;
+
+
+var colours = [{
+    name: "Red",
+    hex: "#F21B1B"
+}, {
+    name: "Blue",
+    hex: "#1B66F2"
+}, {
+    name: "Green",
+    hex: "#07BA16"
+}];
+
 //var Table = FixedDataTable.Table;
 //var Column = FixedDataTable.Column;
 
@@ -20,7 +39,9 @@ var EventList = React.createClass({
     mixins: [ Router.Navigation ],
 
     getInitialState: function() {
-        return {}
+        return {
+            selectedCategory: colours[0]
+        }
     },
 
     componentDidMount: function() {
@@ -87,11 +108,11 @@ var EventList = React.createClass({
 
     },
 
-    _sortRowsBy: function(cellDataKey) {
+    _sortRowsBy: function(sortBy) {
+        sortBy = sortBy.toLowerCase();
         var eventListData = this.props.eventListData;
         var rows = this.props.filteredEventList.slice();
         var sortDir = eventListData.sortDir;
-        var sortBy = cellDataKey;
         if (sortBy === eventListData.sortBy) {
             sortDir = sortDir === SortTypes.ASC ? SortTypes.DESC : SortTypes.ASC;
         } else {
@@ -115,18 +136,15 @@ var EventList = React.createClass({
 
         this.props.updateAppStatus('filteredEventList', rows);
 
-
-
-
         var currentData = this.state.eventListData;
         eventListData['sortBy'] = sortBy;
         eventListData['sortDir'] = sortDir;
         this.props.updateAppStatus('eventListData', eventListData);
       },
 
-     _renderHeader: function(label, cellDataKey) {
+     _renderHeader: function(headerName) {
         return (
-            <div className='link' onClick={this._sortRowsBy.bind(null, cellDataKey)}>{label}</div>
+            <div className='link' onClick={this._sortRowsBy.bind(null, headerName)}>{headerName}</div>
         );
      },
 
@@ -189,15 +207,16 @@ var EventList = React.createClass({
         return tableSizes;
     },
 
+    selectCategory: function(category) {
+        this.state.selectedCategory = category;
+    },
+
     render: function() {
         var that = this;
 
         // Use eventList if filteredEventList is empty
         var eventList = this.props.filteredEventList;
         var eventListData = this.props.eventListData;
-        console.log(eventList);
-
-
         var sortDirArrow = '';
         var sortBy = eventListData.sortBy;
         var sortDir = eventListData.sortDir;
@@ -215,13 +234,15 @@ var EventList = React.createClass({
         //} else {
             return (
                 <div className="right-container">
+
+
                     <h2 className="topic">Events</h2>
 
-                       <table className="eventList-table">
+                   <table className="eventList-table">
                         <tr>
                             <th></th>
-                            <th>Name</th>
-                            <th>Att</th>
+                            <th>{this._renderHeader("Name")}</th>
+                            <th>{this._renderHeader("Attendances")}</th>
                         </tr>
                         {eventList.map(function(event) {
                             return (
@@ -232,7 +253,14 @@ var EventList = React.createClass({
                             </tr>
                         );
                         })}
-                    </table>             
+                    </table>
+                    <div className="eventList-filter-bar">
+
+                        <Dropdown list={colours} selectCategory={this.selectCategory} selected={this.state.selectedCategory} />
+
+                    </div>   
+
+
                 </div>              
                 )       
     //      }           
@@ -241,7 +269,20 @@ var EventList = React.createClass({
 
 module.exports = EventList;
 
+/*
+                        <Dropdown list={colours} selected={colours[0]} />
 
+                        <div className="btn-group dropup">
+                            <button className="btn">Dropup</button>
+                            <button className="btn dropdown-toggle" data-toggle="dropdown">
+                            <span className="caret"></span>
+                            </button>
+                            <ul className="dropdown-menu">
+                                <li><a href="#">Sports</a></li>
+                                <li><a href="#">Meeting up..a.</a></li>
+                            </ul>
+                        </div>
+                        */
 
 /* OLD TABLE CODE, dont remove. Let Joe remove
 

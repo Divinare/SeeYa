@@ -4,7 +4,8 @@ body {
 }
 
 a {
-    color: #33b78e !important;
+    /*color: #33b78e !important;*/
+    color: #12B381 !important;
 }
 
 img{
@@ -45,7 +46,7 @@ img{
     top: 60px;
     height: 100%;
     position: absolute;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0,0,0,0.55);
 }
 
 .frontpage {
@@ -68,14 +69,14 @@ img{
 
 .link {
     cursor: pointer;
-    /* color: #337ab7; */
-    color: #33b78e;
+    color: #FFFFFF;
+    /*color: #33b78e; */
 }
 
 .link:hover { 
-    text-decoration: underline;
+   /* text-decoration: underline; */
     /* color: #23527c; */
-    color: #2A9876;
+    color: #BFEEF7;
 }
 
 .navbar {
@@ -130,7 +131,8 @@ old code
 }
 
 .dark-red-text{
-	color: darkRed !important;
+	/*color: darkRed !important;*/
+    color: #FF4545 !important;
 }
 
 .white-background{

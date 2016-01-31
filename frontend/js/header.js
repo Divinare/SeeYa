@@ -40,8 +40,7 @@ module.exports = React.createClass({
                <CollapsibleNav eventKey={0}>
                    <Nav navbar>
                         <NavItemLink
-                          to="about"
-                          params={{ someparam: 'hello' }}>
+                          to="about">
                           About
                         </NavItemLink>
                         <NavItemLink
