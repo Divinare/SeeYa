@@ -202,7 +202,6 @@ var EventList = React.createClass({
         this.setState({
             selectedCategory: category
         });
-        console.log("selected category " + category);
     },
 
     render: function() {
