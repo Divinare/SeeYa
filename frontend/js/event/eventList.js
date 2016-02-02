@@ -11,16 +11,7 @@ var MenuItem = ReactBootstrap.MenuItem;
 var SplitButton = ReactBootstrap.SplitButton;
 
 
-var colours = [{
-    name: "Red",
-    hex: "#F21B1B"
-}, {
-    name: "Blue",
-    hex: "#1B66F2"
-}, {
-    name: "Green",
-    hex: "#07BA16"
-}];
+var colours =  ["Sports", "Arts & Culture", "Beer", "Dancing", "Fitness", "Food & Drink", "Games", "Movies", "Parents & Family", "Photography", "Singles", "Other"]; 
 
 //var Table = FixedDataTable.Table;
 //var Column = FixedDataTable.Column;
@@ -45,7 +36,7 @@ var EventList = React.createClass({
     },
 
     componentDidMount: function() {
-
+        this.props.handleResize();
     },
 
     componentWillMount :function() {
@@ -208,7 +199,10 @@ var EventList = React.createClass({
     },
 
     selectCategory: function(category) {
-        this.state.selectedCategory = category;
+        this.setState({
+            selectedCategory: category
+        });
+        console.log("selected category " + category);
     },
 
     render: function() {
@@ -255,15 +249,15 @@ var EventList = React.createClass({
                         })}
                     </table>
                     <div className="eventList-filter-bar">
-
-                        <Dropdown list={colours} selectCategory={this.selectCategory} selected={this.state.selectedCategory} />
-
+                        <span id="select-dropdown">
+                            <Dropdown list={colours} selectCategory={this.selectCategory} selected={this.state.selectedCategory} />
+                        </span>
+                        <div id="select-start-time">2.2.2016</div>
                     </div>   
 
 
                 </div>              
                 )       
-    //      }           
         }   
 });
 

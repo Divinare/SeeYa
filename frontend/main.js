@@ -65,7 +65,6 @@ var Main = React.createClass({
     },
 
     handleResize: function(e) {
-
         if(typeof map !== 'undefined') {
             $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight());
             $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
@@ -149,6 +148,7 @@ var EventListsWrapper = React.createClass({
                 filteredEventList={this.props.filteredEventList}
                 eventListData={this.props.eventListData}
 
+                handleResize={this.props.handleResize}
                 updateAppStatus={this.props.updateAppStatus} />
         );
     }

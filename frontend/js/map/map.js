@@ -11,7 +11,7 @@ var Map = React.createClass({
     getInitialState: function() {
 
         return {
-            initialZoom: 8,
+            initialZoom: 11,
             mapCenterLat: 60,
             mapCenterLng: 20,
             openedInfowindow: {},
@@ -41,17 +41,16 @@ var Map = React.createClass({
         }
 
         if(nextProps.newEventMarker == null) {
-            console.log("removing new eventMarker!");
+            //console.log("removing new eventMarker!");
         }   
     },
 
     initMap: function() {
-        console.log("INIT MAP");
         var that = this;
 
         var mapOptions = {
             center: { lat: 60.205294, lng: 24.936092},
-            zoom: 5,
+            zoom: this.state.initialZoom,
             minZoom: 3
         };
 

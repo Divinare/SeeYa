@@ -19,24 +19,23 @@ var Dropdown = React.createClass({
     },
 
     renderListItems: function() {
+        var _this = this;
         var items = [];
-        for (var i = 0; i < this.props.list.length; i++) {
-            var item = this.props.list[i];
+        this.props.list.map(function(item) {
             items.push(
-                <div className="item unSelected" onClick={this.select.bind(null, item)}>{item.name}
+                <div className="item unSelected" onClick={_this.select.bind(null, item)}>{item}
             </div>);
-        }
+        });
         return items;
     },
 
     render: function() {
-        console.log("at renderrrrrrrrrr");
         return (
             <div className="dropdown">
                         <div className="dropdown-content" id="categories-content">
                             {this.renderListItems()}
                         </div>
-                    <div className="dropdown-btn" onClick={this.toggleShowCategories}>{this.props.selected.name}</div>
+                    <div className="dropdown-btn" onClick={this.toggleShowCategories}>{this.props.selected}</div>
             </div>
         );
     }

@@ -15,7 +15,7 @@ var About = React.createClass({
 	},
 
 	componentDidMount: function() {
-
+        this.props.handleResize();
 	},
 
 
