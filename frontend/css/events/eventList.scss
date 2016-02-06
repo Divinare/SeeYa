@@ -11,3 +11,34 @@
 .eventList-table {
 	width: 100%;
 }
+
+.eventList-filter-bar {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 60px;
+    width: 100%;
+    display: flex;
+}
+
+.item {
+    cursor: pointer;
+}
+
+.select-dropdown {
+    flex: 0 0 65%;
+}
+
+#select-start-time {
+    width: 150px;
+    background-color: rgba(0,0,0,0.35);
+    color: #FFF;
+    border: 1px solid #FFF;
+    padding: 10px 20px 10px 20px;
+    flex: 1;
+    height: 40px;
+}

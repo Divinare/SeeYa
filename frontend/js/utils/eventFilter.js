@@ -1,8 +1,6 @@
 
 
 function filterColumns(eventList, eventListData) {
-	console.log("at filterColumns");
-	console.log(eventListData);
 		var filters = eventListData['filters'];
 		var filteredRows = eventList;
 		Object.getOwnPropertyNames(filters).forEach(function(val) {
@@ -15,7 +13,6 @@ function filterColumns(eventList, eventListData) {
 }
 
 function filterColumn(eventList, eventListData, tableHeader, value) {
-		console.log("filtering rows! " + tableHeader + " " + value);
 		var filters = eventListData['filters'];
 
 		filters[tableHeader] = value;

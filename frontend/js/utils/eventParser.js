@@ -3,7 +3,10 @@ var Moment = require('moment');
 
 module.exports = {
 
-	/* Returns the property from event object */
+	/* Returns the property from event object
+	   Example input: event, address
+	   Returns: Address object of event
+	*/
 	getValue: function(event, property) {
 		//console.log("AT PARSER!");
 		//console.log(event);
