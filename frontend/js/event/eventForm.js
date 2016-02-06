@@ -30,17 +30,19 @@ var EventForm = React.createClass({
 		$('#form').validator()
 
 		$('#form').validator().on('submit', function (e) {
+			console.log("onsubmit")
 			if(!that.showValidationInfoForDatePicker()){
 				e.preventDefault();
-				//console.log("default prevented")
+				console.log("default prevented")
 			}
 	  		if (e.isDefaultPrevented()) {
-	   			//console.log("invalid form");
+	   			console.log("invalid form");
 	 		 } else {
+	 		 	console.log("valid form, submitting")
 	 		 	e.preventDefault();
 	 		 	that.handleSubmit();
 			 }
-		})
+		})	
 /*
 		var addressField = document.getElementById('address');
 		var options = {
@@ -136,7 +138,7 @@ var EventForm = React.createClass({
     	//var d = moment.format('MM-DD-YYYY'))
 	   // console.log(moment.format('MM-DD-YYYY'));
 	    this.setState({
-	        date: moment
+	       date: moment,
 	    });
 	    this.showValidationInfoForDatePicker(moment);
 
@@ -147,6 +149,7 @@ var EventForm = React.createClass({
 	},
 
 	handleSubmit: function(e) {
+		console.log("submit method")
 		var that = this;
 		//e.preventDefault();
 		var address = {
@@ -297,7 +300,7 @@ var EventForm = React.createClass({
 		return (
 			<div className='right-container'>
 					<h2 className="centeredHeader">Create new event</h2>
-					<form className='form' role='form'>
+					<form className='form' id='form' onSubmit={event.preventDefault()} role='form'>
 						<div className='form-group'>
 							<span for='name'>Name *</span>
 							<input type='text' className='form-control' id='name'/>
@@ -333,7 +336,7 @@ var EventForm = React.createClass({
 							<div className='input-group'>
 								<input type='text' className='form-control' id='time' placeholder="hh:mm"/>
 								<span className="input-group-btn">
-									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-time"></i></button>
+									 <button className="btn btn-default" type="button" onClick={this.setCurrentTime}><i className="glyphicon glyphicon-time"></i></button>
 								</span>
 							</div>
 						</div>
