@@ -43,7 +43,7 @@ var Main = React.createClass({
             timestamp: ""
         };
         eventListData['tableContentNames'] = ['name', 'attendances', 'streetAddress', 'timestamp'];
-        
+
         return {
             showFrontpage: true,
             frontpageLoaded: false,

@@ -1,5 +1,13 @@
+We are using currently using:
+psql (PostgreSQL) 9.4.4
+
+Connects to postgres:
+sudo -u postgres psql
+
 Connects to database:
-\connect devdb
+psql -d devdb
+
+also this can work: \connect devdb
 
 Drops a database:
 DROP DATABASE devdb;

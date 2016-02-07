@@ -1,7 +1,10 @@
 var router = require("express").Router();
-var models  = require('../models');
 var Sequelize = require('sequelize')
+var Promise = require('bluebird');
+
+var models  = require('../models');
 var helper = require("../helpers/helper.js")
+var CategoryService = require('../services/CategoryService.js');
 
 module.exports = {
 
@@ -36,36 +39,12 @@ module.exports = {
 
     create: function (req, res) {
         var eventToAdd = req.body;
-        console.log(eventToAdd)
-        console.log(eventToAdd.address)
-        console.log("time stamp" + eventToAdd.timestamp)
-
-        models.Address.findOrCreate({where: {
-            streetAddress: eventToAdd.address.streetAddress,
-            country: eventToAdd.address.country,
-            city: eventToAdd.address.city,
-            zipCode: eventToAdd.address.zipCode
-        }
-
-        }).spread(function(address, created){
-            models.Event.create({
-                name: eventToAdd.name,
-                description: eventToAdd.description,
-                lat: eventToAdd.lat,
-                lon: eventToAdd.lon,
-                timestamp: eventToAdd.timestamp,
-                //requiresRegistration = eventToAdd.requiresRegistration,
-                //maxAttendees = eventToAdd.maxAttendees
-                }).then(function(event) {
-                    event.setAddress(address)
-                    console.log(event.name + ' created successfully');
-                    res.send(event); 
-                }).catch(function(err){
-                    helper.sendErr(res, 400, err);
-                });
-
-        }).catch(function(err){
-            helper.sendErr(res, 400, err);
+        findCategory(eventToAdd.categoryName).then(function(category) {
+            if(category == null) {
+                helper.sendErr(res, 400, "Category by name " + eventToAdd.categoryName + " not found.");
+            } else {
+                createEvent(req, res, category);
+            }
         });
     },
 
@@ -123,3 +102,59 @@ module.exports = {
         res.status(statusCode).send(err.message);
     }*/
 };
+
+function findCategory(categoryName) {
+
+    return new Promise(function(resolve, reject) {
+
+        CategoryService.findByName(categoryName).then(function(category) {
+            if(category == null) {
+                CategoryService.findByName("Other").then(function(category) {
+                    console.log(category);
+                    if(category == null) {
+                        reject(null);
+                    } else {
+                        resolve(category);
+                    }
+                });
+            } else {
+                resolve(category);
+            }
+        });
+        
+    });
+}
+
+function createEvent(req, res, category) {
+    var eventToAdd = req.body;
+
+    models.Address.findOrCreate({where: {
+        streetAddress: eventToAdd.address.streetAddress,
+        country: eventToAdd.address.country,
+        city: eventToAdd.address.city,
+        zipCode: eventToAdd.address.zipCode
+    }
+
+    }).spread(function(address, created){
+        models.Event.create({
+            name: eventToAdd.name,
+            description: eventToAdd.description,
+            lat: eventToAdd.lat,
+            lon: eventToAdd.lon,
+            timestamp: eventToAdd.timestamp,
+            CategoryId: category.id
+            //requiresRegistration = eventToAdd.requiresRegistration,
+            //maxAttendees = eventToAdd.maxAttendees
+            }).then(function(event) {
+                event.setAddress(address)
+                console.log(event.name + ' created successfully');
+                res.send(event); 
+            }).catch(function(err){
+                helper.sendErr(res, 400, err);
+            });
+
+    }).catch(function(err){
+        helper.sendErr(res, 400, err);
+    });
+
+}

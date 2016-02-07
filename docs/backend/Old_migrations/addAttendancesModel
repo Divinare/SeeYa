@@ -16,17 +16,23 @@ module.exports = {
     updatedAt: {
       type: Sequelize.DATE
     },
-    attendeeName: {
+    name: {
       type: Sequelize.STRING,
       allowNull: false
     },
     email: Sequelize.STRING,
+    comment: {
+      type: Sequelize.STRING
+    },
+    sendEmail: {
+      type: Sequelize.BOOLEAN
+    },
     EventId: Sequelize.INTEGER
   }
 )
   },
 
   down: function (queryInterface, Sequelize) {
-    Sequelize.dropTable('Attendances')
+    return queryInterface.dropTable('Attendances');
   }
 };
