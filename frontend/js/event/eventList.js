@@ -272,13 +272,10 @@ var EventList = React.createClass({
                 </tr>
             );
         });
-        console.log("RETURNING"); 
-        console.log(items);
         return items;
     },
 
     render: function() {
-        console.log("AT EVENTLIST RENDER");
         var _this = this;
 
         // Use eventList if filteredEventList is empty
