@@ -13,7 +13,8 @@ module.exports = {
         models.Event.findOne({
             where: { id: eventId },
             include: [ models.Address,
-                      models.Attendance ]
+                      models.Attendance,
+                      models.Category ]
 
         })
         .then(function (event) {
@@ -31,7 +32,8 @@ module.exports = {
     findAll: function (req, res) {
         models.Event.findAll({
             include: [ models.Address,
-                  models.Attendance ]
+                  models.Attendance,
+                  models.Category ]
         }).then(function (events) {
             res.send(events);
         });

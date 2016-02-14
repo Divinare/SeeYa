@@ -58,7 +58,6 @@ var Map = React.createClass({
     
         google.maps.event.addListener(map, 'click', function(event) {
             that.closeOpenedInfowindow();
-            console.log(UTILS.helper.atEventForm());
             if(UTILS.helper.atEventForm()) {
                 console.log("Adding eventmAKRER");
                 that.addNewEventMarker(event.latLng, map);

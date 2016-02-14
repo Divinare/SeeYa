@@ -43,7 +43,7 @@ var Main = React.createClass({
             timestamp: ""
         };
         eventListData['tableContentNames'] = ['name', 'attendances', 'streetAddress', 'timestamp'];
-
+        
         return {
             showFrontpage: true,
             frontpageLoaded: false,
@@ -71,7 +71,7 @@ var Main = React.createClass({
             var eventListHeight = UTILS.styleHelper.getEventListHeight();
             var eventListWidth = UTILS.styleHelper.getEventListWidth();
             $(".right-container").css('height', eventListHeight);
-            //$(".right-container").css('width', eventListWidth);
+            $(".right-container").css('width', eventListWidth);
 
             var eventListData = this.state.eventListData;
             eventListData['tableHeight'] = eventListHeight;

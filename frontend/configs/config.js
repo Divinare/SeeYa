@@ -1,7 +1,7 @@
 //bootstrap break points
 var extraSmallScreenMaxWidth = 768;  
 var smallScreenMinWidth = 768;
-var mediumScreenMinWidth = 992;
+var mediumScreenMinWidth = 800; //992;
 var largeScreenMinWidth = 1170;
 
 var navbarHeight = 52;
@@ -10,7 +10,7 @@ var eventsListTopicHeight = 115;
 
 var marginWidth = 10;
 
-
+var rightContainerWidthDesktop = 400;
 
 
 module.exports = {
@@ -24,6 +24,8 @@ module.exports = {
 	'mapBottomMargin': mapBottomMargin,
 	'eventsListTopicHeight': eventsListTopicHeight,
 
-	'marginWidth': marginWidth
+	'marginWidth': marginWidth,
+
+    'rightContainerWidthDesktop': rightContainerWidthDesktop
 	
 };

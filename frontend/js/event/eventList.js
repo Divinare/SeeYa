@@ -10,9 +10,6 @@ var ButtonToolbar = ReactBootstrap.ButtonToolbar;
 var MenuItem = ReactBootstrap.MenuItem;
 var SplitButton = ReactBootstrap.SplitButton;
 
-
-var colours =  ["Sports", "Arts & Culture", "Beer", "Dancing", "Fitness", "Food & Drink", "Games", "Movies", "Parents & Family", "Photography", "Singles", "Other"]; 
-
 //var Table = FixedDataTable.Table;
 //var Column = FixedDataTable.Column;
 
@@ -30,13 +27,31 @@ var EventList = React.createClass({
     mixins: [ Router.Navigation ],
 
     getInitialState: function() {
+        var selectedCategory = 'Sports';
         return {
-            selectedCategory: colours[0]
+            categories: [],
+            selectedCategory: selectedCategory
         }
     },
 
     componentDidMount: function() {
         this.props.handleResize();
+        var that = this;
+
+        var onSuccess = function (data) {
+            var categories = [];
+            for(var index in data) {
+                categories.push(data[index].name);
+            }
+            that.setState({
+                categories: categories
+            })
+            console.log(categories);
+        };
+        var onError = function() {
+            console.log("Error on fetching event!");
+        }
+        UTILS.rest.getAllEntries('category', onSuccess, onError);
     },
 
     componentWillMount :function() {
@@ -75,20 +90,6 @@ var EventList = React.createClass({
             }
 
     },
-/*
-    cellRenderer: function(e, col, e3, row, e5, e6) {
-        var eventList = this.props.filteredEventList;
-
-        var eventId = eventList[row]["id"];
-        
-        var content = UTILS.eventParser.getValue(eventList[row], contentName);
-        var className = '';
-        if(headerName == 'name' || headerName == 'address') {
-            className = 'link';
-        }
-        return <div className={className} styles={{height: '100%'}} onClick={this.handleCellClick.bind(null, headerName, eventId)}>{content}</div>
-    },
-*/
 
     cellRenderer: function(headerName, content, eventId) {
         var className = '';
@@ -139,18 +140,30 @@ var EventList = React.createClass({
         );
      },
 
-    filterChange: function(tableHeader) {
-        
+    filterChange: function(filter) {
+        console.log("at filter change " + filter);
+        // var value = e.target.value;
+           var eventList = this.props.eventList;
+           var eventListData = this.props.eventListData;
+         var filteredRows = UTILS.eventFilter.filterColumn(eventList, eventListData, filter, filter);
+
+         console.log("FILTERED ROWS");
+         console.log(filteredRows);
+         /*
         return function (e) {
+            console.log("at ret");
            var value = e.target.value;
            var eventList = this.props.eventList;
            var eventListData = this.props.eventListData;
-           var filteredRows = UTILS.eventFilter.filterColumn(eventList, eventListData, tableHeader, value);
+            console.log("at ret oooo");
+
+           var filteredRows = UTILS.eventFilter.filterColumn(eventList, eventListData, filter, value);
 
            this.props.updateAppStatus('filteredEventList', filteredRows);
-           eventListData['filters'][tableHeader] = value;
+           eventListData['filters'][filter] = value;
            this.props.updateAppStatus('filters', eventListData);
         }.bind(this);
+        */
 
 
     },
@@ -202,6 +215,7 @@ var EventList = React.createClass({
         this.setState({
             selectedCategory: category
         });
+        this.filterChange(category);
     },
 
     render: function() {
@@ -249,7 +263,7 @@ var EventList = React.createClass({
                     </table>
                     <div className="eventList-filter-bar">
                         <span id="select-dropdown">
-                            <Dropdown list={colours} selectCategory={this.selectCategory} selected={this.state.selectedCategory} />
+                            <Dropdown list={this.state.categories} selectCategory={this.selectCategory} selected={this.state.selectedCategory} />
                         </span>
                         <div id="select-start-time">2.2.2016</div>
                     </div>   
