@@ -28,10 +28,12 @@ DATABASE management:
 
 We do this by using dump files, read documentation: http://www.postgresql.org/docs/9.4/static/backup-dump.html
 
+EXPORT
 Create a dumpfile of a dabatase, outfile = some output filename:
 pg_dump -Fc devdb > seedsdb.dump
 
-To import into a existing EMPTY database:
+IMPORT
+into a existing EMPTY database:
 psql devdb < seedsdb.dump
 
 REMEMBER to change your username, db and the right .dump file

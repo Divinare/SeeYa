@@ -39,6 +39,20 @@ module.exports = {
         });
     },
 
+    filterEvents: function (req, res) {
+        var categoryFilter = req.params.category;
+        console.log("Category FILTER: " + categoryFilter);
+
+        models.Event.findAll({
+            include: [ models.Address,
+                  models.Attendance,
+                  { model: models.Category, where: {'name': categoryFilter} }
+                  ]
+        }).then(function (events) {
+            res.send(events);
+        });
+    },
+
     create: function (req, res) {
         var eventToAdd = req.body;
         findCategory(eventToAdd.categoryName).then(function(category) {

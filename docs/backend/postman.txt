@@ -1,3 +1,7 @@
+Remember to put in Headers:
+Content-Type      application/json
+
+
 EVENT:
 GET: http://localhost:1337/api/events
 GET: http://localhost:1337/api/events/1
@@ -12,6 +16,7 @@ POST: http://localhost:1337/api/events
    "zipCode":"00100"
  },
  "description":"testi db nyt backendin alla",
+ "categoryName": "Sports",
  "lat":"20.102",
  "lon":"62.123",
   "requiresRegistration":"true",
