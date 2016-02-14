@@ -6,6 +6,7 @@ var Moment = require('moment')
 var validator = require('bootstrap-validator')
 //var $ = require('jquery-autocomplete-js');
 var autocomplete;
+var placesService;
 var componentForm = ['street-address', 'country-name', 'postal-code'];
 
 var EventForm = React.createClass({
@@ -13,11 +14,11 @@ var EventForm = React.createClass({
 
     getInitialState: function() {
 	    return {
+	    	address: {}
 	    };
 	},
 	
 	componentWillMount: function() {
-
 	},
                 
 	componentDidMount: function() {
@@ -31,9 +32,16 @@ var EventForm = React.createClass({
 
 		$('#form').validator().on('submit', function (e) {
 			console.log("onsubmit")
-			if(!that.showValidationInfoForDatePicker()){
+			//Check date
+			if( !that.showValidationInfoForDatePicker() ){
 				e.preventDefault();
-				console.log("default prevented")
+				console.log("date is not valid")
+			}
+			//Check coordinates
+			if( typeof that.state.latLng == 'undefined' || that.state.latLng === null  ){
+				e.preventDefault();
+				//change the text in the address error div to tell that nothing was found with that address
+				console.log("no coordinates")
 			}
 	  		if (e.isDefaultPrevented()) {
 	   			console.log("invalid form");
@@ -42,7 +50,8 @@ var EventForm = React.createClass({
 	 		 	e.preventDefault();
 	 		 	that.handleSubmit();
 			 }
-		})	
+		})
+
 /*
 		var addressField = document.getElementById('address');
 		var options = {
@@ -103,12 +112,21 @@ var EventForm = React.createClass({
 		dateInput.setAttribute("data-validateDate", this.validateDate)
 		dateInput.addEventListener('blur', this.handleOnBlur);
 		this.hideRedBorderAndErrorText(dateInput, document.getElementById('errorDivForDateField'));
+		//this.initAutocomplete();
+		placesService = new google.maps.places.AutocompleteService();
+		this.selectFirstAddressOnBlur();
+
 	},
 
 	autoFillEventDetails: function() {
 		var event = this.getQuery().event;
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
-		this.state.address = event.Address.streetAddress;
+		this.state.address = {
+			streetAddress: event.Address.streetAddress,
+			country: event.Country,
+			zipCode: event.ZipCode,
+		}
+
 		this.state.name = event.name;
 		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
 		this.state.date = moment;
@@ -116,18 +134,6 @@ var EventForm = React.createClass({
 		this.state.time = time
 		this.state.description = event.description
 		this.state.latLng = [event.lat, event.lon]
-	},
-	fillInAddress: function() {
-		console.log("at fill in address");
-		var place = autocomplete.getPlace();
-		console.log("PLACE IS: ");
-		console.log(place);
-	    this.makeMarkerFromAddress(place);
-
-	    // TODO
-	    // To get address from coordinates
-	    // http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=false
-
 	},
 
 	validateDate: function(date){
@@ -154,25 +160,26 @@ var EventForm = React.createClass({
 		//e.preventDefault();
 		var address = {
 			streetAddress: this.state.address,
-			country: 'helsinki',
-			zipCode: "00100",
+			country: this.state.address.country,
+			zipCode: this.state.address.zipCode,
 		}
 
 		var moment = this.addHoursAndMinsToDate();
-		var latLng;
-		if(this.isEditForm()){
+	/*	if(this.isEditForm()){
 			latLng = this.state.latLng;
 		}else{
 			latLng = UTILS.helper.getLatLon(this.props.newEventMarker);
-		}
+		}*/
+
+
 
 		var data = {
 			name: this.state.name,
 			address: address,
 			description: this.state.description,
 			timestamp: moment.unix()*1000,
-			lat: latLng[0],
-			lon: latLng[1]
+			lat: this.state.latLng[0],
+			lon: this.state.latLng[1],
 		};		
 
 		var success;
@@ -266,20 +273,6 @@ var EventForm = React.createClass({
 		errorDiv.style.display = 'block';
 	},
 
-	makeMarkerFromAddress: function(place){
-		console.log("search by address called!")
-		console.log(place);
-		if(typeof(place) == 'undefined' || typeof(place.address_components) == 'undefined') {
-			console.log("Place was undefined. TODO: user should be warned now.")
-		} else {
-			var ad = place.address_components;
-			for (var i = 0; i < ad.length; i++) {
-				console.log(ad[i]);
-				//console.log(place.adr_address);
-		  	}
-		}
-	},
-
 	isEditForm: function(){
 		return this.getQuery().edit
 	},
@@ -291,29 +284,197 @@ var EventForm = React.createClass({
 		return "Create new event"
 	},
 
+	initAutocomplete: function() {
+	  // Create the autocomplete object, restricting the search to geographical
+	  // location types.
+	  autocomplete = new google.maps.places.Autocomplete(
+	      /** @type {!HTMLInputElement} */
+	      (document.getElementById('address')),
+	      {types: ['geocode']});
+
+	  // When the user selects an address from the dropdown, populate the address
+	  // fields in the form.
+	  autocomplete.addListener('place_changed', this.fillInAddress);
+
+	},
+
+/*	handleAddressOnBlur: function() {
+		var that = this;
+		placesService.getPlacePredictions({
+			input: document.getElementById('address').value
+		}, that.receivePredictions);
+	}, 
+
+	/*receivePredictions: function(predictions, status){
+		console.log("receive predictions called")
+		if (status != google.maps.places.PlacesServiceStatus.OK) {
+        	// show that this address is an error
+        	console.log("error getting predictions")
+        	return;
+    	}
+    	document.getElementById('address').value = predictions[0].description;
+    	this.fillInAddress(predictions[0])
+    	//pacInput.value = predictions[0].description;
+	},*/
+
+	fillInAddress: function() {
+		console.log("at fill in address");
+		var place = autocomplete.getPlace();
+		
+		console.log("PLACE IS: ");
+		console.log(place);
+	  /*  this.makeMarkerFromAddress(place);
+
+	    console.log("address components: ")
+	    var newAddress = {};
+	    for (var i = 0; i < place.address_components.length; i++) {
+	    	console.log("component " + i)
+	    	console.log(place.address_components[i])
+			var addressObj = place.address_components[i];
+			for(var j = 0; j < addressObj.types.length; j += 1) {
+		    	if (addressObj.types[j] === 'country') {
+		    		newAddress.country = addressObj.long_name
+		    	}
+		    	if (addressObj.types[j] === 'postal_code') {
+		    		newAddress.zipCode = addressObj.long_name;
+		    	}
+		    }
+
+	    }
+   		this.setState({
+			address:newAddress
+		})*/
+
+
+	    // TODO
+	    // To get address from coordinates
+	    // http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=false
+
+	},
+
+	selectFirstAddressOnBlur: function(){
+		console.log("kutsu")
+		var pac_input = document.getElementById('address');
+		var that = this;
+
+		(function pacSelectFirst(input) {
+			console.log("toka kutsu")
+        // store the original event binding function
+        var _addEventListener = (input.addEventListener) ? input.addEventListener : input.attachEvent;
+
+        function addEventListenerWrapper(type, listener) {
+            // Simulate a 'down arrow' keypress on hitting 'return' when no pac suggestion is selected,
+            // and then trigger the original listener.
+            if (type == "keydown") {
+                var orig_listener = listener;
+                listener = function(event) {
+                	console.log($(".pac-item-selected"))
+                    var suggestion_selected = $(".pac-item-selected").length > 0;
+                    console.log("event which")
+                    console.log(event.which)
+                	if (event.which == 13 && !suggestion_selected) {
+                		console.log("keydown again")
+                        var simulated_downarrow = $.Event("keydown", {
+                            keyCode: 40,
+                            which: 40
+                        });
+                        orig_listener.apply(input, [simulated_downarrow]);
+                    }
+
+                    orig_listener.apply(input, [event]);
+                };
+            }
+
+            _addEventListener.apply(input, [type, listener]);
+        }
+
+        input.addEventListener = addEventListenerWrapper;
+        input.attachEvent = addEventListenerWrapper;
+
+       // var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete = new google.maps.places.Autocomplete(
+	      /** @type {!HTMLInputElement} */
+	      (document.getElementById('address')),
+	      {types: ['geocode']});
+
+	  // When the user selects an address from the dropdown, populate the address
+	  // fields in the form.
+	  autocomplete.addListener('place_changed', that.fillInAddress);
+
+
+    })(pac_input);
+
+	},
+
+	updateEventCoordsFromAddress: function(place){
+		if(typeof(place) == 'undefined' || typeof(place.address_components) == 'undefined') {
+			console.log("Place was undefined. TODO: user should be warned now.")
+		} else {
+			var latLng = [];
+			latLng[0] = place.geometry.location.lat();
+			latLng[1] = place.geometry.location.lng();
+
+			this.setState({
+				latLng:latLng
+			})
+		}
+	},
+
+	makeMarkerFromAddress: function(place){
+		console.log("search by address called!")
+		console.log(place);
+		if(typeof(place) == 'undefined' || typeof(place.address_components) == 'undefined') {
+			console.log("Place was undefined. TODO: user should be warned now.")
+		} else {
+			var ad = place.address_components;
+			console.log("coordinates");
+			console.log(place.geometry.location.lat() + ", " + place.geometry.location.lng());
+			for (var i = 0; i < ad.length; i++) {
+				console.log(ad[i]);
+				//console.log(place.adr_address);
+		  	}
+		}
+	},
+
+	handleAddressOnBlur: function(){
+		console.log("onblur address")
+        console.log($(".pac-item-selected"))
+		var e = $.Event("keydown");
+		e.which = 13;
+		console.log($("#address"))
+		$("#address").trigger(e);
+	},
+
 	render: function(){
 		 // form tagista onSubmit={event.preventDefault()}, otettu pois, (bugas firefoxissa)
 		return (
 			<div className='right-container'>
-					<h2 className="centeredHeader">Create new event</h2>
-					<form className='form' id='form' onSubmit={event.preventDefault()} role='form'>
-						<div className='form-group'>
-							<span for='name'>Name *</span>
-							<input type='text' className='form-control' id='name'/>
+
+				<h2 className="text-center">{this.getEditOrCreateTitle()}</h2>
+				<br />
+				<form id='form' className='form' data-toggle="validator" data-disable="false" role='form'>
+					<div className='form-group'>
+						<div className='required'>
+						<span for='name'>Name *</span>
+							<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='test form-control' id='name' placeholder='Event name' required/>
 						</div>
-						<div className='form-group'>
-							<span for='address'>Address *</span>
-							<div className='input-group'>
-								<input type='text' className='form-control' id='address'/>
-								<span className="input-group-btn">
-									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
-								</span>
-							</div>
-						</div>
+						<div className="help-block with-errors dark-red-text"></div>
+					</div>
 
 					<div className='form-group required'>
-						<span for='date'>Date *</span>
-						<div className="input-group full-width">
+					<span for='address'>Address *</span>
+						<div className='input-group'>
+							<input type='text' value={this.state.address.streetAddress} onChange={this.handleChange('address')} onBlur={this.handleAddressOnBlur} className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
+							<span className="input-group-addon add-on white-background" onClick={this.fillInAddress}>
+								 <span className="glyphicon glyphicon-search"></span>
+							</span>
+						</div>
+						<div id='addressErrorDiv' className="help-block with-errors dark-red-text"></div>
+					</div>
+	
+					<div className='form-group required'>
+					<span for='date'>Date *</span>
+						<div className="input-group">
 				          <DatePicker
 				          	selected={this.state.date}
 				          	dateFormat= 'DD.MM.YYYY'
@@ -322,29 +483,30 @@ var EventForm = React.createClass({
 					        onChange={this.handleNewDateChange}
 					        placeholderText="Date: dd:mm:yyyy"
 					       />
+					       <span className="input-group-addon add-on white-background">
+								 <span className="glyphicon glyphicon-calendar"></span>
+							</span>
 				        </div>
 				        <div id="errorDivForDateField" className="help-block with-errors dark-red-text">Please fill out this field</div>
 					</div>
 
+					<div className='form-group required'>
+						<span for='time'>Time *</span>
+						<div className='input-group'>
+							<input type='text'  pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"  value={this.state.time} onChange={this.handleTimeChange} className='form-control' id='time' placeholder="Time: hh:mm" required/>
+							<span className="input-group-addon add-on white-background"  onClick={this.setCurrentTime}>
+								<span className="glyphicon glyphicon-time"></span>
+							</span>
+						</div>
+						<div className="help-block with-errors dark-red-text"></div>
+					</div>
 
-						<div className='form-group'>
-							<span for='time'>Time *</span>
-							<div className='input-group'>
-								<input type='text' className='form-control' id='time' placeholder="hh:mm"/>
-								<span className="input-group-btn">
-									 <button className="btn btn-default" type="button" onClick={this.setCurrentTime}><i className="glyphicon glyphicon-time"></i></button>
-								</span>
-							</div>
-						</div>
-						<div className='form-group'>
-							<span for='description'>Description *</span>
-							<input type='text' className='form-control' id='description'/>
-						</div>
-						<div className="form-group">
-				            <button type="submit" className="btn btn-default">Submit</button>
-					    </div>
-					
-					 </form>
+					<div className='form-group'>
+						<span for='description'>Description</span>
+						<textArea type='text' value={this.state.description} onChange={this.handleChange('description')} className='form-control description' id='description' placeholder='Description'/>
+					</div>
+		
+				 </form>
 			</div>
 
 		)
@@ -353,138 +515,3 @@ var EventForm = React.createClass({
 });
 
 module.exports = EventForm;
-
-//FORM WITH LABELS
-/*
-<div id="eventForm">
-					<h2 className="centeredHeader">Create new event</h2>
-					<form className='form' role='form'>
-						<div className='form-group'>
-							<label for='name'>Name</label>
-							<input type='text' className='form-control' id='name'/>
-						</div>
-						<div className='form-group'>
-							<label for='address'>Address</label>
-							<div className='input-group'>
-								<input type='text' className='form-control' id='address'/>
-								<span className="input-group-btn">
-									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-search"></i></button>
-								</span>
-							</div>
-						</div>
-
-					<div className='form-group required'>
-						<label for='date'>Date</label>
-						<div className="input-group full-width">
-				          <DatePicker
-				          	selected={this.state.date}
-				          	dateFormat= 'DD.MM.YYYY'
-					        key="example3"
-					        minDate={Moment()}
-					        onChange={this.handleNewDateChange}
-					        placeholderText="Date: dd:mm:yyyy"
-					       />
-				        </div>
-				        <div id="errorDivForDateField" className="help-block with-errors dark-red-text">Please fill out this field</div>
-					</div>
-
-
-						<div className='form-group'>
-							<label for='time'>Time</label>
-							<div className='input-group'>
-								<input type='text' className='form-control' id='time' placeholder="hh:mm"/>
-								<span className="input-group-btn">
-									 <button className="btn btn-default" type="button"><i className="glyphicon glyphicon-time"></i></button>
-								</span>
-							</div>
-						</div>
-						<div className='form-group'>
-							<label for='description'>Description</label>
-							<input type='text' className='form-control' id='description'/>
-						</div>
-						<div className="form-group">
-				            <button type="submit" className="btn btn-default">Submit</button>
-					    </div>
-					
-					 </form>
-				</div>
-
-
-			*/
-
-
-
-			/*
-NO LABELS:
-
-						<div className='right-container'>
-				<h2 className="text-center">{this.getEditOrCreateTitle()}</h2>
-				<br />
-				<form id='form' className='form' data-toggle="validator" data-disable="false" role='form'>
-					<div className='form-group'>
-						<div className='required'>
-							<input type='text' value={this.state.name} onChange={this.handleChange('name')} className='test form-control' id='name' placeholder='Event name' required/>
-						</div>
-						<div className="help-block with-errors"></div>
-					</div>
-
-					<div className='form-group required'>
-						<div className='input-group'>
-							<input type='text' data-minlength="6" value={this.state.address} onChange={this.handleChange('address')} onBlur={this.fillInAddress} className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
-							<span className="input-group-addon add-on white-background" onClick={this.fillInAddress}>
-								 <span className="glyphicon glyphicon-search"></span>
-							</span>
-						</div>
-						<div className="help-block with-errors"></div>
-					</div>
-	
-					<div className='form-group required'>
-						<div className="input-group full-width">
-				          <DatePicker
-				          	selected={this.state.date}
-				          	dateFormat= 'DD.MM.YYYY'
-					        key="example3"
-					        minDate={Moment()}
-					        onChange={this.handleNewDateChange}
-					        placeholderText="Date: dd:mm:yyyy"
-					       />
-				        </div>
-				        <div id="errorDivForDateField" className="help-block with-errors dark-red-text">Please fill out this field</div>
-					</div>
-
-					<div className='form-group required'>
-						<div className='input-group'>
-							<input type='text'  pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"  value={this.state.time} onChange={this.handleTimeChange} className='form-control' id='time' placeholder="Time: hh:mm" required/>
-							<span className="input-group-addon add-on white-background"  onClick={this.setCurrentTime}>
-								<span className="glyphicon glyphicon-time"></span>
-							</span>
-						</div>
-						<div className="help-block with-errors"></div>
-					</div>
-
-					<div className='form-group'>
-						<textArea type='text' value={this.state.description} onChange={this.handleChange('description')} className='form-control description' id='description' placeholder='Description'/>
-					</div>
-					<div className="form-group">
-			            <button className="btn btn-default" type="submit">Submit</button>
-				    </div>
-				
-				 </form>
-			</div>
-
-			*/
-
-
-			/*
-
-
-			<div id='leftPane' className='col-xs-0 col-md-3'>
-				</div>
-				<div id='centerPane' className='col-xs-12 col-md-6'>
-
-	</div>
-				<div id='rightPane' className='col-xs-0 col-md-3'>
-				</div>
-
-
-				*/

@@ -61,10 +61,14 @@ module.exports = {
                     console.log(event.name + ' created successfully');
                     res.send(event); 
                 }).catch(function(err){
+                    console.log("error, sending 400:")
+                    console.log(err)
                     helper.sendErr(res, 400, err);
                 });
 
         }).catch(function(err){
+            console.log("error, sending 400:")
+            console.log(err)
             helper.sendErr(res, 400, err);
         });
     },
