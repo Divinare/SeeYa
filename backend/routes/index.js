@@ -5,6 +5,7 @@ var router  = express.Router();
 var EventCtrl = require('../controllers/EventController.js');
 var AddressCtrl = require('../controllers/AddressController.js');
 var AttendanceCtrl = require('../controllers/AttendanceController.js');
+var CategoryCtrl = require('../controllers/CategoryController.js');
 
 /*
 router.post('/create', function(req, res) {
@@ -22,15 +23,27 @@ router.get('/', function(req, res) {
 */
 
 router.get('/events', EventCtrl.findAll);
-router.get('/events/:id', EventCtrl.findOne);
-router.post('/events', EventCtrl.create);
-router.post('/events/:id', EventCtrl.update);
-router.delete('/events/:id', EventCtrl.delete);
-
+router.get('/filteredEvents/:category/:fromTimestamp/:toTimestamp', EventCtrl.filterEvents);
 router.get('/attendances', AttendanceCtrl.findAll);
+router.get('/categories', CategoryCtrl.findAll);
+
+
+router.get('/events/:id', EventCtrl.findOne);
 router.get('/attendances/:id', AttendanceCtrl.findOne);
+router.get('/categories/:id', CategoryCtrl.findOne);
+
+
+router.post('/events', EventCtrl.create);
 router.post('/attendances', AttendanceCtrl.create);
+router.post('/categories', CategoryCtrl.create);
+
+
+router.post('/events/:id', EventCtrl.update);
+router.post('/events/:id', CategoryCtrl.update);
+
+router.delete('/events/:id', EventCtrl.delete);
 router.delete('/attendances/:id', AttendanceCtrl.delete)
+router.delete('/categories/:id', CategoryCtrl.delete)
 
 
 

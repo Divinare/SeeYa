@@ -8,7 +8,38 @@ var getAllEntries = function(name, onSuccess, onError) {
         success: onSuccess,
         error: onError
     });
+}
 
+var getFilteredEntries = function(name, category, fromTimestamp, toTimestamp, onSuccess, onError) {
+    console.log("at getFilteredEntries");
+    var url = URL.getFilteredEntries[name];
+    url += category + '/' + fromTimestamp + '/' + toTimestamp + '/';
+    /*
+    var urlFilters = [];
+
+    var filterMappings = [];
+    filterMappings["category"] = 0;
+
+    for(var i = 0; i < filters.length; i++) {
+        var filter = filters[i];
+        console.log(filter.name);
+        console.log(filterMappings[filter.name]);
+        urlFilters[filterMappings[filter.name]] = filter.value;
+    }
+    console.log(urlFilters);
+    for(var i = 0; i < urlFilters.length; i++) {
+        url +=  urlFilters[i] + '/';
+    }
+    console.log(url);
+    */
+    console.log("getting filtered entries from: " + url);
+    $.ajax({ 
+        type: 'GET', 
+        url: url,
+        dataType: 'json',
+        success: onSuccess,
+        error: onError
+    });
 }
 
 
@@ -64,6 +95,7 @@ var editEntry = function(name, id, data, onSuccess, onError){
 module.exports = {
 
     getAllEntries: getAllEntries,
+    getFilteredEntries: getFilteredEntries,
     getEntry: getEntry,
     addEntry: addEntry,
     removeEntry: removeEntry,

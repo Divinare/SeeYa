@@ -1,0 +1,22 @@
+Remove all categories that are null:
+
+DELETE FROM "Events" WHERE "CategoryId" is null;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

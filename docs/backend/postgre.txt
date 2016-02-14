@@ -1,5 +1,13 @@
+We are using currently using:
+psql (PostgreSQL) 9.4.4
+
+Connects to postgres:
+sudo -u postgres psql
+
 Connects to database:
-\connect devdb
+psql -d devdb
+
+also this can work: \connect devdb
 
 Drops a database:
 DROP DATABASE devdb;
@@ -20,10 +28,12 @@ DATABASE management:
 
 We do this by using dump files, read documentation: http://www.postgresql.org/docs/9.4/static/backup-dump.html
 
+EXPORT
 Create a dumpfile of a dabatase, outfile = some output filename:
 pg_dump -Fc devdb > seedsdb.dump
 
-To import into a existing EMPTY database:
+IMPORT
+into a existing EMPTY database:
 psql devdb < seedsdb.dump
 
 REMEMBER to change your username, db and the right .dump file

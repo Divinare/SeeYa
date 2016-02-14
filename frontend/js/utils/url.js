@@ -4,7 +4,11 @@ module.exports = {
 	'REST': REST,
 	'allEntries': {
 		'event': REST + '/events/',
-		'attendance': REST + '/attendances/'
+		'attendance': REST + '/attendances/',
+		'category': REST + '/categories/'
+	},
+	'getFilteredEntries': {
+		'filteredEvents': REST + '/filteredEvents/'
 	},
 	'getEntry' : {
 		'event': REST + '/events/',

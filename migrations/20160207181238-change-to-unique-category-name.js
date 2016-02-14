@@ -3,18 +3,17 @@
 module.exports = {
   up: function (queryInterface, Sequelize) {
     queryInterface.changeColumn(
-        'Users',
-        'username',
+        'Categories',
+        'name',
         {
           type:Sequelize.STRING, 
           allowNull: false, 
-          unique:true 
+          unique:true
         }
       )
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
-
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
@@ -22,8 +21,8 @@ module.exports = {
 
   down: function (queryInterface, Sequelize) {
         queryInterface.changeColumn(
-        'Users',
-        'username',
+        'Categories',
+        'name',
         {
           type:Sequelize.STRING, 
           allowNull: false,
@@ -33,7 +32,6 @@ module.exports = {
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.
-
       Example:
       return queryInterface.dropTable('users');
     */

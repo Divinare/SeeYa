@@ -10,9 +10,6 @@ var ButtonToolbar = ReactBootstrap.ButtonToolbar;
 var MenuItem = ReactBootstrap.MenuItem;
 var SplitButton = ReactBootstrap.SplitButton;
 
-
-var colours =  ["Sports", "Arts & Culture", "Beer", "Dancing", "Fitness", "Food & Drink", "Games", "Movies", "Parents & Family", "Photography", "Singles", "Other"]; 
-
 //var Table = FixedDataTable.Table;
 //var Column = FixedDataTable.Column;
 
@@ -30,13 +27,34 @@ var EventList = React.createClass({
     mixins: [ Router.Navigation ],
 
     getInitialState: function() {
+        var eventListData = this.props.eventListData;
+        var selectedCategory = eventListData['filters'].category;
         return {
-            selectedCategory: colours[0]
+            categories: [],
+            selectedCategory: selectedCategory
         }
     },
 
     componentDidMount: function() {
+        console.log("AT EVENTLIST COMPONENT DID MOUNT");
+
         this.props.handleResize();
+        var that = this;
+
+        var onSuccess = function (data) {
+            var categories = [];
+            for(var index in data) {
+                categories.push(data[index]);
+            }
+            that.setState({
+                categories: categories
+            })
+            console.log(categories);
+        };
+        var onError = function() {
+            console.log("Error on fetching event!");
+        }
+        UTILS.rest.getAllEntries('category', onSuccess, onError);
     },
 
     componentWillMount :function() {
@@ -75,20 +93,6 @@ var EventList = React.createClass({
             }
 
     },
-/*
-    cellRenderer: function(e, col, e3, row, e5, e6) {
-        var eventList = this.props.filteredEventList;
-
-        var eventId = eventList[row]["id"];
-        
-        var content = UTILS.eventParser.getValue(eventList[row], contentName);
-        var className = '';
-        if(headerName == 'name' || headerName == 'address') {
-            className = 'link';
-        }
-        return <div className={className} styles={{height: '100%'}} onClick={this.handleCellClick.bind(null, headerName, eventId)}>{content}</div>
-    },
-*/
 
     cellRenderer: function(headerName, content, eventId) {
         var className = '';
@@ -96,7 +100,6 @@ var EventList = React.createClass({
             className = 'link';
         }
         return <div className={className} styles={{height: '100%'}} onClick={this.handleCellClick.bind(null, headerName, eventId)}>{content}</div>
-
     },
 
     _sortRowsBy: function(sortBy) {
@@ -139,22 +142,47 @@ var EventList = React.createClass({
         );
      },
 
-    filterChange: function(tableHeader) {
-        
+    filterChange: function(filter, filterType) {
+        var that = this;
+        var onSuccess = function (filteredEvents) {
+            console.log("got filtered events");
+            console.log(filteredEvents);
+            that.props.updateAppStatus('filteredEventList', filteredEvents);
+            var eventListData = that.props.eventListData;
+            eventListData['filters'][filterType] = filter;
+            that.props.updateAppStatus('filters', eventListData);
+        };
+        var onError = function() {
+            console.log("Error on fetching event!");
+        }
+        /*
+        var categoryFilter = {
+            name: filterType,
+            value: filter
+        };
+        */
+        UTILS.rest.getFilteredEntries('filteredEvents', filter, null, null, onSuccess, onError);
+       //  var filteredRows = UTILS.eventFilter.filterColumn(eventList, eventListData, filter, filter);
+
+         /*
         return function (e) {
+            console.log("at ret");
            var value = e.target.value;
            var eventList = this.props.eventList;
-           var eventListData = this.props.eventListData;
-           var filteredRows = UTILS.eventFilter.filterColumn(eventList, eventListData, tableHeader, value);
+            console.log("at ret oooo");
+
+           var filteredRows = UTILS.eventFilter.filterColumn(eventList, eventListData, filter, value);
 
            this.props.updateAppStatus('filteredEventList', filteredRows);
-           eventListData['filters'][tableHeader] = value;
+           eventListData['filters'][filter] = value;
            this.props.updateAppStatus('filters', eventListData);
         }.bind(this);
+        */
 
 
     },
 
+/*
     renderFilterFields: function() {
         var that = this;
         var eventListData = this.props.eventListData;
@@ -175,6 +203,7 @@ var EventList = React.createClass({
         );
         
     },
+    */
 
     getTableSizes: function() {
         var tableWidth =  this.props.eventListData.tableWidth;
@@ -202,11 +231,55 @@ var EventList = React.createClass({
         this.setState({
             selectedCategory: category
         });
-        console.log("selected category " + category);
+        this.filterChange(category, "category");
+    },
+
+    createEventListTable: function(eventList) {
+        var _this = this;
+        console.log("at createEventListTable");
+        console.log(eventList);
+        console.log("LENGTH!!! " + eventList.length);
+
+        if(eventList.length > 0) {
+            return (
+                <table className="eventList-table">
+                    <tbody>
+                        {this.createEventListRows(eventList)}
+                    </tbody>
+                </table>
+            );
+        } else {
+            return <div>No events found.</div>
+        }
+    },
+
+    createEventListRows: function(eventList) {
+        var _this = this;
+        var items = [];
+        items.push(
+            <tr>
+                <th></th>
+                <th>{this._renderHeader("Name")}</th>
+                <th>{this._renderHeader("Attendances")}</th>
+             </tr>
+            );
+        eventList.map(function(event) {
+            items.push(
+                <tr>
+                    <td>x</td>
+                    <td>{_this.cellRenderer("name", event.name, event.id)}</td>
+                    <td>{event.Attendances.length}</td>                            
+                </tr>
+            );
+        });
+        console.log("RETURNING"); 
+        console.log(items);
+        return items;
     },
 
     render: function() {
-        var that = this;
+        console.log("AT EVENTLIST RENDER");
+        var _this = this;
 
         // Use eventList if filteredEventList is empty
         var eventList = this.props.filteredEventList;
@@ -218,6 +291,19 @@ var EventList = React.createClass({
         if (sortDir !== null){
           sortDirArrow = sortDir === SortTypes.DESC ? ' ↓' : ' ↑';
         }
+
+        var selectedCategory = this.props.eventListData['filters'].category;
+
+        var eventListTable = this.createEventListTable(eventList);
+        console.log(eventListTable);
+
+        var toTimestamp = eventListData['filters'].toTimestamp;
+        var fromTimestamp = eventListData['filters'].fromTimestamp;
+        var fromDate = Moment.unix(fromTimestamp).format("DD.MM.YYYY");
+        var toDate = Moment.unix(toTimestamp).format("DD.MM.YYYY");
+
+
+        //var fromDate = moment.unix(value).format("MM/DD/YYYY");
 
         // Display loading text while loading eventList
         //if($.isEmptyObject(eventList)) {
@@ -231,28 +317,13 @@ var EventList = React.createClass({
 
 
                     <h2 className="topic">Events</h2>
-
-                   <table className="eventList-table">
-                        <tr>
-                            <th></th>
-                            <th>{this._renderHeader("Name")}</th>
-                            <th>{this._renderHeader("Attendances")}</th>
-                        </tr>
-                        {eventList.map(function(event) {
-                            return (
-                            <tr>
-                                <td>x</td>
-                                <td>{that.cellRenderer("name", event.name, event.id)}</td>
-                                <td>{event.Attendances.length}</td>                            
-                            </tr>
-                        );
-                        })}
-                    </table>
+                        {eventListTable}
                     <div className="eventList-filter-bar">
                         <span id="select-dropdown">
-                            <Dropdown list={colours} selectCategory={this.selectCategory} selected={this.state.selectedCategory} />
+                            <Dropdown list={this.state.categories} selectCategory={this.selectCategory} selected={selectedCategory} />
                         </span>
-                        <div id="select-start-time">2.2.2016</div>
+                        <div id="select-fromTimestamp">{fromDate}</div>
+                        <div id="select-toTimestamp">{toDate}</div>
                     </div>   
 
 
@@ -264,6 +335,20 @@ var EventList = React.createClass({
 module.exports = EventList;
 
 /*
+
+{eventList.map(event =>
+                            <tr>
+                                <td>x</td>
+                                <td>{_this.cellRenderer("name", event.name, event.id)}</td>
+                                <td>{event.Attendances.length}</td>                            
+                            </tr>
+                        )}   
+
+
+
+
+
+
                         <Dropdown list={colours} selected={colours[0]} />
 
                         <div className="btn-group dropup">

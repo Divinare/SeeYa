@@ -1,8 +1,8 @@
 var router = require("express").Router();
 var models  = require('../models');
-var Sequelize = require('sequelize')
-var Attendance = models.Attendance
-var helper = require("../helpers/helper.js")
+var Sequelize = require('sequelize');
+var Attendance = models.Attendance;
+var helper = require("../helpers/helper.js");
 
 module.exports = {
 	findOne: function (req, res) {

@@ -42,13 +42,29 @@ img{
     z-index: 99;
     padding: 40px;
     width: 400px;
-    right: 10px;
     top: 60px;
     height: 100%;
-    position: absolute;
     background-color: rgba(0,0,0,0.55);
-    overflow-y: scroll;
+    overflow-y: auto;
 }
+
+/* Tablet */
+@media (max-width: 800px) {
+    .right-container {
+        position: fixed;
+        left: 10px;
+        top: 49%;
+    }
+}
+
+/* Desktop */
+@media (min-width: 801px) {
+    .right-container {
+        right: 10px;
+        position: absolute;
+    }
+}
+
 
 .frontpage {
      position:absolute;

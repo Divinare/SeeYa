@@ -5,6 +5,7 @@ window.URL = UTILS.url;
 window.React = require('react');
 
 //var GoogleMapsLoader = require('google-maps');
+var Moment = require('moment');
 
 var Frontpage = require('./js/frontpage.js');
 var Header = require('./js/header.js');
@@ -30,6 +31,8 @@ $(document).click(function() {
 var Main = React.createClass({
 
     getInitialState: function() {
+        var currentTimestamp = Moment().unix()
+        var nextMonthTimestamp = Moment().add('months', 1)/1000;
 
         var eventListData = [];
         eventListData['tableHeight'] = 0;
@@ -37,10 +40,9 @@ var Main = React.createClass({
         eventListData['sortBy'] = 'name';
         eventListData['sortDir'] = null;
         eventListData['filters'] = {
-            name: "",
-            attendances: "",
-            streetAddress: "",
-            timestamp: ""
+            category: "Sports",
+            fromTimestamp: currentTimestamp,
+            toTimestamp: nextMonthTimestamp
         };
         eventListData['tableContentNames'] = ['name', 'attendances', 'streetAddress', 'timestamp'];
         
@@ -71,7 +73,7 @@ var Main = React.createClass({
             var eventListHeight = UTILS.styleHelper.getEventListHeight();
             var eventListWidth = UTILS.styleHelper.getEventListWidth();
             $(".right-container").css('height', eventListHeight);
-            //$(".right-container").css('width', eventListWidth);
+            $(".right-container").css('width', eventListWidth);
 
             var eventListData = this.state.eventListData;
             eventListData['tableHeight'] = eventListHeight;
@@ -87,14 +89,23 @@ var Main = React.createClass({
     getEvents: function() {
         var that = this;
         var onSuccess = function(eventList) {
-            var eventListData = that.state.eventListData;
-            var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
+            //var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
+            console.log("GOT EVENTS FROM FILTER MAIN.js");
+           console.log(eventList);
             that.setState({
                 eventList: eventList,
-                filteredEventList: filteredEventList
+                filteredEventList: eventList
             })
         }
-        UTILS.rest.getAllEntries('event', onSuccess);
+        /*
+        var categoryFilter = {
+            name: "category",
+            value: this.state.eventListData['filters'].category
+        };
+        */
+        console.log("going to get events??");
+        var categoryFilter = this.state.eventListData['filters'].category;
+        UTILS.rest.getFilteredEntries('filteredEvents', categoryFilter, null, null, onSuccess);
     },
 
     updateAppStatus: function(propName, newValue) {
