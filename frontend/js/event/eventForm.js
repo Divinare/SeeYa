@@ -7,6 +7,7 @@ var validator = require('bootstrap-validator')
 //var $ = require('jquery-autocomplete-js');
 var autocomplete;
 var placesService;
+var detailsService;
 var componentForm = ['street-address', 'country-name', 'postal-code'];
 
 var EventForm = React.createClass({
@@ -112,9 +113,10 @@ var EventForm = React.createClass({
 		dateInput.setAttribute("data-validateDate", this.validateDate)
 		dateInput.addEventListener('blur', this.handleOnBlur);
 		this.hideRedBorderAndErrorText(dateInput, document.getElementById('errorDivForDateField'));
-		//this.initAutocomplete();
+		this.initAutocomplete();
 		placesService = new google.maps.places.AutocompleteService();
-		this.selectFirstAddressOnBlur();
+		detailsService = new google.maps.places.PlacesService();
+		//this.selectFirstAddressOnBlur();
 
 	},
 
@@ -298,24 +300,46 @@ var EventForm = React.createClass({
 
 	},
 
-/*	handleAddressOnBlur: function() {
+	handleAddressOnBlur: function() {
 		var that = this;
 		placesService.getPlacePredictions({
 			input: document.getElementById('address').value
-		}, that.receivePredictions);
+		}, that.fetchPlaceDetails);
 	}, 
 
-	/*receivePredictions: function(predictions, status){
-		console.log("receive predictions called")
+	fetchPlaceDetails: function(predictions, status){
+		var that = this;
+		console.log("fetchPlaceDetails called")
 		if (status != google.maps.places.PlacesServiceStatus.OK) {
         	// show that this address is an error
         	console.log("error getting predictions")
         	return;
     	}
-    	document.getElementById('address').value = predictions[0].description;
-    	this.fillInAddress(predictions[0])
-    	//pacInput.value = predictions[0].description;
-	},*/
+
+    	console.log("place prediction: ")
+    	console.log(predictions[0])
+    	console.log(predictions[0].place_id)
+    	
+    	console.log("place id: " + predictions[0].place_id)
+
+    	detailsService.getDetails({
+    		placeId: predictions[0].place_id
+    	}, that.receivePlace)
+	},
+
+	receivePlace: function(placeResult, placesServiceStatus){
+		/*console.log("receive place called")
+
+		if (placesServiceStatus != google.maps.places.PlacesServiceStatus.OK) {
+        	// show that this address is an error
+        	console.log("error getting predictions")
+        	return;
+    	}
+    	console.log("placeResult")
+    	console.log(placeResult)
+    	//this.fillInAddress(predictions[0])
+    	//pacInput.value = predictions[0].description;*/
+	},
 
 	fillInAddress: function() {
 		console.log("at fill in address");
@@ -436,14 +460,14 @@ var EventForm = React.createClass({
 		}
 	},
 
-	handleAddressOnBlur: function(){
+	/*handleAddressOnBlur: function(){
 		console.log("onblur address")
         console.log($(".pac-item-selected"))
 		var e = $.Event("keydown");
 		e.which = 13;
 		console.log($("#address"))
 		$("#address").trigger(e);
-	},
+	},*/
 
 	render: function(){
 		 // form tagista onSubmit={event.preventDefault()}, otettu pois, (bugas firefoxissa)
