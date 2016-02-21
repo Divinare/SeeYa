@@ -3,22 +3,22 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var livereload = require('gulp-livereload');
 var nodemon = require('gulp-nodemon');
-var plumber = require('gulp-plumber');
 var gwebpack = require('gulp-webpack');
 var sass = require('gulp-sass');
 var less = require('gulp-less');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer-core');
 var rimraf = require('rimraf');
-GLOBAL.Promise = (require('es6-promise')).Promise;
+//GLOBAL.Promise = (require('es6-promise')).Promise;
+var concat = require('gulp-concat');
+var cssmin = require('gulp-cssmin');
+
 var frontend_path = 'frontend';
 var backend_path = 'backend';
 var components_path = "bower_components";
 var modules_path = "node_modules";
 var semantic_path = modules_path + "/semantic-ui-css";
 var dist_path = "dist";
-var concat = require('gulp-concat');
-var cssmin = require('gulp-cssmin');
 
 
 var err = function() {
@@ -129,3 +129,5 @@ gulp.task('watch', ['copy'], function() {
   gulp.watch([frontend_path + "/**/*.scss"], ['scss']);
   return gulp.watch([frontend_path + "/**/*.html"], ['copy']);
 });
+
+

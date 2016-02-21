@@ -40,6 +40,7 @@ module.exports = {
     },
 
     filterEvents: function (req, res) {
+        
         var categoryFilter = req.params.category;
         console.log("Category FILTER: " + categoryFilter);
 

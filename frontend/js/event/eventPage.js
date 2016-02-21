@@ -1,7 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
 var Moment = require('moment');
-var _ = require('underscore.string');
+var _ = require('lodash');
 var validator = require('bootstrap-validator');
 var rBootstrap = require('react-bootstrap');
 var Modal = rBootstrap.Modal;
@@ -140,20 +140,19 @@ var EventPage = React.createClass({
         } else{
             var addressStr = '';
 
-            if(!_.isBlank(eventVar.Address.streetAddress)){
+            if(!_.isEmpty(eventVar.Address.streetAddress)){
                 addressStr = eventVar.Address.streetAddress + ", "
             }
-            if(!_.isBlank(eventVar.Address.zipCode)){
+            if(!_.isEmpty(eventVar.Address.zipCode)){
                 addressStr += eventVar.Address.zipCode + ", "
             }
-            if(!_.isBlank(eventVar.Address.city)){
+            if(!_.isEmpty(eventVar.Address.city)){
                 addressStr += eventVar.Address.city + ", "
             }
-            if(!_.isBlank(eventVar.Address.country)){
+            if(!_.isEmpty(eventVar.Address.country)){
                 addressStr += eventVar.Address.country
             }
-            addressStr = _.trim(addressStr, ", ")
-
+            addressStr = _.trim(addressStr, ",");
             address = <div>{addressStr}</div>
 
         }
@@ -184,12 +183,12 @@ var EventPage = React.createClass({
 
         var peopleAttendingStr;
         if(peopleAttending > 0) {
-            peopleAttendingStr = peopleAttending + " people"
+            peopleAttendingStr = peopleAttending + " people attending"
         }
 
         var description
 
-        if(!_.isBlank(eventVar.description)){
+        if(!_.isEmpty(eventVar.description)){
             description = eventVar.description
         }else{
             description = ''
