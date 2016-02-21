@@ -70,6 +70,7 @@ var Main = React.createClass({
         if(typeof map !== 'undefined') {
             $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight());
             $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
+           
             var eventListHeight = UTILS.styleHelper.getEventListHeight();
             var eventListWidth = UTILS.styleHelper.getEventListWidth();
             $(".right-container").css('height', eventListHeight);

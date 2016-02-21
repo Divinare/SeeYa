@@ -4,7 +4,8 @@ var Moment = require('moment');
 var FixedDataTable = require('fixed-data-table');
 
 var Dropdown = require('../dropdown.js');
-
+//var Dateselect = require('../dateselect.js');
+var DatePicker = require('../datepicker.js');
 var ReactBootstrap = require('react-bootstrap')
 var ButtonToolbar = ReactBootstrap.ButtonToolbar;
 var MenuItem = ReactBootstrap.MenuItem;
@@ -153,30 +154,7 @@ var EventList = React.createClass({
         var onError = function() {
             console.log("Error on fetching event!");
         }
-        /*
-        var categoryFilter = {
-            name: filterType,
-            value: filter
-        };
-        */
         UTILS.rest.getFilteredEntries('filteredEvents', filter, null, null, onSuccess, onError);
-       //  var filteredRows = UTILS.eventFilter.filterColumn(eventList, eventListData, filter, filter);
-
-         /*
-        return function (e) {
-            console.log("at ret");
-           var value = e.target.value;
-           var eventList = this.props.eventList;
-            console.log("at ret oooo");
-
-           var filteredRows = UTILS.eventFilter.filterColumn(eventList, eventListData, filter, value);
-
-           this.props.updateAppStatus('filteredEventList', filteredRows);
-           eventListData['filters'][filter] = value;
-           this.props.updateAppStatus('filters', eventListData);
-        }.bind(this);
-        */
-
 
     },
 
@@ -273,6 +251,10 @@ var EventList = React.createClass({
         return items;
     },
 
+    changeDate: function(field) {
+        console.log("at changeDate: " + field);
+    },
+
     render: function() {
         var _this = this;
 
@@ -317,9 +299,10 @@ var EventList = React.createClass({
                         <span id="select-dropdown">
                             <Dropdown list={this.state.categories} selectCategory={this.selectCategory} selected={selectedCategory} />
                         </span>
-                        <div id="select-fromTimestamp">{fromDate}</div>
-                        <div id="select-toTimestamp">{toDate}</div>
-                    </div>   
+                            <form>
+                            <DatePicker defaultValue="1/1/2000"/>
+                            </form>
+                    </div>
 
 
                 </div>              
@@ -330,6 +313,17 @@ var EventList = React.createClass({
 module.exports = EventList;
 
 /*
+
+                        <Dateselect
+                          selectDivId="select-fromTimestamp"
+                          defaultValue="22.2.2016"
+                          />
+                        <Dateselect
+                        selectDivId="select-toTimestamp"
+                        defaultValue="22.2.2016" />
+
+
+
 
 {eventList.map(event =>
                             <tr>
