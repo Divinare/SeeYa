@@ -6,7 +6,7 @@
     /*border: 1px solid #ABABAB; */
     }
 
-.dropdown-content {
+#categories-content {
     width: 150px;
     display: none;
     position: absolute;
@@ -19,7 +19,7 @@
     overflow-y: scroll;
 }
 
-.dropdown-content li {
+#categories-content li {
     list-style-type: none;
 }
 

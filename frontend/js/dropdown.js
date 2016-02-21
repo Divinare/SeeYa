@@ -5,16 +5,27 @@ var Dropdown = React.createClass({
         };
     },
 
+    componentDidMount: function() {
+        this.setState({
+            divId: this.props.divId
+        })
+    },
+
     select: function(item) {
         this.props.selectCategory(item);
+        this.toggleShowCategories();
     },
 
     toggleShowCategories: function(e) {
-        var categoriesContent = $("#categories-content")[0];
-        if($("#categories-content").css('display') == 'none') {
-            $("#categories-content").slideDown(150, function(){ });
+        console.log("ID: ")
+        console.log(this.props.categoriesContentId)
+        var id = this.props.categoriesContentId
+        if($("#" + id).css('display') == 'none') {
+            console.log("sliding down")
+            $("#" + id).slideDown(150, function(){ });
         } else {
-            $("#categories-content").slideUp(150, function(){ });
+            console.log("sliding up")
+            $("#" + id).slideUp(150, function(){ });
         }
     },
 
@@ -35,13 +46,13 @@ var Dropdown = React.createClass({
         console.log(this.props.selected);
         //console.log(this.renderListItems());
         return (
-            <div className="dropdown">
-                        <div className="dropdown-content" id="categories-content">
+            <div id={this.props.dropdownId}>
+                        <div id={this.props.categoriesContentId}>
                             {this.props.list.map(item =>
-                               <div className="item unSelected" onClick={this.select.bind(null, item.name)}>{item.name}</div>
+                               <div className={"item unSelected"} onClick={this.select.bind(null, item.name)}>{item.name}</div>
                             )}
                         </div>
-                    <div className="dropdown-btn" onClick={this.toggleShowCategories}>{this.props.selected}</div>
+                    <div id={this.props.selectDivId} onClick={this.toggleShowCategories}>{this.props.selected}</div>
             </div>
         );
     }

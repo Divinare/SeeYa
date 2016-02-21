@@ -4,10 +4,10 @@ var DatePicker = require('react-datepicker');
 var Select = require('react-select');
 var Moment = require('moment')
 var validator = require('bootstrap-validator')
+var Dropdown = require('../dropdown.js');
 //var $ = require('jquery-autocomplete-js');
 var autocomplete;
 var placesService;
-var detailsService;
 var componentForm = ['street-address', 'country-name', 'postal-code'];
 
 var EventForm = React.createClass({
@@ -15,7 +15,9 @@ var EventForm = React.createClass({
 
     getInitialState: function() {
 	    return {
-	    	address: {}
+	    	address: {},
+	    	categories: [],
+	    	selectedCategory: "Other" //TODO: get the default category from backend
 	    };
 	},
 	
@@ -53,61 +55,11 @@ var EventForm = React.createClass({
 			 }
 		})
 
-/*
-		var addressField = document.getElementById('address');
-		var options = {
-			types: ['geocode']
-		};//{componentRestrictions: {country: 'us'}};
-
-		autocomplete = new google.maps.places.Autocomplete(
-			addressField,
-			options
-		);
-*/
-
 
 // TODO LINK:
  // http://stackoverflow.com/questions/7865446/google-maps-places-api-v3-autocomplete-select-first-option-on-enter
-
     	var input = document.getElementById('searchTextField');
 
-        // store the original event binding function
-        /*
-        var _addEventListener = (input.addEventListener) ? input.addEventListener : input.attachEvent;
-
-        function addEventListenerWrapper(type, listener) {
-            // Simulate a 'down arrow' keypress on hitting 'return' when no pac suggestion is selected,
-            // and then trigger the original listener.
-            if (type == "keydown") {
-                var orig_listener = listener;
-                listener = function(event) {
-                    var suggestion_selected = $(".pac-item-selected").length > 0;
-                    if (event.which == 13 && !suggestion_selected) {
-                        var simulated_downarrow = $.Event("keydown", {
-                            keyCode: 40,
-                            which: 40
-                        });
-                        orig_listener.apply(input, [simulated_downarrow]);
-                    }
-
-                    orig_listener.apply(input, [event]);
-                };
-            }
-
-            _addEventListener.apply(input, [type, listener]);
-        }
-
-        input.addEventListener = addEventListenerWrapper;
-        input.attachEvent = addEventListenerWrapper;
-
-        var autocomplete = new google.maps.places.Autocomplete(input);
-
-
-		// When the user selects an address from the dropdown, populate the address
-		// fields in the form.
-		autocomplete.addListener('place_changed', this.fillInAddress);
-	
-		*/
 		this.state.dateFieldClicked = false
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
 		dateInput.setAttribute("data-validateDate", this.validateDate)
@@ -115,19 +67,42 @@ var EventForm = React.createClass({
 		this.hideRedBorderAndErrorText(dateInput, document.getElementById('errorDivForDateField'));
 		this.initAutocomplete();
 		placesService = new google.maps.places.AutocompleteService();
-		detailsService = new google.maps.places.PlacesService();
-		//this.selectFirstAddressOnBlur();
+		this.fetchCategories();
+	},
 
+	fetchCategories: function(){
+		var that = this;
+
+        var onSuccess = function (data) {
+        	console.log("fetched categories")
+            var categories = [];
+            for(var index in data) {
+                categories.push(data[index]);
+            }
+            that.setState({
+                categories: categories
+            })
+            console.log(categories);
+        };
+        var onError = function() {
+            console.log("Error on fetching event!");
+        }
+        UTILS.rest.getAllEntries('category', onSuccess, onError);
 	},
 
 	autoFillEventDetails: function() {
 		var event = this.getQuery().event;
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
+
 		this.state.address = {
 			streetAddress: event.Address.streetAddress,
 			country: event.Country,
 			zipCode: event.ZipCode,
 		}
+
+		console.log("EVENT ADDRESS")
+		console.log(event.Address)
+		console.log(event.Address.streetAddress)
 
 		this.state.name = event.name;
 		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
@@ -174,14 +149,16 @@ var EventForm = React.createClass({
 		}*/
 
 
-
+		console.log("ADDRESS: ")
+		console.log(this.state.address)
 		var data = {
 			name: this.state.name,
-			address: address,
+			address: this.state.address,
 			description: this.state.description,
 			timestamp: moment.unix()*1000,
 			lat: this.state.latLng[0],
 			lon: this.state.latLng[1],
+			category: this.state.selectedCategory
 		};		
 
 		var success;
@@ -300,57 +277,17 @@ var EventForm = React.createClass({
 
 	},
 
-	handleAddressOnBlur: function() {
-		var that = this;
-		placesService.getPlacePredictions({
-			input: document.getElementById('address').value
-		}, that.fetchPlaceDetails);
-	}, 
-
-	fetchPlaceDetails: function(predictions, status){
-		var that = this;
-		console.log("fetchPlaceDetails called")
-		if (status != google.maps.places.PlacesServiceStatus.OK) {
-        	// show that this address is an error
-        	console.log("error getting predictions")
-        	return;
-    	}
-
-    	console.log("place prediction: ")
-    	console.log(predictions[0])
-    	console.log(predictions[0].place_id)
-    	
-    	console.log("place id: " + predictions[0].place_id)
-
-    	detailsService.getDetails({
-    		placeId: predictions[0].place_id
-    	}, that.receivePlace)
-	},
-
-	receivePlace: function(placeResult, placesServiceStatus){
-		/*console.log("receive place called")
-
-		if (placesServiceStatus != google.maps.places.PlacesServiceStatus.OK) {
-        	// show that this address is an error
-        	console.log("error getting predictions")
-        	return;
-    	}
-    	console.log("placeResult")
-    	console.log(placeResult)
-    	//this.fillInAddress(predictions[0])
-    	//pacInput.value = predictions[0].description;*/
-	},
-
 	fillInAddress: function() {
 		console.log("at fill in address");
 		var place = autocomplete.getPlace();
 		
 		console.log("PLACE IS: ");
 		console.log(place);
-	  /*  this.makeMarkerFromAddress(place);
+	   // this.makeMarkerFromAddress(place);
 
 	    console.log("address components: ")
 	    var newAddress = {};
+	    var streetNumber;
 	    for (var i = 0; i < place.address_components.length; i++) {
 	    	console.log("component " + i)
 	    	console.log(place.address_components[i])
@@ -362,13 +299,25 @@ var EventForm = React.createClass({
 		    	if (addressObj.types[j] === 'postal_code') {
 		    		newAddress.zipCode = addressObj.long_name;
 		    	}
+		    	if (addressObj.types[j] === 'route') {
+		    		newAddress.streetAddress = addressObj.long_name
+		    	}
+		    	if (addressObj.types[j] === 'street_number') {
+		    		streetNumber = addressObj.long_name
+		    	}
 		    }
-
 	    }
+	    console.log("NEW ADDRESS")
+	    if( streetNumber != null && typeof newAddress.streetAddress != 'undefined' 
+	    	&& newAddress.streetAddress != null ){
+	    	newAddress.streetAddress = newAddress.streetAddress + " " + streetNumber
+	    }
+	    	    console.log(newAddress)
    		this.setState({
 			address:newAddress
-		})*/
+		})
 
+   		this.updateEventCoordsFromAddress(place)
 
 	    // TODO
 	    // To get address from coordinates
@@ -376,62 +325,8 @@ var EventForm = React.createClass({
 
 	},
 
-	selectFirstAddressOnBlur: function(){
-		console.log("kutsu")
-		var pac_input = document.getElementById('address');
-		var that = this;
-
-		(function pacSelectFirst(input) {
-			console.log("toka kutsu")
-        // store the original event binding function
-        var _addEventListener = (input.addEventListener) ? input.addEventListener : input.attachEvent;
-
-        function addEventListenerWrapper(type, listener) {
-            // Simulate a 'down arrow' keypress on hitting 'return' when no pac suggestion is selected,
-            // and then trigger the original listener.
-            if (type == "keydown") {
-                var orig_listener = listener;
-                listener = function(event) {
-                	console.log($(".pac-item-selected"))
-                    var suggestion_selected = $(".pac-item-selected").length > 0;
-                    console.log("event which")
-                    console.log(event.which)
-                	if (event.which == 13 && !suggestion_selected) {
-                		console.log("keydown again")
-                        var simulated_downarrow = $.Event("keydown", {
-                            keyCode: 40,
-                            which: 40
-                        });
-                        orig_listener.apply(input, [simulated_downarrow]);
-                    }
-
-                    orig_listener.apply(input, [event]);
-                };
-            }
-
-            _addEventListener.apply(input, [type, listener]);
-        }
-
-        input.addEventListener = addEventListenerWrapper;
-        input.attachEvent = addEventListenerWrapper;
-
-       // var autocomplete = new google.maps.places.Autocomplete(input);
-        autocomplete = new google.maps.places.Autocomplete(
-	      /** @type {!HTMLInputElement} */
-	      (document.getElementById('address')),
-	      {types: ['geocode']});
-
-	  // When the user selects an address from the dropdown, populate the address
-	  // fields in the form.
-	  autocomplete.addListener('place_changed', that.fillInAddress);
-
-
-    })(pac_input);
-
-	},
-
 	updateEventCoordsFromAddress: function(place){
-		if(typeof(place) == 'undefined' || typeof(place.address_components) == 'undefined') {
+		if(typeof place == 'undefined' || typeof place.address_components == 'undefined') {
 			console.log("Place was undefined. TODO: user should be warned now.")
 		} else {
 			var latLng = [];
@@ -447,7 +342,7 @@ var EventForm = React.createClass({
 	makeMarkerFromAddress: function(place){
 		console.log("search by address called!")
 		console.log(place);
-		if(typeof(place) == 'undefined' || typeof(place.address_components) == 'undefined') {
+		if(typeof place == 'undefined' || typeof place.address_components == 'undefined') {
 			console.log("Place was undefined. TODO: user should be warned now.")
 		} else {
 			var ad = place.address_components;
@@ -460,14 +355,12 @@ var EventForm = React.createClass({
 		}
 	},
 
-	/*handleAddressOnBlur: function(){
-		console.log("onblur address")
-        console.log($(".pac-item-selected"))
-		var e = $.Event("keydown");
-		e.which = 13;
-		console.log($("#address"))
-		$("#address").trigger(e);
-	},*/
+	selectCategory: function(category) {
+		console.log("selected category")
+        this.setState({
+            selectedCategory: category
+        });
+    },
 
 	render: function(){
 		 // form tagista onSubmit={event.preventDefault()}, otettu pois, (bugas firefoxissa)
@@ -488,7 +381,7 @@ var EventForm = React.createClass({
 					<div className='form-group required'>
 					<span for='address'>Address *</span>
 						<div className='input-group'>
-							<input type='text' value={this.state.address.streetAddress} onChange={this.handleChange('address')} onBlur={this.handleAddressOnBlur} className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
+							<input type='text' value={this.state.address.streetAddress} onChange={this.handleChange('address')} className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
 							<span className="input-group-addon add-on white-background" onClick={this.fillInAddress}>
 								 <span className="glyphicon glyphicon-search"></span>
 							</span>
@@ -526,8 +419,22 @@ var EventForm = React.createClass({
 					</div>
 
 					<div className='form-group'>
+						<span for="category-select-eventform">Category</span>
+						<Dropdown 
+							selectDivId="category-select-eventform"
+							categoriesContentId="category-content-eventform"
+							dropdownId="category-dropdown-eventform"
+							list={this.state.categories} selectCategory={this.selectCategory} 
+							selected={this.state.selectedCategory}
+						/>
+					</div>
+					<div className='form-group'>
 						<span for='description'>Description</span>
 						<textArea type='text' value={this.state.description} onChange={this.handleChange('description')} className='form-control description' id='description' placeholder='Description'/>
+					</div>
+		
+					<div className="form-group">
+				            <button type="submit" className="btn btn-default">Submit</button>
 					</div>
 		
 				 </form>

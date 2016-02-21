@@ -4,7 +4,7 @@
 - Remove unnecessary fields from models for example createdAt and updatedAt from category model
 
 
-
+- Remove unused imports from package.json
 
 
 

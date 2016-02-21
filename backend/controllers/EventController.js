@@ -40,6 +40,7 @@ module.exports = {
     },
 
     filterEvents: function (req, res) {
+        
         var categoryFilter = req.params.category;
         console.log("Category FILTER: " + categoryFilter);
 
@@ -54,11 +55,16 @@ module.exports = {
     },
 
     create: function (req, res) {
+        console.log("creating event: ")
+        console.log(req.body)
+
         var eventToAdd = req.body;
         findCategory(eventToAdd.categoryName).then(function(category) {
             if(category == null) {
+                console.log("CATEGORY NULL")
                 helper.sendErr(res, 400, "Category by name " + eventToAdd.categoryName + " not found.");
             } else {
+                console.log("FOUND CATEGORY, GONNA CREATE THE EVENT")
                 createEvent(req, res, category);
             }
         });
@@ -152,6 +158,10 @@ function createEvent(req, res, category) {
     }
 
     }).spread(function(address, created){
+        console.log("CREATED:")
+        console.log(created)
+        console.log("ADDRESS: ")
+        console.log(address)
         models.Event.create({
             name: eventToAdd.name,
             description: eventToAdd.description,
@@ -166,10 +176,14 @@ function createEvent(req, res, category) {
                 console.log(event.name + ' created successfully');
                 res.send(event); 
             }).catch(function(err){
+                console.log("ERROR")
+                console.log(err)
                 helper.sendErr(res, 400, err);
             });
 
     }).catch(function(err){
+        console.log("ERROR2")
+        console.log(err)
         helper.sendErr(res, 400, err);
     });
 

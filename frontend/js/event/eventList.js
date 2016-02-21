@@ -36,8 +36,6 @@ var EventList = React.createClass({
     },
 
     componentDidMount: function() {
-        console.log("AT EVENTLIST COMPONENT DID MOUNT");
-
         this.props.handleResize();
         var that = this;
 
