@@ -3,12 +3,14 @@ var Router = require('react-router');
 var Moment = require('moment');
 var _ = require('lodash');
 var validator = require('bootstrap-validator');
+/*
 var rBootstrap = require('react-bootstrap');
 var Modal = rBootstrap.Modal;
 var Button = rBootstrap.Button;
 var OverlayTrigger = rBootstrap.OverlayTrigger;
 var Popover = rBootstrap.Popover;
-var Tooltip = rBootstrap.Tooltip;
+*/
+
 $ = window.jQuery = require('jquery');
 
 var EventPage = React.createClass({
@@ -162,11 +164,15 @@ var EventPage = React.createClass({
         var peopleAttending = 0;
         var participantList;
         if(typeof eventVar.Attendances !== 'undefined'){
+            /*
+            react-bootstrap removed:
+
             btn = <Button
                   bsStyle="default"
                   onClick={this.open}>
                   Show participants
                 </Button>
+                */
 
              peopleAttending = eventVar.Attendances.length
         }
@@ -194,7 +200,7 @@ var EventPage = React.createClass({
             description = ''
         }
 
-        let popover = <Popover title="popover">very popover. such engagement</Popover>;
+        //let popover = <Popover title="popover">very popover. such engagement</Popover>;
 
         return (
             <div className='right-container'>
@@ -207,19 +213,7 @@ var EventPage = React.createClass({
                     {peopleAttendingStr}<br/>
                     {description}<br/>
 
-                    <Modal bsSize='small' show={this.state.showModal} onHide={this.close}>
-                      <Modal.Header closeButton>
-                        <Modal.Title>People attending in {eventVar.name}</Modal.Title>
-                      </Modal.Header>
-                          <Modal.Body>
-                                {typeof eventVar.Attendances !== 'undefined' ? eventVar.Attendances.map(function(attendance, index){
-                                    return <div>
-                                        <OverlayTrigger overlay={<Popover title={attendance.name}>{attendance.comment}</Popover>}>
-                                        <a href="#">{attendance.name}</a></OverlayTrigger>
-                                   </div>
-                                  }) : ''}
-                          </Modal.Body>
-                    </Modal>
+                    <div>modal was here</div>
 
                     <br />
                     <div className="btn-group">
@@ -256,3 +250,22 @@ var EventPage = React.createClass({
 });
 
 module.exports = EventPage;
+
+/*
+
+
+                    <Modal bsSize='small' show={this.state.showModal} onHide={this.close}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>People attending in {eventVar.name}</Modal.Title>
+                      </Modal.Header>
+                          <Modal.Body>
+                                {typeof eventVar.Attendances !== 'undefined' ? eventVar.Attendances.map(function(attendance, index){
+                                    return <div>
+                                        <OverlayTrigger overlay={<Popover title={attendance.name}>{attendance.comment}</Popover>}>
+                                        <a href="#">{attendance.name}</a></OverlayTrigger>
+                                   </div>
+                                  }) : ''}
+                          </Modal.Body>
+                    </Modal>
+
+                    */

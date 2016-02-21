@@ -1,18 +1,9 @@
 var Router = require('react-router');
 var Moment = require('moment');
 
-var FixedDataTable = require('fixed-data-table');
-
 var Dropdown = require('../dropdown.js');
 //var Dateselect = require('../dateselect.js');
 var DatePicker = require('../datepicker.js');
-var ReactBootstrap = require('react-bootstrap')
-var ButtonToolbar = ReactBootstrap.ButtonToolbar;
-var MenuItem = ReactBootstrap.MenuItem;
-var SplitButton = ReactBootstrap.SplitButton;
-
-//var Table = FixedDataTable.Table;
-//var Column = FixedDataTable.Column;
 
 var SortTypes = {
   ASC: 'ASC',

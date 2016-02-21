@@ -3,6 +3,7 @@ window.CONFIGS = require('./configs/config.js')
 window.UTILS = require('./js/utils');
 window.URL = UTILS.url;
 window.React = require('react');
+window.ReactDOM = require('react-dom');
 
 //var GoogleMapsLoader = require('google-maps');
 var Moment = require('moment');
@@ -207,6 +208,6 @@ var EventPageWrapper = React.createClass({
 
 $(document).ready(function () {
     Router.run(routes, Router.HistoryLocation, function (Handler) {
-        React.render(<Handler/>, document.body);
+        ReactDOM.render(<Handler/>,  document.getElementById('app-container'));
     });
 });

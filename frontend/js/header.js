@@ -1,9 +1,10 @@
-var React = require('react/addons');
+//var React = require('react/addons');
 
 var Router = require('react-router')
     , RouteHandler = Router.RouteHandler
     , Route = Router.Route;
 
+/*
 var ReactBootstrap = require('react-bootstrap')
     , Nav = ReactBootstrap.Nav
     , Navbar = ReactBootstrap.Navbar
@@ -12,6 +13,7 @@ var ReactBootstrap = require('react-bootstrap')
     , NavItem = ReactBootstrap.NavItem
     , DropdownButton = ReactBootstrap.DropdownButton
     , MenuItem = ReactBootstrap.MenuItem;
+*/
 
 var ReactRouterBootstrap = require('react-router-bootstrap')
     , NavItemLink = ReactRouterBootstrap.NavItemLink
@@ -30,6 +32,17 @@ module.exports = React.createClass({
 		this.props.showEventList();
 	},
 
+  render: function(){
+   
+        return (
+          <div>Navbar comes here</div>
+        )
+  }
+
+});
+
+
+/*
 	render: function(){
 		var toggleEventFormLinkText = this.props.showEventForm ? 'Browse events' : 'Create new event';
 		var toggleEventFormHref = this.props.showEventForm ? 'event/new' : '/';
@@ -54,6 +67,8 @@ module.exports = React.createClass({
 	}
 
 });
+
+*/
 
 /*
 
