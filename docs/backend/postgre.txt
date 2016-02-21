@@ -7,7 +7,9 @@ sudo -u postgres psql
 Connects to database:
 psql -d devdb
 
-also this can work: \connect devdb
+If not working, try these:
+\connect devdb
+psql -h localhost -U postgres
 
 Drops a database:
 DROP DATABASE devdb;
@@ -33,12 +35,16 @@ Create a dumpfile of a dabatase, outfile = some output filename:
 pg_dump -Fc devdb > seedsdb.dump
 
 IMPORT
-into a existing EMPTY database:
-psql devdb < seedsdb.dump
 
 REMEMBER to change your username, db and the right .dump file
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -U joe -d devdb seedsdb.dump
 
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -U Pete -d devdb seedsdb.dump
 
+
+
+LINUX
+
+To restart postgres:
+sudo /etc/init.d/postgresql restart
 

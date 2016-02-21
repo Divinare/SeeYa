@@ -45,17 +45,52 @@ var Map = React.createClass({
         }   
     },
 
+    _zoomControl: function(controlDiv, map) {
+        controlDiv.className = "mapControlDiv";
+        var controlWrapper = document.createElement('div');
+        controlWrapper.className = "mapControlWrapper";
+        controlDiv.appendChild(controlWrapper);
+
+        var zoomInButton = document.createElement('div');
+        zoomInButton.className = "mapZoomInButton";
+        zoomInButton.innerHTML = '+';
+        controlWrapper.appendChild(zoomInButton);
+
+        var zoomOutButton = document.createElement('div');
+        zoomOutButton.className = "mapZoomOutButton";
+        zoomOutButton.innerHTML = '-';
+        controlWrapper.appendChild(zoomOutButton);
+
+        // Setup the click event listener - zoomIn
+        google.maps.event.addDomListener(zoomInButton, 'click', function() {
+            map.setZoom(map.getZoom() + 1);
+        });
+
+        // Setup the click event listener - zoomOut
+        google.maps.event.addDomListener(zoomOutButton, 'click', function() {
+            map.setZoom(map.getZoom() - 1);
+        });  
+    },
+
     initMap: function() {
         var that = this;
 
         var mapOptions = {
             center: { lat: 60.205294, lng: 24.936092},
             zoom: this.state.initialZoom,
-            minZoom: 3
+            minZoom: 3,
+            zoomControl: false,
+            streetViewControl: false,
+            mapTypeControl: false
         };
 
-        window.map = new google.maps.Map(this.getDOMNode(), mapOptions);       
-    
+        var map = new google.maps.Map(this.getDOMNode(), mapOptions);       
+        
+        var zoomControlDiv = document.createElement('div');
+        var zoomControl = new this._zoomControl(zoomControlDiv, map);
+        zoomControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(zoomControlDiv);
+        
         google.maps.event.addListener(map, 'click', function(event) {
             that.closeOpenedInfowindow();
             if(UTILS.helper.atEventForm()) {
@@ -114,6 +149,8 @@ var Map = React.createClass({
                     break;
             }
         });
+
+        window.map = map;
     },
 
     centerMapToUserLocation: function() {
