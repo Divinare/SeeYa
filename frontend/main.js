@@ -9,7 +9,7 @@ window.ReactDOM = require('react-dom');
 var Moment = require('moment');
 
 var Frontpage = require('./js/frontpage.js');
-var Header = require('./js/header.js');
+var Navbar = require('./js/navbar.js');
 var Map = require('./js/map/map.js');
 var About = require('./js/about.js');
 var NoMatch = require('./js/noMatch.js');
@@ -124,7 +124,7 @@ var Main = React.createClass({
         return (
             <div>
 
-                <Header />
+                <Navbar />
 
                 <div className="content">
                     <Map
@@ -206,8 +206,16 @@ var EventPageWrapper = React.createClass({
         </Route>
     );
 
+/*
 $(document).ready(function () {
     Router.run(routes, Router.HistoryLocation, function (Handler) {
         ReactDOM.render(<Handler/>,  document.getElementById('app-container'));
+    });
+});
+*/
+
+$(document).ready(function () {
+    Router.run(routes, Router.HistoryLocation, function (Handler) {
+        ReactDOM.render(<Handler/>,  $('#app-container').get(0));
     });
 });
