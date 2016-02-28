@@ -1,18 +1,10 @@
 var Router = require('react-router');
 var Moment = require('moment');
 
-var FixedDataTable = require('fixed-data-table');
-
 var Dropdown = require('../dropdown.js');
 //var Dateselect = require('../dateselect.js');
 var DatePicker = require('../datepicker.js');
-var ReactBootstrap = require('react-bootstrap')
-var ButtonToolbar = ReactBootstrap.ButtonToolbar;
-var MenuItem = ReactBootstrap.MenuItem;
-var SplitButton = ReactBootstrap.SplitButton;
-
-//var Table = FixedDataTable.Table;
-//var Column = FixedDataTable.Column;
+import { browserHistory } from 'react-router'
 
 var SortTypes = {
   ASC: 'ASC',
@@ -24,8 +16,7 @@ var SortTypes = {
     fixed-data-table API
 */
 
-var EventList = React.createClass({
-    mixins: [ Router.Navigation ],
+const EventList = React.createClass({
 
     getInitialState: function() {
         var eventListData = this.props.eventListData;
@@ -37,6 +28,7 @@ var EventList = React.createClass({
     },
 
     componentDidMount: function() {
+        console.log("AT EVENTLIST component did mount");
         this.props.handleResize();
         var that = this;
 
@@ -74,7 +66,12 @@ var EventList = React.createClass({
         var that = this;
         if(headerName == 'name') {
             this.centerMapToMarker(eventId, 12);
-            this.transitionTo('eventPage', {id: eventId});
+            //this.transitionTo('eventPage', {id: eventId});
+            console.log("EventId: " + eventId);
+
+            browserHistory.push('events/' + eventId);
+
+            //this.context.router.transitionTo('eventPage', {id: eventId});
         } else if (headerName == 'address') {
             this.centerMapToMarker(eventId, -1);
         }
@@ -154,6 +151,7 @@ var EventList = React.createClass({
         var onError = function() {
             console.log("Error on fetching event!");
         }
+        console.log("AT FILTER CHANGE");
         UTILS.rest.getFilteredEntries('filteredEvents', filter, null, null, onSuccess, onError);
 
     },
@@ -219,7 +217,7 @@ var EventList = React.createClass({
         if(eventList.length > 0) {
             return (
                 <table className="eventList-table">
-                    <tbody>
+                    <tbody key="tableBody">
                         {this.createEventListRows(eventList)}
                     </tbody>
                 </table>
@@ -233,18 +231,18 @@ var EventList = React.createClass({
         var _this = this;
         var items = [];
         items.push(
-            <tr>
-                <th></th>
-                <th>{this._renderHeader("Name")}</th>
-                <th>{this._renderHeader("Attendances")}</th>
+            <tr key="z">
+                <th key="x"></th>
+                <th key="y">{this._renderHeader("Name")}</th>
+                <th key="v">{this._renderHeader("Attendances")}</th>
              </tr>
             );
         eventList.map(function(event) {
             items.push(
-                <tr>
-                    <td>x</td>
-                    <td>{_this.cellRenderer("name", event.name, event.id)}</td>
-                    <td>{event.Attendances.length}</td>                            
+                <tr key={event.id}>
+                    <td key={"a"+event.id}>x</td>
+                    <td key={"b"+event.id}>{_this.cellRenderer("name", event.name, event.id)}</td>
+                    <td key={"c"+event.id}>{event.Attendances.length}</td>                            
                 </tr>
             );
         });
@@ -256,6 +254,7 @@ var EventList = React.createClass({
     },
 
     render: function() {
+        console.log("At eventlist render");
         var _this = this;
 
         // Use eventList if filteredEventList is empty

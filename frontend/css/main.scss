@@ -24,6 +24,71 @@ img{
     margin:auto;
 }
 
+/***********************/
+/*       DESKTOP       */
+/***********************/
+
+@media (min-width: 800px) {
+    .right-container {
+        right: 10px;
+        position: absolute;
+    }
+
+    #navbar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 50px;
+        width: 100%;
+        z-index: 99 !important;   
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: rgba(255,255,255,0.8) !important;
+        color: #12B381!important;
+        text-align: center;
+    }
+
+    #navbar li {
+        height: 50px;
+        text-align: center;
+        display: inline;
+    }
+
+    .navbar ul {
+        display: inline-block;
+        height: 50px;
+    }
+}
+
+
+/***********************/
+/*   TABLET / MOBILE   */
+/***********************/
+@media (max-width: 799px) {
+    .right-container {
+        position: fixed;
+        left: 10px;
+        top: 49%;
+    }
+
+    /* NAVBAR */
+
+    #navbar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 50px;
+        z-index: 99 !important;   
+        background-color: rgba(123,123,123,0.8) !important;
+    }
+
+    #navbar li {
+        display: block;
+    }
+}
+
+
 .content {
     position: absolute;
     z-index: 0;
@@ -48,42 +113,6 @@ img{
     overflow-y: auto;
 }
 
-/* Tablet */
-@media (max-width: 800px) {
-    .right-container {
-        position: fixed;
-        left: 10px;
-        top: 49%;
-    }
-}
-
-/* Desktop */
-@media (min-width: 801px) {
-    .right-container {
-        right: 10px;
-        position: absolute;
-    }
-}
-
-
-.frontpage {
-     position:absolute;
-    height:100%;
-    width:100%;
-     /*z-index: 999;*/
-     overflow-y: hidden;
-   /* max-height: 500px;*/
-
-    transition-property: all;
-    transition-duration: .5s;
-    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-
-}
-
-.frontpage.closed {
-    max-height: 0;
-}
-
 .link {
     cursor: pointer;
     color: #FFFFFF;
@@ -96,47 +125,6 @@ img{
     color: #BFEEF7;
 }
 
-.navbar {
-	margin-bottom: 0 !important;
-    z-index: 99 !important;   
-    background-color: rgba(255,255,255,0.8) !important;
-}
-
-/* Navbar header */
-.app-name-navbar > a {
-    text-decoration:  none;
-}
-
-.required{
-    position:relative;
-}
-.required:after{
-    position:absolute;
-    content:'*';
-    color:red;
-    right:-10px;
-    top:0;
-}
-
-/*
-old code
-
-@media (max-width: 991px) {
-    .right-container {
-        position: relative;
-        float: left;
-        left: 20px;
-    }
-}
-
-@media (min-width: 992px) {
-    .right-container {
-        position: relative;
-        float: left;
-        left: 50px;
-    }
-}
-*/
 
 .red-border{
 	border-style: solid !important;

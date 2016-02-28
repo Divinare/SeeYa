@@ -3,22 +3,19 @@ var Router = require('react-router');
 var Moment = require('moment');
 var _ = require('lodash');
 var validator = require('bootstrap-validator');
-var rBootstrap = require('react-bootstrap');
-var Modal = rBootstrap.Modal;
-var Button = rBootstrap.Button;
-var OverlayTrigger = rBootstrap.OverlayTrigger;
-var Popover = rBootstrap.Popover;
-var Tooltip = rBootstrap.Tooltip;
+
+import { browserHistory, Link } from 'react-router';
+
 $ = window.jQuery = require('jquery');
 
-var EventPage = React.createClass({
+const EventPage = React.createClass({
 
     mixins: [ Router.Navigation ],
 
     getInitialState: function() {           
             
         return {
-            event: [],
+             event: null,
              showModal: false
         };
 
@@ -62,6 +59,7 @@ var EventPage = React.createClass({
         var onError = function() {
             console.log("Error on fetching event!");
         }
+        console.log("GETTING EVENT: " + eventId);
         UTILS.rest.getEntry('event', eventId, onSuccess, onError);
 
     },
@@ -77,7 +75,8 @@ var EventPage = React.createClass({
         }
         var success = function(){
             that.props.getEvents();
-            that.transitionTo('home');
+            //that.transitionTo('home');
+            browserHistory.push('/');
         };              
         var error = function( jqXhr, textStatus, errorThrown ){
             console.log( errorThrown );
@@ -93,7 +92,9 @@ var EventPage = React.createClass({
             var success = function(){
                     that.props.getEvents();
                     //that.props.removeEventFromFilteredEventList(eventToRemove)
-                    that.transitionTo('home');
+                    //that.transitionTo('home');
+                    browserHistory.push('/');
+
             }
             var error = function( jqXhr, textStatus, errorThrown ){
                     console.log( errorThrown );
@@ -111,7 +112,27 @@ var EventPage = React.createClass({
             streetAddress: this.state.event.Address.streetAddress,
             event: this.state.event
         }
-        this.transitionTo('eventEdit', {id: eventId}, params);
+        //this.transitionTo('eventEdit', {id: eventId}, params);
+        
+        browserHistory.push('/');
+
+    },
+
+    createEditButton: function() {
+        var tokens = UTILS.helper.getUrlTokens();
+        var eventId = tokens[tokens.length - 1];
+
+        if(this.state.event != null) {
+            console.log(this.state.event);
+            var p = {
+                edit: true,
+                streetAddress: this.state.event.Address.streetAddress,
+                event: this.state.event
+            }
+            return <div className="btn btn-default"><Link to={eventId + "/edit"} params={{lol: p}}>EDIT</Link></div>;
+        } else {
+            return <div className="btn btn-default"><Link to={eventId + "/edit"}>EDIT</Link></div>;
+        }
     },
 
     handleChange: function(key) {
@@ -128,78 +149,92 @@ var EventPage = React.createClass({
 
         //cannot use variable name event here because we need to refer to something else with event in the format
         var eventVar = this.state.event
-        var date = Moment.unix(eventVar.timestamp/1000).format("ddd DD.MM.YYYY");
-        var time = Moment.unix(eventVar.timestamp/1000).format("HH:mm")
-
-        //console.log("type: " + typeof event.address)
-
+        
+        var eventName;
+        var date;
+        var time;
         var address;
-
-        if(typeof eventVar.Address === 'undefined'){
-            address = <div></div>
-        } else{
-            var addressStr = '';
-
-            if(!_.isEmpty(eventVar.Address.streetAddress)){
-                addressStr = eventVar.Address.streetAddress + ", "
-            }
-            if(!_.isEmpty(eventVar.Address.zipCode)){
-                addressStr += eventVar.Address.zipCode + ", "
-            }
-            if(!_.isEmpty(eventVar.Address.city)){
-                addressStr += eventVar.Address.city + ", "
-            }
-            if(!_.isEmpty(eventVar.Address.country)){
-                addressStr += eventVar.Address.country
-            }
-            addressStr = _.trim(addressStr, ",");
-            address = <div>{addressStr}</div>
-
-        }
-
-
         var btn;
         var peopleAttending = 0;
         var participantList;
-        if(typeof eventVar.Attendances !== 'undefined'){
-            btn = <Button
-                  bsStyle="default"
-                  onClick={this.open}>
-                  Show participants
-                </Button>
-
-             peopleAttending = eventVar.Attendances.length
-        }
-
-        console.log(eventVar.Category);
-
         var category;
-        if(typeof eventVar.Category == 'undefined') {
-            category = <div></div>
-        } else {
-            category = <div>Category: {eventVar.Category.name}</div>
-
-        }
-
         var peopleAttendingStr;
-        if(peopleAttending > 0) {
-            peopleAttendingStr = peopleAttending + " people attending"
+        var description;
+
+        if(eventVar == null){
+            eventName = "Unnamed event";
+            date = "---";
+            time = "---";
+        } else {
+            eventName = eventVar.name;
+            date = Moment.unix(eventVar.timestamp/1000).format("ddd DD.MM.YYYY");
+            time = Moment.unix(eventVar.timestamp/1000).format("HH:mm");
+
+
+            if(typeof eventVar.Address === 'undefined'){
+                address = <div></div>
+            } else{
+                var addressStr = '';
+
+                if(!_.isEmpty(eventVar.Address.streetAddress)){
+                    addressStr = eventVar.Address.streetAddress + ", "
+                }
+                if(!_.isEmpty(eventVar.Address.zipCode)){
+                    addressStr += eventVar.Address.zipCode + ", "
+                }
+                if(!_.isEmpty(eventVar.Address.city)){
+                    addressStr += eventVar.Address.city + ", "
+                }
+                if(!_.isEmpty(eventVar.Address.country)){
+                    addressStr += eventVar.Address.country
+                }
+                addressStr = _.trim(addressStr, ",");
+                address = <div>{addressStr}</div>
+
+            }
+
+
+            if(typeof eventVar.Attendances !== 'undefined'){
+                /*
+                react-bootstrap removed:
+
+                btn = <Button
+                      bsStyle="default"
+                      onClick={this.open}>
+                      Show participants
+                    </Button>
+                    */
+
+                 peopleAttending = eventVar.Attendances.length
+            }
+
+            if(typeof eventVar.Category == 'undefined') {
+                category = <div></div>
+            } else {
+                category = <div>Category: {eventVar.Category.name}</div>
+
+            }
+
+            if(peopleAttending > 0) {
+                peopleAttendingStr = peopleAttending + " people attending"
+            }
+
+            if(!_.isEmpty(eventVar.description)){
+                description = eventVar.description
+            }else{
+                description = ''
+            }
+
+
         }
 
-        var description
 
-        if(!_.isEmpty(eventVar.description)){
-            description = eventVar.description
-        }else{
-            description = ''
-        }
-
-        let popover = <Popover title="popover">very popover. such engagement</Popover>;
+        //let popover = <Popover title="popover">very popover. such engagement</Popover>;
 
         return (
             <div className='right-container'>
                 <div>
-                    <h2>{eventVar.name}</h2>
+                    <h2>{eventName}</h2>
                     {date}<br/>
                     {time}<br/>
                     {address}
@@ -207,31 +242,19 @@ var EventPage = React.createClass({
                     {peopleAttendingStr}<br/>
                     {description}<br/>
 
-                    <Modal bsSize='small' show={this.state.showModal} onHide={this.close}>
-                      <Modal.Header closeButton>
-                        <Modal.Title>People attending in {eventVar.name}</Modal.Title>
-                      </Modal.Header>
-                          <Modal.Body>
-                                {typeof eventVar.Attendances !== 'undefined' ? eventVar.Attendances.map(function(attendance, index){
-                                    return <div>
-                                        <OverlayTrigger overlay={<Popover title={attendance.name}>{attendance.comment}</Popover>}>
-                                        <a href="#">{attendance.name}</a></OverlayTrigger>
-                                   </div>
-                                  }) : ''}
-                          </Modal.Body>
-                    </Modal>
+                    <div>modal was here</div>
 
                     <br />
                     <div className="btn-group">
-                        <button className="btn btn-default" onClick={that.handleEdit}>Edit</button>
+                        {this.createEditButton()}
                         { peopleAttending > 0 ? btn : ''}
                         <button className="btn btn-danger" onClick={that.handleRemove}>Delete</button>
                     </div>
 
                 </div>
                 <div >
-                    <h2>Attend {event.name}</h2>
-                    <form className='form' id='form' role='form' data-toggle="validator" data-disable="false" onSubmit={event.preventDefault()}>
+                    <h2>Attend {eventName}</h2>
+                    <form className='form' id='form' role='form' data-toggle="validator" data-disable="false"> {/* onSubmit={event.preventDefault() */}
                         <div className='form-group required'>
                             <input type='text' value={this.state.name} onChange={this.handleChange('name')} className='form-control' id='name' placeholder='Your name' required/>
                             <div className="help-block with-errors"></div>
@@ -256,3 +279,22 @@ var EventPage = React.createClass({
 });
 
 module.exports = EventPage;
+
+/*
+
+
+                    <Modal bsSize='small' show={this.state.showModal} onHide={this.close}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>People attending in {eventVar.name}</Modal.Title>
+                      </Modal.Header>
+                          <Modal.Body>
+                                {typeof eventVar.Attendances !== 'undefined' ? eventVar.Attendances.map(function(attendance, index){
+                                    return <div>
+                                        <OverlayTrigger overlay={<Popover title={attendance.name}>{attendance.comment}</Popover>}>
+                                        <a href="#">{attendance.name}</a></OverlayTrigger>
+                                   </div>
+                                  }) : ''}
+                          </Modal.Body>
+                    </Modal>
+
+                    */
