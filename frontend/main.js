@@ -129,11 +129,11 @@ const Main = React.createClass({
     },
 
     render: function() {
+        console.log("FORWARD!");
+        browserHistory.goForward();
         var that = this;
         var showFrontpage = this.state.showFrontpage;
         var frontpageLoaded = this.state.frontpageLoaded;
-
-        console.log(React.Children);
 
         var childrenWithProps = React.Children.map(this.props.children, function(child) {
             return React.cloneElement(child, {

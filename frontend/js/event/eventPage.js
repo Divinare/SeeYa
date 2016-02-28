@@ -10,8 +10,6 @@ $ = window.jQuery = require('jquery');
 
 const EventPage = React.createClass({
 
-    mixins: [ Router.Navigation ],
-
     getInitialState: function() {           
             
         return {
@@ -242,7 +240,7 @@ const EventPage = React.createClass({
                     {peopleAttendingStr}<br/>
                     {description}<br/>
 
-                    <div>modal was here</div>
+                    <div>modal was here T. joe</div>
 
                     <br />
                     <div className="btn-group">

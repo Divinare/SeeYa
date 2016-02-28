@@ -12,10 +12,6 @@ var componentForm = ['street-address', 'country-name', 'postal-code'];
 
 const EventForm = React.createClass({
 
-	contextTypes: {
-		router: React.PropTypes.func
-	},
-
     getInitialState: function() {
 	    return {
 	    	address: {},
