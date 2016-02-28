@@ -17,7 +17,8 @@ var EventForm = React.createClass({
 	    return {
 	    	address: {},
 	    	categories: [],
-	    	selectedCategory: "Other" //TODO: get the default category from backend
+	    	selectedCategory: "Other", //TODO: get the default category from backend
+	    	latLng: null
 	    };
 	},
 	
@@ -31,6 +32,21 @@ var EventForm = React.createClass({
 		}
 		this.props.handleResize();
 		var that = this;
+		/*var validatorOptions = {
+			delay: 500,
+			custom: {
+				checkaddress: function($el){
+					console.log("validating address")
+					console.log(that.state.latLng)
+					console.log(typeof that.state.latLng)
+					console.log(that.state.latLng == null)
+					return that.state.latLng == null;
+				}
+			},
+			errors: {
+				checkaddress: "Please search an address and pick a suggestion from the list"
+			}
+		}*/
 		$('#form').validator()
 
 		$('#form').validator().on('submit', function (e) {
@@ -60,7 +76,7 @@ var EventForm = React.createClass({
  // http://stackoverflow.com/questions/7865446/google-maps-places-api-v3-autocomplete-select-first-option-on-enter
     	var input = document.getElementById('searchTextField');
 
-		this.state.dateFieldClicked = false
+		this.setState({dateFieldClicked: false})
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
 		dateInput.setAttribute("data-validateDate", this.validateDate)
 		dateInput.addEventListener('blur', this.handleOnBlur);
@@ -277,20 +293,24 @@ var EventForm = React.createClass({
 
 	},
 
+	addressOnBlur: function(){
+		console.log("ADDRESS ON BLUR")
+		console.log(autocomplete.getPlace())
+	},
+
 	fillInAddress: function() {
 		console.log("at fill in address");
 		var place = autocomplete.getPlace();
-		
-		console.log("PLACE IS: ");
+		/*console.log("PLACE IS: ");
 		console.log(place);
 	   // this.makeMarkerFromAddress(place);
 
-	    console.log("address components: ")
+	    console.log("address components: ")*/
 	    var newAddress = {};
 	    var streetNumber;
 	    for (var i = 0; i < place.address_components.length; i++) {
-	    	console.log("component " + i)
-	    	console.log(place.address_components[i])
+	    //	console.log("component " + i)
+	    //	console.log(place.address_components[i])
 			var addressObj = place.address_components[i];
 			for(var j = 0; j < addressObj.types.length; j += 1) {
 		    	if (addressObj.types[j] === 'country') {
@@ -307,12 +327,12 @@ var EventForm = React.createClass({
 		    	}
 		    }
 	    }
-	    console.log("NEW ADDRESS")
+	  //  console.log("NEW ADDRESS")
 	    if( streetNumber != null && typeof newAddress.streetAddress != 'undefined' 
 	    	&& newAddress.streetAddress != null ){
 	    	newAddress.streetAddress = newAddress.streetAddress + " " + streetNumber
 	    }
-	    	    console.log(newAddress)
+	    	  //  console.log(newAddress)
    		this.setState({
 			address:newAddress
 		})
@@ -362,6 +382,11 @@ var EventForm = React.createClass({
         });
     },
 
+    validateAddressInput: function(){
+    	console.log("validating address")
+    	return false;
+    },
+
 	render: function(){
 		 // form tagista onSubmit={event.preventDefault()}, otettu pois, (bugas firefoxissa)
 		return (
@@ -381,7 +406,7 @@ var EventForm = React.createClass({
 					<div className='form-group required'>
 					<span for='address'>Address *</span>
 						<div className='input-group'>
-							<input type='text' value={this.state.address.streetAddress} onChange={this.handleChange('address')} className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
+							<input type='text' value={this.state.address.streetAddress} onBlur={this.addressOnBlur} onChange={this.handleChange('address')} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
 							<span className="input-group-addon add-on white-background" onClick={this.fillInAddress}>
 								 <span className="glyphicon glyphicon-search"></span>
 							</span>
