@@ -20,11 +20,11 @@ module.exports = React.createClass({
         return (
             <div id="navbar">
                 <ul>
-                    <li className="navbar-item"><Link to={"/"}>EventMeetup</Link></li>
-                    <li className="navbar-item"><Link to={"/about"}>About</Link></li>
-                    <li className="navbar-item"><Link to={"/eventForm"}>Create new event</Link></li>
-                    <li className="navbar-item"><Link to={"/signup"}>Signup</Link></li>
-                    <li className="navbar-item"><Link to={"/login"}>Login</Link></li>
+                    <li className="navbar-item"><Link to="/">EventMeetup</Link></li>
+                    <li className="navbar-item"><Link to="/about">About</Link></li>
+                    <li className="navbar-item"><Link to="/eventForm">Create new event</Link></li>
+                    <li className="navbar-item"><Link to="/signup">Signup</Link></li>
+                    <li className="navbar-item"><Link to="/login">Login</Link></li>
                 </ul>
             </div>
         )

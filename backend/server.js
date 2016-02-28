@@ -32,10 +32,6 @@ app.use(rest, routes);
 
 app.get('*', function (req, res) {
   res.render('index');
-  //var options = {};
- // var html = jade.render(path.join(__dirname, 'views'), options);
-  //res.render(path.join(__dirname, 'views'));
-
 });
 
 app.use(function(req, res, next) { 

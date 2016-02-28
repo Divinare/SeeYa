@@ -1,6 +1,6 @@
 var React = require('react');
 
-var About = React.createClass({
+const About = React.createClass({
 
 
 	getInitialState: function() {

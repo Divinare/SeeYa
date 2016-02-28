@@ -8,6 +8,7 @@ window.ReactDOM = require('react-dom');
 //var GoogleMapsLoader = require('google-maps');
 var Moment = require('moment');
 
+
 var Frontpage = require('./js/frontpage.js');
 var Navbar = require('./js/navbar.js');
 var Map = require('./js/map/map.js');
@@ -17,11 +18,19 @@ var EventList = require('./js/event/eventList.js');
 var EventForm = require('./js/event/eventForm.js');
 var EventPage = require('./js/event/eventPage.js');
 
-var Router = require('react-router')
-  , RouteHandler = Router.RouteHandler
-  , Route = Router.Route
-  , DefaultRoute = Router.DefaultRoute
-  , BrowserHistory = Router.History;
+
+//import Router from 'react-router';
+
+import { render } from 'react-dom'
+//import { Router, Route, Link, browserHistory } from 'react-router'
+
+import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
+
+//var Router = require('react-router')
+//var RouteHandler = Router.RouteHandler;
+//var Route = Router.Route;
+//var DefaultRoute = Router.DefaultRoute;
+//var BrowserHistory = Router.History;
 
 
 $(document).click(function() {
@@ -29,7 +38,7 @@ $(document).click(function() {
     });
 });
 
-var Main = React.createClass({
+const Main = React.createClass({
 
     getInitialState: function() {
         var currentTimestamp = Moment().unix()
@@ -92,8 +101,6 @@ var Main = React.createClass({
         var that = this;
         var onSuccess = function(eventList) {
             //var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
-            console.log("GOT EVENTS FROM FILTER MAIN.js");
-           console.log(eventList);
             that.setState({
                 eventList: eventList,
                 filteredEventList: eventList
@@ -107,7 +114,12 @@ var Main = React.createClass({
         */
         console.log("going to get events??");
         var categoryFilter = this.state.eventListData['filters'].category;
+
+        // TODO:
         UTILS.rest.getFilteredEntries('filteredEvents', categoryFilter, null, null, onSuccess);
+        //UTILS.rest.getAllEntries('events', onSuccess);
+
+
     },
 
     updateAppStatus: function(propName, newValue) {
@@ -120,6 +132,20 @@ var Main = React.createClass({
         var that = this;
         var showFrontpage = this.state.showFrontpage;
         var frontpageLoaded = this.state.frontpageLoaded;
+
+        console.log(React.Children);
+
+        var childrenWithProps = React.Children.map(this.props.children, function(child) {
+            return React.cloneElement(child, {
+                eventList: that.state.eventList,
+                filteredEventList: that.state.filteredEventList,
+                eventListData: that.state.eventListData,
+                newEventMarker: that.state.newEventMarker,
+                handleResize: that.handleResize,
+                updateAppStatus: that.updateAppStatus,
+                getEvents: that.getEvents
+            })
+        });
 
         return (
             <div>
@@ -135,15 +161,9 @@ var Main = React.createClass({
                         
                         handleResize={this.handleResize}
                         updateAppStatus={this.updateAppStatus} />
-                    <RouteHandler
-                        eventList={this.state.eventList}
-                        filteredEventList={this.state.filteredEventList}
-                        eventListData={this.state.eventListData}
-                        newEventMarker={this.state.newEventMarker}
 
-                        handleResize={this.handleResize}
-                        updateAppStatus={this.updateAppStatus}
-                        getEvents={this.getEvents} />
+                        {childrenWithProps}
+                        
                 </div>  
                 
             </div>
@@ -152,70 +172,15 @@ var Main = React.createClass({
     }
 });   
 
-var EventListsWrapper = React.createClass({
-
-    render: function () {
-        return (
-            <EventList
-                eventList={this.props.eventList}
-                filteredEventList={this.props.filteredEventList}
-                eventListData={this.props.eventListData}
-
-                handleResize={this.props.handleResize}
-                updateAppStatus={this.props.updateAppStatus} />
-        );
-    }
-});
-
-var EventFormWrapper = React.createClass({
-
-    render: function () {
-        return (
-            <EventForm
-                newEventMarker={this.props.newEventMarker}
-
-                handleResize={this.props.handleResize}
-                getEvents={this.props.getEvents}
-                updateAppStatus={this.props.updateAppStatus} />
-        );
-    }
-});
-
-var EventPageWrapper = React.createClass({
-
-    render: function () {
-        return (
-            <EventPage
-                handleResize={this.props.handleResize}
-                getEvents={this.props.getEvents}
-                updateAppStatus={this.props.updateAppStatus} />
-        );
-    }
-});
-
-
-
-    var routes = (
-        <Route handler={Main} path="/">
-        <Route name="home" path="/" handler={EventListsWrapper} />
-        <Route name="eventPage" path="events/:id" handler={EventPage} />
-        <Route name="eventEdit" path="events/:id/edit" handler={EventFormWrapper} />
-        <Route name="eventForm" path="eventForm" handler={EventFormWrapper} />
-        <Route name="about" handler={About} />
-        <Route path="*" handler={NoMatch}/>
+render((
+    <Router history={browserHistory}>
+        <Route path="/" component={Main}>
+            <IndexRoute component={EventList} />
+            <Route name="eventPage" path="events/:id" component={EventPage} />
+            <Route name="eventEdit" path="events/:id/edit" component={EventForm} />
+            <Route name="eventForm" path="eventForm" component={EventForm} />
+            <Route name="about" path="about" component={About} />
+            <Route path="*" component={NoMatch}/>
         </Route>
-    );
-
-/*
-$(document).ready(function () {
-    Router.run(routes, Router.HistoryLocation, function (Handler) {
-        ReactDOM.render(<Handler/>,  document.getElementById('app-container'));
-    });
-});
-*/
-
-$(document).ready(function () {
-    Router.run(routes, Router.HistoryLocation, function (Handler) {
-        ReactDOM.render(<Handler/>,  $('#app-container').get(0));
-    });
-});
+    </Router>
+), document.getElementById('app-container'));

@@ -8,8 +8,11 @@ var validator = require('bootstrap-validator')
 var autocomplete;
 var componentForm = ['street-address', 'country-name', 'postal-code'];
 
-var EventForm = React.createClass({
-	mixins: [ Router.Navigation, Router.State ],
+const EventForm = React.createClass({
+
+	contextTypes: {
+		router: React.PropTypes.func
+	},
 
     getInitialState: function() {
 	    return {
@@ -281,7 +284,8 @@ var EventForm = React.createClass({
 	},
 
 	isEditForm: function(){
-		return this.getQuery().edit
+		console.log(this.props.location.query);
+		return this.props.location.query.edit; //this.getQuery().edit;
 	},
 
 	getEditOrCreateTitle: function(){
@@ -296,13 +300,13 @@ var EventForm = React.createClass({
 		return (
 			<div className='right-container'>
 					<h2 className="centeredHeader">Create new event</h2>
-					<form className='form' id='form' onSubmit={event.preventDefault()} role='form'>
+					<form className='form' id='form' role='form'>
 						<div className='form-group'>
-							<span for='name'>Name *</span>
+							<span htmlFor='name'>Name *</span>
 							<input type='text' className='form-control' id='name'/>
 						</div>
 						<div className='form-group'>
-							<span for='address'>Address *</span>
+							<span htmlFor='address'>Address *</span>
 							<div className='input-group'>
 								<input type='text' className='form-control' id='address'/>
 								<span className="input-group-btn">
@@ -312,7 +316,7 @@ var EventForm = React.createClass({
 						</div>
 
 					<div className='form-group required'>
-						<span for='date'>Date *</span>
+						<span htmlFor='date'>Date *</span>
 						<div className="input-group full-width">
 				          <DatePicker
 				          	selected={this.state.date}
@@ -328,7 +332,7 @@ var EventForm = React.createClass({
 
 
 						<div className='form-group'>
-							<span for='time'>Time *</span>
+							<span htmlFor='time'>Time *</span>
 							<div className='input-group'>
 								<input type='text' className='form-control' id='time' placeholder="hh:mm"/>
 								<span className="input-group-btn">
@@ -337,7 +341,7 @@ var EventForm = React.createClass({
 							</div>
 						</div>
 						<div className='form-group'>
-							<span for='description'>Description *</span>
+							<span htmlFor='description'>Description *</span>
 							<input type='text' className='form-control' id='description'/>
 						</div>
 						<div className="form-group">
