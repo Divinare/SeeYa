@@ -84,7 +84,7 @@ var Map = React.createClass({
             mapTypeControl: false
         };
 
-        var map = new google.maps.Map(this.getDOMNode(), mapOptions);       
+        var map = new google.maps.Map(ReactDOM.findDOMNode(this), mapOptions);       
         
         var zoomControlDiv = document.createElement('div');
         var zoomControl = new this._zoomControl(zoomControlDiv, map);

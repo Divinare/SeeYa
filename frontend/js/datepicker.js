@@ -7,7 +7,7 @@ var DatePicker = React.createClass({
     },
 
     _initDatePicker: function() {
-        var element = this.getDOMNode();
+      //  var element = ReactDOM.getDOMNode();
         // or in >= 0.13 
         //var element = React.findDOMNode(this);
         //console.log(element);

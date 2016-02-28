@@ -3,8 +3,9 @@ html
   head
     title= title
     link(rel='stylesheet', href='/main.css')
-    script(src='https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places')
-    script(src='/main.js')
 
   body
+    #app-container
     block content
+    script(src='https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places')
+    script(src='/main.js')
