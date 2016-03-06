@@ -395,6 +395,8 @@ const EventForm = React.createClass({
 			<div className='right-container'>
 				<h2 className="centeredHeader">Create new event</h2>
 				<form className='form' id='form' role='form'>
+
+					{/* Name */}
 					<div className='form-group'>
 						<span htmlFor='name'>Name *</span>
 						<input type='text' className='form-control' id='name'/>
@@ -409,6 +411,7 @@ const EventForm = React.createClass({
 						</div>
 					</div>
 
+					{/* Date */}
 					<div className='form-group required'>
 						<span htmlFor='date'>Date *</span>
 						<div className="input-group full-width">
@@ -424,6 +427,20 @@ const EventForm = React.createClass({
 				        <div id="errorDivForDateField" className="help-block with-errors dark-red-text">Please fill out this field</div>
 					</div>
 
+					{/* Category */}
+					<div className='form-group'>
+ 						<span for="category-select-eventform">Category</span>
+ 						<Dropdown 
+ 							useBootstrap={true}
+ 							selectDivId="category-select-eventform"
+ 							categoriesContentId="category-content-eventform"
+ 							dropdownId="category-dropdown-eventform"
+ 							list={this.state.categories} selectCategory={this.selectCategory} 
+ 							selected={this.state.selectedCategory}
+ 						/> 						
+ 					</div>
+
+					{/* Time */}
 					<div className='form-group'>
 						<span htmlFor='time'>Time *</span>
 						<div className='input-group'>
@@ -433,10 +450,14 @@ const EventForm = React.createClass({
 							</span>
 						</div>
 					</div>
+
+					{/* Description */}
 					<div className='form-group'>
 						<span htmlFor='description'>Description *</span>
 						<input type='text' className='form-control' id='description'/>
 					</div>
+
+					{/* Submit */}
 					<div className="form-group">
 			            <button type="submit" className="btn btn-default">Submit</button>
 				    </div>

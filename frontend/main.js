@@ -112,7 +112,6 @@ const Main = React.createClass({
             value: this.state.eventListData['filters'].category
         };
         */
-        console.log("going to get events??");
         var categoryFilter = this.state.eventListData['filters'].category;
 
         // TODO:
@@ -129,7 +128,6 @@ const Main = React.createClass({
     },
 
     render: function() {
-        console.log("FORWARD!");
         browserHistory.goForward();
         var that = this;
         var showFrontpage = this.state.showFrontpage;
