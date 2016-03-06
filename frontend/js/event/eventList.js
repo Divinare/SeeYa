@@ -28,7 +28,6 @@ const EventList = React.createClass({
     },
 
     componentDidMount: function() {
-        console.log("AT EVENTLIST component did mount");
         this.props.handleResize();
         var that = this;
 
@@ -310,88 +309,3 @@ const EventList = React.createClass({
 });
 
 module.exports = EventList;
-
-/*
-
-                        <Dateselect
-                          selectDivId="select-fromTimestamp"
-                          defaultValue="22.2.2016"
-                          />
-                        <Dateselect
-                        selectDivId="select-toTimestamp"
-                        defaultValue="22.2.2016" />
-
-
-
-
-{eventList.map(event =>
-                            <tr>
-                                <td>x</td>
-                                <td>{_this.cellRenderer("name", event.name, event.id)}</td>
-                                <td>{event.Attendances.length}</td>                            
-                            </tr>
-                        )}   
-
-
-
-
-
-
-                        <Dropdown list={colours} selected={colours[0]} />
-
-                        <div className="btn-group dropup">
-                            <button className="btn">Dropup</button>
-                            <button className="btn dropdown-toggle" data-toggle="dropdown">
-                            <span className="caret"></span>
-                            </button>
-                            <ul className="dropdown-menu">
-                                <li><a href="#">Sports</a></li>
-                                <li><a href="#">Meeting up..a.</a></li>
-                            </ul>
-                        </div>
-                        */
-
-/* OLD TABLE CODE, dont remove. Let Joe remove
-
-{this.renderFilterFields()}
-                <div className="right-container">
-                    <h2 className="topic">Events</h2>
-                    {this.renderFilterFields()}
-                    <Table
-                        headerHeight={50}
-                        rowHeight={30}
-                        rowGetter={this.rowGetter}
-                        rowsCount={eventList.length}
-                        width={this.props.eventListData.tableWidth}
-                        height={this.props.eventListData.tableHeight}>
-
-                        <Column
-                            headerRenderer={this._renderHeader}
-                            label={'Name' + (sortBy === 'name' ? sortDirArrow : '')}
-                            width={this.getTableSizes().columnWidths['name']}
-                            dataKey={'name'}
-                            cellRenderer={this.cellRenderer} />
-                        <Column
-                            headerRenderer={this._renderHeader}
-                            label={'o/' + (sortBy === 'Attendances' ? sortDirArrow : '')}
-                            width={this.getTableSizes().columnWidths['attendances']}
-                            dataKey={'attendances'}
-                            cellRenderer={this.cellRenderer} />
-                        <Column
-                            headerRenderer={this._renderHeader}
-                            label={'Address' + (sortBy === 'Address' ? sortDirArrow : '')}
-                            width={this.getTableSizes().columnWidths['address']}
-                            dataKey={'streetAddress'}
-                            cellRenderer={this.cellRenderer} />
-                        <Column
-                            headerRenderer={this._renderHeader}
-                            label={'Time' + (sortBy === 'timestamp' ? sortDirArrow : '')}
-                            width={this.getTableSizes().columnWidths['time']}
-                            dataKey={'timestamp'}
-                            cellRenderer={this.cellRenderer} />
-                    </Table>
-
-                
-                </div>  
-
-                    */
