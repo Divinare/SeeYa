@@ -20,9 +20,20 @@ const About = React.createClass({
 
 
 	render: function(){
+
+		// <img src="savimaja.png" alt="Mountain View" style="width:100px;height:88px;" />
+
+
 		return (
 			<div className='right-container'>
 				<h1>About page comes here</h1>
+
+				<img src="assets/savimaja.png" alt="Mountain View" />
+
+
+				<p>Hello world</p>
+
+
 			</div>
 			)
 	}

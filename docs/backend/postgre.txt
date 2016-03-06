@@ -39,7 +39,7 @@ IMPORT
 REMEMBER to change your username, db and the right .dump file
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -U joe -d devdb seedsdb.dump
 
-pg_restore --verbose --clean --no-acl --no-owner -h localhost -U Pete -d devdb seedsdb.dump
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -U admin -d devdb seedsdb.dump
 
 
 
