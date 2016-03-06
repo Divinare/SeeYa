@@ -15,11 +15,15 @@ module.exports = React.createClass({
 		this.props.showEventList();
 	},
 
+    createNavbarMenu: function() {
+
+    },
+
     render: function(){
 
         return (
             <div id="navbar">
-                <ul>
+                <ul id="navbar-menu">
                     <div className="navbar-left-container">
                         <li id="navbar-logo"><Link to="/"><strong>EventMeetup</strong></Link></li>
                         <li><Link to="/about">About</Link></li>
@@ -30,8 +34,10 @@ module.exports = React.createClass({
                         <li><Link to="/login">Login</Link></li>
                     </div>
                 </ul>
-                
+                <div id="navbar-toggle-mobile">X</div>
             </div>
+
+
         )
     }
 
