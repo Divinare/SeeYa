@@ -11,7 +11,7 @@ var Map = React.createClass({
     getInitialState: function() {
 
         return {
-            initialZoom: 11,
+            initialZoom: 10,
             mapCenterLat: 60,
             mapCenterLng: 20,
             openedInfowindow: {},
@@ -78,7 +78,8 @@ var Map = React.createClass({
         var mapOptions = {
             center: { lat: 60.205294, lng: 24.936092},
             zoom: this.state.initialZoom,
-            minZoom: 3,
+            minZoom: 5,
+            maxZoom: 17,
             zoomControl: false,
             streetViewControl: false,
             mapTypeControl: false
