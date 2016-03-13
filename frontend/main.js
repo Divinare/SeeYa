@@ -17,6 +17,7 @@ var NoMatch = require('./js/noMatch.js');
 var EventList = require('./js/event/eventList.js');
 var EventForm = require('./js/event/eventForm.js');
 var EventPage = require('./js/event/eventPage.js');
+var Signup = require('./js/signup.js')
 
 
 //import Router from 'react-router';
@@ -193,6 +194,7 @@ render((
             <Route name="eventEdit" path="events/:id/edit" component={EventForm} />
             <Route name="eventForm" path="eventForm" component={EventForm} />
             <Route name="about" path="about" component={About} />
+            <Route name="signup" path="signup" component={Signup} />
             <Route path="*" component={NoMatch}/>
         </Route>
     </Router>
