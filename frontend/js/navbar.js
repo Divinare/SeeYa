@@ -26,7 +26,7 @@ module.exports = React.createClass({
     render: function(){
 
         return (
-            <div>
+            <div id="navbarContent">
                 <div id="navbar">
                     <ul id="navbar-menu">
                         <div className="navbar-left-container">

@@ -3,7 +3,7 @@ var Moment = require('moment');
 
 var Dropdown = require('../dropdown.js');
 //var Dateselect = require('../dateselect.js');
-var DatePicker = require('../datepicker.js');
+//var DatePicker = require('../datepicker.js');
 import { browserHistory } from 'react-router'
 
 var SortTypes = {
@@ -296,14 +296,14 @@ const EventList = React.createClass({
                     <div className="eventList-filter-bar">
                         <span id="select-dropdown">
                             <Dropdown
-                             categoriesContentId={"categoriesContentEventList"}
-                             selectDivId={"dropdownBtnEventList"}
-                             list={this.state.categories}
-                             selectCategory={this.selectCategory}
-                             selected={selectedCategory} />
+                                singleRow={true}
+                                categoriesContentId={"categoriesContentEventList"}
+                                selectDivId={"dropdownBtnEventList"}
+                                list={this.state.categories}
+                                selectCategory={this.selectCategory}
+                                selected={selectedCategory} />
                         </span>
                             <form>
-                            <DatePicker defaultValue="1/1/2000"/>
                             </form>
                     </div>
                 </div>              
