@@ -14,10 +14,15 @@ const EventForm = React.createClass({
 
     getInitialState: function() {
 	    return {
+	    	name: "",
 	    	address: {},
-	    	categories: [],
+	    	latLng: [],
+	    	date: "",
 	    	selectedCategory: "Other", //TODO: get the default category from backend
-	    	latLng: null
+	    	time: "",
+	    	description: "",
+	    	categories: []
+
 	    };
 	},
 	
@@ -46,6 +51,7 @@ const EventForm = React.createClass({
 				checkaddress: "Please search an address and pick a suggestion from the list"
 			}
 		}*/
+		/*
 		$('#form').validator()
 
 		$('#form').validator().on('submit', function (e) {
@@ -69,158 +75,21 @@ const EventForm = React.createClass({
 	 		 	that.handleSubmit();
 			 }
 		})
-
+*/
 
 // TODO LINK:
  // http://stackoverflow.com/questions/7865446/google-maps-places-api-v3-autocomplete-select-first-option-on-enter
     	var input = document.getElementById('searchTextField');
 
-		this.setState({dateFieldClicked: false})
 		var dateInput = document.querySelectorAll(".datepicker__input")[0]
 		dateInput.setAttribute("data-validateDate", this.validateDate)
-		dateInput.addEventListener('blur', this.handleOnBlur);
-		this.hideRedBorderAndErrorText(dateInput, document.getElementById('errorDivForDateField'));
 		this.initAutocomplete();
 		placesService = new google.maps.places.AutocompleteService();
 		this.fetchCategories();
 	},
-
-	fetchCategories: function(){
-		var that = this;
-
-        var onSuccess = function (data) {
-        	console.log("fetched categories")
-            var categories = [];
-            for(var index in data) {
-                categories.push(data[index]);
-            }
-            that.setState({
-                categories: categories
-            })
-            console.log(categories);
-        };
-        var onError = function() {
-            console.log("Error on fetching event!");
-        }
-        UTILS.rest.getAllEntries('category', onSuccess, onError);
-	},
-
-	autoFillEventDetails: function() {
-		var event = this.getQuery().event;
-		var dateInput = document.querySelectorAll(".datepicker__input")[0]
-
-		this.state.address = {
-			streetAddress: event.Address.streetAddress,
-			country: event.Country,
-			zipCode: event.ZipCode,
-		}
-
-		console.log("EVENT ADDRESS")
-		console.log(event.Address)
-		console.log(event.Address.streetAddress)
-
-		this.state.name = event.name;
-		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
-		this.state.date = moment;
-		var time = moment.format("HH:mm");
-		this.state.time = time
-		this.state.description = event.description
-		this.state.latLng = [event.lat, event.lon]
-	},
-
-	validateDate: function(date){
-		//console.log("validating date...")
-	},
-
-    handleNewDateChange: function(moment) {
-    	//var d = moment.format('MM-DD-YYYY'))
-	   // console.log(moment.format('MM-DD-YYYY'));
-	    this.setState({
-	       date: moment,
-	    });
-	    this.showValidationInfoForDatePicker(moment);
-
-    },
-
-	handleTimeChange: function(e){
-		this.setState({time: e.target.value})
-	},
-
-	handleSubmit: function(e) {
-		console.log("submit method")
-		var that = this;
-		//e.preventDefault();
-		var address = {
-			streetAddress: this.state.address,
-			country: this.state.address.country,
-			zipCode: this.state.address.zipCode,
-		}
-
-		var moment = this.addHoursAndMinsToDate();
-	/*	if(this.isEditForm()){
-			latLng = this.state.latLng;
-		}else{
-			latLng = UTILS.helper.getLatLon(this.props.newEventMarker);
-		}*/
-
-
-		console.log("ADDRESS: ")
-		console.log(this.state.address)
-		var data = {
-			name: this.state.name,
-			address: this.state.address,
-			description: this.state.description,
-			timestamp: moment.unix()*1000,
-			lat: this.state.latLng[0],
-			lon: this.state.latLng[1],
-			category: this.state.selectedCategory
-		};		
-
-		var success;
-		var error = function( jqXhr, textStatus, errorThrown ){
-		    console.log( errorThrown );
-		};
-
-		var moveOn = function(){
-			that.props.getEvents();
-		    that.transitionTo('home');
-		}
-
-		var addMissingEventFields = function(createdEventData){
-			// Adding the missing fields of the created event:
-		    createdEventData.Address = address;
-		    createdEventData.Attendances = [];
-		}
-
-		//TODO: remove copy paste from the success functions if possible
-		if(this.isEditForm()){
-			success = function(createdEventData) {
-		    	addMissingEventFields(createdEventData);
-		        moveOn();
-			};
-			UTILS.rest.editEntry('event', this.getQuery().event.id, data, success, error);
-		} else{
-			success = function(createdEventData) {
-		    	addMissingEventFields(createdEventData);
-		    	that.props.newEventMarker.setMap(null);
-		    	that.props.updateAppStatus('newEventMarker', {});
-		        //that.props.addEventToFilteredEventList(createdEventData);
-		        moveOn();
-			};
-			UTILS.rest.addEntry('event', data, success, error);
-		}
-	},
-
-	addHoursAndMinsToDate: function(){
-		var moment = this.state.date
-		var hours = parseInt(this.state.time.substring(0, 2))
-		var minutes = parseInt(this.state.time.substring(3, 5))
-		moment.minutes(minutes)
-		moment.hours(hours)
-		return moment;
-	},
-
+	// Called when a field is changed
 	handleChange: function(key) {
+		console.log("at handleChange");
        return function (e) {
 	       var state = {};
 	       state[key] = e.target.value;
@@ -228,56 +97,13 @@ const EventForm = React.createClass({
        }.bind(this);
     },
 
-	setCurrentTime: function() {
-		var str = Moment().format('HH:mm');
-		$('#time').val(str);
-		this.setState({time: str})
-		$('#time').blur();
-	},
-
-	handleOnBlur: function(date){
-		if(this.state.dateFieldClicked){
-			this.showValidationInfoForDatePicker();
-		}
-
-		this.state.dateFieldClicked = true;
-	},
-
-
-	showValidationInfoForDatePicker: function(moment){	//returns true if the field is filled
-		if(moment == null){
-			moment = this.state.date
-		}
-		var dateField = document.querySelectorAll(".datepicker__input")[0];
-		if(typeof moment == 'undefined' || moment == null){
-			this.showRedBorderAndErrorText(dateField, document.getElementById('errorDivForDateField'))
-			return false;
-		}
-		this.hideRedBorderAndErrorText(dateField, document.getElementById('errorDivForDateField'))
-		return true;
-	},
-
-	hideRedBorderAndErrorText: function(elem, errorDiv){
-		elem.className = 'datepicker__input'
-		errorDiv.style.display = 'none';
-	},
-
-	showRedBorderAndErrorText: function(elem, errorDiv){
-		elem.className += " red-border"
-		errorDiv.style.display = 'block';
-	},
-
-	isEditForm: function(){
+    isEditForm: function(){
 		console.log(this.props.location.query);
 		return this.props.location.query.edit; //this.getQuery().edit;
 	},
 
-	getEditOrCreateTitle: function(){
-		if(this.isEditForm()){
-			return "Edit event"
-		}
-		return "Create new event"
-	},
+
+	/*** ADDRESS ***/
 
 	initAutocomplete: function() {
 	  // Create the autocomplete object, restricting the search to geographical
@@ -301,11 +127,7 @@ const EventForm = React.createClass({
 	fillInAddress: function() {
 		console.log("at fill in address");
 		var place = autocomplete.getPlace();
-		/*console.log("PLACE IS: ");
-		console.log(place);
-	   // this.makeMarkerFromAddress(place);
 
-	    console.log("address components: ")*/
 	    var newAddress = {};
 	    var streetNumber;
 	    for (var i = 0; i < place.address_components.length; i++) {
@@ -327,12 +149,12 @@ const EventForm = React.createClass({
 		    	}
 		    }
 	    }
-	  //  console.log("NEW ADDRESS")
 	    if( streetNumber != null && typeof newAddress.streetAddress != 'undefined' 
 	    	&& newAddress.streetAddress != null ){
 	    	newAddress.streetAddress = newAddress.streetAddress + " " + streetNumber
 	    }
-	    	  //  console.log(newAddress)
+	    console.log("NEW ADDRESS")
+	    console.log(newAddress)
    		this.setState({
 			address:newAddress
 		})
@@ -377,6 +199,65 @@ const EventForm = React.createClass({
 		}
 	},
 
+	// Called when editing event
+	autoFillEventDetails: function() {
+		var event = this.getQuery().event;
+		var dateInput = document.querySelectorAll(".datepicker__input")[0]
+
+		this.state.address = {
+			streetAddress: event.Address.streetAddress,
+			country: event.Country,
+			zipCode: event.ZipCode,
+		}
+
+		/*console.log("EVENT");
+		console.log(event);
+		console.log("EVENT ADDRESS")
+		console.log(event.Address)
+		console.log(event.Address.streetAddress)
+		console.log(event.Country);
+		console.log(event.ZipCode);
+		*/
+
+		this.state.name = event.name;
+		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
+		this.state.date = moment;
+		var time = moment.format("HH:mm");
+		this.state.time = time
+		this.state.description = event.description
+		this.state.latLng = [event.lat, event.lon]
+	},
+
+	/*** DATE ***/
+
+    handleNewDateChange: function(moment) {
+	    this.setState({
+	       date: moment
+	    });
+    },
+
+	/*** CATEGORY ***/
+
+    fetchCategories: function(){
+		var that = this;
+
+        var onSuccess = function (data) {
+        	console.log("fetched categories")
+            var categories = [];
+            for(var index in data) {
+                categories.push(data[index]);
+            }
+            that.setState({
+                categories: categories
+            })
+            console.log(categories);
+        };
+        var onError = function() {
+            console.log("Error on fetching event!");
+        }
+        UTILS.rest.getAllEntries('category', onSuccess, onError);
+	},
+
 	selectCategory: function(category) {
 		console.log("selected category")
         this.setState({
@@ -384,36 +265,218 @@ const EventForm = React.createClass({
         });
     },
 
-    validateAddressInput: function(){
-    	console.log("validating address")
-    	return false;
-    },
+	/*** TIME ***/
+
+	handleTimeChange: function(e){
+		this.setState({time: e.target.value})
+	},
+
+	combineTimeAndDate: function(date, time){
+		var hours = parseInt(time.substring(0, 2))
+		var minutes = parseInt(time.substring(3, 5))
+		date.minutes(minutes)
+		date.hours(hours)
+		return date.unix()*1000;
+	},
+
+	setCurrentTime: function() {
+		var str = Moment().format('HH:mm');
+		$('#time').val(str);
+		this.setState({time: str})
+		$('#time').blur();
+	},
+
+	/*** SUBMIT ***/
+
+    handleSubmit: function(e) {
+		console.log("AT SUBMIT!!!!!!!!!!");
+		var that = this;
+		//e.preventDefault();
+		var address = {
+			streetAddress: this.state.address,
+			country: this.state.address.country,
+			zipCode: this.state.address.zipCode,
+		}
+		console.log(this.state.latLng);
+		var name = this.state.name;
+		var address = this.state.address;
+		var lat = this.state.latLng[0];
+		var lon = this.state.latLng[1];
+		var date = this.state.date;
+		var category = this.state.selectedCategory;
+		var time = this.state.time;
+		var description = this.state.description;
+
+		// VALIDATIONS
+		
+		var valid1 = this.validateField(this.validateName, name, "nameError", "Name must be 3-30 characters long.");
+		var valid2 = this.validateField(this.validateAddress, address, "addressError", "Address incorrect. Did you select it from the list of address suggestions?");
+		var valid3 = this.validateField(this.validateLatLng, this.state.latLng, "addressError", "Coordinates for address doesn't exist. Put a marker on the map");
+		var valid4 = this.validateField(this.validateDate, date, "dateError", "Date error");
+		var valid5 = this.validateField(this.validateCategory, category, "categoryError", "Category error");
+		var valid6 = this.validateField(this.validateTime, time, "timeError", "Time error");
+		var valid7 = this.validateField(this.validateDescription, description, "descriptionError", "Description can be max 500 characters long.");
+
+		// If one of the validations fail, prevent submitting form
+		if(!valid1 || !valid2 || !valid3 || !valid4 || !valid5 || !valid6 || !valid7) {
+			console.log("form INVALID " + valid1 + valid2 + valid3 + valid4 + valid5 + valid6 + valid7);
+			return;
+		}
+
+		var timestamp = this.combineTimeAndDate(date, time);
+
+		var eventData = {
+			name: name,
+			address: address,
+			description: description,
+			timestamp: timestamp,
+			lat: lat,
+			lon: lon,
+			category: this.state.selectedCategory
+		};		
+
+		console.log("DATAAAAAAAAAA");
+		console.log(eventData);
+		var success;
+		var error = function( jqXhr, textStatus, errorThrown ){
+		    console.log( errorThrown );
+		};
+
+		var moveOn = function(){
+			that.props.getEvents();
+		    that.transitionTo('home');
+		}
+
+		var addMissingEventFields = function(createdEventData){
+			// Adding the missing fields of the created event:
+		    createdEventData.Address = address;
+		    createdEventData.Attendances = [];
+		}
+
+		//TODO: remove copy paste from the success functions if possible
+		if(this.isEditForm()){
+			success = function(createdEventData) {
+		    	addMissingEventFields(createdEventData);
+		        moveOn();
+			};
+			UTILS.rest.editEntry('event', this.getQuery().event.id, eventData, success, error);
+		} else{
+			success = function(createdEventData) {
+		    	addMissingEventFields(createdEventData);
+		    	that.props.newEventMarker.setMap(null);
+		    	that.props.updateAppStatus('newEventMarker', {});
+		        //that.props.addEventToFilteredEventList(createdEventData);
+		        moveOn();
+			};
+			UTILS.rest.addEntry('event', eventData, success, error);
+		}
+	},
+
+	/*** VALIDATIONS ***/
+
+	validateField: function(func, value, field, message) {
+		// Validation failed
+		if(!func(value)) {
+			$("#" + field).text(message);
+			return false;
+		} else {
+			// Clear the error message if it exists
+			$("#" + field).text("");
+			return true;
+		}
+	},
+
+	validateName: function(name){
+		if(name.length < 3 || name.length > 30) {
+			console.log("NAME FALSE: " + name.length);
+			return false;
+		}
+		return true;
+	},
+	validateAddress: function(address){
+		console.log("at validateAddress");
+		if(address == null || typeof address == "undefined") {
+			return false;
+		}
+		console.log(address.streetAddress)
+		console.log(address.country)
+		console.log(address.zipCode)
+
+		if(address.streetAddress == null || address.country == null || address.zipCode == null) {
+			return false;
+		}
+		return true;
+	},
+	validateLatLng: function(latLng) {
+		return true;
+	},
+	validateDate: function(date){
+		console.log("at validate date");
+		console.log(date);
+		if(date == null || typeof date == "undefined") {
+			return false;
+		}
+		return true;
+	},
+	validateCategory: function(category){
+		if(category == null || typeof category == "undefined" || category.length == 0) {
+			return false;
+		}
+		return true;
+	},
+	validateTime: function(time){
+		console.log("at validate time");
+		console.log(time);
+		return true;
+
+	},
+	validateDescription: function(description){
+		if(description == null || typeof description == "undefined" || description.length == 0) {
+			return true;
+		}
+		if(description.length > 500) {
+			return false;
+		}
+		return true;
+	},
+
+	getEditOrCreateTitle: function(){
+		if(this.isEditForm()){
+			return "Edit event"
+		}
+		return "Create new event"
+	},
 
 	render: function(){
 		 // form tagista onSubmit={event.preventDefault()}, otettu pois, (bugas firefoxissa)
 		return (
 			<div className='right-container'>
 				<h2 className="centeredHeader">Create new event</h2>
-				<form className='form' id='form' role='form'>
+
+				<div id='form'>
 
 					{/* Name */}
 					<div className='form-group'>
-						<span htmlFor='name'>Name *</span>
-						<input type='text' className='form-control' id='name'/>
+						<span>Name *</span>
+						<input type='text' className='form-control' id='name' onChange={this.handleChange('name')} />
 					</div>
+					<span className="validationError" id="nameError"></span>
+
+					{/* Address */}
 					<div className='form-group'>
 						<span htmlFor='address'>Address *</span>
 						<div className='input-group'>
-							<input type='text' value={this.state.address.streetAddress} onBlur={this.addressOnBlur} onChange={this.handleChange('address')} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
+							<input type='text' value={this.state.address.streetAddress} onBlur={this.addressOnBlur} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
 							<span className="input-group-addon add-on white-background" onClick={this.fillInAddress}>
 								 <span className="glyphicon glyphicon-search"></span>
 							</span>
 						</div>
 					</div>
+					<span className="validationError" id="addressError"></span>
 
 					{/* Date */}
 					<div className='form-group required'>
-						<span htmlFor='date'>Date *</span>
+						<span>Date *</span>
 						<div className="input-group full-width">
 				          <DatePicker
 				          	selected={this.state.date}
@@ -424,12 +487,12 @@ const EventForm = React.createClass({
 					        placeholderText="Date: dd:mm:yyyy"
 					       />
 				        </div>
-				        <div id="errorDivForDateField" className="help-block with-errors dark-red-text">Please fill out this field</div>
 					</div>
+					<span className="validationError" id="dateError"></span>
 
 					{/* Category */}
 					<div className='form-group'>
- 						<span for="category-select-eventform">Category</span>
+ 						<span>Category *</span>
  						<Dropdown 
  							useBootstrap={true}
  							selectDivId="category-select-eventform"
@@ -439,10 +502,11 @@ const EventForm = React.createClass({
  							selected={this.state.selectedCategory}
  						/> 						
  					</div>
+					<span className="validationError" id="categoryError"></span>
 
 					{/* Time */}
 					<div className='form-group'>
-						<span htmlFor='time'>Time *</span>
+						<span>Time *</span>
 						<div className='input-group'>
 							<input type='text' className='form-control' id='time' placeholder="hh:mm"/>
 							<span className="input-group-btn">
@@ -450,19 +514,21 @@ const EventForm = React.createClass({
 							</span>
 						</div>
 					</div>
+					<span className="validationError" id="timeError"></span>
 
 					{/* Description */}
 					<div className='form-group'>
-						<span htmlFor='description'>Description *</span>
-						<input type='text' className='form-control' id='description'/>
+						<span>Description *</span>
+						<input type='text' className='form-control' id='description' onChange={this.handleChange('description')}/>
 					</div>
+					<span className="validationError" id="descriptionError"></span>
 
 					{/* Submit */}
 					<div className="form-group">
-			            <button type="submit" className="btn btn-default">Submit</button>
+			            <button className="btn btn-default" onClick={this.handleSubmit}>Submit</button>
 				    </div>
 			
-				</form>
+				</div>
 			</div>
 		)
 	}

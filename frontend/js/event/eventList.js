@@ -295,14 +295,17 @@ const EventList = React.createClass({
                         {eventListTable}
                     <div className="eventList-filter-bar">
                         <span id="select-dropdown">
-                            <Dropdown list={this.state.categories} selectCategory={this.selectCategory} selected={selectedCategory} />
+                            <Dropdown
+                             categoriesContentId={"categoriesContentEventList"}
+                             selectDivId={"dropdownBtnEventList"}
+                             list={this.state.categories}
+                             selectCategory={this.selectCategory}
+                             selected={selectedCategory} />
                         </span>
                             <form>
                             <DatePicker defaultValue="1/1/2000"/>
                             </form>
                     </div>
-
-
                 </div>              
                 )       
         }   

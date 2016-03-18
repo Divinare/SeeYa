@@ -28,7 +28,7 @@
     "gulp-cssmin": "^0.1.6",
     "gulp-less": "^3.0.3",
     "gulp-livereload": "^3.7.0",
-    "gulp-nodemon": "^2.0.3",
+    "gulp-nodemon": "^2.0.6",
     "gulp-postcss": "^5.1.6",
     "gulp-sass": "^2.1.1",
     "gulp-util": "^3.0.3",
@@ -44,7 +44,7 @@
     "pg-hstore": "^2.3.2",
     "q": "^1.4.1",
     "react": "0.14.7",
-    "react-datepicker": "^0.23.2",
+    "react-datepicker": "^0.24.0",
     "react-dom": "^0.14.7",
     "react-router": "^2.0.0",
     "react-router-bootstrap": "^0.20.1",
@@ -54,8 +54,7 @@
     "sqlite3": "^3.0.1",
     "webpack": "^1.11.0"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "engines": {
     "node": "0.12.2",
     "npm": "2.7.4"
