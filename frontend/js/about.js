@@ -38,7 +38,6 @@ const About = React.createClass({
 
 		
 <br />
-<hr>
 <br />
 				
 				<p>SeeYa is a community for creating and joining events nearby. Discover new events, gain new experiences with other people and have fun.</p>
@@ -54,7 +53,7 @@ const About = React.createClass({
 
 			</div>
 			)
-	}
+
 
 });
 
