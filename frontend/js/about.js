@@ -28,21 +28,28 @@ const About = React.createClass({
 
 			<div className='right-container'>
 				
-<img className="imghomeicon" src="assets/savimaja.png" alt="Mountain View"/>
+<img className="imghomeicon" src="assets/savimaja.png" alt="cleyhouse"/>
 
 <br />
 <br />
 <br />
 <br />
-				<h1>About page comes here</h1>
+				<h1>Welcome! We are happy to See you!</h1>
 
-
+		
+<br />
+<hr>
+<br />
 				
-				
-				
+				<p>SeeYa is a community for creating and joining events nearby. Discover new events, gain new experiences with other people and have fun.</p>
+				<p>Simply and easy way to explore events near you or far away. SeeYa was developed in 2016 by a small group of friends in Helsinki, Finland.  </p>
 
-				<p>Hello world</p>
-				<p>Hello world</p>
+
+<br />
+<br />
+
+<img className="markerbig" src="assets/marker_big.png" alt="See Ya Marker"/>
+
 
 
 			</div>
