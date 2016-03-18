@@ -40,7 +40,7 @@ const About = React.createClass({
 				<img className="markerbig" src="assets/marker_big.png" alt="See Ya Marker" />
 			</div>
 			)
-
+}
 
 });
 
