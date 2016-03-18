@@ -264,7 +264,7 @@ const EventList = React.createClass({
         var sortDir = eventListData.sortDir;
 
         if (sortDir !== null){
-          sortDirArrow = sortDir === SortTypes.DESC ? ' ↓' : ' ↑';
+            sortDirArrow = sortDir === SortTypes.DESC ? ' ↓' : ' ↑';
         }
 
         var selectedCategory = this.props.eventListData['filters'].category;

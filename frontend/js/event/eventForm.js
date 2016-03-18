@@ -17,7 +17,7 @@ const EventForm = React.createClass({
 	    	name: "",
 	    	address: {},
 	    	latLng: [],
-	    	date: "",
+	    	date: Moment(),
 	    	selectedCategory: "Other", //TODO: get the default category from backend
 	    	time: "",
 	    	description: "",
@@ -231,6 +231,7 @@ const EventForm = React.createClass({
 	/*** DATE ***/
 
     handleNewDateChange: function(moment) {
+    	console.log("date: " + moment);
 	    this.setState({
 	       date: moment
 	    });
@@ -475,18 +476,17 @@ const EventForm = React.createClass({
 					<span className="validationError" id="addressError"></span>
 
 					{/* Date */}
-					<div className='form-group required'>
+					<div className='form-group'>
 						<span>Date *</span>
-						<div className="input-group full-width">
-				          <DatePicker
+				          
+						<DatePicker
 				          	selected={this.state.date}
-				          	dateFormat= 'DD.MM.YYYY'
+				          	dateFormat= 'DD/YYYY/MM'
 					        key="example3"
 					        minDate={Moment()}
 					        onChange={this.handleNewDateChange}
 					        placeholderText="Date: dd:mm:yyyy"
 					       />
-				        </div>
 					</div>
 					<span className="validationError" id="dateError"></span>
 

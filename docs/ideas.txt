@@ -57,9 +57,10 @@ List ideas here that arent implented yet:
 
 ### NAME CANDIDATES ###
 
-1. GatherUp.fi
-2. EventGatherUp.com
-3. SeeYa.com
+1. SeeYou.com
+2. SeeYa.com
+3. GatherUp.fi
+4. EventGatherUp.com
 Ciao
 MeetMe
 Meetings
