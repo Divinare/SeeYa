@@ -34,8 +34,9 @@ import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'reac
 
 
 $(document).click(function() {
-        $("#categories-content").slideUp(150, function(){
-    });
+        console.log("SHOUDL SLIDE UP");
+        $("#category-content-eventform").slideUp(150, function(){ });
+        $("#categoriesContentEventList").slideUp(150, function(){ });
 });
 
 const Main = React.createClass({
@@ -147,7 +148,7 @@ const Main = React.createClass({
         });
 
         return (
-            <div>
+            <div className="application">
 
                 <Navbar />
 
