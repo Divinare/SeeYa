@@ -9,6 +9,8 @@
     position:absolute;
 }   
 
-#formBox {
-    margin-top: 50px;
+.invalid {
+    border-style: solid !important;
+    border-width: 2px !important;
+    border-color: red !important;
 }

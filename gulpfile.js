@@ -14,6 +14,7 @@ var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
 
 var frontend_path = 'frontend';
+var common_path = 'common';
 var backend_path = 'backend';
 var components_path = "bower_components";
 var modules_path = "node_modules";
