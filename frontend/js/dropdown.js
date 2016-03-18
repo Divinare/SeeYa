@@ -26,16 +26,6 @@ var Dropdown = React.createClass({
         }
     },
 
-    renderListItems: function() {
-        var _this = this;
-        var items = [];
-        this.props.list.map(function(item) {
-            items.push(
-                <div className="item unSelected" onClick={_this.select.bind(null, item.name)}>{item.name}
-            </div>);
-        });
-        return items;
-    },
 
     createInputField: function() {
         if(this.props.useBootstrap) {
@@ -46,21 +36,21 @@ var Dropdown = React.createClass({
         }
     },
 
+
+
     render: function() {
         var inputField = this.createInputField();
-
+        console.log("RETURN");
         return (
             <div id={this.props.dropdownId}>
                 <div id={this.props.categoriesContentId}>
-                    {this.props.list.map(item =>
-                       <div key={item.name} className="item unSelected" onClick={this.select.bind(null, item.name)}>{item.name}</div>
-                    )}
+                {this.props.list.map(item =>
+                    <div key={item.name} className="item unSelected" onClick={this.select.bind(null, item.name)}>{item.name}</div>
+                )}
                 </div>
-                {inputField}
             </div>
         );
     }
-
 });
 
 module.exports = Dropdown;

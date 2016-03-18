@@ -1,10 +1,14 @@
 var React = require('react');
 var Router = require('react-router');
-var DatePicker = require('react-datepicker');
+//var DatePicker = require('react-datepicker');
+
+var DatePicker = require('react-bootstrap-datetimepicker');
+
+//var DatePicker = require('../datePicker.js');
 var Select = require('react-select');
 var Moment = require('moment')
 var validator = require('bootstrap-validator')
-var Dropdown = require('../dropdown.js');
+var EventFormDropdown = require('./eventFormDropdown.js');
 //var $ = require('jquery-autocomplete-js');
 var autocomplete;
 var placesService;
@@ -18,6 +22,7 @@ const EventForm = React.createClass({
 	    	address: {},
 	    	latLng: [],
 	    	date: Moment(),
+	    	selectedDay: null,
 	    	selectedCategory: "Other", //TODO: get the default category from backend
 	    	time: "",
 	    	description: "",
@@ -81,12 +86,15 @@ const EventForm = React.createClass({
  // http://stackoverflow.com/questions/7865446/google-maps-places-api-v3-autocomplete-select-first-option-on-enter
     	var input = document.getElementById('searchTextField');
 
-		var dateInput = document.querySelectorAll(".datepicker__input")[0]
-		dateInput.setAttribute("data-validateDate", this.validateDate)
+		//var dateInput = document.querySelectorAll(".datepicker__input")[0]
+		//dateInput.setAttribute("data-validateDate", this.validateDate)
+		
+
 		this.initAutocomplete();
 		placesService = new google.maps.places.AutocompleteService();
 		this.fetchCategories();
 	},
+
 	// Called when a field is changed
 	handleChange: function(key) {
 		console.log("at handleChange");
@@ -231,7 +239,9 @@ const EventForm = React.createClass({
 	/*** DATE ***/
 
     handleNewDateChange: function(moment) {
-    	console.log("date: " + moment);
+    	console.log("AT : handleNewDateChange")
+    	console.log(moment);
+    	//$("#date").val(moment);
 	    this.setState({
 	       date: moment
 	    });
@@ -448,13 +458,27 @@ const EventForm = React.createClass({
 		return "Create new event"
 	},
 
+	 handleDayClick: function(e, day, modifiers) {
+		if (modifiers.indexOf("disabled") > -1) {
+			console.log("User clicked a disabled day.");
+			return;
+		}
+		this.setState({
+			selectedDay: day
+		});
+  	},
+
+	isSunday: function(day) {
+	  return day.getDay() === 0;
+	},
+
 	render: function(){
-		 // form tagista onSubmit={event.preventDefault()}, otettu pois, (bugas firefoxissa)
+
 		return (
 			<div className='right-container'>
 				<h2 className="centeredHeader">Create new event</h2>
 
-				<div id='form'>
+				<div className='form'>
 
 					{/* Name */}
 					<div className='form-group'>
@@ -478,30 +502,36 @@ const EventForm = React.createClass({
 					{/* Date */}
 					<div className='form-group'>
 						<span>Date *</span>
-				          
-						<DatePicker
-				          	selected={this.state.date}
-				          	dateFormat= 'DD/YYYY/MM'
-					        key="example3"
-					        minDate={Moment()}
-					        onChange={this.handleNewDateChange}
-					        placeholderText="Date: dd:mm:yyyy"
-					       />
+				        <div className="dateInputField">
+
+							<DatePicker
+								inputFormat="DD.MM.YYYY"
+								size="md"
+								mode="date"
+								viewMode="days"
+								showToday={true}
+								minDate={Moment()}
+								maxDate={Moment().add(1, "years")}
+							   onChange={this.handleNewDateChange}
+							 />
+
+						</div>
 					</div>
 					<span className="validationError" id="dateError"></span>
 
 					{/* Category */}
 					<div className='form-group'>
- 						<span>Category *</span>
- 						<Dropdown 
- 							useBootstrap={true}
- 							selectDivId="category-select-eventform"
- 							categoriesContentId="category-content-eventform"
- 							dropdownId="category-dropdown-eventform"
- 							list={this.state.categories} selectCategory={this.selectCategory} 
- 							selected={this.state.selectedCategory}
- 						/> 						
- 					</div>
+							<span>Category *</span>
+							<EventFormDropdown
+								itemClassName={"itemDropdownEventForm"}
+								useBootstrap={true}
+								selectDivId="category-select-eventform"
+								categoriesContentId="category-content-eventform"
+								dropdownId="category-dropdown-eventform"
+								list={this.state.categories} selectCategory={this.selectCategory} 
+								selected={this.state.selectedCategory}
+							/> 						
+						</div>
 					<span className="validationError" id="categoryError"></span>
 
 					{/* Time */}
@@ -536,3 +566,16 @@ const EventForm = React.createClass({
 });
 
 module.exports = EventForm;
+
+/*
+
+							<DatePicker
+					          	selected={this.state.date}
+					          	dateFormat= 'DD.MM.YYYY'
+						        key="example3"
+						        minDate={Moment()}
+						        onChange={this.handleNewDateChange}
+						        placeholderText="Date: dd:mm:yyyy"
+						       />
+
+						       */

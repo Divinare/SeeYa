@@ -1,6 +1,14 @@
+.brandlogo {
+    border: 0;
+    width: 199px;
+    height: 63px;
+
+
+}
+
+
+
 body {
-	background-color: #FFFFFF;
-    color: #FFF !important;
 }
 
 html {
@@ -23,6 +31,7 @@ img{
 }
 
 .right-container {
+    color: #FFF;
     z-index: 99;
     padding: 40px;
     width: 400px;

@@ -6,10 +6,6 @@
 	width:100%;
 }
 
-.full-width{
-	width:100%;
-}
-
 .description {
 	height: 400px;
 }
@@ -18,6 +14,15 @@
     color: black !important;
 }
 
+/* DATE */
+
+.dateInputField {
+    color: black;
+}
+
+.dropdown-menu {
+    top: 0px !important;
+}
 
 #category-dropdown-eventform {
     position: relative;
