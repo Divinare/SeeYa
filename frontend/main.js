@@ -8,7 +8,6 @@ window.ReactDOM = require('react-dom');
 //var GoogleMapsLoader = require('google-maps');
 var Moment = require('moment');
 
-
 var Frontpage = require('./js/frontpage.js');
 var Navbar = require('./js/navbar.js');
 var Map = require('./js/map/map.js');
