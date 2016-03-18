@@ -39,6 +39,7 @@ const EventList = React.createClass({
             that.setState({
                 categories: categories
             })
+            console.log(categories);
         };
         var onError = function() {
             console.log("Error on fetching event!");
@@ -65,6 +66,8 @@ const EventList = React.createClass({
         if(headerName == 'name') {
             this.centerMapToMarker(eventId, 12);
             //this.transitionTo('eventPage', {id: eventId});
+            console.log("EventId: " + eventId);
+
             browserHistory.push('events/' + eventId);
 
             //this.context.router.transitionTo('eventPage', {id: eventId});
@@ -137,6 +140,8 @@ const EventList = React.createClass({
     filterChange: function(filter, filterType) {
         var that = this;
         var onSuccess = function (filteredEvents) {
+            console.log("got filtered events");
+            console.log(filteredEvents);
             that.props.updateAppStatus('filteredEventList', filteredEvents);
             var eventListData = that.props.eventListData;
             eventListData['filters'][filterType] = filter;
@@ -145,6 +150,7 @@ const EventList = React.createClass({
         var onError = function() {
             console.log("Error on fetching event!");
         }
+        console.log("AT FILTER CHANGE");
         UTILS.rest.getFilteredEntries('filteredEvents', filter, null, null, onSuccess, onError);
 
     },
@@ -203,6 +209,10 @@ const EventList = React.createClass({
 
     createEventListTable: function(eventList) {
         var _this = this;
+        console.log("at createEventListTable");
+        console.log(eventList);
+        console.log("LENGTH!!! " + eventList.length);
+
         if(eventList.length > 0) {
             return (
                 <table className="eventList-table">
@@ -243,6 +253,7 @@ const EventList = React.createClass({
     },
 
     render: function() {
+        console.log("At eventlist render");
         var _this = this;
 
         // Use eventList if filteredEventList is empty
@@ -259,6 +270,7 @@ const EventList = React.createClass({
         var selectedCategory = this.props.eventListData['filters'].category;
 
         var eventListTable = this.createEventListTable(eventList);
+        console.log(eventListTable);
 
         var toTimestamp = eventListData['filters'].toTimestamp;
         var fromTimestamp = eventListData['filters'].fromTimestamp;
@@ -283,15 +295,11 @@ const EventList = React.createClass({
                         {eventListTable}
                     <div className="eventList-filter-bar">
                         <span id="select-dropdown">
-                            <Dropdown
-                            categoriesContentId={"categoriesContentEventList"}
-                            selectDivId={"dropdownBtnEventList"}
-                            list={this.state.categories}
-                            selectCategory={this.selectCategory}
-                            selected={selectedCategory} />
+                            <Dropdown list={this.state.categories} selectCategory={this.selectCategory} selected={selectedCategory} />
                         </span>
-
+                            <form>
                             <DatePicker defaultValue="1/1/2000"/>
+                            </form>
                     </div>
 
 

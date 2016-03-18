@@ -25,12 +25,23 @@ const About = React.createClass({
 
 
 		return (
+
 			<div className='right-container'>
+				
+<img className="imghomeicon" src="assets/savimaja.png" alt="Mountain View"/>
+
+<br />
+<br />
+<br />
+<br />
 				<h1>About page comes here</h1>
 
-				<img src="assets/savimaja.png" alt="Mountain View" />
 
+				
+				
+				
 
+				<p>Hello world</p>
 				<p>Hello world</p>
 
 
