@@ -30,7 +30,7 @@ module.exports = React.createClass({
                 <div id="navbar">
                     <ul id="navbar-menu">
                         <div className="navbar-left-container">
-                            <li id="navbar-logo"><Link to="/"><img className="brandlogo" src="assets/logo_meetup.png" alt="Mountain View"/></Link></li>
+                            <li id="navbar-logo"><Link to="/"><img src="assets/logo_test.png" alt="Mountain View"/></Link></li>
                             <li className="navbar-desktop-element"><Link to="/about">About</Link></li>
                             <li className="navbar-desktop-element"><Link to="/eventForm">Create new event</Link></li>
                         </div>

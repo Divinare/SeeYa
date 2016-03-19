@@ -102,7 +102,7 @@ gulp.task('copy', function() {
   gulp.src(frontend_path + "/*.html").pipe(gulp.dest(dist_path));
   gulp.src(frontend_path + "/favicon.ico").pipe(gulp.dest(dist_path));
   gulp.src(frontend_path + "/css/fonts/**/*").pipe(gulp.dest(dist_path + "/fonts/"));
-  gulp.src(frontend_path + "/../assets/**/*").pipe(gulp.dest(dist_path + "/assets/"));
+  gulp.src(frontend_path + "/assets/**/*").pipe(gulp.dest(dist_path + "/assets/"));
  // gulp.src(frontend_path + "/css/fonts/**/*").pipe(gulp.dest(dist_path + "/fonts/"));
   return 
   //gulp.src(semantic_path + "/themes/default/assets/**/*").pipe(gulp.dest(dist_path + "/themes/default/assets/"));

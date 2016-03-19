@@ -26,7 +26,6 @@ var Dropdown = React.createClass({
         }
     },
 
-
     createInputField: function() {
         if(this.props.useBootstrap) {
             return <input type='text' className='form-control' id='category' onClick={this.toggleShowCategories}/>;
@@ -36,11 +35,10 @@ var Dropdown = React.createClass({
         }
     },
 
-
-
     render: function() {
         var inputField = this.createInputField();
         console.log("RETURN");
+        console.log(this.props.list);
         return (
             <div id={this.props.dropdownId}>
                 <div id={this.props.categoriesContentId}>
