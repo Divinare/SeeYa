@@ -47,7 +47,10 @@ module.exports = {
                 helper.sendErr(res, 400, {"message": "Email already in use"});
                 return;
             }else{
+                var startTime = new Date().getTime();
                 var createUser = function(salt, hash){
+                    var endTime = new Date().getTime();
+                    console.log("hashing took: " + (endTime - startTime) + "ms" );
                     models.User.create({
                         username: email,
                         email: email, 

@@ -26,9 +26,8 @@ module.exports = {
             long in the database
             */
             salt = new Buffer(salt).toString('hex');
-
-            //use 7000 iterations and produce hash of 256 bytes
-            crypto.pbkdf2(password, salt, 7000, 256,
+            //use 7000 iterations and produce hash of 256 bytes. Use sha256 as the algorithm
+            crypto.pbkdf2(password, salt, 7000, 256, 'sha256',
                 function (err, hash){
                 
                     hash = new Buffer(hash).toString('hex') 
