@@ -26,27 +26,20 @@ var Dropdown = React.createClass({
         }
     },
 
-    createInputField: function() {
-        if(this.props.useBootstrap) {
-            return <input type='text' className='form-control' id='category' onClick={this.toggleShowCategories}/>;
-        } else {
-            return <div id="category" className={this.props.selectDivId} onClick={this.toggleShowCategories}>{this.props.selected}</div>;
-        
-        }
-    },
+
 
     render: function() {
-        var inputField = this.createInputField();
-        console.log("RETURN");
-        console.log(this.props.list);
         return (
+
             <div id={this.props.dropdownId}>
                 <div id={this.props.categoriesContentId}>
                 {this.props.list.map(item =>
                     <div key={item.name} className="item unSelected" onClick={this.select.bind(null, item.name)}>{item.name}</div>
                 )}
                 </div>
+                <div id="category" className="dropdownBtnEventList" onClick={this.toggleShowCategories}>{this.props.selected}</div>;
             </div>
+            
         );
     }
 });

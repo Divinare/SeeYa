@@ -1,6 +1,5 @@
 
 var getAllEntries = function(name, onSuccess, onError) {
-    console.log("NAME: " + name);
     var url = URL.allEntries[name];
     $.ajax({ 
         type: 'GET', 

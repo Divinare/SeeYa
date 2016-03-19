@@ -5,7 +5,6 @@ window.URL = UTILS.url;
 window.React = require('react');
 window.ReactDOM = require('react-dom');
 
-//var GoogleMapsLoader = require('google-maps');
 var Moment = require('moment');
 
 var Frontpage = require('./js/frontpage.js');
@@ -26,17 +25,9 @@ import { render } from 'react-dom'
 
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
 
-//var Router = require('react-router')
-//var RouteHandler = Router.RouteHandler;
-//var Route = Router.Route;
-//var DefaultRoute = Router.DefaultRoute;
-//var BrowserHistory = Router.History;
-
-
 $(document).click(function() {
-        console.log("SHOUDL SLIDE UP");
-        $("#category-content-eventform").slideUp(150, function(){ });
-        $("#categoriesContentEventList").slideUp(150, function(){ });
+    $("#categoryContentEventform").slideUp(150, function(){ });
+    $("#categoriesContentEventList").slideUp(150, function(){ });
 });
 
 const Main = React.createClass({
@@ -70,10 +61,12 @@ const Main = React.createClass({
     },
 
     componentWillMount: function() {
+        console.log("GETTING EVENTS");
         this.getEvents();
     },
 
     componentDidMount: function() {
+
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
     },
@@ -87,6 +80,7 @@ const Main = React.createClass({
             var eventListWidth = UTILS.styleHelper.getEventListWidth();
             $(".right-container").css('height', eventListHeight);
             $(".right-container").css('width', eventListWidth);
+
 
             var eventListData = this.state.eventListData;
             eventListData['tableHeight'] = eventListHeight;
@@ -130,7 +124,6 @@ const Main = React.createClass({
     },
 
     render: function() {
-        browserHistory.goForward();
         var that = this;
         var showFrontpage = this.state.showFrontpage;
         var frontpageLoaded = this.state.frontpageLoaded;
@@ -176,12 +169,12 @@ render((
     <Router history={browserHistory}>
         <Route path="/" component={Main}>
             <IndexRoute component={EventList} />
-            <Route name="eventPage" path="events/:id" component={EventPage} />
-            <Route name="eventEdit" path="events/:id/edit" component={EventForm} />
-            <Route name="eventForm" path="eventForm" component={EventForm} />
-            <Route name="about" path="about" component={About} />
-            <Route name="signup" path="signup" component={Signup} />
-            <Route path="*" component={NoMatch}/>
+            <Route path="events/:id" component={EventPage} />
+            <Route path="events/:id/edit" component={EventForm} />
+            <Route path="eventForm" component={EventForm} />
+            <Route path="about" component={About} />
+            <Route path="signup" component={Signup} />
+            <Route path="*" component={NoMatch} />
         </Route>
     </Router>
 ), document.getElementById('app-container'));

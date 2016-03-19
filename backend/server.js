@@ -34,6 +34,7 @@ app.get('*', function (req, res) {
   res.render('index');
 });
 
+
 app.use(function(req, res, next) { 
   var err;
   err = new Error("Not Found");

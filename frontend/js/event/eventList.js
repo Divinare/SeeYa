@@ -1,7 +1,7 @@
 var Router = require('react-router');
 var Moment = require('moment');
 
-var Dropdown = require('../dropdown.js');
+var Dropdown = require('./eventListDropdown.js');
 //var Dateselect = require('../dateselect.js');
 //var DatePicker = require('../datepicker.js');
 import { browserHistory } from 'react-router'
@@ -39,7 +39,6 @@ const EventList = React.createClass({
             that.setState({
                 categories: categories
             })
-            console.log(categories);
         };
         var onError = function() {
             console.log("Error on fetching event!");
@@ -150,33 +149,8 @@ const EventList = React.createClass({
         var onError = function() {
             console.log("Error on fetching event!");
         }
-        console.log("AT FILTER CHANGE");
         UTILS.rest.getFilteredEntries('filteredEvents', filter, null, null, onSuccess, onError);
-
     },
-
-/*
-    renderFilterFields: function() {
-        var that = this;
-        var eventListData = this.props.eventListData;
-
-
-        return (eventListData.tableContentNames.map(function(contentName) {
-                var tableHeader = UTILS.eventParser.getTableHeader(contentName);
-                var columnWidth = that.getTableSizes().columnWidths[tableHeader];
-                var styles={
-                    width: columnWidth + 'px'
-                };
-                // TODO: causes warning:
-                return (
-                    <input type='text' style={styles} value={eventListData['filters'][contentName]} onChange={that.filterChange(contentName)} placeholder='Filter...' />
-                );
-            })
-        
-        );
-        
-    },
-    */
 
     getTableSizes: function() {
         var tableWidth =  this.props.eventListData.tableWidth;
@@ -209,9 +183,6 @@ const EventList = React.createClass({
 
     createEventListTable: function(eventList) {
         var _this = this;
-        console.log("at createEventListTable");
-        console.log(eventList);
-        console.log("LENGTH!!! " + eventList.length);
 
         if(eventList.length > 0) {
             return (
@@ -248,12 +219,7 @@ const EventList = React.createClass({
         return items;
     },
 
-    changeDate: function(field) {
-        console.log("at changeDate: " + field);
-    },
-
     render: function() {
-        console.log("At eventlist render");
         var _this = this;
 
         // Use eventList if filteredEventList is empty
@@ -270,7 +236,6 @@ const EventList = React.createClass({
         var selectedCategory = this.props.eventListData['filters'].category;
 
         var eventListTable = this.createEventListTable(eventList);
-        console.log(eventListTable);
 
         var toTimestamp = eventListData['filters'].toTimestamp;
         var fromTimestamp = eventListData['filters'].fromTimestamp;
@@ -298,7 +263,6 @@ const EventList = React.createClass({
                             <Dropdown
                                 singleRow={true}
                                 categoriesContentId={"categoriesContentEventList"}
-                                selectDivId={"dropdownBtnEventList"}
                                 list={this.state.categories}
                                 selectCategory={this.selectCategory}
                                 selected={selectedCategory} />

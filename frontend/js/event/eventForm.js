@@ -39,7 +39,6 @@ const EventForm = React.createClass({
 			console.log("editform")
 			this.autoFillEventDetails();
 		}
-		this.props.handleResize();
 		var that = this;
 		/*var validatorOptions = {
 			delay: 500,
@@ -92,7 +91,11 @@ const EventForm = React.createClass({
 
 		this.initAutocomplete();
 		placesService = new google.maps.places.AutocompleteService();
-		this.fetchCategories();
+		
+		if(this.state.categories.length == 0) {
+			console.log("LENGTH WAS 0");
+			this.fetchCategories();
+		}
 	},
 
 	// Called when a field is changed
@@ -524,10 +527,6 @@ const EventForm = React.createClass({
 							<span>Category *</span>
 							<EventFormDropdown
 								itemClassName={"itemDropdownEventForm"}
-								useBootstrap={true}
-								selectDivId="category-select-eventform"
-								categoriesContentId="category-content-eventform"
-								dropdownId="category-dropdown-eventform"
 								list={this.state.categories} selectCategory={this.selectCategory} 
 								selected={this.state.selectedCategory}
 							/> 						

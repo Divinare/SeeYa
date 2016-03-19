@@ -14,11 +14,11 @@ var EventFormDropdown = React.createClass({
     select: function(item) {
         this.props.selectCategory(item);
         this.toggleShowCategories();
-        $("#category").val(item);
+        $("#categoryEventForm").val(item);
     },
 
     toggleShowCategories: function(e) {
-        var id = this.props.categoriesContentId
+        var id = "categoryContentEventform"
         if($("#" + id).css('display') == 'none') {
             $("#" + id).slideDown(150, function(){ });
         } else {
@@ -39,7 +39,7 @@ var EventFormDropdown = React.createClass({
 
     },
 
-    renderListItemsMultipleRows: function() {
+    renderListItemsMultipleColumns: function() {
         var _this = this;
         var items = [];
         var list = this.props.list;
@@ -52,45 +52,25 @@ var EventFormDropdown = React.createClass({
                 var itemRight = list[i+1];
                 rightDiv = <span key={itemRight.name} className={this.props.itemClassName} onClick={_this.select.bind(null, itemRight.name)}>{itemRight.name}</span>;
             }
-            console.log("at mapppppppp");
             items.push(
-                <div className="listRow">
+                <div key={i+"eventFormRow"} className="eventFormListRow">
                         {leftDiv}
                         {rightDiv}
                 </div>);
         };
-        return <table>{items}</table>;
+        return items;
     },
-
-
-    createInputField: function() {
-        if(this.props.useBootstrap) {
-            return <input type='text' className='form-control' id='category' onClick={this.toggleShowCategories}/>;
-        } else {
-            return <div id="category" className={this.props.selectDivId} onClick={this.toggleShowCategories}>{this.props.selected}</div>;
-        
-        }
-    },
-
-
 
     render: function() {
-        var inputField = this.createInputField();
 
-
-        var listItems;
-        if(this.props.singleRow) {
-            listItems = this.renderListItemsSingleRow();
-        } else {
-            listItems = this.renderListItemsMultipleRows();
-        }
+        var listItems = this.renderListItemsMultipleColumns();
 
         return (
-            <div id={this.props.dropdownId}>
-                <div id={this.props.categoriesContentId}>
+            <div id="categoryDropdownEventform">
+                <div id="categoryContentEventform">
                     {listItems}
                 </div>
-                {inputField}
+                <input type='text' className='form-control' id='categoryEventForm' onClick={this.toggleShowCategories} />
             </div>
         );
     }
