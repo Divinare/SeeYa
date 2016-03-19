@@ -22,15 +22,15 @@ module.exports = React.createClass({
     closeNavbar: function() {
         $("#navbar-mobile").addClass("hidden");
     },
-
-    render: function(){
+    // <img src="assets/logo_test.png" alt="SeeYa"/>
+    render: function(){ // <img src={"<%= asset_url('path/to/image.png') %>"} />
 
         return (
             <div id="navbarContent">
                 <div id="navbar">
                     <ul id="navbar-menu">
                         <div className="navbar-left-container">
-                            <li id="navbar-logo"><Link to="/"><img src="assets/logo_test.png" alt="SeeYa"/></Link></li>
+                            <span id="navbar-logo"><Link to="/"></Link></span>
                             <li className="navbar-desktop-element"><Link to="/about">About</Link></li>
                             <li className="navbar-desktop-element"><Link to="/eventForm">Create new event</Link></li>
                         </div>

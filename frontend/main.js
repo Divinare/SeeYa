@@ -163,14 +163,26 @@ const Main = React.createClass({
         );
     
     }
-});   
+});
+
+const Events = React.createClass({
+
+    render: function() {
+        return (
+            <div>
+            <h2>Events</h2>
+            </div>
+            )
+    }
+});
+
 
 render((
     <Router history={browserHistory}>
         <Route path="/" component={Main}>
             <IndexRoute component={EventList} />
-            <Route path="events/:id" component={EventPage} />
-            <Route path="events/:id/edit" component={EventForm} />
+                <Route path="events/:id" component={EventPage} />
+                <Route path="events/:id/edit" component={EventForm} />
             <Route path="eventForm" component={EventForm} />
             <Route path="about" component={About} />
             <Route path="signup" component={Signup} />
