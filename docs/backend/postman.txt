@@ -84,6 +84,13 @@ POST: http://localhost:1337/api/categories
 DELETING CATEGORIES:
 DELETE: http://localhost:1337/api/categories/2
 
+CREATING USERS
+POST: http://localhost:1337/api/users
+
+{ "email": "abc@abc.com",
+ "password": "abc",
+ "repeatPassword": "abc"
+ }
 
 
 

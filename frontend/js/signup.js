@@ -50,9 +50,23 @@ const About = React.createClass({
 
         if(validPassword && validEmail){
             console.log("form is valid")
+            var userData = {
+                email: this.state.email,
+                password: this.state.password,
+                repeatPassword: this.state.repeatPassword
+            }
+            var error = function( jqXhr, textStatus, errorThrown){
+                console.log( errorThrown );
+            };
+            var success = function(){
+                console.log( "success!!!" );
+            };
+            UTILS.rest.addEntry('user', userData, success, error);
+
         }else{
             console.log("form is invalid")
         }
+
     },
 
     validateField: function(func, params, fields, errorFields, message) {

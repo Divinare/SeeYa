@@ -6,6 +6,7 @@ var EventCtrl = require('../controllers/EventController.js');
 var AddressCtrl = require('../controllers/AddressController.js');
 var AttendanceCtrl = require('../controllers/AttendanceController.js');
 var CategoryCtrl = require('../controllers/CategoryController.js');
+var UserCtrl = require('../controllers/UserController.js');
 
 router.get('/events', EventCtrl.findAll);
 router.get('/filteredEvents/:category/:fromTimestamp/:toTimestamp', EventCtrl.filterEvents);
@@ -19,6 +20,8 @@ router.get('/categories/:id', CategoryCtrl.findOne);
 router.post('/events', EventCtrl.create);
 router.post('/attendances', AttendanceCtrl.create);
 router.post('/categories', CategoryCtrl.create);
+router.post('/categories', CategoryCtrl.create);
+router.post('/users', UserCtrl.create);
 
 router.post('/events/:id', EventCtrl.update);
 router.post('/events/:id', CategoryCtrl.update);
