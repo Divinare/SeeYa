@@ -1,7 +1,7 @@
 import { browserHistory, Link } from 'react-router';
-
 var React = require('react');
 var validator = require('../../common/validators/validator.js');
+var utils = require('../../common/utils.js');
 
 const About = React.createClass({
     getInitialState: function() {
@@ -41,8 +41,7 @@ const About = React.createClass({
         var validPassword = this.validateField(validator.matchPasswords, 
                                                 params,
                                                 ["password", "repeatPassword"],
-                                                ["passwordError", "repeatPasswordError"],
-                                                PASSWORDS_EQUAL
+                                                ["passwordError", "repeatPasswordError"]
                                                 );
 
         if(validPassword && validEmail){
@@ -65,13 +64,17 @@ const About = React.createClass({
         }
     },
 
+  //Expects the func to return error message that can be shown
     validateField: function(func, params, fields, errorFields, message) {
         console.log("validatefield")
+        var errormsg = func(params, message);
+        console.log("errormsg: " + errormsg)
+
         // Validation failed
-        if(!func(params)) {
+        if( utils.notEmpty(errormsg) ) {
             for(var i = 0; i < fields.length; i++){
                 $("#" + fields[i]).addClass('invalid')
-                $("#" + errorFields[i]).text(message);
+                $("#" + errorFields[i]).text(errormsg);
             }
             return false;
         } else {

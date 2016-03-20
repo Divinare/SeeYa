@@ -4,6 +4,7 @@ var Sequelize = require('sequelize')
 var helper = require("../helpers/helper.js")
 var security = require("../helpers/security.js")
 var validator = require("../../common/validators/validator.js")
+var utils = require("../../common/utils.js")
 var crypto = require('crypto');
 
 module.exports = {
@@ -28,13 +29,29 @@ module.exports = {
         var password = userData.password;
         var repeatPassword = userData.repeatPassword;
 
-        var validEmail = validator.validateEmail({"email": email});
-        var passwordsMatch = validator.validatePassword({"password":password, "repeatPassword": repeatPassword});
-        if( !passwordsMatch ){
+        var emailValidationError = validator.validateEmail(email);
+        var passwordValidationError = validator.matchPasswords({"password":password, "repeatPassword": repeatPassword});
+        
+        var createUser = function(salt, hash){
+            var endTime = new Date().getTime();
+           // console.log("hashing took: " + (endTime - startTime) + "ms" );
+            models.User.create({
+                username: email,
+                email: email, 
+                password: hash,
+                salt: salt
+            }).then(function(user){
+                res.status(201).send({});
+            }).catch(function(err){
+                helper.sendErr(res, 400, err);
+            });
+        }
+
+        if( utils.notEmpty(passwordValidationError) ){
             helper.sendErr(res, 400, {"message": "Passwords don't match!"}); //code 400 = bad request
             return;
         }
-        if( !validEmail ){
+        if( utils.notEmpty(emailValidationError) ){
             helper.sendErr(res, 400, {"message": "Email not valid!"});
             return;
         }
@@ -47,24 +64,9 @@ module.exports = {
                 helper.sendErr(res, 400, {"message": "Email already in use"});
                 return;
             }else{
-                var startTime = new Date().getTime();
-                var createUser = function(salt, hash){
-                    var endTime = new Date().getTime();
-                    console.log("hashing took: " + (endTime - startTime) + "ms" );
-                    models.User.create({
-                        username: email,
-                        email: email, 
-                        password: hash,
-                        salt: salt
-                    }).then(function(user){
-                        res.status(201).send({});
-                    }).catch(function(err){
-                        helper.sendErr(res, 400, err);
-                    });
-                }
-            security.hashPassword(password, createUser);
+               // var startTime = new Date().getTime();
+                security.hashPassword(password, createUser);
             }
         });
     },
-
 };
