@@ -4,7 +4,9 @@ var Moment = require('moment');
 var _ = require('lodash');
 var validator = require('bootstrap-validator');
 
-import { browserHistory, Link } from 'react-router';
+var Link = Router.Link;
+
+import { browserHistory } from 'react-router';
 
 $ = window.jQuery = require('jquery');
 
@@ -89,31 +91,13 @@ const EventPage = React.createClass({
         if(deleteConfirmed){
             var success = function(){
                     that.props.getEvents();
-                    //that.props.removeEventFromFilteredEventList(eventToRemove)
-                    //that.transitionTo('home');
                     browserHistory.push('/');
-
             }
             var error = function( jqXhr, textStatus, errorThrown ){
                     console.log( errorThrown );
                 }
             UTILS.rest.removeEntry('event', this.state.event.id, success, error);   
         }
-    },
-
-    handleEdit: function(){
-        var tokens = UTILS.helper.getUrlTokens();
-        var eventId = tokens[tokens.length - 1];
-
-        var params = {
-            edit: true,
-            streetAddress: this.state.event.Address.streetAddress,
-            event: this.state.event
-        }
-        //this.transitionTo('eventEdit', {id: eventId}, params);
-        
-        browserHistory.push('/');
-
     },
 
     createEditButton: function() {
@@ -127,9 +111,9 @@ const EventPage = React.createClass({
                 streetAddress: this.state.event.Address.streetAddress,
                 event: this.state.event
             }
-            return <div className="btn btn-default"><Link to={eventId + "/edit"} params={{lol: p}}>EDIT</Link></div>;
+            return <div className="btn btn-default"><Link to={"/events/" + eventId + "/edit"}>EDIT</Link></div>;
         } else {
-            return <div className="btn btn-default"><Link to={eventId + "/edit"}>EDIT</Link></div>;
+            return <div className="btn btn-default"><Link to={"/events/" + eventId + "/edit"}>EDIT</Link></div>;
         }
     },
 
