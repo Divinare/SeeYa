@@ -3,15 +3,14 @@ import { browserHistory, Link } from 'react-router';
 var React = require('react');
 var validator = require('../../common/validators/validator.js');
 const EMAIL_FORMAT = "Wrong format. Email address in form 'abc@cde.efg' expected";
-const PASSWORDS_EQUAL = "Passwords don't match!";
+const PASSWORD_EMPTY = "Password is required!";
 
 const About = React.createClass({
     getInitialState: function() {
         return {
             showPassword: false,
             email: "",
-            password: "",
-            repeatPassword:""
+            password: ""
         };
     },
     componentWillMount: function() {
@@ -24,7 +23,6 @@ const About = React.createClass({
 
     toggleShowPassword: function() {
         $('#password').prop('type', $('#showPassword').prop('checked') ? 'text' : 'password');
-        $('#repeatPassword').prop('type', $('#showPassword').prop('checked') ? 'text' : 'password');
    //     document.getElementById('password').type = this.showPassword ? 'text' : 'password'
     },
 
@@ -38,31 +36,31 @@ const About = React.createClass({
                                             EMAIL_FORMAT
                                             );
 
-        var params = {"password" :this.state.password, 
-            "repeatPassword": this.state.repeatPassword
+        var params = {"password" :this.state.password
         };
-        var validPassword = this.validateField(validator.validatePassword, 
-                                                params,
-                                                ["password", "repeatPassword"],
-                                                ["passwordError", "repeatPasswordError"],
-                                                PASSWORDS_EQUAL
-                                                );
+
+        var validPassword = this.validateField(validator.notEmpty, 
+                                            {"value": this.state.password},
+                                            ["password"],
+                                            ["passwordError"],
+                                            PASSWORD_EMPTY
+                                            );
+        console.log("password: " + this.state.password)
 
         if(validPassword && validEmail){
             console.log("form is valid")
             var userData = {
                 email: this.state.email,
                 password: this.state.password,
-                repeatPassword: this.state.repeatPassword
             }
             var error = function( jqXhr, textStatus, errorThrown){
                 console.log( errorThrown );
             };
             var success = function(){
                 console.log( "success!!!" );
-                browserHistory.push('/login');
+               // browserHistory.push('/login');
             };
-            UTILS.rest.addEntry('user', userData, success, error);
+        //    UTILS.rest.addEntry('user', userData, success, error);
 
         }else{
             console.log("form is invalid")
@@ -90,26 +88,6 @@ const About = React.createClass({
         }
     },
 
-    validateEmail: function(params){
-        /*Validation regex taken from here: http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
-        This just checks that the email is of form anystring@anystring.anystring, there are more complex validations
-        we could do, but this should be enough for now.
-        */
-        var re = /\S+@\S+\.\S+/;
-        var email = params["email"]
-        return re.test(email);
-    },
-
-    validatePassword: function(params){
-        var password = params["password"];
-        var repeatPassword = params["repeatPassword"];
-        if(password != "" && password == repeatPassword ){
-            return true
-        }else{
-            return false
-        }
-    },
-
     handleChange: function(key) {
        return function (e) {
            var state = {};
@@ -124,7 +102,7 @@ const About = React.createClass({
                 <div className='right-container'>
                     <div className="row">
                         <div className="col-xs-12">  
-                            <h1>Signup</h1>
+                            <h1>Login</h1>
                             <form className="form">
                                 <div className="form-group">
                                     <label className="control-label" htmlFor="email">Email *</label>
@@ -136,11 +114,6 @@ const About = React.createClass({
                                         <input type="password" id="password" name="password" placeholder="" className="form-control" onChange={this.handleChange('password')}/>
                                         <span id="passwordError"></span>
                                 </div>
-                                <div className="form-group">
-                                    <label className="control-label" htmlFor="repeatPassword">Repeat password *</label>
-                                        <input type="password" id="repeatPassword" name="repeatPassword" placeholder="" className="form-control" onChange={this.handleChange('repeatPassword')}/>
-                                        <span id="repeatPasswordError"></span>
-                                </div>
                                 <div className = "form-group">
                                     <div className = "checkbox">
                                         <label><input type = "checkbox" id="showPassword" name="showPassword" onChange={this.toggleShowPassword} />Show password</label>
@@ -149,7 +122,7 @@ const About = React.createClass({
 
                                {/* Submit */}
                                 <div className="form-group">
-                                    <button type="button" onClick={this.submit} className="btn btn-default">Signup</button>
+                                    <button type="button" onClick={this.submit} className="btn btn-default">Login</button>
                                 </div>
                             </form>
                         </div>  

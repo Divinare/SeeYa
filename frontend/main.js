@@ -16,6 +16,7 @@ var EventList = require('./js/event/eventList.js');
 var EventForm = require('./js/event/eventForm.js');
 var EventPage = require('./js/event/eventPage.js');
 var Signup = require('./js/signup.js')
+var Login = require('./js/login.js')
 
 
 //import Router from 'react-router';
@@ -186,6 +187,7 @@ render((
             <Route path="eventForm" component={EventForm} />
             <Route path="about" component={About} />
             <Route path="signup" component={Signup} />
+            <Route path="login" component={Login} />
             <Route path="*" component={NoMatch} />
         </Route>
     </Router>

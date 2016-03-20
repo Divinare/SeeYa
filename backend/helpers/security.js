@@ -14,6 +14,15 @@ https://masteringmean.com/lessons/46-Encryption-and-password-hashing-with-Nodejs
 */
 
 var crypto = require('crypto');
+var iterations = 3000;
+var hashLengthInBytes = 256;
+var hashingAlgorithm = 'sha256';
+
+/*we represent the hashes and salts in hexadecimal (base 16) format
+    Two hexadecimal characters can fit into 256 bytes, 
+    that's why salt and hash fields in user model are 512 characters
+    */
+var representation = 'hex'; //we represent the hashes and salts in hexadecimal format
 module.exports = {
 
     hashPassword: function(password, callBack){
@@ -26,8 +35,7 @@ module.exports = {
             long in the database
             */
             salt = new Buffer(salt).toString('hex');
-            //use 7000 iterations and produce hash of 256 bytes. Use sha256 as the algorithm
-            crypto.pbkdf2(password, salt, 7000, 256, 'sha256',
+            crypto.pbkdf2(password, salt, iterations, hashLengthInBytes, hashingAlgorithm,
                 function (err, hash){
                 
                     hash = new Buffer(hash).toString('hex') 

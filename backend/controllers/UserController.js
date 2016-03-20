@@ -57,7 +57,7 @@ module.exports = {
                         password: hash,
                         salt: salt
                     }).then(function(user){
-                        res.status(201).send();
+                        res.status(201).send({});
                     }).catch(function(err){
                         helper.sendErr(res, 400, err);
                     });

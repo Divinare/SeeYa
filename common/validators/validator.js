@@ -16,10 +16,20 @@ module.exports = {
     validatePassword: function(params){
         var password = params["password"];
         var repeatPassword = params["repeatPassword"];
-        if(password != "" && password == repeatPassword ){
+        if(notEmpty({"value": password}) && password === repeatPassword ){
             return true
         }else{
             return false
         }
+    },
+
+    notEmpty: function(params){
+        var value = params['value'];
+        console.log("value: " + value)
+        if( typeof value !== 'undefined' && value !== '' ){
+            console.log("not empty")
+            return true;
+        }
+        return false;
     }
 }
