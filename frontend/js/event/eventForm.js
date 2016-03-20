@@ -1,15 +1,13 @@
 var React = require('react');
 var Router = require('react-router');
-//var DatePicker = require('react-datepicker');
 
+var EventFormDropdown = require('./eventFormDropdown.js');
 var DatePicker = require('react-bootstrap-datetimepicker');
-
-//var DatePicker = require('../datePicker.js');
 var Select = require('react-select');
 var Moment = require('moment')
-var validator = require('bootstrap-validator')
-var EventFormDropdown = require('./eventFormDropdown.js');
-//var $ = require('jquery-autocomplete-js');
+var Validator = require('../../../common/validators/validator.js');
+var CommonUtils = require('../../../common/utils.js');
+
 var autocomplete;
 var placesService;
 var componentForm = ['street-address', 'country-name', 'postal-code'];
@@ -40,49 +38,8 @@ const EventForm = React.createClass({
 			this.autoFillEventDetails();
 		}
 		var that = this;
-		/*var validatorOptions = {
-			delay: 500,
-			custom: {
-				checkaddress: function($el){
-					console.log("validating address")
-					console.log(that.state.latLng)
-					console.log(typeof that.state.latLng)
-					console.log(that.state.latLng == null)
-					return that.state.latLng == null;
-				}
-			},
-			errors: {
-				checkaddress: "Please search an address and pick a suggestion from the list"
-			}
-		}*/
-		/*
-		$('#form').validator()
-
-		$('#form').validator().on('submit', function (e) {
-			console.log("onsubmit")
-			//Check date
-			if( !that.showValidationInfoForDatePicker() ){
-				e.preventDefault();
-				console.log("date is not valid")
-			}
-			//Check coordinates
-			if( typeof that.state.latLng == 'undefined' || that.state.latLng === null  ){
-				e.preventDefault();
-				//change the text in the address error div to tell that nothing was found with that address
-				console.log("no coordinates")
-			}
-	  		if (e.isDefaultPrevented()) {
-	   			console.log("invalid form");
-	 		 } else {
-	 		 	console.log("valid form, submitting")
-	 		 	e.preventDefault();
-	 		 	that.handleSubmit();
-			 }
-		})
-*/
-
-// TODO LINK:
- // http://stackoverflow.com/questions/7865446/google-maps-places-api-v3-autocomplete-select-first-option-on-enter
+		// TODO LINK:
+		// http://stackoverflow.com/questions/7865446/google-maps-places-api-v3-autocomplete-select-first-option-on-enter
     	var input = document.getElementById('searchTextField');
 
 		//var dateInput = document.querySelectorAll(".datepicker__input")[0]
@@ -138,6 +95,12 @@ const EventForm = React.createClass({
 	fillInAddress: function() {
 		console.log("at fill in address");
 		var place = autocomplete.getPlace();
+		console.log(place);
+		if(typeof place.address_components == "undefined") {
+			// Nothing to do here if address_components doesn't exist
+			console.log("Address components did not exist");
+			return;
+		}
 
 	    var newAddress = {};
 	    var streetNumber;
@@ -181,13 +144,15 @@ const EventForm = React.createClass({
 	},
 
 	updateEventCoordsFromAddress: function(place){
+		console.log("at updateEventCoordsFromAddress");
 		if(typeof place == 'undefined' || typeof place.address_components == 'undefined') {
 			console.log("Place was undefined. TODO: user should be warned now.")
 		} else {
 			var latLng = [];
 			latLng[0] = place.geometry.location.lat();
 			latLng[1] = place.geometry.location.lng();
-
+			console.log("LAT LONNNN");
+			console.log(latLng);
 			this.setState({
 				latLng:latLng
 			})
@@ -234,9 +199,12 @@ const EventForm = React.createClass({
 		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
 		this.state.date = moment;
 		var time = moment.format("HH:mm");
-		this.state.time = time
-		this.state.description = event.description
-		this.state.latLng = [event.lat, event.lon]
+		this.state.time = time;
+		this.state.description = event.description;
+		this.state.latLng = [event.lat, event.lon];
+		console.log("LAT LON");
+		console.log(event.lat + " " + event.lon);
+
 	},
 
 	/*** DATE ***/
@@ -321,15 +289,14 @@ const EventForm = React.createClass({
 		var time = this.state.time;
 		var description = this.state.description;
 
-		// VALIDATIONS
-		
-		var valid1 = this.validateField(this.validateName, name, "nameError", "Name must be 3-30 characters long.");
-		var valid2 = this.validateField(this.validateAddress, address, "addressError", "Address incorrect. Did you select it from the list of address suggestions?");
-		var valid3 = this.validateField(this.validateLatLng, this.state.latLng, "addressError", "Coordinates for address doesn't exist. Put a marker on the map");
-		var valid4 = this.validateField(this.validateDate, date, "dateError", "Date error");
-		var valid5 = this.validateField(this.validateCategory, category, "categoryError", "Category error");
-		var valid6 = this.validateField(this.validateTime, time, "timeError", "Time error");
-		var valid7 = this.validateField(this.validateDescription, description, "descriptionError", "Description can be max 500 characters long.");
+		// VALIDATIONS		
+		var valid1 = this.validateField(Validator.validateEventName, name, "nameError");
+		var valid2 = this.validateField(Validator.validateEventAddress, address, "addressError");
+		var valid3 = this.validateField(Validator.validateEventLatLng, this.state.latLng, "addressError");
+		var valid4 = this.validateField(Validator.validateEventDate, date, "dateError");
+		var valid5 = this.validateField(Validator.validateEventCategory, category, "categoryError");
+		var valid6 = this.validateField(Validator.validateEventTime, time, "timeError");
+		var valid7 = this.validateField(Validator.validateEventDescription, description, "descriptionError");
 
 		// If one of the validations fail, prevent submitting form
 		if(!valid1 || !valid2 || !valid3 || !valid4 || !valid5 || !valid6 || !valid7) {
@@ -388,71 +355,21 @@ const EventForm = React.createClass({
 
 	/*** VALIDATIONS ***/
 
-	validateField: function(func, value, field, message) {
-		// Validation failed
-		if(!func(value)) {
-			$("#" + field).text(message);
-			return false;
-		} else {
+	validateField: function(func, params, field, message) {
+		var errorMessage = func(params);
+		if(CommonUtils.isEmpty(errorMessage)) {
 			// Clear the error message if it exists
 			$("#" + field).text("");
 			return true;
 		}
+		// Validation failed
+		else {
+			console.log("validation failed " + field);
+			$("#" + field).text(message);
+			return false;
+		}
 	},
 
-	validateName: function(name){
-		if(name.length < 3 || name.length > 30) {
-			console.log("NAME FALSE: " + name.length);
-			return false;
-		}
-		return true;
-	},
-	validateAddress: function(address){
-		console.log("at validateAddress");
-		if(address == null || typeof address == "undefined") {
-			return false;
-		}
-		console.log(address.streetAddress)
-		console.log(address.country)
-		console.log(address.zipCode)
-
-		if(address.streetAddress == null || address.country == null || address.zipCode == null) {
-			return false;
-		}
-		return true;
-	},
-	validateLatLng: function(latLng) {
-		return true;
-	},
-	validateDate: function(date){
-		console.log("at validate date");
-		console.log(date);
-		if(date == null || typeof date == "undefined") {
-			return false;
-		}
-		return true;
-	},
-	validateCategory: function(category){
-		if(category == null || typeof category == "undefined" || category.length == 0) {
-			return false;
-		}
-		return true;
-	},
-	validateTime: function(time){
-		console.log("at validate time");
-		console.log(time);
-		return true;
-
-	},
-	validateDescription: function(description){
-		if(description == null || typeof description == "undefined" || description.length == 0) {
-			return true;
-		}
-		if(description.length > 500) {
-			return false;
-		}
-		return true;
-	},
 
 	getEditOrCreateTitle: function(){
 		if(this.isEditForm()){
@@ -493,12 +410,7 @@ const EventForm = React.createClass({
 					{/* Address */}
 					<div className='form-group'>
 						<span htmlFor='address'>Address *</span>
-						<div className='input-group'>
-							<input type='text' value={this.state.address.streetAddress} onBlur={this.addressOnBlur} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' required/>
-							<span className="input-group-addon add-on white-background" onClick={this.fillInAddress}>
-								 <span className="glyphicon glyphicon-search"></span>
-							</span>
-						</div>
+						<input type='text' onBlur={this.addressOnBlur} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
 					</div>
 					<span className="validationError" id="addressError"></span>
 
@@ -565,16 +477,3 @@ const EventForm = React.createClass({
 });
 
 module.exports = EventForm;
-
-/*
-
-							<DatePicker
-					          	selected={this.state.date}
-					          	dateFormat= 'DD.MM.YYYY'
-						        key="example3"
-						        minDate={Moment()}
-						        onChange={this.handleNewDateChange}
-						        placeholderText="Date: dd:mm:yyyy"
-						       />
-
-						       */

@@ -9,6 +9,15 @@ var EventFormDropdown = React.createClass({
         this.setState({
             divId: this.props.divId
         })
+        $("#categoryEventForm").keydown(function(e) {
+           e.preventDefault();
+           return false;
+        });
+        $(".eventFormListRow").click(function(e) {
+            e.preventDefault();
+            return false;
+        });
+
     },
 
     select: function(item) {
@@ -24,19 +33,6 @@ var EventFormDropdown = React.createClass({
         } else {
             $("#" + id).slideUp(150, function(){ });
         }
-    },
-
-    renderListItemsSingleRow: function() {
-        var _this = this;
-        var items = [];
-        this.props.list.map(function(item) {
-            console.log("at mapppppppp");
-            items.push(
-                <div key={item.name} className="item unSelected" onClick={_this.select.bind(null, item.name)}>{item.name}
-            </div>);
-        });
-        return items;
-
     },
 
     renderListItemsMultipleColumns: function() {
@@ -70,7 +66,7 @@ var EventFormDropdown = React.createClass({
                 <div id="categoryContentEventform">
                     {listItems}
                 </div>
-                <input type='text' className='form-control' id='categoryEventForm' onClick={this.toggleShowCategories} />
+                <input type='text' className='form-control' id='categoryEventForm' onClick={this.toggleShowCategories} placeholder='Click to select' />
             </div>
         );
     }

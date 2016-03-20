@@ -1,9 +1,18 @@
 var utils = require('../utils.js');
 
 const errors = {
-    emailFormat: "Wrong format. Email address in form 'abc@cde.efg' expected",
     emptyString: "Field is empty",
-    passwordsDontMatch: "Passwords don't match"
+    
+    userEmailFormat: "Wrong format. Email address in form 'abc@cde.efg' expected",
+    userPasswordsDontMatch: "Passwords don't match",
+
+    eventName: "Name must be 3-30 characters long.",
+    eventAddress: "Address incorrect. Did you select it from the list of address suggestions?",
+    eventLatLng: "Coordinates for address doesn't exist. Put a marker on the map",
+    eventDate: "Date error",
+    eventCategory: "Category error",
+    eventTime: "Time error",
+    eventDescription: "Description can be max 500 characters long."
 }
 
 module.exports = {

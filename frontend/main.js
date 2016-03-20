@@ -18,16 +18,21 @@ var EventPage = require('./js/event/eventPage.js');
 var Signup = require('./js/signup.js')
 var Login = require('./js/login.js')
 
-
-//import Router from 'react-router';
-
 import { render } from 'react-dom'
-//import { Router, Route, Link, browserHistory } from 'react-router'
-
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
 
 $(document).click(function() {
-    $("#categoryContentEventform").slideUp(150, function(){ });
+    var eventTarget = $(event.target)[0];
+    var shouldHideEventForm = true;
+    if(typeof eventTarget != 'undefined' && eventTarget != null) {
+        if(eventTarget.className == "eventFormListRow") {
+            shouldHideEventForm = false;
+        }
+    }
+    if(shouldHideEventForm) {
+        $("#categoryContentEventform").slideUp(150, function(){ });
+    }
+
     $("#categoriesContentEventList").slideUp(150, function(){ });
 });
 
@@ -166,19 +171,6 @@ const Main = React.createClass({
     }
 });
 
-const Events = React.createClass({
-
-    render: function() {
-        return (
-            <div className='right-container'>
-            <h2>Events</h2>
-            {this.props.children}
-            </div>
-            )
-    }
-});
-
-
 render((
     <Router history={browserHistory}>
         <Route path="/" component={Main}>
@@ -193,11 +185,3 @@ render((
         </Route>
     </Router>
 ), document.getElementById('app-container'));
-
-
-/*             <Route path="events" component={Events} >
-                <Route path="/:id" component={EventPage} />
-                <Route path="/:id/edit" component={EventForm} />
-            </Route>
-
-            */
