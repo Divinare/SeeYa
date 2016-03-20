@@ -20,11 +20,10 @@ router.get('/categories/:id', CategoryCtrl.findOne);
 router.post('/events', EventCtrl.create);
 router.post('/attendances', AttendanceCtrl.create);
 router.post('/categories', CategoryCtrl.create);
-router.post('/categories', CategoryCtrl.create);
 router.post('/users', UserCtrl.create);
 
 router.post('/events/:id', EventCtrl.update);
-router.post('/events/:id', CategoryCtrl.update);
+router.post('/categories/:id', CategoryCtrl.update);
 
 router.delete('/events/:id', EventCtrl.delete);
 router.delete('/attendances/:id', AttendanceCtrl.delete);

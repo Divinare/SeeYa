@@ -170,8 +170,9 @@ const Events = React.createClass({
 
     render: function() {
         return (
-            <div>
+            <div className='right-container'>
             <h2>Events</h2>
+            {this.props.children}
             </div>
             )
     }
@@ -182,8 +183,8 @@ render((
     <Router history={browserHistory}>
         <Route path="/" component={Main}>
             <IndexRoute component={EventList} />
-                <Route path="events/:id" component={EventPage} />
-                <Route path="events/:id/edit" component={EventForm} />
+            <Route path="events/:id" component={EventPage} />
+            <Route path="events/:id/edit" component={EventForm} />
             <Route path="eventForm" component={EventForm} />
             <Route path="about" component={About} />
             <Route path="signup" component={Signup} />
@@ -192,3 +193,11 @@ render((
         </Route>
     </Router>
 ), document.getElementById('app-container'));
+
+
+/*             <Route path="events" component={Events} >
+                <Route path="/:id" component={EventPage} />
+                <Route path="/:id/edit" component={EventForm} />
+            </Route>
+
+            */
