@@ -16,7 +16,7 @@ module.exports = {
     validatePassword: function(params){
         var password = params["password"];
         var repeatPassword = params["repeatPassword"];
-        if(notEmpty({"value": password}) && password === repeatPassword ){
+        if(module.exports.notEmpty({"value": password}) && password === repeatPassword ){
             return true
         }else{
             return false
