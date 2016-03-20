@@ -32,7 +32,7 @@ const About = React.createClass({
     submit: function(){
         var that = this;
         var validEmail = this.validateField(validator.validateEmail, 
-                                            {"email": this.state.email},
+                                            this.state.email,
                                             ["email"],
                                             ["emailError"],
                                             EMAIL_FORMAT
@@ -63,11 +63,9 @@ const About = React.createClass({
                 browserHistory.push('/login');
             };
             UTILS.rest.addEntry('user', userData, success, error);
-
         }else{
             console.log("form is invalid")
         }
-
     },
 
     validateField: function(func, params, fields, errorFields, message) {
@@ -84,7 +82,6 @@ const About = React.createClass({
                 $("#" + fields[i]).removeClass('invalid')
                  // Clear the error message if it exists
                 $("#" + errorFields[i]).text("");
-                
             }
             return true;
         }

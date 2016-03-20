@@ -33,8 +33,7 @@ const About = React.createClass({
         var validEmail = this.validateField(validator.validateEmail, 
                                             this.state.email,
                                             ["email"],
-                                            ["emailError"],
-                                            "test"
+                                            ["emailError"]
                                             );
 
         var params = {"password" :this.state.password

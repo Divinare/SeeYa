@@ -10,7 +10,7 @@ module.exports = {
         */
         var re = /\S+@\S+\.\S+/;
         if( !re.test(email) ){
-            return errorMessage.getError('emailFormat');
+            return errorMessage.getError('emailFormat', message);
         }
         return '';
     },
