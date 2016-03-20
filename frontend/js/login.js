@@ -2,6 +2,7 @@ import { browserHistory, Link } from 'react-router';
 
 var React = require('react');
 var validator = require('../../common/validators/validator.js');
+var utils = require('../../common/validators/utils.js');
 const EMAIL_FORMAT = "Wrong format. Email address in form 'abc@cde.efg' expected";
 const PASSWORD_EMPTY = "Password is required!";
 
@@ -30,17 +31,17 @@ const About = React.createClass({
     submit: function(){
         var that = this;
         var validEmail = this.validateField(validator.validateEmail, 
-                                            {"email": this.state.email},
+                                            this.state.email,
                                             ["email"],
                                             ["emailError"],
-                                            EMAIL_FORMAT
+                                            "test"
                                             );
 
         var params = {"password" :this.state.password
         };
 
-        var validPassword = this.validateField(validator.notEmpty, 
-                                            {"value": this.state.password},
+        var validPassword = this.validateField(validator.validateNotEmpty, 
+                                            this.state.password,
                                             ["password"],
                                             ["passwordError"],
                                             PASSWORD_EMPTY
@@ -68,13 +69,17 @@ const About = React.createClass({
 
     },
 
+    //Expects the func to return error message that can be shown
     validateField: function(func, params, fields, errorFields, message) {
         console.log("validatefield")
+        var errormsg = func(params, message);
+        console.log("errormsg: " + errormsg)
+
         // Validation failed
-        if(!func(params)) {
+        if( utils.notEmpty(errormsg) ) {
             for(var i = 0; i < fields.length; i++){
                 $("#" + fields[i]).addClass('invalid')
-                $("#" + errorFields[i]).text(message);
+                $("#" + errorFields[i]).text(errormsg);
             }
             return false;
         } else {
@@ -82,7 +87,6 @@ const About = React.createClass({
                 $("#" + fields[i]).removeClass('invalid')
                  // Clear the error message if it exists
                 $("#" + errorFields[i]).text("");
-                
             }
             return true;
         }

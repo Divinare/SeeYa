@@ -30,11 +30,14 @@ module.exports = {
     },  
 
     findAll: function (req, res) {
+        console.log("SESSION: ")
+        console.log(req.session)
         models.Event.findAll({
             include: [ models.Address,
                   models.Attendance,
                   models.Category ]
         }).then(function (events) {
+            req.write("testing....")
             res.send(events);
         });
     },

@@ -1,35 +1,33 @@
-module.exports = {
-    test: function() {
-        return "hello world"
-    },
+var errorMessage = require('./errorMessage.js');
+var utils = require('./utils.js');
 
-    validateEmail: function(params){
+module.exports = {
+
+    validateEmail: function(email, message){
         /*Validation regex taken from here: http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
         This just checks that the email is of form anystring@anystring.anystring, there are more complex validations
         we could do, but this should be enough for now.
         */
         var re = /\S+@\S+\.\S+/;
-        var email = params["email"]
-        return re.test(email);
+        if( !re.test(email) ){
+            return errorMessage.getError('emailFormat');
+        }
+        return '';
     },
 
-    validatePassword: function(params){
+    matchPasswords: function(params, message){
         var password = params["password"];
         var repeatPassword = params["repeatPassword"];
-        if(module.exports.notEmpty({"value": password}) && password === repeatPassword ){
-            return true
-        }else{
-            return false
+        if( utils.notEmpty(password) && password === repeatPassword ){
+            return '';
         }
+        return errorMessage.getError('passwordsDontMatch', message);
     },
 
-    notEmpty: function(params){
-        var value = params['value'];
-        console.log("value: " + value)
-        if( typeof value !== 'undefined' && value !== '' ){
-            console.log("not empty")
-            return true;
+    validateNotEmpty: function(value, message){
+        if( utils.notEmpty(value) ) {
+            return '';
         }
-        return false;
+        return errorMessage.getError('', message);
     }
 }
