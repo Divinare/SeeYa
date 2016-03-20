@@ -1,5 +1,5 @@
 var errorMessage = require('./errorMessage.js');
-var utils = require('./utils.js');
+var utils = require('../utils.js');
 
 module.exports = {
 

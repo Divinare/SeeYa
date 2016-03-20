@@ -2,8 +2,6 @@ import { browserHistory, Link } from 'react-router';
 
 var React = require('react');
 var validator = require('../../common/validators/validator.js');
-const EMAIL_FORMAT = "Wrong format. Email address in form 'abc@cde.efg' expected";
-const PASSWORDS_EQUAL = "Passwords don't match!";
 
 const About = React.createClass({
     getInitialState: function() {
@@ -34,14 +32,13 @@ const About = React.createClass({
         var validEmail = this.validateField(validator.validateEmail, 
                                             this.state.email,
                                             ["email"],
-                                            ["emailError"],
-                                            EMAIL_FORMAT
+                                            ["emailError"]
                                             );
 
         var params = {"password" :this.state.password, 
             "repeatPassword": this.state.repeatPassword
         };
-        var validPassword = this.validateField(validator.validatePassword, 
+        var validPassword = this.validateField(validator.matchPasswords, 
                                                 params,
                                                 ["password", "repeatPassword"],
                                                 ["passwordError", "repeatPasswordError"],

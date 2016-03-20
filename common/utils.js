@@ -1,6 +1,3 @@
-
-
-
 module.exports = {
     notEmpty: function(value){
         if( typeof value !== 'undefined' && value !== '' ){

@@ -1,4 +1,4 @@
-var utils = require('./utils.js');
+var utils = require('../utils.js');
 
 const errors = {
     emailFormat: "Wrong format. Email address in form 'abc@cde.efg' expected",
