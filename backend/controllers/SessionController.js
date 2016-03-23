@@ -29,7 +29,7 @@ module.exports = {
                     if( user.password == hash ){
                         console.log("login success")
                         //TODO CREATE THE SESSION
-                        helper.sendErr(res, 200, {message: "login successful"});
+                        res.status(200).send({});
                     }else{
                         helper.sendErr(res, httpUnAuthorized, {message: errorMessages.getError('userEmailOrPasswordDontMatch')});
                     }

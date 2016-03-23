@@ -36,24 +36,23 @@ const About = React.createClass({
                                             ["emailError"]
                                             );
 
-        var params = {"password" :this.state.password
-        };
-
         var validPassword = this.validateField(validator.validateNotEmpty, 
                                             this.state.password,
                                             ["password"],
                                             ["passwordError"],
                                             PASSWORD_EMPTY
                                             );
-        console.log("password: " + this.state.password)
 
         if(validPassword && validEmail){
             console.log("form is valid")
             var userData = {
                 email: this.state.email,
-                password: this.state.password,
+                password: this.state.password
             }
             var error = function( jqXhr, textStatus, errorThrown){
+                console.log("error")
+                console.log(textStatus)
+                console.log(jqXhr)
                 console.log( errorThrown );
             };
             var success = function(){

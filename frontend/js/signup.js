@@ -52,6 +52,7 @@ const About = React.createClass({
                 repeatPassword: this.state.repeatPassword
             }
             var error = function( jqXhr, textStatus, errorThrown){
+                console.log("error")
                 console.log( errorThrown );
             };
             var success = function(){
