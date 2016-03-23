@@ -58,9 +58,8 @@ const About = React.createClass({
             };
             var success = function(){
                 console.log( "success!!!" );
-               // browserHistory.push('/login');
             };
-        //    UTILS.rest.addEntry('user', userData, success, error);
+            UTILS.rest.addEntry('session', userData, success, error);
 
         }else{
             console.log("form is invalid")

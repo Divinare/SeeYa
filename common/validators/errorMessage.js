@@ -4,6 +4,7 @@ const errors = {
     emptyString: "Field is empty",
     
     userEmailFormat: "Wrong format. Email address in form 'abc@cde.efg' expected",
+    userEmailOrPasswordDontMatch: "Invalid email or password ",
     userPasswordsDontMatch: "Passwords don't match",
 
     eventName: "Name must be 3-30 characters long.",

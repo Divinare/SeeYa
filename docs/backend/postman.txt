@@ -92,6 +92,14 @@ POST: http://localhost:1337/api/users
  "repeatPassword": "abc"
  }
 
+CREATING SESSIONS (login)
+POST: http://localhost:1337/api/session
+
+{ "email": "abc@abc.com",
+ "password": "abc"
+ }
+
+
 
 
 

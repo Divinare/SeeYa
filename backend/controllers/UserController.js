@@ -23,21 +23,23 @@ module.exports = {
 
     //TODO make this shorter, validation in its own function for example
     create: function (req, res) {
-        console.log("CREATING USER")
+        console.log("NEW USER TRYING TO SIGN UP")
         var userData = req.body;
-        var email = userData.email;
-        var password = userData.password;
+        var userEmail = userData.email;
+        var userPassword = userData.password;
         var repeatPassword = userData.repeatPassword;
-
-        var emailValidationError = validator.validateEmail(email);
-        var passwordValidationError = validator.matchPasswords({"password":password, "repeatPassword": repeatPassword});
+        var validationErrors = {'email':'','password':'', 'emailInUse':''};
+        validationErrors['email'] = validator.validateEmail(userEmail);
+        validationErrors['password'] = validator.matchPasswords({"password":userPassword, "repeatPassword": repeatPassword});
         
+        //Callback that is called by the security component after the password has been hashed
         var createUser = function(salt, hash){
+            console.log("CREATE USER CALLED")
             var endTime = new Date().getTime();
            // console.log("hashing took: " + (endTime - startTime) + "ms" );
             models.User.create({
-                username: email,
-                email: email, 
+                username: userEmail,
+                email: userEmail, 
                 password: hash,
                 salt: salt
             }).then(function(user){
@@ -45,28 +47,42 @@ module.exports = {
             }).catch(function(err){
                 helper.sendErr(res, 400, err);
             });
+        };
+        //Called if the hashing does not succeed for some reason. Don't know what could cause this
+        var errorCallBack = function(err){
+            console.log("caught error!!!!")
+            helper.sendErr(res, 400, {"message": "Unknown error in creating a user, please try again and report the error to the administrator if the error persists"});
         }
 
-        if( utils.notEmpty(passwordValidationError) ){
-            helper.sendErr(res, 400, {"message": "Passwords don't match!"}); //code 400 = bad request
-            return;
-        }
-        if( utils.notEmpty(emailValidationError) ){
-            helper.sendErr(res, 400, {"message": "Email not valid!"});
-            return;
-        }
 
         models.User.findOne({
-            where: { email: email }
+            where: { email: userEmail }
         })
         .then(function (user) {
             if(user){   //user found
-                helper.sendErr(res, 400, {"message": "Email already in use"});
-                return;
-            }else{
-               // var startTime = new Date().getTime();
-                security.hashPassword(password, createUser);
+                validationErrors['emailInUse'] = "Email already in use";
             }
+
+            console.log("starting to loop")
+            //Check if there were any errors and send them back to the client if there were
+            var errorCount = 0;
+            for (var property in validationErrors) {
+                if (validationErrors.hasOwnProperty(property)) {
+                    if( utils.notEmpty(validationErrors[property]) ){
+                        errorCount++;
+                    }else{
+                        delete validationErrors[property]
+                    }
+                }
+            }
+              console.log("looped")
+            if( errorCount > 0 ){
+                helper.sendErrJsonObj(res, 400, validationErrors);
+                return;
+            }
+            // var startTime = new Date().getTime();
+            security.hashPasswordWithGeneratedSalt(userPassword, errorCallBack, createUser);
+            
         });
     },
 };

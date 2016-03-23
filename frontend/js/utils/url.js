@@ -17,7 +17,8 @@ module.exports = {
 	'addEntry': {
 		'event': REST + '/events/',
 		'attendance': REST + '/attendances/',
-		'user': REST + '/users/'
+		'user': REST + '/users/',
+		'session': REST + '/sessions/'
 	},
 	'removeEntry': {
 		'event': REST + '/events/',
