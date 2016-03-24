@@ -17,13 +17,19 @@ const errors = {
 }
 
 module.exports = {
-    getError: function(errorName, suppliedErrorMsg) {
-        if( utils.notEmpty(suppliedErrorMsg) ){
-            return suppliedErrorMsg;
+    getError: function(errorName, customMessage) {
+        if( utils.notEmpty(customMessage) ){
+            return customMessage;
         }
         if( utils.notEmpty(errors[errorName]) ){
             return errors[errorName];
         }
+        if (utils.isEmpty(errors[errorName])) {
+            console.log("***********")
+            console.log("Programmer! Your error from errors[errorName] did not found, fix this");
+            console.log("***********")
+        }
+        // Should't happen
         return '';
     }
 }
