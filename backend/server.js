@@ -1,12 +1,13 @@
 var express = require("express");
 var path = require("path");
 var logger = require("morgan");
-var cookieParser = require("cookie-parser");
-var bodyParser = require("body-parser");
 var models = require("./models");
 var debug = require("debug")("EventMeetup");
 var util = require('util');
 var jade = require('jade');
+var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
+var session = require("client-sessions");
 
 var routes = require('./routes');
 
@@ -14,6 +15,12 @@ console.log("ENV::::::::::::::: " + process.env.NODE_ENV);
 console.log(process.env.PORT);
 var dist = path.join(__dirname, '/../dist');
 var app = express();
+app.use(session({
+  cookieName: 'seeyaSession',
+  secret: 'random_string_goes_here',
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
 var router = express.Router();
 
 // view engine setup

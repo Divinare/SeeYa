@@ -14,6 +14,10 @@ https://masteringmean.com/lessons/46-Encryption-and-password-hashing-with-Nodejs
 */
 
 var crypto = require('crypto');
+//BE CAREFUL IF YOU PLAN TO CHANGE THESE CONFIGS
+//If we lose information about what configs we used to save users' passwords, we cannot recover them anymore
+//Thus if these ever need to be changed, we should probably save the configs into the database and link
+//every user to the config table, so that we know which configs to use when checking the credentials of a given user.
 var iterations = 2000;
 var hashLengthInBytes = 256;
 var hashingAlgorithm = 'sha256';
@@ -42,6 +46,7 @@ module.exports = {
           });
     },
     hashPassword: function(password, salt, errorCallback, successCallback){
+        //Do the actual hashing of the password
         crypto.pbkdf2(password, salt, iterations, hashLengthInBytes, hashingAlgorithm,
                     function (err, hash){
                         if (err) { 

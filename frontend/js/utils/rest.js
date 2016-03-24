@@ -54,6 +54,17 @@ var getEntry = function(name, id, onSuccess, onError) {
 	});
 }
 
+var isLoggedIn = function(onSuccess, onError) {
+    var url = URL.authorization['loggedInStatus'];
+    $.ajax({ 
+        type: 'GET', 
+        url: url,
+        dataType: 'json',
+        success: onSuccess,
+        error: onError
+    });
+}
+
 var addEntry = function(name, data, onSuccess, onError) {
     var url = URL.addEntry[name];
     $.ajax({
@@ -99,7 +110,8 @@ module.exports = {
     getEntry: getEntry,
     addEntry: addEntry,
     removeEntry: removeEntry,
-    editEntry: editEntry
+    editEntry: editEntry,
+    isLoggedIn: isLoggedIn
 
 
 }

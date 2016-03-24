@@ -6,6 +6,7 @@ const errors = {
     userEmailFormat: "Wrong format. Email address in form 'abc@cde.efg' expected",
     userEmailOrPasswordDontMatch: "Invalid email or password ",
     userPasswordsDontMatch: "Passwords don't match",
+    userNotAuthorized: "This feature is only available for logged in users. Please sign up, or login",
 
     eventName: "Name must be 3-30 characters long.",
     eventAddress: "Address incorrect. Did you select it from the list of address suggestions?",

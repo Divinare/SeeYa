@@ -17,6 +17,7 @@ var EventForm = require('./js/event/eventForm.js');
 var EventPage = require('./js/event/eventPage.js');
 var Signup = require('./js/signup.js')
 var Login = require('./js/login.js')
+var Settings = require('./js/settings.js')
 
 import { render } from 'react-dom'
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
@@ -181,6 +182,7 @@ render((
             <Route path="about" component={About} />
             <Route path="signup" component={Signup} />
             <Route path="login" component={Login} />
+            <Route path="settings" component={Settings} />
             <Route path="*" component={NoMatch} />
         </Route>
     </Router>
