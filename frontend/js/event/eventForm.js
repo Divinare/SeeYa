@@ -21,7 +21,7 @@ const EventForm = React.createClass({
 	    	latLng: [],
 	    	date: Moment(),
 	    	selectedDay: null,
-	    	selectedCategory: "Other", //TODO: get the default category from backend
+	    	selectedCategory: "", //TODO: get the default category from backend
 	    	time: "",
 	    	description: "",
 	    	categories: []
@@ -178,9 +178,9 @@ const EventForm = React.createClass({
 	// Called when editing event
 	autoFillEventDetails: function() {
 		var event = this.getQuery().event;
-		var dateInput = document.querySelectorAll(".datepicker__input")[0]
+		//var dateInput = document.querySelectorAll(".datepicker__input")[0]
 
-		this.state.address = {
+		address = {
 			streetAddress: event.Address.streetAddress,
 			country: event.Country,
 			zipCode: event.ZipCode,
@@ -195,15 +195,19 @@ const EventForm = React.createClass({
 		console.log(event.ZipCode);
 		*/
 
-		this.state.name = event.name;
 		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
-		this.state.date = moment;
 		var time = moment.format("HH:mm");
-		this.state.time = time;
-		this.state.description = event.description;
-		this.state.latLng = [event.lat, event.lon];
-		console.log("LAT LON");
-		console.log(event.lat + " " + event.lon);
+		var date = moment.format("DD.MM.YYYY")
+
+		this.setState({
+			name: event.name,
+			address: address,
+			latLng: [event.lat, event.lon],
+			date: event.date,
+			category: event.category,
+			time: time,
+			description: event.description
+		})
 
 	},
 
@@ -254,11 +258,17 @@ const EventForm = React.createClass({
 	},
 
 	combineTimeAndDate: function(date, time){
+		if(CommonUtils.isEmpty(time)) {
+			time = "00:00";
+		}
+		console.log("At combine!!");
+		console.log(date);
+		console.log(time);
 		var hours = parseInt(time.substring(0, 2))
 		var minutes = parseInt(time.substring(3, 5))
 		date.minutes(minutes)
 		date.hours(hours)
-		return date.unix()*1000;
+		return date.unix();
 	},
 
 	setCurrentTime: function() {
@@ -284,16 +294,18 @@ const EventForm = React.createClass({
 		var address = this.state.address;
 		var lat = this.state.latLng[0];
 		var lon = this.state.latLng[1];
-		var date = this.state.date;
+		var date = this.state.date
 		var category = this.state.selectedCategory;
 		var time = this.state.time;
 		var description = this.state.description;
 
-		// VALIDATIONS		
+		var timestamp = this.combineTimeAndDate(date, time);
+
+		// VALIDATIONS
 		var valid1 = this.validateField(Validator.validateEventName, name, "nameError");
 		var valid2 = this.validateField(Validator.validateEventAddress, address, "addressError");
-		var valid3 = this.validateField(Validator.validateEventLatLng, this.state.latLng, "addressError");
-		var valid4 = this.validateField(Validator.validateEventDate, date, "dateError");
+		var valid3 = this.validateField(Validator.validateEventLatLng, this.state.latLng, "latLngError");
+		var valid4 = this.validateField(Validator.validateEventDate, timestamp, "dateError");
 		var valid5 = this.validateField(Validator.validateEventCategory, category, "categoryError");
 		var valid6 = this.validateField(Validator.validateEventTime, time, "timeError");
 		var valid7 = this.validateField(Validator.validateEventDescription, description, "descriptionError");
@@ -304,7 +316,6 @@ const EventForm = React.createClass({
 			return;
 		}
 
-		var timestamp = this.combineTimeAndDate(date, time);
 
 		var eventData = {
 			name: name,
@@ -355,8 +366,9 @@ const EventForm = React.createClass({
 
 	/*** VALIDATIONS ***/
 
-	validateField: function(func, params, field, message) {
+	validateField: function(func, params, field) {
 		var errorMessage = func(params);
+		console.log("ERROR: " + errorMessage);
 		if(CommonUtils.isEmpty(errorMessage)) {
 			// Clear the error message if it exists
 			$("#" + field).text("");
@@ -365,7 +377,7 @@ const EventForm = React.createClass({
 		// Validation failed
 		else {
 			console.log("validation failed " + field);
-			$("#" + field).text(message);
+			$("#" + field).text(errorMessage);
 			return false;
 		}
 	},
@@ -413,6 +425,7 @@ const EventForm = React.createClass({
 						<input type='text' onBlur={this.addressOnBlur} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
 					</div>
 					<span className="validationError" id="addressError"></span>
+					<span className="validationError" id="latLngError"></span>
 
 					{/* Date */}
 					<div className='form-group'>
@@ -434,17 +447,6 @@ const EventForm = React.createClass({
 					</div>
 					<span className="validationError" id="dateError"></span>
 
-					{/* Category */}
-					<div className='form-group'>
-							<span>Category *</span>
-							<EventFormDropdown
-								itemClassName={"itemDropdownEventForm"}
-								list={this.state.categories} selectCategory={this.selectCategory} 
-								selected={this.state.selectedCategory}
-							/> 						
-						</div>
-					<span className="validationError" id="categoryError"></span>
-
 					{/* Time */}
 					<div className='form-group'>
 						<span>Time *</span>
@@ -456,6 +458,17 @@ const EventForm = React.createClass({
 						</div>
 					</div>
 					<span className="validationError" id="timeError"></span>
+
+					{/* Category */}
+					<div className='form-group'>
+							<span>Category *</span>
+							<EventFormDropdown
+								itemClassName={"itemDropdownEventForm"}
+								list={this.state.categories} selectCategory={this.selectCategory} 
+								selected={this.state.selectedCategory}
+							/> 						
+						</div>
+					<span className="validationError" id="categoryError"></span>
 
 					{/* Description */}
 					<div className='form-group'>
