@@ -172,7 +172,8 @@ var Map = React.createClass({
 
         filteredEventList.map(function(event) {
             if(!$.isEmptyObject(event)) {
-                var marker = that.createMarker({ lat: event.lat, lng: event.lon }, map);
+                var icon = new google.maps.MarkerImage("assets/seeya_marker.png", null, null, null, new google.maps.Size(21,30));
+                var marker = that.createMarker({ lat: event.lat, lng: event.lon }, map, icon);
                 var infowindow =  that.createInfowindow(map, marker, event);
                 google.maps.event.addListener(marker, 'click', function() {
                     that.openInfowindow(map, marker, infowindow);
@@ -204,8 +205,14 @@ var Map = React.createClass({
 
     addNewEventMarker: function(latLng, map) {
         var that = this;
-        var icon = "http://maps.google.com/mapfiles/ms/icons/grn-pushpin.png";
+        var icon = new google.maps.MarkerImage("assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
+
         var marker = this.createMarker(latLng, map, icon);
+
+
+
+ 
+
 
         //var infowindow =  this.createInfowindow(map, marker, null);
         //this.openInfowindow(map, marker, infowindow);

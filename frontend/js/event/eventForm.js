@@ -70,6 +70,7 @@ const EventForm = React.createClass({
 	},
                 
 	componentDidMount: function() {
+		this.props.handleResize();
 		if(this.isEditForm()){
 			console.log("editform")
 			this.autoFillEventDetails();
@@ -149,7 +150,8 @@ const EventForm = React.createClass({
 				    map: map,
 				    position: results[0].geometry.location
 				});
-				marker.setIcon("http://maps.google.com/mapfiles/ms/icons/grn-pushpin.png");
+        		var icon = new google.maps.MarkerImage("assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
+				marker.setIcon(icon);
 
 				if(that.props.newEventMarker != null) {
 					console.log("REMOVING MARKER : codeAddressFromString");
