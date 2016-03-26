@@ -60,7 +60,7 @@ const About = React.createClass({
                 console.log( result );
                 that.props.updateAppStatus('loggedIn', true);
                 that.props.updateAppStatus('username', result.user.username);
-                browserHistory.push('/login');
+                browserHistory.push('/');
             };
             UTILS.rest.addEntry('session', userData, success, error);
 
