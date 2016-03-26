@@ -49,13 +49,17 @@ module.exports = {
                 var checkPassword = function(salt, hash){
                     if( user.password == hash ){
                         console.log("login success")
-                        req.seeyaSession.userEmail = user.email
-                        res.status(200).send({});
+                       /* req.seeyaSession.user = user;
+                        delete req.user.password;
+                        delete req.user.salt;*/
+                        module.exports.addUserInfoInCookie(req.seeyaSession, user);
+                        var response = {}
+                        module.exports.addUserInfoInCookie(response, user);
+                        helper.sendResponse(res, 200, response);
                     }else{
                         helper.sendErr(res, httpUnAuthorized, {message: errorMessages.getError('userEmailOrPasswordDontMatch')});
                     }
                 }
-
                 security.hashPassword(password, user.salt, errorCallBack, checkPassword)
             }else{
                 helper.sendErr(res, httpUnAuthorized, {message: errorMessages.getError('userEmailOrPasswordDontMatch')});
@@ -65,16 +69,35 @@ module.exports = {
 
     logout: function(req, res){
         req.seeyaSession.reset();
+        req.userInfo.reset();
         res.status(200).send({});
     },
 
     isLoggedIn: function(req, res){
-        if( !req.seeyaSession.userEmail ){
+        if( !req.seeyaSession.user ){
             console.log("UNAUTHORIZED")
             helper.sendErr(res, httpUnAuthorized, {message: errorMessages.getError('userNotAuthorized')});
         }else{
-            console.log("Logged in user, email: " + req.seeyaSession.userEmail)
-            helper.sendResponse(res, 200, {});
+            console.log("Logged in user, email: " + req.seeyaSession.user.email)
+
+            models.User.findOne({
+                where: { email: req.seeyaSession.user.email }
+            }).then(function (user) {
+                module.exports.addUserInfoInCookie(req.seeyaSession, user);
+                var response = {}
+                module.exports.addUserInfoInCookie(response, user);
+                helper.sendResponse(res, 200, response);
+            }).catch(function(err){
+                helper.sendResponse(res, 400, err);
+            });
         }
+    },
+
+    addUserInfoInCookie: function(cookie, user){
+        cookie.user = user;
+        delete cookie.user.dataValues.password;
+        delete cookie.user.dataValues.salt;
+        console.log("COOKIE.USER")
+        console.log(cookie.user)
     }
 }

@@ -15,12 +15,16 @@ console.log("ENV::::::::::::::: " + process.env.NODE_ENV);
 console.log(process.env.PORT);
 var dist = path.join(__dirname, '/../dist');
 var app = express();
+
+//encrypted cookie, the user info should be fetched from db according to information in this cookie
 app.use(session({
   cookieName: 'seeyaSession',
-  secret: 'random_string_goes_here',
+  secret: 'random_string_goes_here',    //TODO user something truly random
   duration: 30 * 60 * 1000,
   activeDuration: 5 * 60 * 1000,
+  ephemeral: true //lose the session when browser closes
 }));
+
 var router = express.Router();
 
 // view engine setup
