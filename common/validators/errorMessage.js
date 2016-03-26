@@ -11,9 +11,9 @@ const errors = {
     eventName: "Name must be 3-30 characters long.",
     eventAddress: "Address incorrect. Did you select it from the list of address suggestions?",
     eventLatLng: "Coordinates for address doesn't exist. Put a marker on the map",
-    eventDate: "Date error",
+    eventDate: "Wrong date format. The correct one is DD:MM:YYYY, for example 25.06.2016",
     eventCategory: "Category error",
-    eventTime: "Time error",
+    eventTime: "Wrong time format. The correct one is hh:mm, for example 17:30",
     eventDescription: "Description can be max 500 characters long."
 }
 

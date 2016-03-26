@@ -79,13 +79,10 @@ module.exports = {
     validateEventDate: function(unixTimestamp, customMessage) {
         
         if(utils.isEmpty(unixTimestamp)) {
-        console.log("1");
             return failed("eventDate", "Invalid date format, the correct format is DD.MM.YYYY");
         }
         if(isNaN(unixTimestamp)) {
-        console.log("2");
             return failed("eventDate", "Invalid date format, the correct format is DD.MM.YYYY");
-
         }
         if(unixTimestamp <= 0) {
             return failed("eventDate", "Invalid date format, the correct format is DD.MM.YYYY");
@@ -102,50 +99,17 @@ module.exports = {
             }
 
         }
-        console.log("dateIsTodayOrInTheFuture: " + dateIsTodayOrInTheFuture);
         if(dateIsTodayOrInTheFuture) {
             return "";
         } else {
             return failed("eventDate", "Date needs to be in the future (>=" + dateNow.getDate() + "." + (dateNow.getMonth()+1) + "." + dateNow.getFullYear() + ")");
         }
-
-
-/*
-        var maxAllowedYearsInFuture = 1;
-        var minAllowedHours = 12;
-        var minAllowed_unixTimestamp = 12*60*60*1000;
-
-        var dateNow_unixTimestamp = minAllowed_unixTimestamp + Date.parse(new Date());
-        var maxAllowedDate_unixTimestamp = Date.parse(new Date(new Date().setYear(new Date().getFullYear() + maxAllowedYearsInFuture)));
-
-        console.log(dateNow_unixTimestamp);
-        console.log(unixTimestamp);
-        console.log(maxAllowedDate_unixTimestamp);
-
-        if(dateNow_unixTimestamp > unixTimestamp && maxAllowedDate_unixTimestamp < unixTimestamp) {
-            console.log("OK :)");
-            return "";
-        } else {
-            console.log("4 FAILL");
-            return failed("eventDate", customMessage);
-        }
-*/
-
-
-
-        console.log("3");
-
-        //if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date)) {
-        //    return failed("eventDate", customMessage);
-        //}
         return "";
     },
     validateEventCategory: function(category, customMessage) {
-        console.log("At category validate, " + category);
         if(utils.isEmpty(category)) {
             return failed("eventCategory", customMessage);
         }
-        console.log("did not fail!");
         return "";
     },
     validateEventTime: function(params, customMessage) {
@@ -160,7 +124,7 @@ module.exports = {
         var timeRegex = new RegExp("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
         var validTimeFormat = timeRegex.test(time);
         if(!validTimeFormat) {
-            return failed("eventTime", "Wrong time format. The correct one is for example 17:30");
+            return failed("eventTime", customMessage);
         }
 
         // Validate that if the date has the same day as now, time is valid
@@ -175,8 +139,8 @@ module.exports = {
                 }
             }
         }
-        var timeInFuture = false;
         if(theDateIsSameAsToday) {
+            var timeInFuture = false;
             var hoursNow = dateNow.getHours();
             var minutesNow = dateNow.getMinutes();
 
@@ -190,11 +154,11 @@ module.exports = {
                     timeInFuture = true;
                 }
             }
+            if(!timeInFuture) {
+                return failed("eventTime", "Time needs to be in the future");
+            }
         }
 
-        if(!timeInFuture) {
-            return failed("eventTime", "Time needs to be in the future");
-        }
         return "";
     },
     validateEventDescription: function(description, customMessage) {

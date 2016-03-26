@@ -311,7 +311,7 @@ const EventForm = React.createClass({
 		var valid2 = this.validateField(Validator.validateEventAddress, address, "addressError");
 		var valid3 = this.validateField(Validator.validateEventLatLng, this.state.latLng, "latLngError");
 		var valid4 = this.validateField(Validator.validateEventDate, dateTimestamp, "dateError");
-		var valid5 = this.validateField(Validator.validateEventCategory, category, "categoryError");
+		var valid5 = this.validateField(Validator.validateEventCategory, category, "categoryError", "Select category from the list");
 		var valid6 = this.validateField(Validator.validateEventTime, [time, dateTimestamp], "timeError");
 		var valid7 = this.validateField(Validator.validateEventDescription, description, "descriptionError");
 
@@ -371,8 +371,8 @@ const EventForm = React.createClass({
 
 	/*** VALIDATIONS ***/
 
-	validateField: function(func, params, field) {
-		var errorMessage = func(params);
+	validateField: function(func, params, field, customMessage) {
+		var errorMessage = func(params, customMessage);
 		console.log("ERROR: " + errorMessage);
 		if(CommonUtils.isEmpty(errorMessage)) {
 			// Clear the error message if it exists
