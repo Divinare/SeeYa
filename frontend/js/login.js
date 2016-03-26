@@ -55,8 +55,12 @@ const About = React.createClass({
                 console.log(jqXhr)
                 console.log( errorThrown );
             };
-            var success = function(){
+            var success = function(result){
                 console.log( "success!!!" );
+                console.log( result );
+                that.props.updateAppStatus('loggedIn', true);
+                that.props.updateAppStatus('username', result.user.username);
+                browserHistory.push('/');
             };
             UTILS.rest.addEntry('session', userData, success, error);
 

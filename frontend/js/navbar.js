@@ -6,7 +6,6 @@ var Router = require('react-router')
     , Link = Router.Link;
 
 module.exports = React.createClass({
-
 	toggleShowEventForm: function() {
 		this.props.toggleShowEventForm();
 	},
@@ -24,7 +23,6 @@ module.exports = React.createClass({
     },
 
     render: function(){
-
         return (
             <div id="navbarContent">
                 <div id="navbar">
@@ -36,10 +34,16 @@ module.exports = React.createClass({
                             <li className="navbar-desktop-element"><Link to="/about">About</Link></li>
                             <li className="navbar-desktop-element"><Link to="/eventForm">New event</Link></li>
                         </div>
+
                         <div className="navbar-right-container">
                             <li className="navbar-desktop-element"><Link to="/signup">Signup</Link></li>
                             <li className="navbar-desktop-element"><Link to="/login">Login</Link></li>
+                            { this.props.loggedIn ? 
+                            <li className="navbar-desktop-element">{this.props.username}</li> :
+                            <li className="navbar-desktop-element" onClick={this.openNavbar}></li> }
                             <li className="navbar-toggle-mobile" onClick={this.openNavbar}>X</li>
+                            
+
                         </div>
                     </ul>
                 </div>

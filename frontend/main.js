@@ -62,7 +62,9 @@ const Main = React.createClass({
             filteredEventList: [],
             eventListData: eventListData,
             newEventMarker: null,
-            markers: []
+            markers: [],
+            loggedIn: false,
+            username:''
         };
 
     },
@@ -73,6 +75,18 @@ const Main = React.createClass({
     },
 
     componentDidMount: function() {
+        var that = this;
+        var success = function() {
+            console.log("is logged in");
+            that.setState({
+                loggedIn: true
+             //   username: 
+            })
+        }
+        var error = function(){
+            console.log("is not logged in");
+        }
+        UTILS.rest.isLoggedIn(success, error);
 
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
@@ -150,7 +164,7 @@ const Main = React.createClass({
         return (
             <div className="application">
 
-                <Navbar />
+                <Navbar loggedIn={that.state.loggedIn} username={that.state.username}/>
 
                 <div className="content">
                     <Map
