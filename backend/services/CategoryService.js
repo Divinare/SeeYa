@@ -13,6 +13,8 @@ module.exports = {
             models.Category.findOne({
                 where: { name: categoryName }
             }).then(function (category) {
+                console.log("At category service!");
+                console.log(category);
                 resolve(category);
             }).catch(function(err) {
                 reject(null);

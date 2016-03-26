@@ -76,16 +76,15 @@ const EventList = React.createClass({
     },
 
     centerMapToMarker: function(eventId, zoomLevel) {
-            // Find event by id
-            var event = $.grep(this.props.eventList, function(e){ return e.id == eventId; });
-            var lat = event[0].lat;
-            var lon = event[0].lon;
-            var pt = new google.maps.LatLng(lat, lon);
-            map.setCenter(pt);
-            if(zoomLevel != -1) {
-                map.setZoom(zoomLevel);
-            }
-
+        // Find event by id
+        var event = $.grep(this.props.filteredEventList, function(e){ return e.id == eventId; });
+        var lat = event[0].lat;
+        var lon = event[0].lon;
+        var pt = new google.maps.LatLng(lat, lon);
+        map.setCenter(pt);
+        if(zoomLevel != -1) {
+            map.setZoom(zoomLevel);
+        }
     },
 
     cellRenderer: function(headerName, content, eventId) {

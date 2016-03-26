@@ -34,7 +34,7 @@ module.exports = React.createClass({
                                 <div id="navbar-logo"><Link to="/"></Link></div>
                             </span>
                             <li className="navbar-desktop-element"><Link to="/about">About</Link></li>
-                            <li className="navbar-desktop-element"><Link to="/eventForm">Create new event</Link></li>
+                            <li className="navbar-desktop-element"><Link to="/eventForm">New event</Link></li>
                         </div>
                         <div className="navbar-right-container">
                             <li className="navbar-desktop-element"><Link to="/signup">Signup</Link></li>
@@ -47,7 +47,7 @@ module.exports = React.createClass({
                     <ul className="menu-mobile">
                         <li id="navbar-logo" onClick={this.closeNavbar}><Link to="/"><strong>SeeYa</strong></Link></li>
                         <li><Link to="/about" onClick={this.closeNavbar}>About</Link></li>
-                        <li><Link to="/eventForm" onClick={this.closeNavbar}>Create new event</Link></li>
+                        <li><Link to="/eventForm" onClick={this.closeNavbar}>New event</Link></li>
                         <li><Link to="/signup" onClick={this.closeNavbar}>Signup</Link></li>
                         <li><Link to="/login" onClick={this.closeNavbar}>Login</Link></li>                        
                     </ul>

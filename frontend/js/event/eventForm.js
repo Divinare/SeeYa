@@ -385,7 +385,7 @@ const EventForm = React.createClass({
 			timestamp: timestamp,
 			lat: latLng[0],
 			lon: latLng[1],
-			category: this.state.selectedCategory
+			category: category
 		};		
 
 		var success;
@@ -421,6 +421,8 @@ const EventForm = React.createClass({
 		        //that.props.addEventToFilteredEventList(createdEventData);
 		        moveOn();
 			};
+			console.log("Adding EVENT::::::::");
+			console.log(eventData);
 			UTILS.rest.addEntry('event', eventData, success, error);
 		}
 	},
@@ -452,7 +454,7 @@ const EventForm = React.createClass({
 
 		return (
 			<div className='right-container'>
-				<h2 className="centeredHeader">Create new event</h2>
+				<h1 className="centeredHeader">Create new event</h1>
 
 				<div className='form' id="eventForm">
 

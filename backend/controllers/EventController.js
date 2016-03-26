@@ -37,7 +37,6 @@ module.exports = {
                   models.Attendance,
                   models.Category ]
         }).then(function (events) {
-            req.write("testing....")
             res.send(events);
         });
     },
@@ -62,10 +61,10 @@ module.exports = {
         console.log(req.body)
 
         var eventToAdd = req.body;
-        findCategory(eventToAdd.categoryName).then(function(category) {
+        findCategory(eventToAdd.category).then(function(category) {
             if(category == null) {
                 console.log("CATEGORY NULL")
-                helper.sendErr(res, 400, "Category by name " + eventToAdd.categoryName + " not found.");
+                helper.sendErr(res, 400, "Category by name " + eventToAdd.category + " not found.");
             } else {
                 console.log("FOUND CATEGORY, GONNA CREATE THE EVENT")
                 createEvent(req, res, category);
@@ -129,20 +128,17 @@ module.exports = {
 };
 
 function findCategory(categoryName) {
-
+    console.log("!!! find cateogry: categoryName: " + categoryName);
     return new Promise(function(resolve, reject) {
 
         CategoryService.findByName(categoryName).then(function(category) {
+            console.log(":OOO");
+            console.log(category);
             if(category == null) {
-                CategoryService.findByName("Other").then(function(category) {
-                    console.log(category);
-                    if(category == null) {
-                        reject(null);
-                    } else {
-                        resolve(category);
-                    }
-                });
+                console.log("DID NOT FIND CATEGORY :(");
+                reject(null);
             } else {
+                console.log("FOUND CATEGORY! :-)");
                 resolve(category);
             }
         });
@@ -152,7 +148,8 @@ function findCategory(categoryName) {
 
 function createEvent(req, res, category) {
     var eventToAdd = req.body;
-
+    console.log("EVENT TO ADD::::!!!!!!!!!########################");
+    console.log(eventToAdd);
     models.Address.findOrCreate({where: {
         streetAddress: eventToAdd.address.streetAddress,
         country: eventToAdd.address.country,
@@ -165,6 +162,9 @@ function createEvent(req, res, category) {
         console.log(created)
         console.log("ADDRESS: ")
         console.log(address)
+        console.log("CATEGORY!!! :o");
+        console.log(category);
+        console.log(category.id);
         models.Event.create({
             name: eventToAdd.name,
             description: eventToAdd.description,
@@ -179,13 +179,13 @@ function createEvent(req, res, category) {
                 console.log(event.name + ' created successfully');
                 res.send(event); 
             }).catch(function(err){
-                console.log("ERROR")
+                console.log("... ERROR on creating event")
                 console.log(err)
                 helper.sendErr(res, 400, err);
             });
 
     }).catch(function(err){
-        console.log("ERROR2")
+        console.log("... ERROR2 on creating event")
         console.log(err)
         helper.sendErr(res, 400, err);
     });
