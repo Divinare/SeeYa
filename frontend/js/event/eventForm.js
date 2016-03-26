@@ -13,6 +13,8 @@ var placesService;
 var geocoder;
 var componentForm = ['street-address', 'country-name', 'postal-code'];
 
+import { browserHistory } from 'react-router';
+
 const EventForm = React.createClass({
 
     getInitialState: function() {
@@ -38,7 +40,7 @@ const EventForm = React.createClass({
 		console.log("ATTTTT componentDidUpdate");
 		console.log("ATTTTT componentDidUpdate");
 		var newEventMarker = this.props.newEventMarker;
-		if(newEventMarker != null) {
+		if(newEventMarker != null && !$.isEmptyObject(newEventMarker)) {
 			console.log(newEventMarker);
 
 			var lat = newEventMarker.position.lat();
@@ -139,10 +141,10 @@ const EventForm = React.createClass({
 
 				var address_components = results[0].address_components;
 				var newAddress = that.getAddressFromAddressComponents(address_components);
-
+				var updatedAddress = that.getUpdatedAddress(newAddress);
 		   		that.setState({
 		   			latLng: results[0].geometry.location,
-		   			address: newAddress
+		   			address: updatedAddress
 				})
 
 				map.setCenter(results[0].geometry.location);
@@ -178,10 +180,9 @@ const EventForm = React.createClass({
 			if (status === google.maps.GeocoderStatus.OK) {
 				if (results[1]) {
 					var newAddress = that.getAddressFromAddressComponents(results[1].address_components);
-					console.log("GOT NEW ADDDDRESSSSSSSSSSSSSSSS ?????????????");
-					console.log(newAddress);
+					var updatedAddress = that.getUpdatedAddress(newAddress);
 					that.setState({
-						address: newAddress,
+						address: updatedAddress,
 						latLng: latLng
 					});
 				} else {
@@ -224,9 +225,27 @@ const EventForm = React.createClass({
 	    	&& newAddress.streetAddress != null ){
 	    	newAddress.streetAddress = newAddress.streetAddress + " " + streetNumber
 	    }
-	    console.log("NEW ADDRESS")
-	    console.log(newAddress)
 	    return newAddress;
+	},
+
+	getUpdatedAddress: function(newAddress) {
+		var oldStreetAddress = this.state.address.streetAddress;
+		var oldCountry = this.state.address.country;
+		var oldZipCode = this.state.address.zipCode;
+		var oldCity = this.state.address.city;
+
+		var newStreetAddress = (CommonUtils.notEmpty(newAddress.streetAddress)) ? newAddress.streetAddress : oldStreetAddress;
+		var newCountry = (CommonUtils.notEmpty(newAddress.country)) ? newAddress.country : oldCountry;
+		var newZipCode = (CommonUtils.notEmpty(newAddress.zipCode)) ? newAddress.zipCode : oldZipCode;
+		var newCity = (CommonUtils.notEmpty(newAddress.city)) ? newAddress.city : oldCity;
+
+		var updatedAddress = {
+			streetAddress: newStreetAddress,
+			country: newCountry,
+			zipCode: newZipCode,
+			city: newCity
+		}
+		return updatedAddress;
 	},
 
 	// Called when editing event
@@ -337,8 +356,7 @@ const EventForm = React.createClass({
 		}
 		var name = this.state.name;
 		var address = this.state.address;
-		var lat = this.state.latLng[0];
-		var lon = this.state.latLng[1];
+		var latLng = [this.state.latLng.lat(), this.state.latLng.lng()];
 		var dateTimestamp = this.state.date.unix()*1000;
 		var category = this.state.selectedCategory;
 		var time = this.state.time;
@@ -365,8 +383,8 @@ const EventForm = React.createClass({
 			address: address,
 			description: description,
 			timestamp: timestamp,
-			lat: lat,
-			lon: lon,
+			lat: latLng[0],
+			lon: latLng[1],
 			category: this.state.selectedCategory
 		};		
 
@@ -377,7 +395,7 @@ const EventForm = React.createClass({
 
 		var moveOn = function(){
 			that.props.getEvents();
-		    that.transitionTo('home');
+		    browserHistory.push('/');
 		}
 
 		var addMissingEventFields = function(createdEventData){

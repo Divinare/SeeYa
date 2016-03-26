@@ -75,7 +75,6 @@ const EventPage = React.createClass({
         }
         var success = function(){
             that.props.getEvents();
-            //that.transitionTo('home');
             browserHistory.push('/');
         };              
         var error = function( jqXhr, textStatus, errorThrown ){
