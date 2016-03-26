@@ -60,7 +60,7 @@ var isLoggedIn = function(onSuccess, onError) {
         type: 'GET', 
         url: url,
         dataType: 'json',
-        success: onSuccess(data),
+        success: onSuccess(), //data
         error: onError
     });
 }

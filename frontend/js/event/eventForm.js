@@ -354,9 +354,15 @@ const EventForm = React.createClass({
 			country: this.state.address.country,
 			zipCode: this.state.address.zipCode,
 		}
+		var latLng;
+		if(this.state.latLng.length == 0) {
+			latLng = [];
+		} else {
+			latLng = [this.state.latLng.lat(), this.state.latLng.lng()];
+		}
+
 		var name = this.state.name;
 		var address = this.state.address;
-		var latLng = [this.state.latLng.lat(), this.state.latLng.lng()];
 		var dateTimestamp = this.state.date.unix()*1000;
 		var category = this.state.selectedCategory;
 		var time = this.state.time;
