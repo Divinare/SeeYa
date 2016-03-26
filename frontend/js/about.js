@@ -2,6 +2,9 @@ var React = require('react');
 
 const About = React.createClass({
 
+	componentDidMount: function() {
+		this.props.handleResize();
+	},
 
 	componentWillMount: function() {
 
@@ -24,7 +27,7 @@ const About = React.createClass({
 				<p>Simply and easy way to explore events near you or far away. SeeYa was developed in 2016 by a small group of friends in Helsinki, Finland.  </p>
 				<br />
 				<br />
-				<img className="markerbig" src="assets/marker_big.png" alt="See Ya Marker" />
+				<img className="markerbig" src="assets/people_icon.png" alt="See Ya Marker" />
 			</div>
 		)
 	}

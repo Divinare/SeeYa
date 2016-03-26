@@ -38,14 +38,14 @@ module.exports = {
 		return new Array();
 	},
 
-	atEventForm: function() {
-		var urlTokens = this.getUrlTokens();
-		return (urlTokens[0] == 'eventForm') ? true : false;
-	},
-
 	isAtLocation: function(routeName) {
-
-
+		var urlTokens = this.getUrlTokens();
+		for(var i = 0; i < urlTokens.length; i++) {
+			if(urlTokens[i] == routeName) {
+				return true;
+			}
+		}
+		return false;
 	},
 
 	/* Returns lat and lon as array from marker */

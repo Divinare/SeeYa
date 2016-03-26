@@ -61,7 +61,7 @@ const Main = React.createClass({
             eventList: [],
             filteredEventList: [],
             eventListData: eventListData,
-            newEventMarker: {},
+            newEventMarker: null,
             markers: [],
             loggedIn: false,
             username:''
@@ -96,12 +96,12 @@ const Main = React.createClass({
         if(typeof map !== 'undefined') {
             $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight());
             $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
-           
             var eventListHeight = UTILS.styleHelper.getEventListHeight();
             var eventListWidth = UTILS.styleHelper.getEventListWidth();
             $(".right-container").css('height', eventListHeight);
             $(".right-container").css('width', eventListWidth);
 
+            console.log(eventListHeight);
 
             var eventListData = this.state.eventListData;
             eventListData['tableHeight'] = eventListHeight;

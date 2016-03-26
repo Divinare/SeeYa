@@ -41,6 +41,10 @@ img{
     overflow-y: auto;
 }
 
+.form-control {
+    border-radius: 3px !important;
+}
+
 .content {
     position: absolute;
     z-index: 0;

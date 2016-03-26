@@ -35,15 +35,20 @@
     height: 50px;
 }
 
+#navbarLogoContainer {
+    position: relative;
+    display: inline-block;
+    width: 120px;
+    height: 36px;
+}
+
 #navbar-logo {
     margin-right: 25px;
-    background-image: url("assets/logo_test.png");
-    background-size: contain;
-    height: 35px;
-    width: 35px;
-    position: relative;
-    top: 12px;
-    display: inline-block;
+    background-image: url("assets/seeya_logo.png");
+    background-size: cover;
+    display: block;
+    width: 100px;
+    height: 57px;
 
 }
 
