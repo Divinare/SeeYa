@@ -213,8 +213,9 @@ const EventForm = React.createClass({
 
 	/*** DATE ***/
 
-    handleNewDateChange: function(moment) {
+    handleNewDateChange: function(timestamp) {
     	console.log("AT : handleNewDateChange")
+    	var moment = Moment(timestamp, "x")
     	console.log(moment);
     	//$("#date").val(moment);
 	    this.setState({
@@ -254,24 +255,27 @@ const EventForm = React.createClass({
 	/*** TIME ***/
 
 	handleTimeChange: function(e){
+		console.log("at handle time cahnge");
 		this.setState({time: e.target.value})
 	},
 
-	combineTimeAndDate: function(date, time){
+	combineTimeAndDate: function(dateTimestamp, time){
 		if(CommonUtils.isEmpty(time)) {
 			time = "00:00";
 		}
 		console.log("At combine!!");
-		console.log(date);
+		console.log(dateTimestamp);
 		console.log(time);
 		var hours = parseInt(time.substring(0, 2))
 		var minutes = parseInt(time.substring(3, 5))
-		date.minutes(minutes)
-		date.hours(hours)
-		return date.unix();
+		dateTimestamp += minutes * 60 * 1000;
+		dateTimestamp += hours * 60 * 60 * 1000;
+		return dateTimestamp;
 	},
 
 	setCurrentTime: function() {
+		console.log("at setCurrentTime");
+
 		var str = Moment().format('HH:mm');
 		$('#time').val(str);
 		this.setState({time: str})
@@ -294,20 +298,21 @@ const EventForm = React.createClass({
 		var address = this.state.address;
 		var lat = this.state.latLng[0];
 		var lon = this.state.latLng[1];
-		var date = this.state.date
+		var dateTimestamp = this.state.date.unix()*1000;
 		var category = this.state.selectedCategory;
 		var time = this.state.time;
 		var description = this.state.description;
 
-		var timestamp = this.combineTimeAndDate(date, time);
+		console.log("STATE TIME: ");
+		console.log(time);
 
 		// VALIDATIONS
 		var valid1 = this.validateField(Validator.validateEventName, name, "nameError");
 		var valid2 = this.validateField(Validator.validateEventAddress, address, "addressError");
 		var valid3 = this.validateField(Validator.validateEventLatLng, this.state.latLng, "latLngError");
-		var valid4 = this.validateField(Validator.validateEventDate, timestamp, "dateError");
+		var valid4 = this.validateField(Validator.validateEventDate, dateTimestamp, "dateError");
 		var valid5 = this.validateField(Validator.validateEventCategory, category, "categoryError");
-		var valid6 = this.validateField(Validator.validateEventTime, time, "timeError");
+		var valid6 = this.validateField(Validator.validateEventTime, [time, dateTimestamp], "timeError");
 		var valid7 = this.validateField(Validator.validateEventDescription, description, "descriptionError");
 
 		// If one of the validations fail, prevent submitting form
@@ -315,7 +320,7 @@ const EventForm = React.createClass({
 			console.log("form INVALID " + valid1 + valid2 + valid3 + valid4 + valid5 + valid6 + valid7);
 			return;
 		}
-
+		var timestamp = this.combineTimeAndDate(dateTimestamp, time);
 
 		var eventData = {
 			name: name,
@@ -451,7 +456,7 @@ const EventForm = React.createClass({
 					<div className='form-group'>
 						<span>Time *</span>
 						<div className='input-group'>
-							<input type='text' className='form-control' id='time' placeholder="hh:mm"/>
+							<input type='text' className='form-control' id='time' onChange={this.handleChange("time")} placeholder="hh:mm" />
 							<span className="input-group-btn">
 								 <button className="btn btn-default" type="button" onClick={this.setCurrentTime}><i className="glyphicon glyphicon-time"></i></button>
 							</span>
