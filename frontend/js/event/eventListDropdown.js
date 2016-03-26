@@ -37,7 +37,7 @@ var Dropdown = React.createClass({
                     <div key={item.name} className="item unSelected" onClick={this.select.bind(null, item.name)}>{item.name}</div>
                 )}
                 </div>
-                <div id="category" className="dropdownBtnEventList" onClick={this.toggleShowCategories}>{this.props.selected}</div>;
+                <div id="category" className="dropdownBtnEventList" onClick={this.toggleShowCategories}>{this.props.selected}</div>
             </div>
             
         );

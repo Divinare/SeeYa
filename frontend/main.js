@@ -61,7 +61,7 @@ const Main = React.createClass({
             eventList: [],
             filteredEventList: [],
             eventListData: eventListData,
-            newEventMarker: {},
+            newEventMarker: null,
             markers: []
         };
 

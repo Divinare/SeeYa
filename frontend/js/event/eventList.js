@@ -267,8 +267,6 @@ const EventList = React.createClass({
                                 selectCategory={this.selectCategory}
                                 selected={selectedCategory} />
                         </span>
-                            <form>
-                            </form>
                     </div>
                 </div>              
                 )       

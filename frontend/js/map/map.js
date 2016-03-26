@@ -26,7 +26,7 @@ var Map = React.createClass({
     componentWillReceiveProps: function(nextProps) {
         
         this.deleteMarkers(this.state.markers);
-        var allowDrawMarkers = UTILS.helper.atEventForm() ? false : true;
+        var allowDrawMarkers = UTILS.helper.isAtLocation("eventForm") ? false : true;
 
         if(this.state != null && nextProps.filteredEventList.length > 0) {
             
@@ -94,17 +94,13 @@ var Map = React.createClass({
         
         google.maps.event.addListener(map, 'click', function(event) {
             that.closeOpenedInfowindow();
-            if(UTILS.helper.atEventForm()) {
-                console.log("Adding eventmAKRER");
+            if(UTILS.helper.isAtLocation("eventForm")) {
                 that.addNewEventMarker(event.latLng, map);
             }
         });
 
         this.centerMapToUserLocation();
     
-
-        var mapOptions={};
-
         //  create the ContextMenuOptions object
         var contextMenuOptions={};
         contextMenuOptions.classNames={menu:'context_menu', menuSeparator:'context_menu_separator'};
@@ -187,7 +183,7 @@ var Map = React.createClass({
 
 
             } else {
-                console.log("critical error in map.js maybe.");
+                console.log("... Critical error in map.js maybe.");
             }
         });
                     
@@ -208,8 +204,9 @@ var Map = React.createClass({
 
     addNewEventMarker: function(latLng, map) {
         var that = this;
-        var icon = 'http://maps.google.com/mapfiles/ms/icons/grn-pushpin.png';
+        var icon = "http://maps.google.com/mapfiles/ms/icons/grn-pushpin.png";
         var marker = this.createMarker(latLng, map, icon);
+
         //var infowindow =  this.createInfowindow(map, marker, null);
         //this.openInfowindow(map, marker, infowindow);
 
@@ -222,10 +219,13 @@ var Map = React.createClass({
         });
 */
         // Delete current eventMarker if there is one
-        this.deleteNewEventMarker();
-
+        //this.deleteNewEventMarker();
+        if(this.props.newEventMarker != null) {
+            this.deleteMarker(this.props.newEventMarker);
+        }
         // Update the new eventMarker
         this.props.updateAppStatus('newEventMarker', marker);
+
     },
 
     createMarker: function(location, map, icon) {
@@ -298,6 +298,7 @@ var Map = React.createClass({
     },
 
     deleteMarker: function(marker) {
+        console.log("REMOVING MARKER : deleteMarker");
         marker.setMap(null);
     },
 
@@ -307,6 +308,8 @@ var Map = React.createClass({
         if(!$.isEmptyObject(marker)) {
             this.deleteMarker(marker);
             // Also empty the newEventMarker
+                    console.log("REMOVING MARKER : deleteNewEventMarker");
+
             this.props.updateAppStatus('newEventMarker', {});
         } else {
         }

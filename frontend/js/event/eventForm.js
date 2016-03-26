@@ -10,6 +10,7 @@ var CommonUtils = require('../../../common/utils.js');
 
 var autocomplete;
 var placesService;
+var geocoder;
 var componentForm = ['street-address', 'country-name', 'postal-code'];
 
 const EventForm = React.createClass({
@@ -31,6 +32,42 @@ const EventForm = React.createClass({
 	
 	componentWillMount: function() {
 	},
+
+	componentDidUpdate: function() {
+		console.log("ATTTTT componentDidUpdate");
+		console.log("ATTTTT componentDidUpdate");
+		console.log("ATTTTT componentDidUpdate");
+		var newEventMarker = this.props.newEventMarker;
+		if(newEventMarker != null) {
+			console.log(newEventMarker);
+
+			var lat = newEventMarker.position.lat();
+			var lng = newEventMarker.position.lng();
+			console.log(lat);
+			console.log(lng);
+			var currentLatLng = this.state.latLng;
+
+			if(currentLatLng.length == 0) {		
+				this.codeAddressFromLatLng(newEventMarker.position);
+			} else {
+
+				console.log(currentLatLng);
+				var currentLat = this.state.latLng.lat();
+				var currentLng = this.state.latLng.lng();
+
+				console.log(currentLat);
+				console.log(currentLng);
+		
+				if(lat != currentLat && lng != currentLng) {
+					this.codeAddressFromLatLng(newEventMarker.position);
+
+				} else {
+					console.log("... Doing nothing because the State has the same latLng")
+				}
+			}
+
+		}
+	},
                 
 	componentDidMount: function() {
 		if(this.isEditForm()){
@@ -38,26 +75,22 @@ const EventForm = React.createClass({
 			this.autoFillEventDetails();
 		}
 		var that = this;
+
 		// TODO LINK:
 		// http://stackoverflow.com/questions/7865446/google-maps-places-api-v3-autocomplete-select-first-option-on-enter
-    	var input = document.getElementById('searchTextField');
-
-		//var dateInput = document.querySelectorAll(".datepicker__input")[0]
-		//dateInput.setAttribute("data-validateDate", this.validateDate)
-		
-
 		this.initAutocomplete();
 		placesService = new google.maps.places.AutocompleteService();
-		
+		geocoder = new google.maps.Geocoder();
+
 		if(this.state.categories.length == 0) {
-			console.log("LENGTH WAS 0");
 			this.fetchCategories();
 		}
 	},
 
 	// Called when a field is changed
 	handleChange: function(key) {
-		console.log("at handleChange");
+
+		console.log("at handleChange " + key);
        return function (e) {
 	       var state = {};
 	       state[key] = e.target.value;
@@ -78,36 +111,98 @@ const EventForm = React.createClass({
 	  // location types.
 	  autocomplete = new google.maps.places.Autocomplete(
 	      /** @type {!HTMLInputElement} */
-	      (document.getElementById('address')),
+	      (document.getElementById("address")),
 	      {types: ['geocode']});
 
 	  // When the user selects an address from the dropdown, populate the address
 	  // fields in the form.
-	  autocomplete.addListener('place_changed', this.fillInAddress);
+	 // autocomplete.addListener('place_changed', this.fillInAddress);
 
-	},
+	},	
 
 	addressOnBlur: function(){
 		console.log("ADDRESS ON BLUR")
 		console.log(autocomplete.getPlace())
+
+		this.codeAddressFromString();
+
 	},
 
-	fillInAddress: function() {
-		console.log("at fill in address");
-		var place = autocomplete.getPlace();
-		console.log(place);
-		if(typeof place.address_components == "undefined") {
+	// Gets address from input field and tries to get the corresponding address information
+	codeAddressFromString: function() {
+		var that = this;
+	    var address = document.getElementById('address').value;
+	    
+	    geocoder.geocode( { 'address': address}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+
+				var address_components = results[0].address_components;
+				var newAddress = that.getAddressFromAddressComponents(address_components);
+
+		   		that.setState({
+		   			latLng: results[0].geometry.location,
+		   			address: newAddress
+				})
+
+				map.setCenter(results[0].geometry.location);
+				var marker = new google.maps.Marker({
+				    map: map,
+				    position: results[0].geometry.location
+				});
+				marker.setIcon("http://maps.google.com/mapfiles/ms/icons/grn-pushpin.png");
+
+				if(that.props.newEventMarker != null) {
+					console.log("REMOVING MARKER : codeAddressFromString");
+					that.props.newEventMarker.setMap(null);
+				}
+				that.props.updateAppStatus("newEventMarker", marker);
+
+			} else {
+				console.log("Geocode was not successful for the following reason: " + status);
+			}
+ 		});
+
+  	},
+
+	codeAddressFromLatLng: function(latLng) {
+		var that = this;
+		console.log("AT: !!! codeAddressFromLatLng");
+		console.log(latLng);
+		//var input = document.getElementById('latlng').value;
+		//var latlngStr = input.split(',', 2);
+		//var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+
+		geocoder.geocode({'location': latLng}, function(results, status) {
+			if (status === google.maps.GeocoderStatus.OK) {
+				if (results[1]) {
+					var newAddress = that.getAddressFromAddressComponents(results[1].address_components);
+					console.log("GOT NEW ADDDDRESSSSSSSSSSSSSSSS ?????????????");
+					console.log(newAddress);
+					that.setState({
+						address: newAddress,
+						latLng: latLng
+					});
+				} else {
+					console.log("____ No address found from latLng")
+				}
+			} else {
+					console.log('____ Geocoder failed due to: ' + status);
+			}
+		});
+	},
+
+	getAddressFromAddressComponents: function(address_components) {
+		console.log("at getAddressFromAddressComponents");
+		console.log(address_components);
+		if(typeof address_components == "undefined") {
 			// Nothing to do here if address_components doesn't exist
-			console.log("Address components did not exist");
-			return;
+			return {};
 		}
 
 	    var newAddress = {};
 	    var streetNumber;
-	    for (var i = 0; i < place.address_components.length; i++) {
-	    //	console.log("component " + i)
-	    //	console.log(place.address_components[i])
-			var addressObj = place.address_components[i];
+	    for (var i = 0; i < address_components.length; i++) {
+			var addressObj = address_components[i];
 			for(var j = 0; j < addressObj.types.length; j += 1) {
 		    	if (addressObj.types[j] === 'country') {
 		    		newAddress.country = addressObj.long_name
@@ -129,50 +224,7 @@ const EventForm = React.createClass({
 	    }
 	    console.log("NEW ADDRESS")
 	    console.log(newAddress)
-   		this.setState({
-			address:newAddress
-		})
-
-   		this.updateEventCoordsFromAddress(place)
-		// Create the autocomplete object, restricting the search to geographical
-		// location types.
-		autocomplete = new google.maps.places.Autocomplete(
-		/** @type {!HTMLInputElement} */
-		(document.getElementById('address')),
-		{types: ['geocode']});
-
-	},
-
-	updateEventCoordsFromAddress: function(place){
-		console.log("at updateEventCoordsFromAddress");
-		if(typeof place == 'undefined' || typeof place.address_components == 'undefined') {
-			console.log("Place was undefined. TODO: user should be warned now.")
-		} else {
-			var latLng = [];
-			latLng[0] = place.geometry.location.lat();
-			latLng[1] = place.geometry.location.lng();
-			console.log("LAT LONNNN");
-			console.log(latLng);
-			this.setState({
-				latLng:latLng
-			})
-		}
-	},
-
-	makeMarkerFromAddress: function(place){
-		console.log("search by address called!")
-		console.log(place);
-		if(typeof place == 'undefined' || typeof place.address_components == 'undefined') {
-			console.log("Place was undefined. TODO: user should be warned now.")
-		} else {
-			var ad = place.address_components;
-			console.log("coordinates");
-			console.log(place.geometry.location.lat() + ", " + place.geometry.location.lng());
-			for (var i = 0; i < ad.length; i++) {
-				console.log(ad[i]);
-				//console.log(place.adr_address);
-		  	}
-		}
+	    return newAddress;
 	},
 
 	// Called when editing event
@@ -214,10 +266,7 @@ const EventForm = React.createClass({
 	/*** DATE ***/
 
     handleNewDateChange: function(timestamp) {
-    	console.log("AT : handleNewDateChange")
     	var moment = Moment(timestamp, "x")
-    	console.log(moment);
-    	//$("#date").val(moment);
 	    this.setState({
 	       date: moment
 	    });
@@ -229,7 +278,6 @@ const EventForm = React.createClass({
 		var that = this;
 
         var onSuccess = function (data) {
-        	console.log("fetched categories")
             var categories = [];
             for(var index in data) {
                 categories.push(data[index]);
@@ -240,13 +288,12 @@ const EventForm = React.createClass({
             console.log(categories);
         };
         var onError = function() {
-            console.log("Error on fetching event!");
+            console.log("... Error on fetching categories!");
         }
         UTILS.rest.getAllEntries('category', onSuccess, onError);
 	},
 
 	selectCategory: function(category) {
-		console.log("selected category")
         this.setState({
             selectedCategory: category
         });
@@ -255,7 +302,6 @@ const EventForm = React.createClass({
 	/*** TIME ***/
 
 	handleTimeChange: function(e){
-		console.log("at handle time cahnge");
 		this.setState({time: e.target.value})
 	},
 
@@ -263,9 +309,6 @@ const EventForm = React.createClass({
 		if(CommonUtils.isEmpty(time)) {
 			time = "00:00";
 		}
-		console.log("At combine!!");
-		console.log(dateTimestamp);
-		console.log(time);
 		var hours = parseInt(time.substring(0, 2))
 		var minutes = parseInt(time.substring(3, 5))
 		dateTimestamp += minutes * 60 * 1000;
@@ -274,8 +317,6 @@ const EventForm = React.createClass({
 	},
 
 	setCurrentTime: function() {
-		console.log("at setCurrentTime");
-
 		var str = Moment().format('HH:mm');
 		$('#time').val(str);
 		this.setState({time: str})
@@ -285,7 +326,6 @@ const EventForm = React.createClass({
 	/*** SUBMIT ***/
 
     handleSubmit: function(e) {
-		console.log("AT SUBMIT!!!!!!!!!!");
 		var that = this;
 		//e.preventDefault();
 		var address = {
@@ -293,7 +333,6 @@ const EventForm = React.createClass({
 			country: this.state.address.country,
 			zipCode: this.state.address.zipCode,
 		}
-		console.log(this.state.latLng);
 		var name = this.state.name;
 		var address = this.state.address;
 		var lat = this.state.latLng[0];
@@ -302,9 +341,6 @@ const EventForm = React.createClass({
 		var category = this.state.selectedCategory;
 		var time = this.state.time;
 		var description = this.state.description;
-
-		console.log("STATE TIME: ");
-		console.log(time);
 
 		// VALIDATIONS
 		var valid1 = this.validateField(Validator.validateEventName, name, "nameError");
@@ -332,8 +368,6 @@ const EventForm = React.createClass({
 			category: this.state.selectedCategory
 		};		
 
-		console.log("DATAAAAAAAAAA");
-		console.log(eventData);
 		var success;
 		var error = function( jqXhr, textStatus, errorThrown ){
 		    console.log( errorThrown );
@@ -360,6 +394,8 @@ const EventForm = React.createClass({
 		} else{
 			success = function(createdEventData) {
 		    	addMissingEventFields(createdEventData);
+					console.log("REMOVING MARKER : success");
+
 		    	that.props.newEventMarker.setMap(null);
 		    	that.props.updateAppStatus('newEventMarker', {});
 		        //that.props.addEventToFilteredEventList(createdEventData);
@@ -373,7 +409,6 @@ const EventForm = React.createClass({
 
 	validateField: function(func, params, field, customMessage) {
 		var errorMessage = func(params, customMessage);
-		console.log("ERROR: " + errorMessage);
 		if(CommonUtils.isEmpty(errorMessage)) {
 			// Clear the error message if it exists
 			$("#" + field).text("");
@@ -381,12 +416,10 @@ const EventForm = React.createClass({
 		}
 		// Validation failed
 		else {
-			console.log("validation failed " + field);
 			$("#" + field).text(errorMessage);
 			return false;
 		}
 	},
-
 
 	getEditOrCreateTitle: function(){
 		if(this.isEditForm()){
@@ -395,27 +428,13 @@ const EventForm = React.createClass({
 		return "Create new event"
 	},
 
-	 handleDayClick: function(e, day, modifiers) {
-		if (modifiers.indexOf("disabled") > -1) {
-			console.log("User clicked a disabled day.");
-			return;
-		}
-		this.setState({
-			selectedDay: day
-		});
-  	},
-
-	isSunday: function(day) {
-	  return day.getDay() === 0;
-	},
-
 	render: function(){
 
 		return (
 			<div className='right-container'>
 				<h2 className="centeredHeader">Create new event</h2>
 
-				<div className='form'>
+				<div className='form' id="eventForm">
 
 					{/* Name */}
 					<div className='form-group'>

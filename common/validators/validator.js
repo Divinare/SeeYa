@@ -56,12 +56,17 @@ module.exports = {
     },
     validateEventAddress: function(address, customMessage) {
         console.log("at validateAddress");
-        if(address == null || typeof address == "undefined") {
-            return failed("eventAddress", customMessage);
-        }
+        console.log("at validateAddress");
+        console.log("at validateAddress");
+        console.log("at validateAddress");
+        console.log("at validateAddress");
         console.log(address.streetAddress)
         console.log(address.country)
         console.log(address.zipCode)
+
+        if(address == null || typeof address == "undefined") {
+            return failed("eventAddress", customMessage);
+        }
 
         if(utils.isEmpty(address.streetAddress) || utils.isEmpty(address.country) || utils.isEmpty(address.zipCode)) {
             return failed("eventAddress", customMessage);
