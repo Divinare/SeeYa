@@ -20,3 +20,7 @@ To undo the latest migration, enter
 To undo all of the migrations, enter
 
 ::: sequelize db:migrate:undo:all
+
+
+
+Tip: if migration is not working, add all of the fields of a model to the migration (even those that are not going to be changed!)

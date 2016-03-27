@@ -8,8 +8,8 @@ $ heroku ps:scale web=1
 $ heroku open
 
 
-heroku addons | grep POSTGRES
 // Adds postgresql database to heroku
+heroku addons | grep POSTGRES
 
 heroku addons:create heroku-postgresql:hobby-dev
 
@@ -25,7 +25,12 @@ pg_dump -Fc devdb > seedsdb.dump
 
 To import database into heroku:
 heroku pg:reset DATABASE --confirm event-meetup
-heroku pg:backups restore 'https://s3-eu-west-1.amazonaws.com/eventmeetup/seedsdb.dump' PRODUCTION_DB --confirm event-meetup
+heroku pg:backups restore 'https://s3-eu-west-1.amazonaws.com/eventmeetup/seedsdb.dump' PRODUCTION_DB_URL --confirm event-meetup
+
+
+PRODUCTION_DB_URL
+
+
 (https://devcenter.heroku.com/articles/heroku-postgres-import-export)
 
 Get backup of database in heroku:

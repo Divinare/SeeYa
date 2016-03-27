@@ -8,8 +8,8 @@ Connects to database:
 psql -d devdb
 
 If not working, try these:
-\connect devdb
 psql -h localhost -U postgres
+\connect devdb
 
 Drops a database:
 DROP DATABASE devdb;

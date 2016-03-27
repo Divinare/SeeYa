@@ -36,9 +36,6 @@ const EventForm = React.createClass({
 	},
 
 	componentDidUpdate: function() {
-		console.log("ATTTTT componentDidUpdate");
-		console.log("ATTTTT componentDidUpdate");
-		console.log("ATTTTT componentDidUpdate");
 		var newEventMarker = this.props.newEventMarker;
 		if(newEventMarker != null && !$.isEmptyObject(newEventMarker)) {
 			console.log(newEventMarker);
@@ -92,8 +89,6 @@ const EventForm = React.createClass({
 
 	// Called when a field is changed
 	handleChange: function(key) {
-
-		console.log("at handleChange " + key);
        return function (e) {
 	       var state = {};
 	       state[key] = e.target.value;
@@ -110,25 +105,15 @@ const EventForm = React.createClass({
 	/*** ADDRESS ***/
 
 	initAutocomplete: function() {
-	  // Create the autocomplete object, restricting the search to geographical
-	  // location types.
+	  // Create the autocomplete object, restricting the search to geographical location types.
 	  autocomplete = new google.maps.places.Autocomplete(
 	      /** @type {!HTMLInputElement} */
 	      (document.getElementById("address")),
 	      {types: ['geocode']});
-
-	  // When the user selects an address from the dropdown, populate the address
-	  // fields in the form.
-	 // autocomplete.addListener('place_changed', this.fillInAddress);
-
 	},	
 
 	addressOnBlur: function(){
-		console.log("ADDRESS ON BLUR")
-		console.log(autocomplete.getPlace())
-
 		this.codeAddressFromString();
-
 	},
 
 	// Gets address from input field and tries to get the corresponding address information
@@ -170,11 +155,6 @@ const EventForm = React.createClass({
 
 	codeAddressFromLatLng: function(latLng) {
 		var that = this;
-		console.log("AT: !!! codeAddressFromLatLng");
-		console.log(latLng);
-		//var input = document.getElementById('latlng').value;
-		//var latlngStr = input.split(',', 2);
-		//var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
 
 		geocoder.geocode({'location': latLng}, function(results, status) {
 			if (status === google.maps.GeocoderStatus.OK) {
@@ -361,8 +341,12 @@ const EventForm = React.createClass({
 			latLng = [this.state.latLng.lat(), this.state.latLng.lng()];
 		}
 
+
+
 		var name = this.state.name;
 		var address = this.state.address;
+		// Override current streetAddress with the one in address input field
+		address.streetAddress = document.getElementById("address").value;
 		var dateTimestamp = this.state.date.unix()*1000;
 		var category = this.state.selectedCategory;
 		var time = this.state.time;
@@ -422,8 +406,10 @@ const EventForm = React.createClass({
 		    	addMissingEventFields(createdEventData);
 					console.log("REMOVING MARKER : success");
 
-		    	that.props.newEventMarker.setMap(null);
-		    	that.props.updateAppStatus('newEventMarker', {});
+				if(that.props.newEventMarker != null && !$.isEmptyObject(that.props.newEventMarker)) {
+			    	that.props.newEventMarker.setMap(null);
+			    	that.props.updateAppStatus('newEventMarker', null);
+		    	}
 		        //that.props.addEventToFilteredEventList(createdEventData);
 		        moveOn();
 			};

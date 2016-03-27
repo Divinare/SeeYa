@@ -60,16 +60,33 @@ module.exports = {
         console.log("at validateAddress");
         console.log("at validateAddress");
         console.log("at validateAddress");
-        console.log(address.streetAddress)
-        console.log(address.country)
-        console.log(address.zipCode)
+
+
 
         if(address == null || typeof address == "undefined") {
             return failed("eventAddress", customMessage);
         }
 
-        if(utils.isEmpty(address.streetAddress) || utils.isEmpty(address.country) || utils.isEmpty(address.zipCode)) {
+        console.log(address.streetAddress)
+        console.log(address.country)
+        console.log(address.zipCode)
+
+        if(utils.notEmpty(address.country)) {
+            if(address.country.length > 50) {
+                return failed("eventAddress", "Country in the address can be max 50 letters");
+            }
+        }
+
+        if(utils.notEmpty(address.zipCode)) {
+            if(address.zipCode.length > 25) {
+                return failed("eventAddress", "ZipCode in the address can be max 25 letters");
+            }
+        }
+
+        if(utils.isEmpty(address.streetAddress)) {
             return failed("eventAddress", customMessage);
+        } else if(address.streetAddress.length < 5 || address.streetAddress.length > 50) {
+            return failed("eventAddress", "Address must be 5-50 characters long");
         }
         return "";
     },
@@ -122,7 +139,7 @@ module.exports = {
         var dateTimestamp = params[1];
 
         if(utils.isEmpty(time)) {
-            return failed("eventTime", customMessage);
+            return failed("eventTime", "Time cannot be left empty.");
         }
 
         // Validate syntax
@@ -174,5 +191,22 @@ module.exports = {
             return failed("eventDescription", customMessage);
         }
         return "";
+    },
+
+    validateEventTimestamp: function(timestamp, customMessage) {
+
+        console.log("at validateEventTimestamp! @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+
+        var timestampNow = Date.parse(new Date());
+
+        console.log(timestamp);
+        console.log(timestampNow);
+
+
+        if(timestamp > timestampNow) {
+            return ""; 
+        } else {
+            return failed("eventTimestamp", customMessage);
+        }
     }
 }

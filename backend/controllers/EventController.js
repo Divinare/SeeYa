@@ -2,6 +2,7 @@ var router = require("express").Router();
 var Sequelize = require('sequelize')
 var Promise = require('bluebird');
 
+var Validator = require("../../common/validators/validator.js")
 var models  = require('../models');
 var helper = require("../helpers/helper.js")
 var CategoryService = require('../services/CategoryService.js');
@@ -58,18 +59,26 @@ module.exports = {
 
     create: function (req, res) {
         console.log("creating event: ")
-        console.log(req.body)
-
         var eventToAdd = req.body;
-        findCategory(eventToAdd.category).then(function(category) {
-            if(category == null) {
-                console.log("CATEGORY NULL")
-                helper.sendErr(res, 400, "Category by name " + eventToAdd.category + " not found.");
-            } else {
-                console.log("FOUND CATEGORY, GONNA CREATE THE EVENT")
-                createEvent(req, res, category);
-            }
-        });
+
+        var eventValidationMsg = validateEvent(eventToAdd);
+        console.log("Event validation msg:-----");
+        console.log(eventValidationMsg);
+
+        if(eventValidationMsg.length == 0) {
+
+            findCategory(eventToAdd.category).then(function(category) {
+                if(category == null) {
+                    console.log("CATEGORY NULL")
+                    helper.sendErr(res, 400, "Category by name " + eventToAdd.category + " not found.");
+                } else {
+                    console.log("FOUND CATEGORY, GONNA CREATE THE EVENT")
+                    createEvent(req, res, category);
+                }
+            });
+        } else {
+            helper.sendErr(res, 400, eventValidationMsg);
+        }
     },
 
     //TODO: add check that the user is signed in and the creator of the event
@@ -127,18 +136,38 @@ module.exports = {
     }*/
 };
 
-function findCategory(categoryName) {
-    console.log("!!! find cateogry: categoryName: " + categoryName);
-    return new Promise(function(resolve, reject) {
+function validateEvent(eventToAdd) {
 
+    console.log("at validateEvent");
+    console.log(eventToAdd);
+
+    var lat = eventToAdd.lat;
+    var lon = eventToAdd.lon;
+
+    var valid1 = Validator.validateEventName(eventToAdd.name);
+    var valid2 = Validator.validateEventAddress(eventToAdd.address);
+    var valid3 = Validator.validateEventLatLng([lat, lon]);
+    var valid4 = Validator.validateEventTimestamp(eventToAdd.timestamp);
+    var valid5 = Validator.validateEventCategory(eventToAdd.category);
+    var valid6 = Validator.validateEventDescription(eventToAdd.description);
+
+    // All of the validations must return an empty string
+    if(valid1.length == 0 && valid2.length == 0 && valid3.length == 0 && valid4.length == 0 && valid5.length == 0 && valid6.length == 0) {
+        // All OK
+        return "";
+    }
+    return "... Form INVALID! name: " + valid1 + " address: " + valid2 + " latLng: " + valid3 + " timestamp: " + valid4 + " category: " + valid5 + " description: " + valid6;
+}
+
+
+
+
+function findCategory(categoryName) {
+    return new Promise(function(resolve, reject) {
         CategoryService.findByName(categoryName).then(function(category) {
-            console.log(":OOO");
-            console.log(category);
             if(category == null) {
-                console.log("DID NOT FIND CATEGORY :(");
                 reject(null);
             } else {
-                console.log("FOUND CATEGORY! :-)");
                 resolve(category);
             }
         });
@@ -148,8 +177,6 @@ function findCategory(categoryName) {
 
 function createEvent(req, res, category) {
     var eventToAdd = req.body;
-    console.log("EVENT TO ADD::::!!!!!!!!!########################");
-    console.log(eventToAdd);
     models.Address.findOrCreate({where: {
         streetAddress: eventToAdd.address.streetAddress,
         country: eventToAdd.address.country,
@@ -158,13 +185,6 @@ function createEvent(req, res, category) {
     }
 
     }).spread(function(address, created){
-        console.log("CREATED:")
-        console.log(created)
-        console.log("ADDRESS: ")
-        console.log(address)
-        console.log("CATEGORY!!! :o");
-        console.log(category);
-        console.log(category.id);
         models.Event.create({
             name: eventToAdd.name,
             description: eventToAdd.description,

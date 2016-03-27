@@ -7,7 +7,7 @@ module.exports = {
         return false;
     },
     isEmpty: function(value){
-        if( typeof value !== 'undefined' && value !== '') {
+        if( typeof value !== 'undefined' && value !== '' && value !== null) {
             return false;
         }
         return true;

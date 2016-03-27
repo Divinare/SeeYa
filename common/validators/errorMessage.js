@@ -14,7 +14,8 @@ const errors = {
     eventDate: "Wrong date format. The correct one is DD:MM:YYYY, for example 25.06.2016",
     eventCategory: "Category error",
     eventTime: "Wrong time format. The correct one is hh:mm, for example 17:30",
-    eventDescription: "Description can be max 500 characters long."
+    eventDescription: "Description can be max 500 characters long.",
+    eventTimestamp: "Timestamp must be in the future."
 }
 
 module.exports = {
