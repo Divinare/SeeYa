@@ -76,6 +76,7 @@ const EventList = React.createClass({
     },
 
     centerMapToMarker: function(eventId, zoomLevel) {
+
         // Find event by id
         var event = $.grep(this.props.filteredEventList, function(e){ return e.id == eventId; });
         var lat = event[0].lat;
@@ -138,8 +139,6 @@ const EventList = React.createClass({
     filterChange: function(filter, filterType) {
         var that = this;
         var onSuccess = function (filteredEvents) {
-            console.log("got filtered events");
-            console.log(filteredEvents);
             that.props.updateAppStatus('filteredEventList', filteredEvents);
             var eventListData = that.props.eventListData;
             eventListData['filters'][filterType] = filter;
@@ -209,7 +208,7 @@ const EventList = React.createClass({
         eventList.map(function(event) {
             items.push(
                 <tr key={event.id}>
-                    <td key={"a"+event.id}>x</td>
+                    <td key={"a"+event.id}><div id="eventListMapIconContainer" onClick={_this.centerMapToMarker.bind(null, event.id, -1)}><img src="../../assets/seeya_marker.png" width="25px" height="25px"></img></div></td>
                     <td key={"b"+event.id}>{_this.cellRenderer("name", event.name, event.id)}</td>
                     <td key={"c"+event.id}>{event.Attendances.length}</td>                            
                 </tr>
@@ -217,6 +216,8 @@ const EventList = React.createClass({
         });
         return items;
     },
+
+
 
     render: function() {
         var _this = this;

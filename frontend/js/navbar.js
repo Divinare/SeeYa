@@ -49,13 +49,13 @@ module.exports = React.createClass({
                 </div>
                 <div id="navbar-mobile" className="hidden">
                     <ul className="menu-mobile">
-                        <li id="navbar-logo" onClick={this.closeNavbar}><Link to="/"><strong>SeeYa</strong></Link></li>
+                        <li onClick={this.closeNavbar}><Link to="/"><strong>SeeYa</strong></Link></li>
                         <li><Link to="/about" onClick={this.closeNavbar}>About</Link></li>
                         <li><Link to="/eventForm" onClick={this.closeNavbar}>New event</Link></li>
                         <li><Link to="/signup" onClick={this.closeNavbar}>Signup</Link></li>
                         <li><Link to="/login" onClick={this.closeNavbar}>Login</Link></li>                        
                     </ul>
-                    <div id="navbar-close" onClick={this.closeNavbar}>X</div>
+                    <div id="navbarClose" onClick={this.closeNavbar}>X</div>
                 </div>
             </div>
         )

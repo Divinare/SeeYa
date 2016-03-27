@@ -109,13 +109,6 @@ img{
         right: 10px;
         position: absolute;
     }
-
-    /* Navbar */
-
-    .navbar-toggle-mobile {
-        display: none !important;
-    }
-
 }
 
 
@@ -129,52 +122,4 @@ img{
         left: 10px;
         top: 49%;
     }
-
-    /* Navbar */
-
-    .navbar-desktop-element {
-        display: none !important;
-    }
-
-
-    #navbar-close {
-        position: absolute;
-        top: 10px;
-        right: 17px;
-        display: block;
-        width: 20px;
-        height: 20px;
-    }
-    
-
-    #navbar-mobile {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        top: 0;
-        left: 0;
-        font-size: 30px;
-        list-style-type: none;
-        z-index: 99 !important;   
-        background-color: rgb(0, 0, 0)!important;
-    }
-
-    #navbar-mobile li {
-        display: block;
-        text-align: center;
-    }
-
-    #navbar-mobile li a {
-        text-decoration: none;
-    }
-
-    #navbar-mobile ul {
-        position: absolute;
-        width: 100%;
-        left: 0;
-        top: 35%;
-        padding: 0px;
-    }
-
-
 }
