@@ -17,6 +17,7 @@ var EventForm = require('./js/event/eventForm.js');
 var EventPage = require('./js/event/eventPage.js');
 var Signup = require('./js/signup.js')
 var Login = require('./js/login.js')
+var Logout = require('./js/logout.js')
 var Settings = require('./js/settings.js')
 
 import { render } from 'react-dom'
@@ -63,8 +64,8 @@ const Main = React.createClass({
             eventListData: eventListData,
             newEventMarker: null,
             markers: [],
-            loggedIn: false,
-            username:''
+            username:'',
+            loginStatusPending: true
         };
 
     },
@@ -76,16 +77,24 @@ const Main = React.createClass({
 
     componentDidMount: function() {
         var that = this;
-        var success = function() {
+        var success = function(result) {
             console.log("is logged in");
+            console.log(result)
             that.setState({
-                loggedIn: true
-             //   username: 
+                username: result.user.username,
+                loginStatusPending: false
             })
         }
         var error = function(){
+            that.setState({
+                username: '',
+                loginStatusPending: false
+            })
             console.log("is not logged in");
         }
+        this.setState({
+            loginStatusPending:true
+        })
         UTILS.rest.isLoggedIn(success, error);
 
         window.addEventListener('resize', this.handleResize);
@@ -164,7 +173,7 @@ const Main = React.createClass({
         return (
             <div className="application">
 
-                <Navbar loggedIn={that.state.loggedIn} username={that.state.username}/>
+                <Navbar loginStatusPending={that.state.loginStatusPending} username={that.state.username}/>
 
                 <div className="content">
                     <Map
@@ -196,6 +205,7 @@ render((
             <Route path="about" component={About} />
             <Route path="signup" component={Signup} />
             <Route path="login" component={Login} />
+            <Route path="logout" component={Logout} />
             <Route path="settings" component={Settings} />
             <Route path="*" component={NoMatch} />
         </Route>

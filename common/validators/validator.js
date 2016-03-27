@@ -1,8 +1,8 @@
 var moment = require('moment');
 
-
 var errorMessage = require('./errorMessage.js');
 var utils = require('../utils.js');
+var fieldLengths = require('./fieldLengths.js');
 
 
 /* Validations used in both frontend & backend.
@@ -35,6 +35,22 @@ module.exports = {
             return '';
         }
         return failed("userPasswordsDontMatch", customMessage);
+    },
+
+    validatePassword: function(password, customMessage){
+        var msg = '';
+        if( utils.notEmpty(password) ){
+            if( password.length > fieldLengths.lengths.userPasswordMax ){
+                msg = errorMessage.getError('userPasswordTooLong', customMessage);
+            }
+            else if( password.length < fieldLengths.lengths.userPasswordMin ){
+                var msg = errorMessage.getError('userPasswordTooShort', customMessage);
+            }
+        }else{
+            msg = errorMessage.getError('userPasswordTooShort', customMessage);
+        }
+        return msg;
+
     },
 
     validateNotEmpty: function(value, customMessage){

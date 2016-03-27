@@ -69,7 +69,6 @@ module.exports = {
 
     logout: function(req, res){
         req.seeyaSession.reset();
-        req.userInfo.reset();
         res.status(200).send({});
     },
 

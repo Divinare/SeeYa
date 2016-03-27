@@ -38,13 +38,21 @@ const About = React.createClass({
         var params = {"password" :this.state.password, 
             "repeatPassword": this.state.repeatPassword
         };
-        var validPassword = this.validateField(validator.matchPasswords, 
-                                                params,
-                                                ["password", "repeatPassword"],
-                                                ["passwordError", "repeatPasswordError"]
+
+
+       var passwordsMatching = this.validateField(validator.matchPasswords, 
+                                                    params,
+                                                    ["password", "repeatPassword"],
+                                                    ["passwordError", "repeatPasswordError"]
+                                                    );
+
+        var validPassword = this.validateField(validator.validatePassword, 
+                                                this.state.password,
+                                                ["password"],
+                                                ["passwordError"]
                                                 );
 
-        if(validPassword && validEmail){
+        if(validEmail && passwordsMatching && validPassword){
             console.log("form is valid")
             var userData = {
                 email: this.state.email,
@@ -68,6 +76,10 @@ const About = React.createClass({
   //Expects the func to return error message that can be shown
     validateField: function(func, params, fields, errorFields, message) {
         console.log("validatefield")
+        console.log("message")
+        console.log(message)
+        console.log('params')
+        console.log(params)
         var errormsg = func(params, message);
         console.log("errormsg: " + errormsg)
 

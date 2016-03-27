@@ -6,6 +6,12 @@ var Router = require('react-router')
     , Link = Router.Link;
 
 module.exports = React.createClass({
+    getInitialState: function() {
+        return {
+            rightContainerReady: false
+        };
+    },
+
 	toggleShowEventForm: function() {
 		this.props.toggleShowEventForm();
 	},
@@ -23,6 +29,8 @@ module.exports = React.createClass({
     },
 
     render: function(){
+        console.log("rendering")
+        console.log(this.props.loginStatusPending)
         return (
             <div id="navbarContent">
                 <div id="navbar">
@@ -35,16 +43,23 @@ module.exports = React.createClass({
                             <li className="navbar-desktop-element"><Link to="/eventForm">New event</Link></li>
                         </div>
 
-                        <div className="navbar-right-container">
-                            <li className="navbar-desktop-element"><Link to="/signup">Signup</Link></li>
-                            <li className="navbar-desktop-element"><Link to="/login">Login</Link></li>
-                            { this.props.loggedIn ? 
-                            <li className="navbar-desktop-element">{this.props.username}</li> :
-                            <li className="navbar-desktop-element" onClick={this.openNavbar}></li> }
-                            <li className="navbar-toggle-mobile" onClick={this.openNavbar}>X</li>
-                            
-
-                        </div>
+                        { !this.props.loginStatusPending ? 
+                            <div className="navbar-right-container">
+                                { (this.props.username !== '') ? 
+                                    <div>
+                                        <li className="navbar-desktop-element">{this.props.username}</li> 
+                                        <li className="navbar-desktop-element"><Link to="/logout">Logout</Link></li>
+                                    </div>
+                                    :
+                                     <div>
+                                        <li className="navbar-desktop-element"><Link to="/signup">Signup</Link></li>
+                                        <li className="navbar-desktop-element"><Link to="/login">Login</Link></li>
+                                    </div>
+                                }
+                                <li className="navbar-toggle-mobile" onClick={this.openNavbar}>X</li>
+                            </div> :
+                            ''
+                        }
                     </ul>
                 </div>
                 <div id="navbar-mobile" className="hidden">
@@ -52,8 +67,17 @@ module.exports = React.createClass({
                         <li onClick={this.closeNavbar}><Link to="/"><strong>SeeYa</strong></Link></li>
                         <li><Link to="/about" onClick={this.closeNavbar}>About</Link></li>
                         <li><Link to="/eventForm" onClick={this.closeNavbar}>New event</Link></li>
-                        <li><Link to="/signup" onClick={this.closeNavbar}>Signup</Link></li>
-                        <li><Link to="/login" onClick={this.closeNavbar}>Login</Link></li>                        
+
+                        { (this.props.username !== '') ? 
+                            <div>
+                                <li><Link to="/logout">Logout</Link></li>
+                            </div>
+                            :
+                            <div>
+                                <li><Link to="/signup" onClick={this.closeNavbar}>Signup</Link></li>
+                                <li><Link to="/login" onClick={this.closeNavbar}>Login</Link></li>     
+                            </div>
+                        }
                     </ul>
                     <div id="navbarClose" onClick={this.closeNavbar}>X</div>
                 </div>

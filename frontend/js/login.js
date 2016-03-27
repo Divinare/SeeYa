@@ -3,7 +3,6 @@ import { browserHistory, Link } from 'react-router';
 var React = require('react');
 var validator = require('../../common/validators/validator.js');
 var utils = require('../../common/utils.js');
-const EMAIL_FORMAT = "Wrong format. Email address in form 'abc@cde.efg' expected";
 const PASSWORD_EMPTY = "Password is required!";
 
 const About = React.createClass({
@@ -58,7 +57,6 @@ const About = React.createClass({
             var success = function(result){
                 console.log( "success!!!" );
                 console.log( result );
-                that.props.updateAppStatus('loggedIn', true);
                 that.props.updateAppStatus('username', result.user.username);
                 browserHistory.push('/');
             };

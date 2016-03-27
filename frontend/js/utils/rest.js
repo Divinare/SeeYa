@@ -60,8 +60,19 @@ var isLoggedIn = function(onSuccess, onError) {
         type: 'GET', 
         url: url,
         dataType: 'json',
-        success: onSuccess(), //data
-        error: onError
+        success: onSuccess,
+        error: onError  
+    });
+}
+
+var logout = function(onSuccess, onError) {
+    var url = URL.authorization['logout'];
+    $.ajax({ 
+        type: 'GET', 
+        url: url,
+        dataType: 'json',
+        success: onSuccess,
+        error: onError  
     });
 }
 
@@ -111,7 +122,8 @@ module.exports = {
     addEntry: addEntry,
     removeEntry: removeEntry,
     editEntry: editEntry,
-    isLoggedIn: isLoggedIn
+    isLoggedIn: isLoggedIn,
+    logout: logout
 
 
 }

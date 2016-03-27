@@ -28,6 +28,7 @@ module.exports = {
 		'event': REST + '/events/'
 	},
 	'authorization': {
-		'loggedInStatus': REST + '/isLoggedIn'
+		'loggedInStatus': REST + '/isLoggedIn',
+		'logout': REST + '/logout'
 	}
 };
