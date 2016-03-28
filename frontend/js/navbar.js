@@ -29,8 +29,6 @@ module.exports = React.createClass({
     },
 
     render: function(){
-        console.log("rendering")
-        console.log(this.props.loginStatusPending)
         return (
             <div id="navbarContent">
                 <div id="navbar">
@@ -56,7 +54,7 @@ module.exports = React.createClass({
                                         <li className="navbar-desktop-element"><Link to="/login">Login</Link></li>
                                     </div>
                                 }
-                                <li className="navbar-toggle-mobile" onClick={this.openNavbar}>X</li>
+                                <li className="navbarToggleMobile" onClick={this.openNavbar}></li>
                             </div> :
                             ''
                         }

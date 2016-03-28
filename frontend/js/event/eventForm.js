@@ -286,7 +286,6 @@ const EventForm = React.createClass({
             that.setState({
                 categories: categories
             })
-            console.log(categories);
         };
         var onError = function() {
             console.log("... Error on fetching categories!");
