@@ -43,7 +43,7 @@ module.exports = {
                 //Called if the hashing does not succeed for some reason. Don't know what could cause this
                 var errorCallBack = function(err){
                     console.log("caught error!!!!")
-                    helper.sendErr(res, 500, {"message": "Unknown error in logging in, please try again and report the error to the administrator if the error persists"});
+                    helper.sendErr(res, 500, {"errorMessage": "Unknown error in logging in, please try again and report the error to the administrator if the error persists"});
                 }
                 //called by the security component with the salt and hash of the password
                 var checkPassword = function(salt, hash){
@@ -57,12 +57,12 @@ module.exports = {
                         module.exports.addUserInfoInCookie(response, user);
                         helper.sendResponse(res, 200, response);
                     }else{
-                        helper.sendErr(res, httpUnAuthorized, {message: errorMessages.getError('userEmailOrPasswordDontMatch')});
+                        helper.sendErrJsonObj(res, httpUnAuthorized, {errorMessage: errorMessages.getError('userEmailOrPasswordDontMatch')});
                     }
                 }
                 security.hashPassword(password, user.salt, errorCallBack, checkPassword)
             }else{
-                helper.sendErr(res, httpUnAuthorized, {message: errorMessages.getError('userEmailOrPasswordDontMatch')});
+                helper.sendErrJsonObj(res, httpUnAuthorized, {errorMessage: errorMessages.getError('userEmailOrPasswordDontMatch')});
             }
         });
     },

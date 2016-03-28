@@ -4,6 +4,7 @@ var Sequelize = require('sequelize')
 var helper = require("../helpers/helper.js")
 var security = require("../helpers/security.js")
 var validator = require("../../common/validators/validator.js")
+var errorMessages = require("../../common/validators/errorMessage.js")
 var utils = require("../../common/utils.js")
 var crypto = require('crypto');
 
@@ -24,14 +25,16 @@ module.exports = {
     //TODO make this shorter, validation in its own function for example
     create: function (req, res) {
         console.log("NEW USER TRYING TO SIGN UP")
+        var addErrorsIfNotEmpty = module.exports.addErrorsIfNotEmpty;
+        var addErrorIfNotEmpty = module.exports.addErrorIfNotEmpty;
         var userData = req.body;
         var userEmail = userData.email;
         var userPassword = userData.password;
         var repeatPassword = userData.repeatPassword;
-        var validationErrors = {'email':'','password':'', 'emailInUse':''};
-        validationErrors['email'] = validator.validateEmail(userEmail).join(', ');
-        validationErrors['password'] = validator.matchPasswords({"password":userPassword, "repeatPassword": repeatPassword});
-        validationErrors['passwordFormat'] = validator.validatePassword(userPassword);
+        var validationErrors = {'userEmail':[],'userPassword':[]};
+        addErrorsIfNotEmpty(validationErrors['userEmail'], validator.validateEmail(userEmail));
+        addErrorIfNotEmpty(validationErrors['userPassword'], validator.matchPasswords({"password":userPassword, "repeatPassword": repeatPassword}));
+        addErrorIfNotEmpty(validationErrors['userPassword'], validator.validatePassword(userPassword));
 
         //Callback that is called by the security component after the password has been hashed
         var createUser = function(salt, hash){
@@ -61,20 +64,20 @@ module.exports = {
         })
         .then(function (user) {
             if(user){   //user found
-                validationErrors['emailInUse'] = "Email already in use";
+                console.log("user found")
+                validationErrors['userEmail'].push(errorMessages.getError('userEmailAlreadyInUse'))
             }
             //Check if there were any errors and send them back to the client if there were
             var errorCount = 0;
             for (var property in validationErrors) {
                 if (validationErrors.hasOwnProperty(property)) {
-                    if( utils.notEmpty(validationErrors[property]) ){
+                    if( validationErrors[property].length > 0 ){
                         errorCount++;
                     }else{
                         delete validationErrors[property]
                     }
                 }
             }
-              console.log("looped")
             if( errorCount > 0 ){
                 helper.sendErrJsonObj(res, 400, validationErrors);
                 return;
@@ -84,4 +87,15 @@ module.exports = {
             
         });
     },
+
+    addErrorIfNotEmpty: function(array, errorMsg){
+        if(utils.notEmpty(errorMsg)){
+            array.push(errorMsg);
+        }
+    },
+    addErrorsIfNotEmpty: function(array, errorArr){
+        if(errorArr.length > 0){
+            array.concat(errorArr);
+        }
+    }
 };

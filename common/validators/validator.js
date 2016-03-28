@@ -245,24 +245,29 @@ module.exports = {
                 errorArr = tempArr;
             }
         }
-        console.log("errorarr: ")
-        console.log(errorArr)
 
         // Validation failed
         if( errorArr.length > 0 ) {
             for(var i = 0; i < fields.length; i++){
-                $("#" + fields[i]).addClass('invalid')
-                var errorText = errorArr.join('<br/>')
-                $("#" + errorFields[i]).html(errorText);
+                module.exports.setErrorToField(fields[i], errorArr, errorFields[i]);
             }
             return false;
         } else {
             for(var i = 0; i < fields.length; i++){
-                $("#" + fields[i]).removeClass('invalid')
-                 // Clear the error message if it exists
-                $("#" + errorFields[i]).text("");
+                module.exports.clearErrorFromField(fields[i], errorFields[i]);
             }
             return true;
         }
     },
+
+    setErrorToField: function(inputField, errorArray, errorMessageField){
+        $("#" + inputField).addClass('invalid')
+        var errorText = errorArray.join('<br/>')
+        $("#" + errorMessageField).html(errorText);
+    },
+
+    clearErrorFromField: function(inputField, errorMessageField){
+        $("#" + inputField).removeClass('invalid')
+        $("#" + errorMessageField).text("");
+    }
 }

@@ -19,6 +19,7 @@ const About = React.createClass({
 
     componentDidMount: function() {
         this.props.handleResize();
+        $('#serverErrorDiv').hide();
     },
 
     toggleShowPassword: function() {
@@ -53,10 +54,11 @@ const About = React.createClass({
                 password: this.state.password
             }
             var error = function( jqXhr, textStatus, errorThrown){
-                console.log("error")
-                console.log(textStatus)
-                console.log(jqXhr)
-                console.log( errorThrown );
+               // console.log(jqXhr)
+               console.log("error function")
+               console.log(jqXhr.responseJSON.errorMessage)
+               $("#serverErrorDiv").text(jqXhr.responseJSON.errorMessage);
+               $("#serverErrorDiv").show(500);
             };
             var success = function(result){
                 console.log( "success!!!" );
@@ -64,6 +66,7 @@ const About = React.createClass({
                 that.props.updateAppStatus('username', result.user.username);
                 browserHistory.push('/');
             };
+            $("#serverErrorDiv").hide(200);
             UTILS.rest.addEntry('session', userData, success, error);
 
         }else{
@@ -87,6 +90,7 @@ const About = React.createClass({
                     <div className="row">
                         <div className="col-xs-12">  
                             <h1>Login</h1>
+                            <div id='serverErrorDiv'></div>
                             <form className="form">
                                 <div className="form-group">
                                     <label className="control-label" htmlFor="email">Email *</label>

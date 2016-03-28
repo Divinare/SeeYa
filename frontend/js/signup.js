@@ -18,6 +18,8 @@ const About = React.createClass({
 
     componentDidMount: function() {
         this.props.handleResize();
+        $('#serverErrorDiv').hide();
+
     },
 
     toggleShowPassword: function() {
@@ -62,17 +64,26 @@ const About = React.createClass({
             var error = function( jqXhr, textStatus, errorThrown){
                 console.log("error")
                 console.log( errorThrown );
+                console.log(jqXhr)
+                console.log(jqXhr.responseJSON.userEmail)
+                if( jqXhr.responseJSON.userEmail.length > 0){
+                    validator.setErrorToField('email', [that.state.email + ' already in use'], 'emailError');
+                }
+                $('#serverErrorDiv').show(500);
+
             };
             var success = function(){
                 console.log( "success!!!" );
                 browserHistory.push('/login');
             };
+            $("#serverErrorDiv").hide(200);
+            validator.clearErrorFromField('email', 'emailError');
             UTILS.rest.addEntry('user', userData, success, error);
         }else{
             console.log("form is invalid")
         }
     },
-    
+
     handleChange: function(key) {
        return function (e) {
            var state = {};
@@ -89,6 +100,7 @@ const About = React.createClass({
                         <div className="col-xs-12">  
                             <h1>Signup</h1>
                             <form className="form">
+                                <div id='serverErrorDiv'>Server returned errors, change the marked fields and try again</div>
                                 <div className="form-group">
                                     <label className="control-label" htmlFor="email">Email *</label>
                                         <input type="text" id="email" name="email" placeholder="" className="form-control" onChange={this.handleChange('email')}/>
