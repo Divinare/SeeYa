@@ -27,15 +27,19 @@ const About = React.createClass({
     },
 
 
+    /*don't validate email and password here (other than checking that they are not empty), only in backend.
+     This is because if our validations have changed after the user first signed up, 
+     we still want them to be able to sign in.
+    */
     submit: function(){
         var that = this;
-        var validEmail = this.validateField(validator.validateEmail, 
+        var validEmail = validator.validateField(validator.validateNotEmpty, 
                                             this.state.email,
                                             ["email"],
                                             ["emailError"]
                                             );
 
-        var validPassword = this.validateField(validator.validateNotEmpty, 
+        var validPassword = validator.validateField(validator.validateNotEmpty, 
                                             this.state.password,
                                             ["password"],
                                             ["passwordError"],
@@ -66,29 +70,6 @@ const About = React.createClass({
             console.log("form is invalid")
         }
 
-    },
-
-    //Expects the func to return error message that can be shown
-    validateField: function(func, params, fields, errorFields, message) {
-        console.log("validatefield")
-        var errormsg = func(params, message);
-        console.log("errormsg: " + errormsg)
-
-        // Validation failed
-        if( utils.notEmpty(errormsg) ) {
-            for(var i = 0; i < fields.length; i++){
-                $("#" + fields[i]).addClass('invalid')
-                $("#" + errorFields[i]).text(errormsg);
-            }
-            return false;
-        } else {
-            for(var i = 0; i < fields.length; i++){
-                $("#" + fields[i]).removeClass('invalid')
-                 // Clear the error message if it exists
-                $("#" + errorFields[i]).text("");
-            }
-            return true;
-        }
     },
 
     handleChange: function(key) {

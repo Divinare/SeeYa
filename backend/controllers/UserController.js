@@ -29,9 +29,10 @@ module.exports = {
         var userPassword = userData.password;
         var repeatPassword = userData.repeatPassword;
         var validationErrors = {'email':'','password':'', 'emailInUse':''};
-        validationErrors['email'] = validator.validateEmail(userEmail);
+        validationErrors['email'] = validator.validateEmail(userEmail).join(', ');
         validationErrors['password'] = validator.matchPasswords({"password":userPassword, "repeatPassword": repeatPassword});
-        
+        validationErrors['passwordFormat'] = validator.validatePassword(userPassword);
+
         //Callback that is called by the security component after the password has been hashed
         var createUser = function(salt, hash){
             console.log("CREATE USER CALLED")
@@ -62,8 +63,6 @@ module.exports = {
             if(user){   //user found
                 validationErrors['emailInUse'] = "Email already in use";
             }
-
-            console.log("starting to loop")
             //Check if there were any errors and send them back to the client if there were
             var errorCount = 0;
             for (var property in validationErrors) {

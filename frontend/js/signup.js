@@ -29,7 +29,7 @@ const About = React.createClass({
 
     submit: function(){
         var that = this;
-        var validEmail = this.validateField(validator.validateEmail, 
+        var validEmail = validator.validateField(validator.validateEmail, 
                                             this.state.email,
                                             ["email"],
                                             ["emailError"]
@@ -40,13 +40,13 @@ const About = React.createClass({
         };
 
 
-       var passwordsMatching = this.validateField(validator.matchPasswords, 
+       var passwordsMatching = validator.validateField(validator.matchPasswords, 
                                                     params,
                                                     ["password", "repeatPassword"],
                                                     ["passwordError", "repeatPasswordError"]
                                                     );
 
-        var validPassword = this.validateField(validator.validatePassword, 
+        var validPassword = validator.validateField(validator.validatePassword, 
                                                 this.state.password,
                                                 ["password"],
                                                 ["passwordError"]
@@ -72,54 +72,7 @@ const About = React.createClass({
             console.log("form is invalid")
         }
     },
-
-  //Expects the func to return error message that can be shown
-    validateField: function(func, params, fields, errorFields, message) {
-        console.log("validatefield")
-        console.log("message")
-        console.log(message)
-        console.log('params')
-        console.log(params)
-        var errormsg = func(params, message);
-        console.log("errormsg: " + errormsg)
-
-        // Validation failed
-        if( utils.notEmpty(errormsg) ) {
-            for(var i = 0; i < fields.length; i++){
-                $("#" + fields[i]).addClass('invalid')
-                $("#" + errorFields[i]).text(errormsg);
-            }
-            return false;
-        } else {
-            for(var i = 0; i < fields.length; i++){
-                $("#" + fields[i]).removeClass('invalid')
-                 // Clear the error message if it exists
-                $("#" + errorFields[i]).text("");
-            }
-            return true;
-        }
-    },
-
-    validateEmail: function(params){
-        /*Validation regex taken from here: http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
-        This just checks that the email is of form anystring@anystring.anystring, there are more complex validations
-        we could do, but this should be enough for now.
-        */
-        var re = /\S+@\S+\.\S+/;
-        var email = params["email"]
-        return re.test(email);
-    },
-
-    validatePassword: function(params){
-        var password = params["password"];
-        var repeatPassword = params["repeatPassword"];
-        if(password != "" && password == repeatPassword ){
-            return true
-        }else{
-            return false
-        }
-    },
-
+    
     handleChange: function(key) {
        return function (e) {
            var state = {};

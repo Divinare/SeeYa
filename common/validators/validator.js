@@ -22,10 +22,16 @@ module.exports = {
         we could do, but this should be enough for now.
         */
         var re = /\S+@\S+\.\S+/;
+        var errorMessages = []
         if( !re.test(email) ){
-            return failed("userEmailFormat", customMessage);
+            errorMessages.push(errorMessage.getError('userEmailFormat', customMessage));
         }
-        return '';
+        if( email.length > fieldLengths.lengths.userEmailMax ){
+            errorMessages.push(errorMessage.getError('userEmailTooLong', customMessage));
+        }else if( email.length < fieldLengths.lengths.userEmailMin ){
+            errorMessages.push(errorMessage.getError('userEmailTooShort', customMessage));
+        }
+        return errorMessages;
     },
 
     matchPasswords: function(params, customMessage){
@@ -65,7 +71,7 @@ module.exports = {
 
     validateEventName: function(name, customMessage) {
         console.log("At validate name! " + name.length);
-        if(name.length < 3 || name.length > 30) {
+        if(name.length < fieldLengths.lengths.eventNameMin || name.length > fieldLengths.lengths.eventNameMax) {
             return failed("eventName", customMessage);
         }
         return "";
@@ -88,21 +94,22 @@ module.exports = {
         console.log(address.zipCode)
 
         if(utils.notEmpty(address.country)) {
-            if(address.country.length > 50) {
-                return failed("eventAddress", "Country in the address can be max 50 letters");
+            if(address.country.length > fieldLengths.lengths.eventAddressCountryMax) {
+                return failed("eventAddress", "Country in the address can be max "  +  fieldLengths.lengths.eventAddressCountryMax + " letters");
             }
         }
 
         if(utils.notEmpty(address.zipCode)) {
-            if(address.zipCode.length > 25) {
-                return failed("eventAddress", "ZipCode in the address can be max 25 letters");
+            if(address.zipCode.length > fieldLengths.lengths.eventAddressCountryMax) {
+                return failed("eventAddress", "ZipCode in the address can be max " + fieldLengths.lengths.eventAddressCountryMax + " letters");
             }
         }
 
         if(utils.isEmpty(address.streetAddress)) {
             return failed("eventAddress", customMessage);
-        } else if(address.streetAddress.length < 5 || address.streetAddress.length > 50) {
-            return failed("eventAddress", "Address must be 5-50 characters long");
+        } else if(address.streetAddress.length < fieldLengths.lengths.eventAddressStreetAddressMin || address.streetAddress.length > fieldLengths.lengths.eventAddressStreetAddressMax) {
+            var msg = "Address must be " + fieldLengths.lengths.eventAddressStreetAddressMin + "-" + fieldLengths.lengths.eventAddressStreetAddressMax + " characters long"
+            return failed("eventAddress", msg);
         }
         return "";
     },
@@ -224,5 +231,38 @@ module.exports = {
         } else {
             return failed("eventTimestamp", customMessage);
         }
-    }
+    },
+
+     validateField: function(func, params, fields, errorFields, message) {
+        var errorArr = func(params, message);
+
+        if( errorArr.constructor !== Array ){   
+            //the function we called only returned error message, not an array of messages
+            //put the message into an array, so the rest of this function works correctly
+            if(utils.notEmpty(errorArr)){
+                var tempArr = [];
+                tempArr.push(errorArr);
+                errorArr = tempArr;
+            }
+        }
+        console.log("errorarr: ")
+        console.log(errorArr)
+
+        // Validation failed
+        if( errorArr.length > 0 ) {
+            for(var i = 0; i < fields.length; i++){
+                $("#" + fields[i]).addClass('invalid')
+                var errorText = errorArr.join('<br/>')
+                $("#" + errorFields[i]).html(errorText);
+            }
+            return false;
+        } else {
+            for(var i = 0; i < fields.length; i++){
+                $("#" + fields[i]).removeClass('invalid')
+                 // Clear the error message if it exists
+                $("#" + errorFields[i]).text("");
+            }
+            return true;
+        }
+    },
 }
