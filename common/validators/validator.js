@@ -71,7 +71,7 @@ module.exports = {
 
     validateEventName: function(name, customMessage) {
         console.log("At validate name! " + name.length);
-        if(name.length < 3 || name.length > 30) {
+        if(name.length < fieldLengths.lengths.eventNameMin || name.length > fieldLengths.lengths.eventNameMax) {
             return failed("eventName", customMessage);
         }
         return "";
@@ -94,21 +94,22 @@ module.exports = {
         console.log(address.zipCode)
 
         if(utils.notEmpty(address.country)) {
-            if(address.country.length > 50) {
-                return failed("eventAddress", "Country in the address can be max 50 letters");
+            if(address.country.length > fieldLengths.lengths.eventAddressCountryMax) {
+                return failed("eventAddress", "Country in the address can be max "  +  fieldLengths.lengths.eventAddressCountryMax + " letters");
             }
         }
 
         if(utils.notEmpty(address.zipCode)) {
-            if(address.zipCode.length > 25) {
-                return failed("eventAddress", "ZipCode in the address can be max 25 letters");
+            if(address.zipCode.length > fieldLengths.lengths.eventAddressCountryMax) {
+                return failed("eventAddress", "ZipCode in the address can be max " + fieldLengths.lengths.eventAddressCountryMax + " letters");
             }
         }
 
         if(utils.isEmpty(address.streetAddress)) {
             return failed("eventAddress", customMessage);
-        } else if(address.streetAddress.length < 5 || address.streetAddress.length > 50) {
-            return failed("eventAddress", "Address must be 5-50 characters long");
+        } else if(address.streetAddress.length < fieldLengths.lengths.eventAddressStreetAddressMin || address.streetAddress.length > fieldLengths.lengths.eventAddressStreetAddressMax) {
+            var msg = "Address must be " + fieldLengths.lengths.eventAddressStreetAddressMin + "-" + fieldLengths.lengths.eventAddressStreetAddressMax + " characters long"
+            return failed("eventAddress", msg);
         }
         return "";
     },
