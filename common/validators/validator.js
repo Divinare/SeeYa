@@ -22,10 +22,16 @@ module.exports = {
         we could do, but this should be enough for now.
         */
         var re = /\S+@\S+\.\S+/;
+        var errorMessages = []
         if( !re.test(email) ){
-            return failed("userEmailFormat", customMessage);
+            errorMessages.push(errorMessage.getError('userEmailFormat', customMessage));
         }
-        return '';
+        if( email.length > fieldLengths.lengths.userEmailMax ){
+            errorMessages.push(errorMessage.getError('userEmailTooLong', customMessage));
+        }else if( email.length < fieldLengths.lengths.userEmailMin ){
+            errorMessages.push(errorMessage.getError('userEmailTooShort', customMessage));
+        }
+        return errorMessages;
     },
 
     matchPasswords: function(params, customMessage){
@@ -224,5 +230,38 @@ module.exports = {
         } else {
             return failed("eventTimestamp", customMessage);
         }
-    }
+    },
+
+     validateField: function(func, params, fields, errorFields, message) {
+        var errorArr = func(params, message);
+
+        if( errorArr.constructor !== Array ){   
+            //the function we called only returned error message, not an array of messages
+            //put the message into an array, so the rest of this function works correctly
+            if(utils.notEmpty(errorArr)){
+                var tempArr = [];
+                tempArr.push(errorArr);
+                errorArr = tempArr;
+            }
+        }
+        console.log("errorarr: ")
+        console.log(errorArr)
+
+        // Validation failed
+        if( errorArr.length > 0 ) {
+            for(var i = 0; i < fields.length; i++){
+                $("#" + fields[i]).addClass('invalid')
+                var errorText = errorArr.join('<br/>')
+                $("#" + errorFields[i]).html(errorText);
+            }
+            return false;
+        } else {
+            for(var i = 0; i < fields.length; i++){
+                $("#" + fields[i]).removeClass('invalid')
+                 // Clear the error message if it exists
+                $("#" + errorFields[i]).text("");
+            }
+            return true;
+        }
+    },
 }
