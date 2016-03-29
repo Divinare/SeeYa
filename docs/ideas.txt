@@ -44,11 +44,14 @@ List ideas here that arent implented yet:
 
 
 
+scrollbar?
+http://muaz-khan.github.io/Everything/CSS3/scroll-bar/
 
+text reflect?
+http://muaz-khan.github.io/Everything/CSS3/box-reflect/
 
-
-
-
+slide down effect, can be used for example to messageComponent:
+https://dashingquill.wordpress.com/2011/08/16/javascript-and-css3-only-sliding-updown-transition-effects/
 
 
 

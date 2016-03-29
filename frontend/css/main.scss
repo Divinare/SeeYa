@@ -100,6 +100,19 @@ img{
     display: none !important;
 }
 
+#messageComponent {
+    z-index: 9999;
+    position: absolute;
+    display: none;
+    text-align: center;
+    vertical-align:middle;
+    color: #FFF;
+    top: 60px;
+    left: 50px;
+    background-color: rgba(0,0,0,0.55);
+    height: 60px;
+}
+
 /***********************/
 /*       DESKTOP       */
 /***********************/
