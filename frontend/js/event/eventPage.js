@@ -86,6 +86,7 @@ const EventPage = React.createClass({
     handleRemove: function(){
         var that = this;
         var deleteConfirmed = confirm("Are you sure you want to delete the event?")
+
         var eventToRemove = this.state.event;
         if(deleteConfirmed){
             var success = function(){

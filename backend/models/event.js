@@ -13,6 +13,9 @@ module.exports = function(sequelize, DataTypes) {
         timestamps: true,
         classMethods: {
             associate: function(models) {
+                Event.belongsTo(models.User, {
+                    foreignKey: 'creator'
+                });
                 Event.belongsTo(models.Address);
                 Event.belongsTo(models.Category);
                 Event.hasMany(models.Attendance, {

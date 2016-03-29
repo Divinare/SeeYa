@@ -7,6 +7,15 @@ module.exports = function(sequelize, DataTypes) {
     email: { type:DataTypes.STRING, allowNull: false, unique: true},
     salt: { type:DataTypes.STRING(260), allowNull: false}
 
+  },{
+        timestamps: true,
+        classMethods: {
+            associate: function(models) {
+                User.hasMany(models.Event,{
+                    foreignKey: 'creator'
+                });
+            }
+        }
   });
 
   return User;

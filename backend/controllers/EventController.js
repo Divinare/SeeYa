@@ -6,6 +6,8 @@ var Validator = require("../../common/validators/validator.js")
 var models  = require('../models');
 var helper = require("../helpers/helper.js")
 var CategoryService = require('../services/CategoryService.js');
+var UserService = require('../services/UserService.js');
+var utils = require("../../common/utils.js")
 
 module.exports = {
 
@@ -73,7 +75,13 @@ module.exports = {
                     helper.sendErr(res, 400, "Category by name " + eventToAdd.category + " not found.");
                 } else {
                     console.log("FOUND CATEGORY, GONNA CREATE THE EVENT")
-                    createEvent(req, res, category);
+                    var success = function(user){
+                        createEvent(req, res, category, user);
+                    }
+                    var error = function(err){
+                        createEvent(req, res, category, null);
+                    }
+                    UserService.getLoggedInUser(req, res, success, error);
                 }
             });
         } else {
@@ -175,7 +183,7 @@ function findCategory(categoryName) {
     });
 }
 
-function createEvent(req, res, category) {
+function createEvent(req, res, category, user) {
     var eventToAdd = req.body;
     models.Address.findOrCreate({where: {
         streetAddress: eventToAdd.address.streetAddress,
@@ -185,17 +193,27 @@ function createEvent(req, res, category) {
     }
 
     }).spread(function(address, created){
+                   // description: eventToAdd.description,
+                   console.log("description: " + eventToAdd.description)
+                   console.log("description length: " + eventToAdd.description.length)
+        var description = null;
+        if(utils.notEmpty(eventToAdd.description)){
+            description = eventToAdd.description;
+        }
+
         models.Event.create({
             name: eventToAdd.name,
-            description: eventToAdd.description,
             lat: eventToAdd.lat,
             lon: eventToAdd.lon,
+            description: description,
             timestamp: eventToAdd.timestamp,
             CategoryId: category.id
             //requiresRegistration = eventToAdd.requiresRegistration,
             //maxAttendees = eventToAdd.maxAttendees
             }).then(function(event) {
                 event.setAddress(address)
+                console.log("user: " + user)
+                event.setUser(user)     //this should say setCreator instead of setUser, but seems to work only this way, change it if you know how!
                 console.log(event.name + ' created successfully');
                 res.send(event); 
             }).catch(function(err){
