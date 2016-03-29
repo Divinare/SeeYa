@@ -1,4 +1,5 @@
 var URL = require('./url.js');
+var messageComponent = require('./messageComponent.js');
 
 //bootstrap break points
 var extraSmallScreenMaxWidth = 768;  
@@ -71,6 +72,10 @@ module.exports = {
             isMobile = true;
         }
         return isMobile;
+    },
+
+    showMessageComponent: function(message, displayTime, type) {
+    	messageComponent.showMessageComponent(message, displayTime, type);
     }
 
 };

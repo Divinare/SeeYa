@@ -10,12 +10,16 @@ const About = React.createClass({
 
 	},
 
+	show: function() {
+		window.UTILS.helper.showMessageComponent("Event was created succesfully!", 3000, "success");
+	},
+
 	render: function(){
 	
 
 		return (
 			<div className='right-container'>
-				<img className="imghomeicon" src="assets/savimaja.png" alt="cleyhouse" />
+				<img className="imghomeicon" src="assets/savimaja.png" alt="cleyhouse" onClick={this.show} />
 				<br />
 				<br />
 				<br />

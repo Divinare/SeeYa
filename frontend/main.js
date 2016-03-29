@@ -170,9 +170,8 @@ const Main = React.createClass({
 
         return (
             <div className="application">
-
                 <Navbar loginStatusPending={that.state.loginStatusPending} username={that.state.username}/>
-
+                <div id="messageComponent"></div>
                 <div className="content">
                     <Map
                         eventList={this.state.eventList}
