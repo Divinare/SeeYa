@@ -1,0 +1,12 @@
+
+/*
+We can save any useful sql queries here. These can be used if you don't want to use
+the seedsdb for some reason or if you need to delete some stuff from db or if there is a 
+need to execute some complex queries.
+*/
+
+//INSERTING CATEGORIES:
+
+insert into "Categories" (id, name, "createdAt", "updatedAt")
+VALUES (1, 'Sports', current_timestamp, current_timestamp),
+(2, 'Beer', current_timestamp, current_timestamp)

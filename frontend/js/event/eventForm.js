@@ -16,9 +16,17 @@ var componentForm = ['street-address', 'country-name', 'postal-code'];
 import { browserHistory } from 'react-router';
 
 const EventForm = React.createClass({
+	/*childContextTypes: {
+    	location: React.PropTypes.object
+  	},
+
+  	getChildContext: function() {
+    	return { location: this.props.location }
+  	},*/
 
     getInitialState: function() {
 	    return {
+	    	event: null,
 	    	name: "",
 	    	address: {},
 	    	latLng: [],
@@ -69,12 +77,16 @@ const EventForm = React.createClass({
 	},
                 
 	componentDidMount: function() {
+		var that = this;
 		this.props.handleResize();
 		if(this.isEditForm()){
 			console.log("editform")
-			this.autoFillEventDetails();
+			var error = function(){
+				//there was an error fetching the event, maybe it has been deleted. For now just redirect to home page
+				browserHistory.push('/')	
+			}
+			UTILS.rest.getEntry('event', that.props.params.id, that.autoFillEventDetails, error);
 		}
-		var that = this;
 
 		// TODO LINK:
 		// http://stackoverflow.com/questions/7865446/google-maps-places-api-v3-autocomplete-select-first-option-on-enter
@@ -97,8 +109,13 @@ const EventForm = React.createClass({
     },
 
     isEditForm: function(){
-		console.log(this.props.location.query);
-		return this.props.location.query.edit; //this.getQuery().edit;
+    	var path = this.props.location.pathname;
+    	console.log(path)
+    	console.log("PARAMS: ")
+    	console.log(this.props.params)
+    	console.log("props: ")
+    	console.log(this.props)
+		return path.indexOf('edit') > -1
 	},
 
 
@@ -155,7 +172,6 @@ const EventForm = React.createClass({
 
 	codeAddressFromLatLng: function(latLng) {
 		var that = this;
-
 		geocoder.geocode({'location': latLng}, function(results, status) {
 			if (status === google.maps.GeocoderStatus.OK) {
 				if (results[1]) {
@@ -229,8 +245,20 @@ const EventForm = React.createClass({
 	},
 
 	// Called when editing event
-	autoFillEventDetails: function() {
-		var event = this.getQuery().event;
+	autoFillEventDetails: function(event) {
+		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
+		var time = moment.format("HH:mm");
+		//var date = moment.format("DD.MM.YYYY")
+		this.setState({
+			event: event,
+			name: event.name,
+			time: time,
+			date: moment,
+			description: event.description,
+			selectedCategory: event.Category.name
+
+		})
+		/*var event = this.getQuery().event;
 		//var dateInput = document.querySelectorAll(".datepicker__input")[0]
 
 		address = {
@@ -239,14 +267,14 @@ const EventForm = React.createClass({
 			zipCode: event.ZipCode,
 		}
 
-		/*console.log("EVENT");
+		console.log("EVENT");
 		console.log(event);
 		console.log("EVENT ADDRESS")
 		console.log(event.Address)
 		console.log(event.Address.streetAddress)
 		console.log(event.Country);
 		console.log(event.ZipCode);
-		*/
+		
 
 		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
 		var time = moment.format("HH:mm");
@@ -261,7 +289,7 @@ const EventForm = React.createClass({
 			time: time,
 			description: event.description
 		})
-
+*/
 	},
 
 	/*** DATE ***/
@@ -442,17 +470,18 @@ const EventForm = React.createClass({
 	},
 
 	render: function(){
+		var that = this;
 
 		return (
 			<div className='right-container'>
-				<h1 className="centeredHeader">Create new event</h1>
+				<h1 className="centeredHeader">{that.getEditOrCreateTitle()}</h1>
 
 				<div className='form' id="eventForm">
 
 					{/* Name */}
 					<div className='form-group'>
 						<span>Name *</span>
-						<input type='text' className='form-control' id='name' onChange={this.handleChange('name')} />
+						<input type='text' className='form-control' id='name' value={this.state.name} onChange={this.handleChange('name')} />
 					</div>
 					<span className="validationError" id="nameError"></span>
 
@@ -488,7 +517,7 @@ const EventForm = React.createClass({
 					<div className='form-group'>
 						<span>Time *</span>
 						<div className='input-group'>
-							<input type='text' className='form-control' id='time' onChange={this.handleChange("time")} placeholder="hh:mm" />
+							<input type='text' className='form-control' id='time' value={this.state.time} onChange={this.handleChange("time")} placeholder="hh:mm" />
 							<span className="input-group-btn">
 								 <button className="btn btn-default" type="button" onClick={this.setCurrentTime}><i className="glyphicon glyphicon-time"></i></button>
 							</span>
@@ -510,7 +539,7 @@ const EventForm = React.createClass({
 					{/* Description */}
 					<div className='form-group'>
 						<span>Description *</span>
-						<input type='text' className='form-control' id='description' onChange={this.handleChange('description')}/>
+						<input type='text' className='form-control' id='description' value={this.state.description} onChange={this.handleChange('description')}/>
 					</div>
 					<span className="validationError" id="descriptionError"></span>
 

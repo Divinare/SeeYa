@@ -16,7 +16,8 @@ const EventPage = React.createClass({
             
         return {
              event: null,
-             showModal: false
+             showModal: false,
+             editingAllowed: false
         };
 
     },
@@ -54,10 +55,17 @@ const EventPage = React.createClass({
                 that.setState({
                     event: data
                 })
+                var user = that.props.getAppStatus('user')
+                if( user !== null && data.creator === user.id) {
+                    that.setState({
+                        editingAllowed: true
+                    })
+                }
             }
         };
         var onError = function() {
             console.log("Error on fetching event!");
+            browserHistory.push('/');   //TODO ADD NOTIFICATION TO THE USER SAYING THE EVENT WAS NOT FOUND
         }
         console.log("GETTING EVENT: " + eventId);
         UTILS.rest.getEntry('event', eventId, onSuccess, onError);
@@ -227,11 +235,14 @@ const EventPage = React.createClass({
                     <div>modal was here T. joe</div>
 
                     <br />
+                    { that.state.editingAllowed ? 
                     <div className="btn-group">
                         {this.createEditButton()}
                         { peopleAttending > 0 ? btn : ''}
                         <button className="btn btn-danger" onClick={that.handleRemove}>Delete</button>
-                    </div>
+                    </div> : 
+                    ''
+                    }
 
                 </div>
                 <div >

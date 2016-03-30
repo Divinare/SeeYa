@@ -64,7 +64,7 @@ const Main = React.createClass({
             eventListData: eventListData,
             newEventMarker: null,
             markers: [],
-            username:'',
+            user:null,
             loginStatusPending: true
         };
 
@@ -81,13 +81,13 @@ const Main = React.createClass({
             console.log("is logged in");
             console.log(result)
             that.setState({
-                username: result.user.username,
+                user: result.user,
                 loginStatusPending: false
             })
         }
         var error = function(){
             that.setState({
-                username: '',
+                user: null,
                 loginStatusPending: false
             })
             console.log("is not logged in");
@@ -151,6 +151,10 @@ const Main = React.createClass({
         this.setState(state);
     },
 
+    getAppStatus: function(propName){
+        return this.state[propName];
+    },
+
     render: function() {
         var that = this;
         var showFrontpage = this.state.showFrontpage;
@@ -164,13 +168,14 @@ const Main = React.createClass({
                 newEventMarker: that.state.newEventMarker,
                 handleResize: that.handleResize,
                 updateAppStatus: that.updateAppStatus,
+                getAppStatus: that.getAppStatus,
                 getEvents: that.getEvents
             })
         });
 
         return (
             <div className="application">
-                <Navbar loginStatusPending={that.state.loginStatusPending} username={that.state.username}/>
+                <Navbar loginStatusPending={that.state.loginStatusPending} user={that.state.user}/>
                 <div id="messageComponent"></div>
                 <div className="content">
                     <Map

@@ -13,6 +13,7 @@ router.get('/events', EventCtrl.findAll);
 router.get('/filteredEvents/:category/:fromTimestamp/:toTimestamp', EventCtrl.filterEvents);
 router.get('/attendances', AttendanceCtrl.findAll);
 router.get('/categories', CategoryCtrl.findAll);
+
 router.get('/isloggedin', SessionCtrl.isLoggedIn);
 router.get('/logout', SessionCtrl.logout);
 

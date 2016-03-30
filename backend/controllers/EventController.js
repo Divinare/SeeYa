@@ -6,7 +6,7 @@ var Validator = require("../../common/validators/validator.js")
 var models  = require('../models');
 var helper = require("../helpers/helper.js")
 var CategoryService = require('../services/CategoryService.js');
-var UserService = require('../services/UserService.js');
+var userService = require('../services/UserService.js');
 var utils = require("../../common/utils.js")
 
 module.exports = {
@@ -17,11 +17,16 @@ module.exports = {
             where: { id: eventId },
             include: [ models.Address,
                       models.Attendance,
-                      models.Category ]
+                      models.Category,
+                      models.User ] //creator of the event
 
         })
         .then(function (event) {
             if(event){
+                if( typeof event.User !== 'undefined' && event.User !== null){
+                    delete event.User.dataValues.password
+                    delete event.User.dataValues.salt
+                }
                 res.send(event);
             }else{
                 //means not found. Usually if the web page is not found, but should be suitable in this situation as well
@@ -81,7 +86,7 @@ module.exports = {
                     var error = function(err){
                         createEvent(req, res, category, null);
                     }
-                    UserService.getLoggedInUser(req, res, success, error);
+                    userService.getLoggedInUser(req, res, success, error);
                 }
             });
         } else {
@@ -89,55 +94,154 @@ module.exports = {
         }
     },
 
-    //TODO: add check that the user is signed in and the creator of the event
     update: function (req, res) {
         var controlId = req.params.id;
         var eventToModify = req.body;
-       // var requiredProps = ['name', 'description',]
-        models.Address.findOrCreate({
-            where: {
-                streetAddress: eventToModify.address.streetAddress,
-                country: eventToModify.address.country,
-                city: eventToModify.address.city,
-                zipCode: eventToModify.address.zipCode
-            }
-        }).spread(function(address, created){
-           models.Event.findOne({
+
+        //called if the user is not logged in or 
+        var notAuthorized = function(error){
+            helper.sendErr(res, 401, {message: 'Not authorized'});
+        }
+
+        //main logic here
+        var success = function(user){
+            models.Event.findOne({
                 where: { id: controlId}
             }).then(function( event) {
-                event.setAddress(address)
-                event.name = req.body['name'];
-                event.description = req.body['description']
-                event.lat = req.body['lat']
-                event.lon = req.body['lon']
-                event.timestamp = req.body['timestamp']
-                //  event.requiresRegistration = req.body['requiresRegistration']
-                event.save().then(function(savedEvent) {      //check that the saved event variable works
-                    res.status(200).send(savedEvent);
-                }).catch(function(err){
-                    helper.sendErr(res, 400, err);
-                })
+                if(user !== null && event.get('creator') === user.get('id')){
+                    models.Address.findOrCreate({
+                        where: {
+                            streetAddress: eventToModify.address.streetAddress,
+                            country: eventToModify.address.country,
+                            city: eventToModify.address.city,
+                            zipCode: eventToModify.address.zipCode
+                        }
+                    }).spread(function(address, created){
+                        event.setAddress(address)
+                        event.name = req.body['name'];
+                        event.description = req.body['description']
+                        event.lat = req.body['lat']
+                        event.lon = req.body['lon']
+                        event.timestamp = req.body['timestamp']
+                        //  event.requiresRegistration = req.body['requiresRegistration']
+                        event.save().then(function(savedEvent) {      //check that the saved event variable works
+                            res.status(201).send(savedEvent);
+                        }).catch(function(err){
+                            helper.sendErr(res, 400, err);
+                        })
+
+                    }).catch(function(err){
+                        //Something wrong in creating or getting the address if we end up here
+                        helper.sendErr(res, 400, err);
+                    });
+                }else{  //The logged in user has not created the event
+                    notAuthorized();
+                }
             }).catch(function(err){
                 helper.sendErr(res, 400, err);
             });
-        }).catch(function(err){
-            helper.sendErr(res, 400, err);
-        });
+        }
+
+
+        userService.getLoggedInUser(req, res, success, notAuthorized);
     },
 
-    //TODO: add check that the user is signed in and the creator of the event
+/*
+    update: function (req, res) {
+        var controlId = req.params.id;
+        var eventToModify = req.body;
+        var success = function(user){
+            //TODO load first the event, and check that the user has created it.
+
+
+                   // var requiredProps = ['name', 'description',]
+            models.Address.findOrCreate({
+                where: {
+                    streetAddress: eventToModify.address.streetAddress,
+                    country: eventToModify.address.country,
+                    city: eventToModify.address.city,
+                    zipCode: eventToModify.address.zipCode
+                }
+            }).spread(function(address, created){
+               models.Event.findOne({
+                    where: { id: controlId}
+                }).then(function( event) {
+                    event.setAddress(address)
+                    event.name = req.body['name'];
+                    event.description = req.body['description']
+                    event.lat = req.body['lat']
+                    event.lon = req.body['lon']
+                    event.timestamp = req.body['timestamp']
+                    //  event.requiresRegistration = req.body['requiresRegistration']
+                    event.save().then(function(savedEvent) {      //check that the saved event variable works
+                        res.status(200).send(savedEvent);
+                    }).catch(function(err){
+                        helper.sendErr(res, 400, err);
+                    })
+                }).catch(function(err){
+                    helper.sendErr(res, 400, err);
+                });
+            }).catch(function(err){
+                helper.sendErr(res, 400, err);
+            });
+        }
+        var notAuthoriced = function(error){
+            helper.sendErr(res, 400, {message: 'Not authorized'});
+        }
+        userService.getLoggedInUser(req, res, success, notAuthoriced);
+
+    },*/
+
     delete: function(req, res){
+         console.log("")
+         console.log("")
+         console.log("")
+         console.log("")
+         console.log("")
+        console.log("AT DELETE EVENT")
+        //called if the user is not logged in or 
+        var notAuthorized = function(error){
+            helper.sendResponse(res, 401, {message: 'Not authorized'});
+        }
+
+        //main logic here
+        var success = function(user){
+            if( user!= null ){
+                var eventId = req.params.id;
+                models.Event.findOne({
+                    where: { id: eventId}
+                }).then(function( event ) {
+                    if( event.get('creator') === user.id){
+                        event.destroy().then(function(){
+                            res.status(200).send();
+                        }).catch(function(err){
+                            helper.sendResponse(res, 400, err);
+                        });
+                    }else{  //user hasn't created this event
+                        notAuthorized();
+                    }
+                })
+            }else{  //not logged in at all
+                notAuthorized();
+            }
+        }
+        userService.getLoggedInUser(req, res, success, notAuthorized);
+
+
+
+/*
         var eventId = req.params.id;
         models.Event.destroy({
             where: {
-            id: eventId
+                id: eventId
             }
         }).then(function(){
             res.status(200).send();
         }).catch(function(err){
             helper.sendErr(res, 400, err);
-        });
-    }
+        });*/
+
+    },
 
    /* sendErr: function(statusCode, err){
         res.status(statusCode).send(err.message);
@@ -193,9 +297,6 @@ function createEvent(req, res, category, user) {
     }
 
     }).spread(function(address, created){
-                   // description: eventToAdd.description,
-                   console.log("description: " + eventToAdd.description)
-                   console.log("description length: " + eventToAdd.description.length)
         var description = null;
         if(utils.notEmpty(eventToAdd.description)){
             description = eventToAdd.description;

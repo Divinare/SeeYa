@@ -14,11 +14,17 @@ module.exports = React.createClass({
             var success = function(result){
                 console.log( "success!!!" );
                 console.log( result );
-                that.props.updateAppStatus('username', '');
+                that.props.updateAppStatus('user', null);
+                that.deleteCookie('seeyaSession')
                 browserHistory.push('/');
             };
         UTILS.rest.logout(success, error);
     },
+
+    deleteCookie: function(name){
+        document.cookie = name + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+    },
+
     toggleShowEventForm: function() {
         this.props.toggleShowEventForm();
     },

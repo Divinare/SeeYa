@@ -43,9 +43,9 @@ module.exports = React.createClass({
 
                         { !this.props.loginStatusPending ? 
                             <div className="navbar-right-container">
-                                { (this.props.username !== '') ? 
+                                { (this.props.user !== null) ? 
                                     <div>
-                                        <li className="navbar-desktop-element">{this.props.username}</li> 
+                                        <li className="navbar-desktop-element">{this.props.user.username}</li> 
                                         <li className="navbar-desktop-element"><Link to="/logout">Logout</Link></li>
                                     </div>
                                     :
@@ -66,7 +66,7 @@ module.exports = React.createClass({
                         <li><Link to="/about" onClick={this.closeNavbar}>About</Link></li>
                         <li><Link to="/eventForm" onClick={this.closeNavbar}>New event</Link></li>
 
-                        { (this.props.username !== '') ? 
+                        { (this.props.user !== null) ? 
                             <div>
                                 <li><Link to="/logout">Logout</Link></li>
                             </div>

@@ -63,7 +63,7 @@ const About = React.createClass({
             var success = function(result){
                 console.log( "success!!!" );
                 console.log( result );
-                that.props.updateAppStatus('username', result.user.username);
+                that.props.updateAppStatus('user', result.user);
                 browserHistory.push('/');
             };
             $("#serverErrorDiv").hide(200);

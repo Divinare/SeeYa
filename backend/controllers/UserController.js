@@ -7,6 +7,7 @@ var validator = require("../../common/validators/validator.js")
 var errorMessages = require("../../common/validators/errorMessage.js")
 var utils = require("../../common/utils.js")
 var crypto = require('crypto');
+var userService = require('../services/UserService.js');
 
 module.exports = {
 
@@ -14,7 +15,6 @@ module.exports = {
         var userId = req.params.id;
         models.User.findOne({
             where: { id: userId },
-
         })
         .then(function (user) {
         }).catch(function(err){
@@ -58,7 +58,6 @@ module.exports = {
             helper.sendErr(res, 400, {"message": "Unknown error in creating a user, please try again and report the error to the administrator if the error persists"});
         }
 
-
         models.User.findOne({
             where: { email: userEmail }
         })
@@ -97,5 +96,41 @@ module.exports = {
         if(errorArr.length > 0){
             array.concat(errorArr);
         }
-    }
+    },
 };
+
+
+
+  /* findUserEvents: function(req, res){
+        var findEvents = function(user){
+            models.User.findOne({
+            where: { email: user.email },
+                include: [ models.Event ]  //events the user has created
+            }).then(function (user) {
+                console.log("user");
+                console.log(user);
+                console.log('')
+                console.log('')
+                console.log('')
+                console.log('')
+                console.log("EVENTS")
+                var events = user.Events;
+                console.log(user.Events);
+
+                console.log('')
+                console.log('')
+                console.log('')
+                console.log('')
+                console.log("EVENT NAMES")
+                console.log(events[0].get('name'))
+                console.log(events[1].get('name'))
+                res.status(200).send(events);
+            });
+        }
+        var error = function(err){
+            console.log("user is not logged in");
+            helper.sendErr(res, 401, err);
+        }
+        userService.getLoggedInUser(req, res, findEvents, error);
+
+    },*/
