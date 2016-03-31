@@ -16,9 +16,15 @@ const errors = {
     eventName: "Name must be 3-30 characters long.",
     eventAddress: "Address incorrect. Did you select it from the list of address suggestions?",
     eventLatLng: "Coordinates for address doesn't exist. Put a marker on the map",
-    eventDate: "Wrong date format. The correct one is DD:MM:YYYY, for example 25.06.2016",
+    eventDate: "Date cannot be left empty.",
+    eventDateWrongFormat: "Wrong date format. The correct one is DD:MM:YYYY, for example 25.06.2016",
+    eventDateWrongFormat: "Wrong date format. The correct one is DD:MM:YYYY, for example 25.06.2016",
+    eventDateMaxLimit: "Date can be max one year in the future.",
+
     eventCategory: "Category error",
-    eventTime: "Wrong time format. The correct one is hh:mm, for example 17:30",
+    eventTime: "Time cannot be left empty.",
+    eventTimeFormat: "Wrong time format. The correct one is hh:mm, for example 17:30",
+    eventTimeFuture: "Time needs to be in the future",
     eventDescription: "Description can be max 500 characters long.",
     eventTimestamp: "Timestamp must be in the future."
 }

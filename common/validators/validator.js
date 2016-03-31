@@ -70,28 +70,16 @@ module.exports = {
     /*** EVENT ***/
 
     validateEventName: function(name, customMessage) {
-        console.log("At validate name! " + name.length);
         if(name.length < fieldLengths.lengths.eventNameMin || name.length > fieldLengths.lengths.eventNameMax) {
             return failed("eventName", customMessage);
         }
         return "";
     },
     validateEventAddress: function(address, customMessage) {
-        console.log("at validateAddress");
-        console.log("at validateAddress");
-        console.log("at validateAddress");
-        console.log("at validateAddress");
-        console.log("at validateAddress");
-
-
 
         if(address == null || typeof address == "undefined") {
             return failed("eventAddress", customMessage);
         }
-
-        console.log(address.streetAddress)
-        console.log(address.country)
-        console.log(address.zipCode)
 
         if(utils.notEmpty(address.country)) {
             if(address.country.length > fieldLengths.lengths.eventAddressCountryMax) {
@@ -114,8 +102,8 @@ module.exports = {
         return "";
     },
     validateEventLatLng: function(latLng, customMessage) {
-        console.log("at validate LatLng");
-        console.log(latLng);
+        // TODO: LAT LNG VALIDATION, you shouldnt be able to send something like 123x,asd
+
         if(utils.isEmpty(latLng)) {
             return failed("eventLatLng", customMessage);
         }
@@ -123,31 +111,44 @@ module.exports = {
     },
     validateEventDate: function(unixTimestamp, customMessage) {
         
+        var maxDaysInTheFuture = 365;
         if(utils.isEmpty(unixTimestamp)) {
-            return failed("eventDate", "Invalid date format, the correct format is DD.MM.YYYY");
+            return failed("eventDate","");
         }
         if(isNaN(unixTimestamp)) {
-            return failed("eventDate", "Invalid date format, the correct format is DD.MM.YYYY");
+            return failed("eventDateWrongFormat", "");
         }
         if(unixTimestamp <= 0) {
-            return failed("eventDate", "Invalid date format, the correct format is DD.MM.YYYY");
+            return failed("eventDateWrongFormat", "");
         }
         var dateNow = new Date();
         var date = new Date(unixTimestamp);
 
         var dateIsTodayOrInTheFuture = false;
-        if(date.getFullYear() >= dateNow.getFullYear()) {
-            if(date.getMonth()+1 >= dateNow.getMonth()+1) {
+ 
+        if(date.getFullYear() > dateNow.getFullYear()) {
+            dateIsTodayOrInTheFuture = true;
+        } else if(date.getFullYear() == dateNow.getFullYear()) {
+            if(date.getMonth()+1 > dateNow.getMonth()+1) {
+                dateIsTodayOrInTheFuture = true;
+            }
+        } else if(date.getFullYear() == dateNow.getFullYear()) {
+            if(date.getMonth()+1 == dateNow.getMonth()+1) {
                 if(date.getDate() >= dateNow.getDate()) {
                     dateIsTodayOrInTheFuture = true;
                 }
             }
-
         }
-        if(dateIsTodayOrInTheFuture) {
+
+        var timeDiff = Math.abs(date.getTime() - dateNow.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        if(dateIsTodayOrInTheFuture && diffDays < maxDaysInTheFuture) {
             return "";
+        } else if(!dateIsTodayOrInTheFuture) {
+            return failed("eventDate", "Date needs to to be in the future (<=" + dateNow.getDate() + "." + (dateNow.getMonth()+1) + "." + dateNow.getFullYear() + ").");
         } else {
-            return failed("eventDate", "Date needs to be in the future (>=" + dateNow.getDate() + "." + (dateNow.getMonth()+1) + "." + dateNow.getFullYear() + ")");
+            return failed("eventDateMaxLimit", "");
         }
         return "";
     },
@@ -162,14 +163,14 @@ module.exports = {
         var dateTimestamp = params[1];
 
         if(utils.isEmpty(time)) {
-            return failed("eventTime", "Time cannot be left empty.");
+            return failed("eventTime", "");
         }
 
         // Validate syntax
         var timeRegex = new RegExp("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
         var validTimeFormat = timeRegex.test(time);
         if(!validTimeFormat) {
-            return failed("eventTime", customMessage);
+            return failed("eventTimeFormat", customMessage);
         }
 
         // Validate that if the date has the same day as now, time is valid
@@ -200,7 +201,7 @@ module.exports = {
                 }
             }
             if(!timeInFuture) {
-                return failed("eventTime", "Time needs to be in the future");
+                return failed("eventTimeFuture", "");
             }
         }
 
@@ -218,13 +219,7 @@ module.exports = {
 
     validateEventTimestamp: function(timestamp, customMessage) {
 
-        console.log("at validateEventTimestamp! @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-
         var timestampNow = Date.parse(new Date());
-
-        console.log(timestamp);
-        console.log(timestampNow);
-
 
         if(timestamp > timestampNow) {
             return ""; 
