@@ -101,12 +101,7 @@ const EventForm = React.createClass({
 
 	// Called when a field is changed
 	handleChange: function(key) {
-		console.log("AT HANDLE CHAGE");
-
-
-
        return function (e) {
-       	console.log(e.target.value);
 	       var state = {};
 	       state[key] = e.target.value;
 	       this.setState(state);

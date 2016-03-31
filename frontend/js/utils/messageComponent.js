@@ -8,6 +8,14 @@ function showMessageComponent(message, displayTime, type) {
 
 	msgComponent.text(message);
 
+	if(type == "success") {
+    	msgComponent.css("background-color", "rgba(4,125,4,0.55)");
+	} else if(type == "error") {
+    	msgComponent.css("background-color", "rgba(150,0,0,0.55)");
+	} else {
+    	msgComponent.css("background-color", "rgba(0,0,0,0.55)");
+	}
+
 	if(UTILS.styleHelper.isTablet()) {
 		width = window.innerWidth - 65;
 	} else {
@@ -18,7 +26,7 @@ function showMessageComponent(message, displayTime, type) {
 		width -= messageComponentMargin;
 	}
 	msgComponent.css("width", width);
-	msgComponent.show(1000);
+	msgComponent.show(800);
 
 	hideComponent(msgComponent, displayTime);
 }

@@ -11,7 +11,7 @@ const About = React.createClass({
 	},
 
 	show: function() {
-		window.UTILS.helper.showMessageComponent("Event was created succesfully!", 3000, "success");
+		window.UTILS.helper.showMessageComponent("Event was created succesfully!", 3000, "error");
 	},
 
 	render: function(){
