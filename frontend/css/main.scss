@@ -31,13 +31,15 @@ img{
 }
 
 .right-container {
-    color: #FFF;
+    /* color: #FFF; */
+    color: #4E4E4E;
     z-index: 99;
     padding: 40px;
     width: 400px;
     top: 60px;
     height: 100%;
-    background-color: rgba(0,0,0,0.55);
+    /*background-color: rgba(0,0,0,0.55);*/
+    background-color: rgba(228,228,228,0.55);
     overflow-y: auto;
 }
 
@@ -61,8 +63,8 @@ img{
 
 .link {
     cursor: pointer;
-    color: #FFFFFF;
-    /*color: #33b78e; */
+    /*color: #FFFFFF; */
+    color: #4E4E4E;
 }
 
 .link:hover { 
@@ -109,7 +111,6 @@ img{
     color: #FFF;
     top: 60px;
     left: 50px;
-    background-color: rgba(0,0,0,0.55);
     height: 60px;
 }
 
