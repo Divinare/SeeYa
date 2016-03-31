@@ -30,7 +30,7 @@ const EventForm = React.createClass({
 	    	name: "",
 	    	address: {},
 	    	latLng: [],
-	    	date: Moment(),
+	    	date: Moment(), // unix_timestamp
 	    	selectedDay: null,
 	    	selectedCategory: "", //TODO: get the default category from backend
 	    	time: "",
@@ -96,11 +96,17 @@ const EventForm = React.createClass({
 		if(this.state.categories.length == 0) {
 			this.fetchCategories();
 		}
+		this.setDateFieldPlaceHolder();
 	},
 
 	// Called when a field is changed
 	handleChange: function(key) {
+		console.log("AT HANDLE CHAGE");
+
+
+
        return function (e) {
+       	console.log(e.target.value);
 	       var state = {};
 	       state[key] = e.target.value;
 	       this.setState(state);
@@ -282,10 +288,47 @@ const EventForm = React.createClass({
 	/*** DATE ***/
 
     handleNewDateChange: function(timestamp) {
+    	if(timestamp == "Invalid date") {
+
+    		timestamp = this.readDateFromInputField(timestamp);
+    	}
     	var moment = Moment(timestamp, "x")
 	    this.setState({
 	       date: moment
 	    });
+    },
+
+    readDateFromInputField: function(timestamp) {
+		var val = document.getElementsByClassName("dateInputField")[0].getElementsByClassName("form-control")[0].value;
+		if(val.length == 0) {
+		    return "";
+		}
+		var parts = [];
+		if(val.indexOf('/') !== -1) {
+			parts = val.split('/');
+		} else if(val.indexOf('.') !== -1) {
+			parts = val.split('.');
+		} else if(val.indexOf(':') !== -1) {
+			parts = val.split(':');
+		} else {
+			return "";
+		}
+		var date = parseInt(parts[0]);
+		var month = parseInt(parts[1]);
+		var year = parseInt(parts[2]);
+		function isInt(value) {
+		  return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
+		}
+		if(!isInt(date) || !isInt(month) || !isInt(year)) {
+			return "";
+		}
+		var dateString = date + "-" + month + "-" + year;
+		return Moment(dateString, "DD-MM-YYYY");
+    },
+
+    setDateFieldPlaceHolder: function() {
+    	var inputField = document.getElementsByClassName("dateInputField")[0].getElementsByClassName("form-control")[0];
+    	inputField.placeholder = "DD:MM:YYYY";
     },
 
 	/*** CATEGORY ***/
@@ -361,7 +404,12 @@ const EventForm = React.createClass({
 		var address = this.state.address;
 		// Override current streetAddress with the one in address input field
 		address.streetAddress = document.getElementById("address").value;
+
 		var dateTimestamp = this.state.date.unix()*1000;
+		var dateInputFieldVal = document.getElementsByClassName("dateInputField")[0].getElementsByClassName("form-control")[0].value;
+		if(dateInputFieldVal.length == 0) {
+			dateTimestamp = "";
+		}
 		var category = this.state.selectedCategory;
 		var time = this.state.time;
 		var description = this.state.description;
@@ -418,8 +466,6 @@ const EventForm = React.createClass({
 		} else{
 			success = function(createdEventData) {
 		    	addMissingEventFields(createdEventData);
-					console.log("REMOVING MARKER : success");
-
 				if(that.props.newEventMarker != null && !$.isEmptyObject(that.props.newEventMarker)) {
 			    	that.props.newEventMarker.setMap(null);
 			    	that.props.updateAppStatus('newEventMarker', null);
@@ -427,8 +473,6 @@ const EventForm = React.createClass({
 		        //that.props.addEventToFilteredEventList(createdEventData);
 		        moveOn();
 			};
-			console.log("Adding EVENT::::::::");
-			console.log(eventData);
 			UTILS.rest.addEntry('event', eventData, success, error);
 		}
 	},
