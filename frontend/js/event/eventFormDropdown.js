@@ -21,9 +21,13 @@ var EventFormDropdown = React.createClass({
     },
 
     select: function(item) {
-        this.props.selectCategory(item);
+        this.selectNoToggle(item);
         this.toggleShowCategories();
-        $("#categoryEventForm").val(item);
+    },
+
+    selectNoToggle: function(name){
+        this.props.selectCategory(name);
+        $("#categoryEventForm").val(name);
     },
 
     toggleShowCategories: function(e) {

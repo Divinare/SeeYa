@@ -46,7 +46,6 @@ const EventForm = React.createClass({
 	componentDidUpdate: function() {
 		var newEventMarker = this.props.newEventMarker;
 		if(newEventMarker != null && !$.isEmptyObject(newEventMarker)) {
-			console.log(newEventMarker);
 
 			var lat = newEventMarker.position.lat();
 			var lng = newEventMarker.position.lng();
@@ -110,11 +109,6 @@ const EventForm = React.createClass({
 
     isEditForm: function(){
     	var path = this.props.location.pathname;
-    	console.log(path)
-    	console.log("PARAMS: ")
-    	console.log(this.props.params)
-    	console.log("props: ")
-    	console.log(this.props)
 		return path.indexOf('edit') > -1
 	},
 
@@ -130,7 +124,10 @@ const EventForm = React.createClass({
 	},	
 
 	addressOnBlur: function(){
-		this.codeAddressFromString();
+		var that = this;
+		setTimeout(function () {
+        	that.codeAddressFromString();
+    	}, 100);
 	},
 
 	// Gets address from input field and tries to get the corresponding address information
@@ -140,7 +137,8 @@ const EventForm = React.createClass({
 	    
 	    geocoder.geocode( { 'address': address}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-
+				console.log("results")
+				console.log(results)
 				var address_components = results[0].address_components;
 				var newAddress = that.getAddressFromAddressComponents(address_components);
 				var updatedAddress = that.getUpdatedAddress(newAddress);
@@ -148,26 +146,31 @@ const EventForm = React.createClass({
 		   			latLng: results[0].geometry.location,
 		   			address: updatedAddress
 				})
-
-				map.setCenter(results[0].geometry.location);
-				var marker = new google.maps.Marker({
-				    map: map,
-				    position: results[0].geometry.location
-				});
-        		var icon = new google.maps.MarkerImage("assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
-				marker.setIcon(icon);
-
-				if(that.props.newEventMarker != null) {
-					console.log("REMOVING MARKER : codeAddressFromString");
-					that.props.newEventMarker.setMap(null);
-				}
-				that.props.updateAppStatus("newEventMarker", marker);
+		   		that.centerAndSetMarker(results[0].geometry.location);
 
 			} else {
 				console.log("Geocode was not successful for the following reason: " + status);
 			}
  		});
 
+  	},
+
+  	centerAndSetMarker: function(latLng){
+  		console.log("setting marker")
+  		//map.setCenter(new google.maps.LatLng(60.192059, 24.945831));
+		map.setCenter(latLng);
+		var marker = new google.maps.Marker({
+		    map: map,
+		    position: latLng
+		});
+		var icon = new google.maps.MarkerImage("assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
+		marker.setIcon(icon);
+
+		if(this.props.newEventMarker != null) {
+			console.log("REMOVING MARKER : codeAddressFromString");
+			this.props.newEventMarker.setMap(null);
+		}
+		this.props.updateAppStatus("newEventMarker", marker);
   	},
 
 	codeAddressFromLatLng: function(latLng) {
@@ -224,6 +227,7 @@ const EventForm = React.createClass({
 	    return newAddress;
 	},
 
+	//TODO we probably don't want to ever use the old city, country and zipcode? So should just be null if it is null?
 	getUpdatedAddress: function(newAddress) {
 		var oldStreetAddress = this.state.address.streetAddress;
 		var oldCountry = this.state.address.country;
@@ -249,47 +253,30 @@ const EventForm = React.createClass({
 		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
 		var time = moment.format("HH:mm");
 		//var date = moment.format("DD.MM.YYYY")
+		this.refs.dropDown.selectNoToggle(event.Category.name);
+		var latLng = new google.maps.LatLng(event.lat,event.lon);
+		console.log("ADDRESS:")
+		console.log(event.Address)
+		console.log(event.lat)
+		console.log(event.lon)
+		var address = {
+			streetAddress: event.Address.streetAddress,
+			city: event.Address.city,
+			country: event.Address.country,
+			zipCode: event.Address.zipCode
+		}
+		console.log(address)
 		this.setState({
 			event: event,
 			name: event.name,
 			time: time,
 			date: moment,
 			description: event.description,
-			selectedCategory: event.Category.name
-
-		})
-		/*var event = this.getQuery().event;
-		//var dateInput = document.querySelectorAll(".datepicker__input")[0]
-
-		address = {
-			streetAddress: event.Address.streetAddress,
-			country: event.Country,
-			zipCode: event.ZipCode,
-		}
-
-		console.log("EVENT");
-		console.log(event);
-		console.log("EVENT ADDRESS")
-		console.log(event.Address)
-		console.log(event.Address.streetAddress)
-		console.log(event.Country);
-		console.log(event.ZipCode);
-		
-
-		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
-		var time = moment.format("HH:mm");
-		var date = moment.format("DD.MM.YYYY")
-
-		this.setState({
-			name: event.name,
-			address: address,
-			latLng: [event.lat, event.lon],
-			date: event.date,
-			category: event.category,
-			time: time,
-			description: event.description
-		})
-*/
+			selectedCategory: event.Category.name,
+			latlng: latLng,
+			address: address
+		});
+		this.centerAndSetMarker(latLng);
 	},
 
 	/*** DATE ***/
@@ -529,6 +516,7 @@ const EventForm = React.createClass({
 					<div className='form-group'>
 							<span>Category *</span>
 							<EventFormDropdown
+								ref={'dropDown'}
 								itemClassName={"itemDropdownEventForm"}
 								list={this.state.categories} selectCategory={this.selectCategory} 
 								selected={this.state.selectedCategory}
