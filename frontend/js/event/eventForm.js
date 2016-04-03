@@ -16,14 +16,6 @@ var componentForm = ['street-address', 'country-name', 'postal-code'];
 import { browserHistory } from 'react-router';
 
 const EventForm = React.createClass({
-	/*childContextTypes: {
-    	location: React.PropTypes.object
-  	},
-
-  	getChildContext: function() {
-    	return { location: this.props.location }
-  	},*/
-
     getInitialState: function() {
 	    return {
 	    	event: null,
@@ -143,6 +135,7 @@ const EventForm = React.createClass({
 				var address_components = results[0].address_components;
 				var newAddress = that.getAddressFromAddressComponents(address_components);
 				var updatedAddress = that.getUpdatedAddress(newAddress);
+
 		   		that.setState({
 		   			latLng: results[0].geometry.location,
 		   			address: updatedAddress
@@ -157,14 +150,12 @@ const EventForm = React.createClass({
   	},
 
   	centerAndSetMarker: function(latLng){
-  		console.log("setting marker")
-  		//map.setCenter(new google.maps.LatLng(60.192059, 24.945831));
 		map.setCenter(latLng);
 		var marker = new google.maps.Marker({
 		    map: map,
 		    position: latLng
 		});
-		var icon = new google.maps.MarkerImage("assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
+		var icon = new google.maps.MarkerImage("../../assets/seeya_marker.png", null, null, null, new google.maps.Size(21,30));
 		marker.setIcon(icon);
 
 		if(this.props.newEventMarker != null) {
@@ -172,6 +163,7 @@ const EventForm = React.createClass({
 			this.props.newEventMarker.setMap(null);
 		}
 		this.props.updateAppStatus("newEventMarker", marker);
+		console.log("ending center and ")
   	},
 
 	codeAddressFromLatLng: function(latLng) {
@@ -256,6 +248,7 @@ const EventForm = React.createClass({
 		//var date = moment.format("DD.MM.YYYY")
 		this.refs.dropDown.selectNoToggle(event.Category.name);
 		var latLng = new google.maps.LatLng(event.lat,event.lon);
+		//var latLng = new google.maps.LatLng(14.4583953, 100.1314186)
 		console.log("ADDRESS:")
 		console.log(event.Address)
 		console.log(event.lat)
@@ -277,6 +270,7 @@ const EventForm = React.createClass({
 			latlng: latLng,
 			address: address
 		});
+		$
 		this.centerAndSetMarker(latLng);
 	},
 
@@ -514,7 +508,7 @@ const EventForm = React.createClass({
 					{/* Address */}
 					<div className='form-group'>
 						<span htmlFor='address'>Address *</span>
-						<input type='text' onBlur={this.addressOnBlur} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
+						<input type='text' onBlur={this.addressOnBlur} value={this.state.address.streetAddress} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
 					</div>
 					<span className="validationError" id="addressError"></span>
 					<span className="validationError" id="latLngError"></span>

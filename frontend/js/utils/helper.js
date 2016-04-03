@@ -23,7 +23,6 @@ module.exports = {
 		var http = "http://"
 		var url = window.location.href;
 
-		// TODO: Not in use, ask Petri
 		var baseWithoutHttp = URL.REST.slice(http.length)
 		var startIndexOfBase = url.indexOf(baseWithoutHttp)
 
@@ -39,14 +38,25 @@ module.exports = {
 		return new Array();
 	},
 
+	locationMatches: function(str){
+		var regex = new RegExp("^.*" + str)
+		//console.log(/^.*events\/\d+\/edit$/.test("http://localhost:1337/events/4/edit"))
+		var url = window.location.href
+		return regex.test(window.location)
+	},
+
+	getLocation: function(){
+		if(module.exports.isAtLocation('eventForm')){
+			return 'eventForm'
+		}else if(module.exports.locationMatches('events\\/\\d+\\/edit$')){
+			return 'editForm'
+		}
+		return ''
+	},
+
 	isAtLocation: function(routeName) {
 		var urlTokens = this.getUrlTokens();
-		for(var i = 0; i < urlTokens.length; i++) {
-			if(urlTokens[i] == routeName) {
-				return true;
-			}
-		}
-		return false;
+		return urlTokens.indexOf(routeName) > 0;
 	},
 
 	/* Returns lat and lon as array from marker */
