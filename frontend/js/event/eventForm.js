@@ -545,7 +545,6 @@ const EventForm = React.createClass({
 
 					{/* Address */}
 					<div className='form-group'>
-						<span htmlFor='address'>Address *</span>
 						<input type='text' onBlur={this.addressOnBlur} value={this.state.address.streetAddress} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
 					</div>
 					<span className="validationError" id="addressError"></span>
