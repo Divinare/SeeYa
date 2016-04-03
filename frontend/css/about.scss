@@ -2,15 +2,20 @@
     border: 0;
     width: 70px;
     height: 70px;
+    display: block;   
+    opacity: 0.8;
+    filter: alpha(opacity=40); /* For IE8 and earlier */
 }
 
 .markerbig {
 	border: 0;
 	width: 200px;
-    height: 200px;
+    height: 231px;
     margin-left: 60px;
-
-
-
 }
 
+
+.imghomeicon:hover {
+    opacity: 1.0;
+    filter: alpha(opacity=100); /* For IE8 and earlier */
+}
