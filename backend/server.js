@@ -20,7 +20,7 @@ var app = express();
 app.use(session({
   cookieName: 'seeyaSession',
   secret: 'random_string_goes_here',    //TODO user something truly random
-  duration: 30 * 60 * 1000, // how long the session will stay valid in ms
+  duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
   activeDuration: 5 * 60 * 1000, // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
   ephemeral: true //lose the session when browser closes
 }));

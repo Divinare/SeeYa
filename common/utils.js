@@ -1,6 +1,6 @@
 module.exports = {
     notEmpty: function(value){
-        if( typeof value !== 'undefined' && value !== '' ){
+        if( typeof value !== 'undefined' && value !== '' && value !== null){
             console.log("not empty")
             return true;
         }

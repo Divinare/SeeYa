@@ -114,11 +114,6 @@ const EventPage = React.createClass({
 
         if(this.state.event != null) {
             console.log(this.state.event);
-            var p = {
-                edit: true,
-                streetAddress: this.state.event.Address.streetAddress,
-                event: this.state.event
-            }
             return <div className="btn btn-default"><Link to={"/events/" + eventId + "/edit"}>EDIT</Link></div>;
         } else {
             return <div className="btn btn-default"><Link to={"/events/" + eventId + "/edit"}>EDIT</Link></div>;
