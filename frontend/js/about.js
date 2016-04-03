@@ -1,4 +1,6 @@
 var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
 
 const About = React.createClass({
 
@@ -18,8 +20,8 @@ const About = React.createClass({
 	
 
 		return (
-			<div className='right-container'>
-				<img className="imghomeicon" src="assets/savimaja.png" alt="cleyhouse" onClick={this.show} />
+			<div>
+				<Link to={"/"}><img className="imghomeicon" src="assets/resizedImageStash/back_to_home_dark_icon.png" alt="Back to home" /></Link>
 				<br />
 				<br />
 				<br />
@@ -31,7 +33,7 @@ const About = React.createClass({
 				<p>Simply and easy way to explore events near you or far away. SeeYa was developed in 2016 by a small group of friends in Helsinki, Finland.  </p>
 				<br />
 				<br />
-				<img className="markerbig" src="assets/people_icon.png" alt="See Ya Marker" />
+				<img className="markerbig" src="assets/imageStash/marker_gatherup.png" alt="See Ya Marker" />
 			</div>
 		)
 	}

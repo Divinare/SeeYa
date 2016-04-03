@@ -26,9 +26,9 @@ module.exports = {
         if( !re.test(email) ){
             errorMessages.push(errorMessage.getError('userEmailFormat', customMessage));
         }
-        if( email.length > fieldLengths.lengths.userEmailMax ){
+        if( email.length > fieldLengths.userEmailMax ){
             errorMessages.push(errorMessage.getError('userEmailTooLong', customMessage));
-        }else if( email.length < fieldLengths.lengths.userEmailMin ){
+        }else if( email.length < fieldLengths.userEmailMin ){
             errorMessages.push(errorMessage.getError('userEmailTooShort', customMessage));
         }
         return errorMessages;
@@ -46,10 +46,10 @@ module.exports = {
     validatePassword: function(password, customMessage){
         var msg = '';
         if( utils.notEmpty(password) ){
-            if( password.length > fieldLengths.lengths.userPasswordMax ){
+            if( password.length > fieldLengths.userPasswordMax ){
                 msg = errorMessage.getError('userPasswordTooLong', customMessage);
             }
-            else if( password.length < fieldLengths.lengths.userPasswordMin ){
+            else if( password.length < fieldLengths.userPasswordMin ){
                 var msg = errorMessage.getError('userPasswordTooShort', customMessage);
             }
         }else{
@@ -66,11 +66,10 @@ module.exports = {
         return failed("emptyString", customMessage);
     },
 
-
     /*** EVENT ***/
 
     validateEventName: function(name, customMessage) {
-        if(name.length < fieldLengths.lengths.eventNameMin || name.length > fieldLengths.lengths.eventNameMax) {
+        if(name.length < fieldLengths.eventNameMin || name.length > fieldLengths.eventNameMax) {
             return failed("eventName", customMessage);
         }
         return "";
@@ -82,21 +81,21 @@ module.exports = {
         }
 
         if(utils.notEmpty(address.country)) {
-            if(address.country.length > fieldLengths.lengths.eventAddressCountryMax) {
-                return failed("eventAddress", "Country in the address can be max "  +  fieldLengths.lengths.eventAddressCountryMax + " letters");
+            if(address.country.length > fieldLengths.eventAddressCountryMax) {
+                return failed("eventAddress", "Country in the address can be max "  +  fieldLengths.eventAddressCountryMax + " letters");
             }
         }
 
         if(utils.notEmpty(address.zipCode)) {
-            if(address.zipCode.length > fieldLengths.lengths.eventAddressCountryMax) {
-                return failed("eventAddress", "ZipCode in the address can be max " + fieldLengths.lengths.eventAddressCountryMax + " letters");
+            if(address.zipCode.length > fieldLengths.eventAddressCountryMax) {
+                return failed("eventAddress", "ZipCode in the address can be max " + fieldLengths.eventAddressCountryMax + " letters");
             }
         }
 
         if(utils.isEmpty(address.streetAddress)) {
             return failed("eventAddress", customMessage);
-        } else if(address.streetAddress.length < fieldLengths.lengths.eventAddressStreetAddressMin || address.streetAddress.length > fieldLengths.lengths.eventAddressStreetAddressMax) {
-            var msg = "Address must be " + fieldLengths.lengths.eventAddressStreetAddressMin + "-" + fieldLengths.lengths.eventAddressStreetAddressMax + " characters long"
+        } else if(address.streetAddress.length < fieldLengths.eventAddressStreetAddressMin || address.streetAddress.length > fieldLengths.eventAddressStreetAddressMax) {
+            var msg = "Address must be " + fieldLengths.eventAddressStreetAddressMin + "-" + fieldLengths.eventAddressStreetAddressMax + " characters long"
             return failed("eventAddress", msg);
         }
         return "";
@@ -110,8 +109,6 @@ module.exports = {
         return "";
     },
     validateEventDate: function(unixTimestamp, customMessage) {
-        
-        var maxDaysInTheFuture = 365;
         if(utils.isEmpty(unixTimestamp)) {
             return failed("eventDate","");
         }
@@ -129,11 +126,10 @@ module.exports = {
         if(date.getFullYear() > dateNow.getFullYear()) {
             dateIsTodayOrInTheFuture = true;
         } else if(date.getFullYear() == dateNow.getFullYear()) {
-            if(date.getMonth()+1 > dateNow.getMonth()+1) {
+            if(date.getMonth() > dateNow.getMonth()) {
                 dateIsTodayOrInTheFuture = true;
             }
-        } else if(date.getFullYear() == dateNow.getFullYear()) {
-            if(date.getMonth()+1 == dateNow.getMonth()+1) {
+            if(date.getMonth() == dateNow.getMonth()) {
                 if(date.getDate() >= dateNow.getDate()) {
                     dateIsTodayOrInTheFuture = true;
                 }
@@ -143,7 +139,7 @@ module.exports = {
         var timeDiff = Math.abs(date.getTime() - dateNow.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-        if(dateIsTodayOrInTheFuture && diffDays < maxDaysInTheFuture) {
+        if(dateIsTodayOrInTheFuture && diffDays < fieldLengths.eventMaxDaysInTheFuture) {
             return "";
         } else if(!dateIsTodayOrInTheFuture) {
             return failed("eventDate", "Date needs to to be in the future (<=" + dateNow.getDate() + "." + (dateNow.getMonth()+1) + "." + dateNow.getFullYear() + ").");
@@ -211,7 +207,7 @@ module.exports = {
         if(utils.isEmpty(description)) {
             return "";
         }
-        if(description.length > 500) {
+        if(description.length > fieldLengths.eventDescriptionMaxLength) {
             return failed("eventDescription", customMessage);
         }
         return "";

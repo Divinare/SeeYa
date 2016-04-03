@@ -95,40 +95,38 @@ const About = React.createClass({
     render: function(){
         return (
             <div>
-                <div className='right-container'>
-                    <div className="row">
-                        <div className="col-xs-12">  
-                            <h1>Signup</h1>
-                            <form className="form">
-                                <div id='serverErrorDiv'>Server returned errors, change the marked fields and try again</div>
-                                <div className="form-group">
-                                    <label className="control-label" htmlFor="email">Email *</label>
-                                        <input type="text" id="email" name="email" placeholder="" className="form-control" onChange={this.handleChange('email')}/>
-                                        <span id="emailError"></span>
+                <div className="row">
+                    <div className="col-xs-12">  
+                        <h1>Signup</h1>
+                        <form className="form">
+                            <div id='serverErrorDiv'>Server returned errors, change the marked fields and try again</div>
+                            <div className="form-group">
+                                <label className="control-label" htmlFor="email">Email *</label>
+                                    <input type="text" id="email" name="email" placeholder="" className="form-control" onChange={this.handleChange('email')}/>
+                                    <span id="emailError"></span>
+                            </div>
+                            <div className="form-group">
+                                <label className="control-label" htmlFor="password">Password *</label>
+                                    <input type="password" id="password" name="password" placeholder="" className="form-control" onChange={this.handleChange('password')}/>
+                                    <span id="passwordError"></span>
+                            </div>
+                            <div className="form-group">
+                                <label className="control-label" htmlFor="repeatPassword">Repeat password *</label>
+                                    <input type="password" id="repeatPassword" name="repeatPassword" placeholder="" className="form-control" onChange={this.handleChange('repeatPassword')}/>
+                                    <span id="repeatPasswordError"></span>
+                            </div>
+                            <div className = "form-group">
+                                <div className = "checkbox">
+                                    <label><input type = "checkbox" id="showPassword" name="showPassword" onChange={this.toggleShowPassword} />Show password</label>
                                 </div>
-                                <div className="form-group">
-                                    <label className="control-label" htmlFor="password">Password *</label>
-                                        <input type="password" id="password" name="password" placeholder="" className="form-control" onChange={this.handleChange('password')}/>
-                                        <span id="passwordError"></span>
-                                </div>
-                                <div className="form-group">
-                                    <label className="control-label" htmlFor="repeatPassword">Repeat password *</label>
-                                        <input type="password" id="repeatPassword" name="repeatPassword" placeholder="" className="form-control" onChange={this.handleChange('repeatPassword')}/>
-                                        <span id="repeatPasswordError"></span>
-                                </div>
-                                <div className = "form-group">
-                                    <div className = "checkbox">
-                                        <label><input type = "checkbox" id="showPassword" name="showPassword" onChange={this.toggleShowPassword} />Show password</label>
-                                    </div>
-                               </div>
+                           </div>
 
-                               {/* Submit */}
-                                <div className="form-group">
-                                    <button type="button" onClick={this.submit} className="btn btn-default">Signup</button>
-                                </div>
-                            </form>
-                        </div>  
-                    </div>
+                           {/* Submit */}
+                            <div className="form-group">
+                                <button type="button" onClick={this.submit} className="btn btn-default">Signup</button>
+                            </div>
+                        </form>
+                    </div>  
                 </div>
             </div>
             )

@@ -65,13 +65,13 @@ const Main = React.createClass({
             newEventMarker: null,
             markers: [],
             user:null,
-            loginStatusPending: true
+            loginStatusPending: true,
+            showRightContainer: true
         };
 
     },
 
     componentWillMount: function() {
-        console.log("GETTING EVENTS");
         this.getEvents();
     },
 
@@ -187,7 +187,10 @@ const Main = React.createClass({
                         handleResize={this.handleResize}
                         updateAppStatus={this.updateAppStatus} />
 
-                        {childrenWithProps}
+                        <div className="right-container">
+                            <img className="imghomeicon" src="assets/savimaja.png" alt="cleyhouse" onClick={this.show} />
+                            {childrenWithProps}
+                        </div>
                         
                 </div>  
                 
