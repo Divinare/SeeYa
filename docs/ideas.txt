@@ -60,10 +60,10 @@ https://dashingquill.wordpress.com/2011/08/16/javascript-and-css3-only-sliding-u
 
 ### NAME CANDIDATES ###
 
-1. SeeYou.com
-2. SeeYa.com
-3. GatherUp.fi
-4. EventGatherUp.com
+GatherUp.fi
+SeeYou.com
+SeeYa.com
+EventGatherUp.com
 EventGatherup
 
 
