@@ -1,6 +1,4 @@
 var React = require('react');
-var Router = require('react-router');
-var Link = Router.Link;
 
 const About = React.createClass({
 
@@ -20,12 +18,7 @@ const About = React.createClass({
 	
 
 		return (
-			<div>
-				<Link to={"/"}><img className="imghomeicon" src="assets/resizedImageStash/back_to_home_dark_icon.png" alt="Back to home" /></Link>
-				<br />
-				<br />
-				<br />
-				<br />
+			<div id="aboutPage">
 				<h1>Welcome! We are happy to See you!</h1>
 				<br />
 				<br />

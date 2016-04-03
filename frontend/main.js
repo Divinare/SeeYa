@@ -5,6 +5,7 @@ window.URL = UTILS.url;
 window.React = require('react');
 window.ReactDOM = require('react-dom');
 
+
 var Moment = require('moment');
 
 var Frontpage = require('./js/frontpage.js');
@@ -188,7 +189,7 @@ const Main = React.createClass({
                         updateAppStatus={this.updateAppStatus} />
 
                         <div className="right-container">
-                            <img className="imghomeicon" src="assets/savimaja.png" alt="cleyhouse" onClick={this.show} />
+                            <Link to={"/"}><img id="homeIcon" src="assets/back_to_home_dark_icon.png" alt="cleyhouse" onClick={this.show} /></Link>
                             {childrenWithProps}
                         </div>
                         

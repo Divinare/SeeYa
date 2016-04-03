@@ -397,34 +397,19 @@ const EventForm = React.createClass({
 				}
 				$("#charactersLeft").text("Characters left: " + charactersLeft);
 				$("#charactersLeft").css("display", "block");
-				
-				//var element = $("#description");
-				//console.log(element);
-				//console.log("SCROLL HEIGHT: " + (element[0].scrollHeight + 20));
-
 			}
 		}
 	},
 
 	setupDescriptionAutoresize: function() {
-		// auto adjust the height of
-			console.log("hmm??? sdsadsae")
-
-		//$('#description').keyup(function (e) {
-	  //  	var rows = $(this).val().split("\n");
-	  //  	$(this).prop('rows', rows.length);
-	//	});
-
 
 		$('textarea').keyup(function (e) {
 			var element = $("#description");
 			var text = $("#description").val();
-			console.log("TEXT LENGTH: " + text.length);
 			if(text.length == 0) {
 				element.css("height", 0);
 			} else {
 		    	var rows = $(this).val().split("\n");
-				console.log("at keyup " + (rows.length +1));
 				var currentHeight = element.height();
 				var newHeight = ((rows.length +1)*20);
 				if(newHeight > currentHeight) {

@@ -114,6 +114,26 @@ img{
     height: 60px;
 }
 
+#homeIcon {
+    display: block;   
+    position: absolute;
+    /* TODO? background-image: url("assets/seeya_logo.png");
+    background-size: cover; */
+    top: 10px;
+    left: 10px;
+    border: 0;
+    width: 35px;
+    height: 35px;
+    opacity: 0.8;
+    filter: alpha(opacity=40); /* For IE8 and earlier */
+
+}
+
+#homeIcon:hover {
+    opacity: 1.0;
+    filter: alpha(opacity=100); /* For IE8 and earlier */
+}
+
 /***********************/
 /*       DESKTOP       */
 /***********************/
