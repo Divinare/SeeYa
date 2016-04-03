@@ -209,20 +209,30 @@ const EventPage = React.createClass({
                 peopleAttendingStr = peopleAttending + " people attending"
             }
 
-            if(!_.isEmpty(eventVar.description)){
-                description = eventVar.description
-            }else{
-                description = ''
+            //var descriptionField = "<span></span>";
+        //    var descriptionField = document.createElement("span");
+
+           // var descriptionField = "";
+            if(!_.isEmpty(eventVar.description)) {
+
+                function escape(text) {
+                    var div = document.createElement("div");
+                    div.appendChild(document.createTextNode(text));
+                    return div.innerHTML;
+                }
+
+                var description = escape(eventVar.description);
+                description = escape(description);
+                description = description.replace(/\n\r?/g, '<br />');
+                $("#description").html(description);
             }
-
-
         }
 
 
         //let popover = <Popover title="popover">very popover. such engagement</Popover>;
 
         return (
-            <div className='right-container'>
+            <div>
                 <div>
                     <h2>{eventName}</h2>
                     {date}<br/>
@@ -230,7 +240,7 @@ const EventPage = React.createClass({
                     {address}
                     {category}
                     {peopleAttendingStr}<br/>
-                    {description}<br/>
+                    <span id="description"></span><br/>
 
                     <div>modal was here T. joe</div>
 

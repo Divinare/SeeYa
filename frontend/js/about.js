@@ -18,8 +18,7 @@ const About = React.createClass({
 	
 
 		return (
-			<div className='right-container'>
-				<img className="imghomeicon" src="assets/savimaja.png" alt="cleyhouse" onClick={this.show} />
+			<div>
 				<br />
 				<br />
 				<br />

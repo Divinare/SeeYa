@@ -7,6 +7,7 @@ var Select = require('react-select');
 var Moment = require('moment')
 var Validator = require('../../../common/validators/validator.js');
 var CommonUtils = require('../../../common/utils.js');
+var fieldLengths = require('../../../common/validators/fieldLengths.js');
 
 var autocomplete;
 var placesService;
@@ -97,10 +98,15 @@ const EventForm = React.createClass({
 			this.fetchCategories();
 		}
 		this.setDateFieldPlaceHolder();
+		this.setupDescriptionAutoresize();
 	},
 
 	// Called when a field is changed
 	handleChange: function(key) {
+		if(key == "description") {
+			this.maxLengthForDesription();
+		}
+
        return function (e) {
 	       var state = {};
 	       state[key] = e.target.value;
@@ -376,6 +382,59 @@ const EventForm = React.createClass({
 		$('#time').blur();
 	},
 
+
+	/*** DESCRIPTION ***/
+
+	maxLengthForDesription: function() {
+		var textLength = $("#description").val();
+		if(typeof textLength !== "undefined") {
+			if(textLength.length == 0) {
+				$("#charactersLeft").css("display", "none");
+			} else {
+				var charactersLeft = fieldLengths.eventDescriptionMaxLength - textLength.length;
+				if(charactersLeft < 0) {
+					charactersLeft = 0;
+				}
+				$("#charactersLeft").text("Characters left: " + charactersLeft);
+				$("#charactersLeft").css("display", "block");
+				
+				//var element = $("#description");
+				//console.log(element);
+				//console.log("SCROLL HEIGHT: " + (element[0].scrollHeight + 20));
+
+			}
+		}
+	},
+
+	setupDescriptionAutoresize: function() {
+		// auto adjust the height of
+			console.log("hmm??? sdsadsae")
+
+		//$('#description').keyup(function (e) {
+	  //  	var rows = $(this).val().split("\n");
+	  //  	$(this).prop('rows', rows.length);
+	//	});
+
+
+		$('textarea').keyup(function (e) {
+			var element = $("#description");
+			var text = $("#description").val();
+			console.log("TEXT LENGTH: " + text.length);
+			if(text.length == 0) {
+				element.css("height", 0);
+			} else {
+		    	var rows = $(this).val().split("\n");
+				console.log("at keyup " + (rows.length +1));
+				var currentHeight = element.height();
+				var newHeight = ((rows.length +1)*20);
+				if(newHeight > currentHeight) {
+					element.css("height", newHeight);
+				}
+			}
+
+		});
+	},
+
 	/*** SUBMIT ***/
 
     handleSubmit: function(e) {
@@ -408,7 +467,6 @@ const EventForm = React.createClass({
 		var category = this.state.selectedCategory;
 		var time = this.state.time;
 		var description = this.state.description;
-
 		// VALIDATIONS
 		var valid1 = this.validateField(Validator.validateEventName, name, "nameError");
 		var valid2 = this.validateField(Validator.validateEventAddress, address, "addressError");
@@ -416,7 +474,7 @@ const EventForm = React.createClass({
 		var valid4 = this.validateField(Validator.validateEventDate, dateTimestamp, "dateError");
 		var valid5 = this.validateField(Validator.validateEventCategory, category, "categoryError", "Select category from the list");
 		var valid6 = this.validateField(Validator.validateEventTime, [time, dateTimestamp], "timeError");
-		var valid7 = this.validateField(Validator.validateEventDescription, description, "descriptionError");
+		var valid7 = this.validateField(Validator.validateEventDescription, description, "");
 
 		// If one of the validations fail, prevent submitting form
 		if(!valid1 || !valid2 || !valid3 || !valid4 || !valid5 || !valid6 || !valid7) {
@@ -492,28 +550,26 @@ const EventForm = React.createClass({
 		if(this.isEditForm()){
 			return "Edit event"
 		}
-		return "Create new event"
+		return "What do you want to do?"
 	},
 
 	render: function(){
 		var that = this;
 
 		return (
-			<div className='right-container'>
+			<div>
 				<h1 className="centeredHeader">{that.getEditOrCreateTitle()}</h1>
 
 				<div className='form' id="eventForm">
 
 					{/* Name */}
 					<div className='form-group'>
-						<span>Name *</span>
-						<input type='text' className='form-control' id='name' value={this.state.name} onChange={this.handleChange('name')} />
+						<input type='text' className='form-control' id='name' value={this.state.name} onChange={this.handleChange('name')} placeholder='Name of the event'/>
 					</div>
 					<span className="validationError" id="nameError"></span>
 
 					{/* Address */}
 					<div className='form-group'>
-						<span htmlFor='address'>Address *</span>
 						<input type='text' onBlur={this.addressOnBlur} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
 					</div>
 					<span className="validationError" id="addressError"></span>
@@ -521,7 +577,6 @@ const EventForm = React.createClass({
 
 					{/* Date */}
 					<div className='form-group'>
-						<span>Date *</span>
 				        <div className="dateInputField">
 
 							<DatePicker
@@ -541,7 +596,6 @@ const EventForm = React.createClass({
 
 					{/* Time */}
 					<div className='form-group'>
-						<span>Time *</span>
 						<div className='input-group'>
 							<input type='text' className='form-control' id='time' value={this.state.time} onChange={this.handleChange("time")} placeholder="hh:mm" />
 							<span className="input-group-btn">
@@ -553,7 +607,6 @@ const EventForm = React.createClass({
 
 					{/* Category */}
 					<div className='form-group'>
-							<span>Category *</span>
 							<EventFormDropdown
 								ref={'dropDown'}
 								itemClassName={"itemDropdownEventForm"}
@@ -565,10 +618,9 @@ const EventForm = React.createClass({
 
 					{/* Description */}
 					<div className='form-group'>
-						<span>Description *</span>
-						<input type='text' className='form-control' id='description' value={this.state.description} onChange={this.handleChange('description')}/>
+						<textarea type='text' className='form-control' id='description' maxLength="500" value={this.state.description} onChange={this.handleChange('description')} placeholder="Description"/>
 					</div>
-					<span className="validationError" id="descriptionError"></span>
+					<span id="charactersLeft"></span>
 
 					{/* Submit */}
 					<div className="form-group">

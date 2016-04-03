@@ -10,10 +10,6 @@
 	width:100%;
 }
 
-.description {
-	height: 400px;
-}
-
 /*** ADDRESS ***/
 
 #addressError {
@@ -91,6 +87,22 @@
 }
 
 .validationError {
+    position: relative;
+    top: -7px;
+}
+
+/*** DESCRIPTION ***/
+
+
+#description {
+    min-height: 50px;
+    resize: vertical;
+    max-height: 500px;
+    overflow: hidden;
+}
+
+#charactersLeft {
+    display: none;
     position: relative;
     top: -7px;
 }

@@ -37,17 +37,13 @@ const Settings = React.createClass({
         if(this.state.signedIn){
             return (
                 <div>
-                    <div className='right-container'>
-                        SETTINGS
-                    </div>
+                    SETTINGS
                 </div>
             )
         }else{
             return (
             <div>
-                <div className='right-container'>
-                    Not authorized
-                </div>
+                Not authorized
             </div>
             )
         }

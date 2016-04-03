@@ -207,7 +207,7 @@ module.exports = {
         if(utils.isEmpty(description)) {
             return "";
         }
-        if(description.length > 500) {
+        if(description.length > fieldLengths.eventDescriptionMaxLength) {
             return failed("eventDescription", customMessage);
         }
         return "";
