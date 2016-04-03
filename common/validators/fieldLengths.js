@@ -1,4 +1,4 @@
-const lengths = {
+module.exports = {
     userEmailMax: 254,
     userEmailMin: 3,
 
@@ -13,14 +13,9 @@ const lengths = {
     eventAddressZipCodeMax: 25,
 
     eventAddressStreetAddressMax: 50,
-    eventAddressStreetAddressMin: 5
+    eventAddressStreetAddressMin: 5,
+
+    eventMaxDaysInTheFuture: 365
 
 
-
-
-}
-
-
-module.exports = {
-    lengths: lengths
 }
