@@ -67,7 +67,7 @@ const Main = React.createClass({
             markers: [],
             user:null,
             loginStatusPending: true,
-            showRightContainer: true
+            showRightContainer: false
         };
 
     },
@@ -174,6 +174,16 @@ const Main = React.createClass({
             })
         });
 
+/*
+        var container;
+        if(this.state.showRightContainer) {
+            container = ;
+        } else {
+            container = <div className="toggleRightContainer" onClick={this.toggleRightContainer}></div>
+        }
+        */
+
+
         return (
             <div className="application">
                 <Navbar loginStatusPending={that.state.loginStatusPending} user={that.state.user}/>
@@ -186,13 +196,14 @@ const Main = React.createClass({
                         markers={this.state.markers}
                         
                         handleResize={this.handleResize}
-                        updateAppStatus={this.updateAppStatus} />
+                        updateAppStatus={this.updateAppStatus}
+                        hideRightContainer={this.hideRightContainer} />
 
-                        <div className="right-container">
+                        <div className="right-container showing" onClick={UTILS.styleHelper.showRightContainer}>
                             <Link to={"/"}><img id="homeIcon" src="assets/back_to_home_dark_icon.png" alt="cleyhouse" onClick={this.show} /></Link>
                             {childrenWithProps}
                         </div>
-                        
+                        <div className="toggleRightContainer hidden" onClick={this.toggleRightContainer}></div>
                 </div>  
                 
             </div>

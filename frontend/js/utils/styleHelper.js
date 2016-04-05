@@ -27,7 +27,7 @@ module.exports = {
 			eventListHeight -= window.CONFIGS.navbarHeight;
 			return eventListHeight-20;
 		} else if( screenType == 'tablet') {
-			var eventListHeight = (window.innerHeight-120);
+			var eventListHeight = (window.innerHeight-141);
 			console.log("RET EVNETLIST HEIGHT: " + eventListHeight);
 			return eventListHeight;
 		}
@@ -52,5 +52,31 @@ module.exports = {
 		else {
 			return 'desktop';
 		}
-	}
+	},
+
+	toggleRightContainer: function() {
+
+    },
+
+    hideRightContainer: function() {
+
+        var className = $('.right-container').attr('class');
+        if(className.indexOf("showing") != -1) {
+            $(".right-container").animate({'top':'+=500px'},350);
+            $(".right-container").toggleClass("showing");
+        } else {
+        	
+        }
+    },
+
+    showRightContainer: function() {
+        var className = $('.right-container').attr('class');
+        if(className.indexOf("showing") != -1) {
+        
+        } else {
+            $(".right-container").animate({'top':'-=500px'},350);
+            $(".right-container").toggleClass("showing");
+        }
+
+    }
 }

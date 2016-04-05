@@ -96,6 +96,7 @@ var Map = React.createClass({
             if(UTILS.helper.isAtLocation("eventForm")) {
                 that.addNewEventMarker(event.latLng, map);
             }
+            UTILS.styleHelper.hideRightContainer();
         });
 
         var location = UTILS.helper.getLocation();
