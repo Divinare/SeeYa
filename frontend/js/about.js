@@ -23,7 +23,7 @@ const About = React.createClass({
 				<br />
 				<br />
 				<p>SeeYa is a community for creating and joining events nearby. Discover new events, gain new experiences with other people and have fun.</p>
-				<p>Simply and easy way to explore events near you or far away. SeeYa was developed in 2016 by a small group of friends in Helsinki, Finland.  </p>
+				<p>Simple and easy way to explore events near you or far away. SeeYa was developed in 2016 by a small group of friends in Helsinki, Finland.  </p>
 				<br />
 				<br />
 				<img className="markerbig" src="assets/imageStash/marker_gatherup.png" alt="See Ya Marker" />
