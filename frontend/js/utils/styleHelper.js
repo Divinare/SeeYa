@@ -27,7 +27,8 @@ module.exports = {
 			eventListHeight -= window.CONFIGS.navbarHeight;
 			return eventListHeight-20;
 		} else if( screenType == 'tablet') {
-			var eventListHeight = window.innerHeight/2;
+			var eventListHeight = (window.innerHeight-120);
+			console.log("RET EVNETLIST HEIGHT: " + eventListHeight);
 			return eventListHeight;
 		}
 	},

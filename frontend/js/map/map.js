@@ -24,12 +24,10 @@ var Map = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        console.log("WILL RECEIVE PROPS")
         this.deleteMarkers(this.state.markers);
 
         var location = UTILS.helper.getLocation();
         var allowDrawMarkers = !(location === 'eventForm' || location === 'editForm');
-        console.log("LOCATION IS: " + allowDrawMarkers);
         if(this.state != null && nextProps.filteredEventList.length > 0) {
             if(allowDrawMarkers) {
                 this.addAllMarkers(nextProps);
@@ -309,7 +307,6 @@ var Map = React.createClass({
     },
 
     deleteMarker: function(marker) {
-        console.log("REMOVING MARKER : deleteMarker");
         marker.setMap(null);
     },
 

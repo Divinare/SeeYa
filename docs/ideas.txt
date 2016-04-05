@@ -85,11 +85,24 @@ Cider
 
 
 
+
+SocialLifeStarterKit
+EventNest
+EventSeekers
+NearMe
+FindIt
+EventLookup
+
+
 .
 .
 .
 
 999. EventMeetUp
+
+
+
+
 
 
 
