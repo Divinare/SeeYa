@@ -44,7 +44,7 @@
     "pg": "^4.4.1",
     "pg-hstore": "^2.3.2",
     "q": "^1.4.1",
-    "react": "0.14.7",
+    "react": "^0.14.7",
     "react-bootstrap-datetimepicker": "0.0.22",
     "react-date-picker": "^4.0.10",
     "react-datepicker": "^0.24.0",
