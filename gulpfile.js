@@ -13,6 +13,8 @@ var rimraf = require('rimraf');
 var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
 
+var rsync = require('gulp-rsync');
+
 var frontend_path = 'frontend';
 var common_path = 'common';
 var backend_path = 'backend';
@@ -21,6 +23,19 @@ var modules_path = "node_modules";
 //var semantic_path = modules_path + "/semantic-ui-css";
 var dist_path = "dist";
 
+gulp.task('deploy', function() {
+  gulp.src('dist/**')
+    .pipe(rsync({
+      ssh: true,
+      hostname: 'general@37.139.24.156',
+      destination: 'EventMeetup',
+      args: ['--verbose']
+    }, function(error, stdout, stderr, cmd) {
+      console.log(stdout);
+      gutil.log(stdout);
+    }
+    ));
+});
 
 var err = function() {
   var x;

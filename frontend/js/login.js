@@ -85,39 +85,35 @@ const About = React.createClass({
 
     render: function(){
         return (
-            <div>
-                <div className='right-container'>
-                    <div className="row">
-                        <div className="col-xs-12">  
-                            <h1>Login</h1>
-                            <div id='serverErrorDiv'></div>
-                            <form className="form">
-                                <div className="form-group">
-                                    <label className="control-label" htmlFor="email">Email *</label>
-                                        <input type="text" id="email" name="email" placeholder="" className="form-control" onChange={this.handleChange('email')}/>
-                                        <span id="emailError"></span>
-                                </div>
-                                <div className="form-group">
-                                    <label className="control-label" htmlFor="password">Password *</label>
-                                        <input type="password" id="password" name="password" placeholder="" className="form-control" onChange={this.handleChange('password')}/>
-                                        <span id="passwordError"></span>
-                                </div>
-                                <div className = "form-group">
-                                    <div className = "checkbox">
-                                        <label><input type = "checkbox" id="showPassword" name="showPassword" onChange={this.toggleShowPassword} />Show password</label>
-                                    </div>
-                               </div>
+            <div className="row">
+                <div className="col-xs-12">  
+                    <h1>Login</h1>
+                    <div id='serverErrorDiv'></div>
+                    <form className="form">
+                        <div className="form-group">
+                            <label className="control-label" htmlFor="email">Email *</label>
+                                <input type="text" id="email" name="email" placeholder="" className="form-control" onChange={this.handleChange('email')}/>
+                                <span id="emailError"></span>
+                        </div>
+                        <div className="form-group">
+                            <label className="control-label" htmlFor="password">Password *</label>
+                                <input type="password" id="password" name="password" placeholder="" className="form-control" onChange={this.handleChange('password')}/>
+                                <span id="passwordError"></span>
+                        </div>
+                        <div className = "form-group">
+                            <div className = "checkbox">
+                                <label><input type = "checkbox" id="showPassword" name="showPassword" onChange={this.toggleShowPassword} />Show password</label>
+                            </div>
+                       </div>
 
-                               {/* Submit */}
-                                <div className="form-group">
-                                    <button type="button" onClick={this.submit} className="btn btn-default">Login</button>
-                                </div>
-                            </form>
-                        </div>  
-                    </div>
-                </div>
+                       {/* Submit */}
+                        <div className="form-group">
+                            <button type="button" onClick={this.submit} className="btn btn-default">Login</button>
+                        </div>
+                    </form>
+                </div>  
             </div>
-            )
+        )
     }
 
 });

@@ -6,6 +6,8 @@ API KEY: &key=AIzaSyD1G_IG2lcziaSIQT5m3FCGY2xKSBMssHM
 WORKLOG
 https://docs.google.com/spreadsheets/d/1UvO3rXq2QNohr4bI80ic2XvOpNPf0sl2WTRqVjmFHtA/edit?usp=sharing
 
+ssh general@37.139.24.156
+
 DEVELOPMENT INSTRUCTIONS
 
 How to run the app locally (Windows):

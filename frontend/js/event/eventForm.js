@@ -7,6 +7,7 @@ var Select = require('react-select');
 var Moment = require('moment')
 var Validator = require('../../../common/validators/validator.js');
 var CommonUtils = require('../../../common/utils.js');
+var fieldLengths = require('../../../common/validators/fieldLengths.js');
 
 var autocomplete;
 var placesService;
@@ -16,14 +17,6 @@ var componentForm = ['street-address', 'country-name', 'postal-code'];
 import { browserHistory } from 'react-router';
 
 const EventForm = React.createClass({
-	/*childContextTypes: {
-    	location: React.PropTypes.object
-  	},
-
-  	getChildContext: function() {
-    	return { location: this.props.location }
-  	},*/
-
     getInitialState: function() {
 	    return {
 	    	event: null,
@@ -97,10 +90,15 @@ const EventForm = React.createClass({
 			this.fetchCategories();
 		}
 		this.setDateFieldPlaceHolder();
+		this.setupDescriptionAutoresize();
 	},
 
 	// Called when a field is changed
 	handleChange: function(key) {
+		if(key == "description") {
+			this.maxLengthForDesription();
+		}
+
        return function (e) {
 	       var state = {};
 	       state[key] = e.target.value;
@@ -143,6 +141,7 @@ const EventForm = React.createClass({
 				var address_components = results[0].address_components;
 				var newAddress = that.getAddressFromAddressComponents(address_components);
 				var updatedAddress = that.getUpdatedAddress(newAddress);
+
 		   		that.setState({
 		   			latLng: results[0].geometry.location,
 		   			address: updatedAddress
@@ -157,14 +156,12 @@ const EventForm = React.createClass({
   	},
 
   	centerAndSetMarker: function(latLng){
-  		console.log("setting marker")
-  		//map.setCenter(new google.maps.LatLng(60.192059, 24.945831));
 		map.setCenter(latLng);
 		var marker = new google.maps.Marker({
 		    map: map,
 		    position: latLng
 		});
-		var icon = new google.maps.MarkerImage("assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
+		var icon = new google.maps.MarkerImage("../../assets/seeya_marker.png", null, null, null, new google.maps.Size(21,30));
 		marker.setIcon(icon);
 
 		if(this.props.newEventMarker != null) {
@@ -172,6 +169,7 @@ const EventForm = React.createClass({
 			this.props.newEventMarker.setMap(null);
 		}
 		this.props.updateAppStatus("newEventMarker", marker);
+		console.log("ending center and ")
   	},
 
 	codeAddressFromLatLng: function(latLng) {
@@ -213,14 +211,15 @@ const EventForm = React.createClass({
 		    	if (addressObj.types[j] === 'postal_code') {
 		    		newAddress.zipCode = addressObj.long_name;
 		    	}
-		    	if (addressObj.types[j] === 'route') {
-		    		newAddress.streetAddress = addressObj.long_name
+		    	if (addressObj.types[j] === 'route') {		//we keep the whole formatted address in the streetaddress field
+		    		//newAddress.streetAddress = addressObj.long_name
 		    	}
 		    	if (addressObj.types[j] === 'street_number') {
 		    		streetNumber = addressObj.long_name
 		    	}
 		    }
 	    }
+	    newAddress.streetAddress = $("#address").val();
 	    if( streetNumber != null && typeof newAddress.streetAddress != 'undefined' 
 	    	&& newAddress.streetAddress != null ){
 	    	newAddress.streetAddress = newAddress.streetAddress + " " + streetNumber
@@ -230,15 +229,10 @@ const EventForm = React.createClass({
 
 	//TODO we probably don't want to ever use the old city, country and zipcode? So should just be null if it is null?
 	getUpdatedAddress: function(newAddress) {
-		var oldStreetAddress = this.state.address.streetAddress;
-		var oldCountry = this.state.address.country;
-		var oldZipCode = this.state.address.zipCode;
-		var oldCity = this.state.address.city;
-
-		var newStreetAddress = (CommonUtils.notEmpty(newAddress.streetAddress)) ? newAddress.streetAddress : oldStreetAddress;
-		var newCountry = (CommonUtils.notEmpty(newAddress.country)) ? newAddress.country : oldCountry;
-		var newZipCode = (CommonUtils.notEmpty(newAddress.zipCode)) ? newAddress.zipCode : oldZipCode;
-		var newCity = (CommonUtils.notEmpty(newAddress.city)) ? newAddress.city : oldCity;
+		var newStreetAddress = (CommonUtils.notEmpty(newAddress.streetAddress)) ? newAddress.streetAddress : null;
+		var newCountry = (CommonUtils.notEmpty(newAddress.country)) ? newAddress.country : null;
+		var newZipCode = (CommonUtils.notEmpty(newAddress.zipCode)) ? newAddress.zipCode : null;
+		var newCity = (CommonUtils.notEmpty(newAddress.city)) ? newAddress.city : null;
 
 		var updatedAddress = {
 			streetAddress: newStreetAddress,
@@ -256,6 +250,7 @@ const EventForm = React.createClass({
 		//var date = moment.format("DD.MM.YYYY")
 		this.refs.dropDown.selectNoToggle(event.Category.name);
 		var latLng = new google.maps.LatLng(event.lat,event.lon);
+		//var latLng = new google.maps.LatLng(14.4583953, 100.1314186)
 		console.log("ADDRESS:")
 		console.log(event.Address)
 		console.log(event.lat)
@@ -277,6 +272,7 @@ const EventForm = React.createClass({
 			latlng: latLng,
 			address: address
 		});
+		$
 		this.centerAndSetMarker(latLng);
 	},
 
@@ -376,6 +372,44 @@ const EventForm = React.createClass({
 		$('#time').blur();
 	},
 
+
+	/*** DESCRIPTION ***/
+
+	maxLengthForDesription: function() {
+		var textLength = $("#description").val();
+		if(typeof textLength !== "undefined") {
+			if(textLength.length == 0) {
+				$("#charactersLeft").css("display", "none");
+			} else {
+				var charactersLeft = fieldLengths.eventDescriptionMaxLength - textLength.length;
+				if(charactersLeft < 0) {
+					charactersLeft = 0;
+				}
+				$("#charactersLeft").text("Characters left: " + charactersLeft);
+				$("#charactersLeft").css("display", "block");
+			}
+		}
+	},
+
+	setupDescriptionAutoresize: function() {
+
+		$('textarea').keyup(function (e) {
+			var element = $("#description");
+			var text = $("#description").val();
+			if(text.length == 0) {
+				element.css("height", 0);
+			} else {
+		    	var rows = $(this).val().split("\n");
+				var currentHeight = element.height();
+				var newHeight = ((rows.length +1)*20);
+				if(newHeight > currentHeight) {
+					element.css("height", newHeight);
+				}
+			}
+
+		});
+	},
+
 	/*** SUBMIT ***/
 
     handleSubmit: function(e) {
@@ -408,7 +442,6 @@ const EventForm = React.createClass({
 		var category = this.state.selectedCategory;
 		var time = this.state.time;
 		var description = this.state.description;
-
 		// VALIDATIONS
 		var valid1 = this.validateField(Validator.validateEventName, name, "nameError");
 		var valid2 = this.validateField(Validator.validateEventAddress, address, "addressError");
@@ -416,7 +449,7 @@ const EventForm = React.createClass({
 		var valid4 = this.validateField(Validator.validateEventDate, dateTimestamp, "dateError");
 		var valid5 = this.validateField(Validator.validateEventCategory, category, "categoryError", "Select category from the list");
 		var valid6 = this.validateField(Validator.validateEventTime, [time, dateTimestamp], "timeError");
-		var valid7 = this.validateField(Validator.validateEventDescription, description, "descriptionError");
+		var valid7 = this.validateField(Validator.validateEventDescription, description, "");
 
 		// If one of the validations fail, prevent submitting form
 		if(!valid1 || !valid2 || !valid3 || !valid4 || !valid5 || !valid6 || !valid7) {
@@ -457,7 +490,7 @@ const EventForm = React.createClass({
 		    	addMissingEventFields(createdEventData);
 		        moveOn();
 			};
-			UTILS.rest.editEntry('event', this.getQuery().event.id, eventData, success, error);
+			UTILS.rest.editEntry('event', this.props.params.id, eventData, success, error);
 		} else{
 			success = function(createdEventData) {
 		    	addMissingEventFields(createdEventData);
@@ -492,36 +525,33 @@ const EventForm = React.createClass({
 		if(this.isEditForm()){
 			return "Edit event"
 		}
-		return "Create new event"
+		return "What do you want to do?"
 	},
 
 	render: function(){
 		var that = this;
 
 		return (
-			<div className='right-container'>
+			<div>
 				<h1 className="centeredHeader">{that.getEditOrCreateTitle()}</h1>
 
 				<div className='form' id="eventForm">
 
 					{/* Name */}
 					<div className='form-group'>
-						<span>Name *</span>
-						<input type='text' className='form-control' id='name' value={this.state.name} onChange={this.handleChange('name')} />
+						<input type='text' className='form-control' id='name' value={this.state.name} onChange={this.handleChange('name')} placeholder='Name of the event'/>
 					</div>
 					<span className="validationError" id="nameError"></span>
 
 					{/* Address */}
 					<div className='form-group'>
-						<span htmlFor='address'>Address *</span>
-						<input type='text' onBlur={this.addressOnBlur} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
+						<input type='text' onBlur={this.addressOnBlur} value={this.state.address.streetAddress} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
 					</div>
 					<span className="validationError" id="addressError"></span>
 					<span className="validationError" id="latLngError"></span>
 
 					{/* Date */}
 					<div className='form-group'>
-						<span>Date *</span>
 				        <div className="dateInputField">
 
 							<DatePicker
@@ -541,7 +571,6 @@ const EventForm = React.createClass({
 
 					{/* Time */}
 					<div className='form-group'>
-						<span>Time *</span>
 						<div className='input-group'>
 							<input type='text' className='form-control' id='time' value={this.state.time} onChange={this.handleChange("time")} placeholder="hh:mm" />
 							<span className="input-group-btn">
@@ -553,7 +582,6 @@ const EventForm = React.createClass({
 
 					{/* Category */}
 					<div className='form-group'>
-							<span>Category *</span>
 							<EventFormDropdown
 								ref={'dropDown'}
 								itemClassName={"itemDropdownEventForm"}
@@ -565,10 +593,9 @@ const EventForm = React.createClass({
 
 					{/* Description */}
 					<div className='form-group'>
-						<span>Description *</span>
-						<input type='text' className='form-control' id='description' value={this.state.description} onChange={this.handleChange('description')}/>
+						<textarea type='text' className='form-control' id='description' maxLength="500" value={this.state.description} onChange={this.handleChange('description')} placeholder="Description"/>
 					</div>
-					<span className="validationError" id="descriptionError"></span>
+					<span id="charactersLeft"></span>
 
 					{/* Submit */}
 					<div className="form-group">

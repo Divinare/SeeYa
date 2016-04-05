@@ -28,6 +28,7 @@ const EventList = React.createClass({
     },
 
     componentDidMount: function() {
+
         this.props.handleResize();
         var that = this;
 
@@ -44,9 +45,14 @@ const EventList = React.createClass({
             console.log("Error on fetching event!");
         }
         UTILS.rest.getAllEntries('category', onSuccess, onError);
+        $("#homeIcon").css("display", "none");
     },
 
     componentWillMount :function() {
+    },
+
+    componentWillUnmount: function() {
+        $("#homeIcon").css("display", "block");
     },
 
     componentWillReceiveProps: function() {
@@ -253,9 +259,7 @@ const EventList = React.createClass({
         // Return event table with real data
         //} else {
             return (
-                <div className="right-container">
-
-
+                <div>
                     <h2 className="topic">Events</h2>
                         {eventListTable}
                     <div className="eventList-filter-bar">

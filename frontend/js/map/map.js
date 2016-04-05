@@ -24,12 +24,11 @@ var Map = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        
         this.deleteMarkers(this.state.markers);
-        var allowDrawMarkers = UTILS.helper.isAtLocation("eventForm") ? false : true;
 
+        var location = UTILS.helper.getLocation();
+        var allowDrawMarkers = !(location === 'eventForm' || location === 'editForm');
         if(this.state != null && nextProps.filteredEventList.length > 0) {
-            
             if(allowDrawMarkers) {
                 this.addAllMarkers(nextProps);
 
@@ -97,10 +96,14 @@ var Map = React.createClass({
             if(UTILS.helper.isAtLocation("eventForm")) {
                 that.addNewEventMarker(event.latLng, map);
             }
+            UTILS.styleHelper.hideRightContainer();
         });
 
-        this.centerMapToUserLocation();
-    
+        var location = UTILS.helper.getLocation();
+        if( location !== 'editForm' ){
+            this.centerMapToUserLocation();
+        }
+        
         //  create the ContextMenuOptions object
         var contextMenuOptions={};
         contextMenuOptions.classNames={menu:'context_menu', menuSeparator:'context_menu_separator'};
@@ -305,7 +308,6 @@ var Map = React.createClass({
     },
 
     deleteMarker: function(marker) {
-        console.log("REMOVING MARKER : deleteMarker");
         marker.setMap(null);
     },
 

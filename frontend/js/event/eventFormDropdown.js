@@ -70,7 +70,7 @@ var EventFormDropdown = React.createClass({
                 <div id="categoryContentEventform">
                     {listItems}
                 </div>
-                <input type='text' className='form-control' id='categoryEventForm' onClick={this.toggleShowCategories} placeholder='Click to select' />
+                <input type='text' className='form-control' id='categoryEventForm' onClick={this.toggleShowCategories} placeholder='Click to select category' />
             </div>
         );
     }
