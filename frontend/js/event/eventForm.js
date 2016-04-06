@@ -18,6 +18,7 @@ import { browserHistory } from 'react-router';
 
 const EventForm = React.createClass({
     getInitialState: function() {
+    	console.log("GET INITIAL STATE")
 	    return {
 	    	event: null,
 	    	name: "",
@@ -28,7 +29,8 @@ const EventForm = React.createClass({
 	    	selectedCategory: "", //TODO: get the default category from backend
 	    	time: "",
 	    	description: "",
-	    	categories: []
+	    	categories: [],
+	    	loading:false
 
 	    };
 	},
@@ -77,6 +79,9 @@ const EventForm = React.createClass({
 				//there was an error fetching the event, maybe it has been deleted. For now just redirect to home page
 				browserHistory.push('/')	
 			}
+			this.setState({
+				loading: true
+			});
 			UTILS.rest.getEntry('event', that.props.params.id, that.autoFillEventDetails, error);
 		}
 
@@ -245,8 +250,13 @@ const EventForm = React.createClass({
 
 	// Called when editing event
 	autoFillEventDetails: function(event) {
+		this.setState({
+			loading:false
+		})
 		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
 		var time = moment.format("HH:mm");
+		moment.hour(0);
+		moment.minute(0);
 		//var date = moment.format("DD.MM.YYYY")
 		this.refs.dropDown.selectNoToggle(event.Category.name);
 		var latLng = new google.maps.LatLng(event.lat,event.lon);
@@ -272,7 +282,6 @@ const EventForm = React.createClass({
 			latlng: latLng,
 			address: address
 		});
-		$
 		this.centerAndSetMarker(latLng);
 	},
 
@@ -280,10 +289,11 @@ const EventForm = React.createClass({
 
     handleNewDateChange: function(timestamp) {
     	if(timestamp == "Invalid date") {
-
     		timestamp = this.readDateFromInputField(timestamp);
     	}
     	var moment = Moment(timestamp, "x")
+    	moment.hours(0);
+    	moment.minutes(0);
 	    this.setState({
 	       date: moment
 	    });
@@ -313,8 +323,9 @@ const EventForm = React.createClass({
 		if(!isInt(date) || !isInt(month) || !isInt(year)) {
 			return "";
 		}
-		var dateString = date + "-" + month + "-" + year;
-		return Moment(dateString, "DD-MM-YYYY");
+		var dateString = date + "-" + month + "-" + year + "-" + "00:00";
+
+		return Moment(dateString, "DD-MM-YYYY-HH:mm");
     },
 
     setDateFieldPlaceHolder: function() {
@@ -435,6 +446,9 @@ const EventForm = React.createClass({
 		address.streetAddress = document.getElementById("address").value;
 
 		var dateTimestamp = this.state.date.unix()*1000;
+		console.log("DATE TIME STAMP")
+		console.log(dateTimestamp)
+
 		var dateInputFieldVal = document.getElementsByClassName("dateInputField")[0].getElementsByClassName("form-control")[0].value;
 		if(dateInputFieldVal.length == 0) {
 			dateTimestamp = "";
@@ -531,6 +545,10 @@ const EventForm = React.createClass({
 	render: function(){
 		var that = this;
 
+		if(this.state.loading){
+			return <div>Loading...</div>
+		}
+
 		return (
 			<div>
 				<h1 className="centeredHeader">{that.getEditOrCreateTitle()}</h1>
@@ -556,6 +574,7 @@ const EventForm = React.createClass({
 
 							<DatePicker
 								inputFormat="DD.MM.YYYY"
+								dateTime={this.state.date.format('x')}
 								size="md"
 								mode="date"
 								viewMode="days"

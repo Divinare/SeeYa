@@ -2,6 +2,15 @@ Remove all categories that are null:
 
 DELETE FROM "Events" WHERE "CategoryId" is null;
 
+Select all events:
+select * from "Events";
+
+
+//INSERTING CATEGORIES:
+
+insert into "Categories" (id, name, "createdAt", "updatedAt")
+VALUES (1, 'Sports', current_timestamp, current_timestamp),
+(2, 'Beer', current_timestamp, current_timestamp)
 
 
 

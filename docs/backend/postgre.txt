@@ -22,8 +22,19 @@ List all tables:
 \d+
 \l+
 
-Select all events:
-select * from "Events";
+Adding a user general with password:
+CREATE USER general WITH PASSWORD 'test';
+Might also need to do this: REVOKE CONNECT ON DATABASE devdb FROM PUBLIC;
+GRANT CONNECT
+ON DATABASE devdb
+TO general;
+
+and this:
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO general; //gives privileges for user general for all the tables. (of the current database?).
+
+and this:
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public to general;
+
 
 
 DATABASE management:
