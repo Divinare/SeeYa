@@ -30,12 +30,33 @@ const EventPage = React.createClass({
         this.setState({ showModal: true });
     },
 
+    componentWillUpdate: function(){
+        this.updateEditingPrivileges(this.state.event);
+    },
+
+    updateEditingPrivileges: function(event){
+        var user = this.props.getAppStatus('user')
+        if( typeof user === 'undefined' 
+            || typeof event === 'undefined'
+            || user === null
+            || event === null){
+            return
+        }
+        if( event.creator === user.id ){
+            if(this.state.editingAllowed === false){
+                this.setState({
+                    editingAllowed: true
+                })
+            }
+        }
+    },
 
     componentWillMount: function() {
         
     },
 
     componentDidMount: function() {
+        console.log("EVENT PAGE MOUNTED")
         this.props.handleResize();
         var that = this;
         $('#form').validator()
@@ -55,14 +76,16 @@ const EventPage = React.createClass({
                 that.setState({
                     event: data
                 })
-                var user = that.props.getAppStatus('user')
-                if( user !== null && data.creator === user.id) {
+               /* var user = that.props.getAppStatus('user')
+                if( typeof user !== 'undefined' && user !== null && data.creator === user.id) {
                     that.setState({
                         editingAllowed: true
                     })
-                }
+                }*/
+                that.updateEditingPrivileges(data);
             }
         };
+
         var onError = function() {
             console.log("Error on fetching event!");
             browserHistory.push('/');   //TODO ADD NOTIFICATION TO THE USER SAYING THE EVENT WAS NOT FOUND

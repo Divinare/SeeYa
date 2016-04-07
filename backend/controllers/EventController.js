@@ -17,16 +17,11 @@ module.exports = {
             where: { id: eventId },
             include: [ models.Address,
                       models.Attendance,
-                      models.Category,
-                      models.User ] //creator of the event
+                      models.Category ] //creator of the event
 
         })
         .then(function (event) {
             if(event){
-                if( typeof event.User !== 'undefined' && event.User !== null){
-                    delete event.User.dataValues.password
-                    delete event.User.dataValues.salt
-                }
                 res.send(event);
             }else{
                 //means not found. Usually if the web page is not found, but should be suitable in this situation as well

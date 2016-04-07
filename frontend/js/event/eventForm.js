@@ -546,7 +546,7 @@ const EventForm = React.createClass({
 		if(this.isEditForm()){
 			return "Edit event"
 		}
-		return "What do you want to do?"
+		return "What would you like to do?"
 	},
 
 	render: function(){
