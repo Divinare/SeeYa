@@ -7,6 +7,9 @@ sudo -u postgres psql
 Connects to database:
 psql -d devdb
 
+Connects to database devdb as user general:
+psql -U general devdb
+
 If not working, try these:
 psql -h localhost -U postgres
 \connect devdb
@@ -21,21 +24,6 @@ List all tables:
 \d
 \d+
 \l+
-
-Adding a user general with password:
-CREATE USER general WITH PASSWORD 'test';
-Might also need to do this: REVOKE CONNECT ON DATABASE devdb FROM PUBLIC;
-GRANT CONNECT
-ON DATABASE devdb
-TO general;
-
-and this:
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO general; //gives privileges for user general for all the tables. (of the current database?).
-
-and this:
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public to general;
-
-
 
 DATABASE management:
 
@@ -60,4 +48,27 @@ LINUX
 
 To restart postgres:
 sudo /etc/init.d/postgresql restart
+
+
+
+
+USER RIGHTS
+
+Lists roles of users:
+\du
+
+Adding a user general with password:
+
+psql -h localhost -U postgres
+
+CREATE USER general WITH PASSWORD 'test';
+REVOKE CONNECT ON DATABASE devdb FROM PUBLIC;
+GRANT CONNECT ON DATABASE devdb TO general;
+
+\connect devdb
+
+Gives privileges for user general for all the tables of the current database:
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO general;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public to general;
+
 

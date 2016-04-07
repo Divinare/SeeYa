@@ -29,7 +29,10 @@ npm install
 
 - Your environment is all set
 
+SETUP DATABASE
+
 - Install postgres, see more detailed instructions from docs/SetupPostgres.txt
+- Look for postgre.txt for detailed instructions of how to setup database
 
 RUNNING THE APP:
 
@@ -64,18 +67,6 @@ launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
 Starting up postgres server:
 postgres -D /usr/local/var/postgres
 
-
-after database creation:
-to enter psql enter commands:
-
- createdb
-
- psql
-
-this connects to a database
-psql -U Username DatabaseName 
-
-
 ### Frontend ###
 
 * React for client side view and controller logic
@@ -91,3 +82,7 @@ psql -U Username DatabaseName
 ### Server side backend ###
 
 * Express 4 for server side logic
+* Database: PostgreSQL 9.4.4
+
+### Common ###
+* Validations for both Frontend & Backend
