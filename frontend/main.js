@@ -206,10 +206,11 @@ const Main = React.createClass({
                         hideRightContainer={this.hideRightContainer} />
 
                         <div className="right-container showing" onClick={this.hideRightContainer}>
-                            <Link to={"/"}><img id="homeIcon" src="assets/back_to_home_dark_icon.png" alt="cleyhouse" onClick={this.show} /></Link>
-                            {childrenWithProps}
+                            <div className="rightContainerContainer">
+                                <Link to={"/"}><img id="homeIcon" src="assets/back_to_home_dark_icon.png" alt="cleyhouse" onClick={this.show} /></Link>
+                                {childrenWithProps}
+                            </div>
                         </div>
-                        <div className="toggleRightContainer hidden" onClick={this.toggleRightContainer}></div>
                 </div>  
                 
             </div>
