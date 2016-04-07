@@ -48,12 +48,12 @@ module.exports = React.createClass({
                                 { (this.props.user !== null) ? 
                                     <div>
                                         <li className="navbar-desktop-element">{this.props.user.username}</li> 
-                                        <li className="navbar-desktop-element"><Link to="/logout">Logout</Link></li>
+                                        <li className="navbar-desktop-element"><Link to="/logout">Log out</Link></li>
                                     </div>
                                     :
                                      <div>
-                                        <li className="navbar-desktop-element"><Link to="/signup">Signup</Link></li>
-                                        <li className="navbar-desktop-element"><Link to="/login">Login</Link></li>
+                                        <li className="navbar-desktop-element"><Link to="/signup">Sign up</Link></li>
+                                        <li className="navbar-desktop-element"><Link to="/login">Log in</Link></li>
                                     </div>
                                 }
                                 <li className="navbarToggleMobile" onClick={this.openNavbar}></li>
@@ -70,12 +70,12 @@ module.exports = React.createClass({
 
                         { (this.props.user !== null) ? 
                             <div>
-                                <li><Link to="/logout">Logout</Link></li>
+                                <li><Link to="/logout">Log out</Link></li>
                             </div>
                             :
                             <div>
-                                <li><Link to="/signup" onClick={this.closeNavbar}>Signup</Link></li>
-                                <li><Link to="/login" onClick={this.closeNavbar}>Login</Link></li>     
+                                <li><Link to="/signup" onClick={this.closeNavbar}>Sign up</Link></li>
+                                <li><Link to="/login" onClick={this.closeNavbar}>Log in</Link></li>     
                             </div>
                         }
                     </ul>

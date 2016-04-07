@@ -24,6 +24,7 @@ var models  = require('../models');
 var helper = require("../helpers/helper.js")
 var errorMessages = require("../../common/validators/errorMessage.js")
 var security = require("../helpers/security.js")
+var sessionService = require("../services/SessionService.js")
 
 const httpUnAuthorized = 401;
 
@@ -47,14 +48,16 @@ module.exports = {
                 }
                 //called by the security component with the salt and hash of the password
                 var checkPassword = function(salt, hash){
-                    if( user.password == hash ){
+                    if( user.password === hash ){
                         console.log("login success")
                        /* req.seeyaSession.user = user;
                         delete req.user.password;
-                        delete req.user.salt;*/
+                        delete req.user.salt;
                         module.exports.addUserInfoInCookie(req.seeyaSession, user);
                         var response = {}
                         module.exports.addUserInfoInCookie(response, user);
+                        helper.sendResponse(res, 200, response);*/
+                        var response = sessionService.login(req, res, user);
                         helper.sendResponse(res, 200, response);
                     }else{
                         helper.sendErrJsonObj(res, httpUnAuthorized, {errorMessage: errorMessages.getError('userEmailOrPasswordDontMatch')});

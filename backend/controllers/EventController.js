@@ -45,13 +45,12 @@ module.exports = {
     },
 
     filterEvents: function (req, res) {
-        
         var categoryFilter = req.params.category;
         console.log("Category FILTER: " + categoryFilter);
 
         models.Event.findAll({
             include: [ models.Address,
-                  models.Attendance,
+                    models.Attendance,
                   { model: models.Category, where: {'name': categoryFilter} }
                   ]
         }).then(function (events) {

@@ -59,15 +59,6 @@ const EventPage = React.createClass({
         console.log("EVENT PAGE MOUNTED")
         this.props.handleResize();
         var that = this;
-        $('#form').validator()
-        $('#form').validator().on('submit', function (e) {
-            if (e.isDefaultPrevented()) {
-             } else {
-                e.preventDefault();
-                that.addAttendance();
-
-             }
-        })
         var tokens = UTILS.helper.getUrlTokens();
         var eventId = tokens[tokens.length - 1];
 
@@ -76,12 +67,6 @@ const EventPage = React.createClass({
                 that.setState({
                     event: data
                 })
-               /* var user = that.props.getAppStatus('user')
-                if( typeof user !== 'undefined' && user !== null && data.creator === user.id) {
-                    that.setState({
-                        editingAllowed: true
-                    })
-                }*/
                 that.updateEditingPrivileges(data);
             }
         };
@@ -99,13 +84,11 @@ const EventPage = React.createClass({
         var that = this;
         var event = this.state.event;
         var data = {
-            name: this.state.name,
-            email: this.state.email,
             comment: this.state.comment,
             event: event
         }
         var success = function(){
-            that.props.getEvents();
+            that.props.getEvents(); 
             browserHistory.push('/');
         };              
         var error = function( jqXhr, textStatus, errorThrown ){
@@ -276,23 +259,15 @@ const EventPage = React.createClass({
                 <div >
                     <h2>Attend {eventName}</h2>
                     <form className='form' id='form' role='form' data-toggle="validator" data-disable="false"> {/* onSubmit={event.preventDefault() */}
-                        <div className='form-group required'>
-                            <input type='text' value={this.state.name} onChange={this.handleChange('name')} className='form-control' id='name' placeholder='Your name' required/>
-                            <div className="help-block with-errors"></div>
-                        </div>
-                        <div className='form-group'>
-                            <input type='text' pattern="^\S+@\S+\.\S+$" value={this.state.email} onChange={this.handleChange('email')} className='form-control' id='email' placeholder='Email address'/>
-                            <div className="help-block with-errors"></div>
-                        </div>
                         <div className='form-group'>
                             <textArea type='text' value={this.state.description} onChange={this.handleChange('comment')} className='form-control' id='comment' placeholder='Comment'/>
                         </div>
                         <div className="form-group">
-                            <button className="btn btn-default" type="submit">Attend</button>
+                            <button className="btn btn-default btn-block" type="button" onClick={this.addAttendance}>Attend</button>
                         </div>
 
                     </form>
-                </div>
+                </div> 
             </div>
         )
     }

@@ -16,11 +16,15 @@ module.exports = function(sequelize, DataTypes) {
                 Event.belongsTo(models.User, {
                     foreignKey: 'creator'
                 });
+                Event.belongsToMany(models.User, {
+                    through: models.Attendance,
+                    foreignKey: 'EventId'
+                });
                 Event.belongsTo(models.Address);
                 Event.belongsTo(models.Category);
                 Event.hasMany(models.Attendance, {
                     foreignKey: 'EventId'
-                });
+                })
             }
         }
     });

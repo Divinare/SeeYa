@@ -72,9 +72,10 @@ const About = React.createClass({
                 $('#serverErrorDiv').show(500);
 
             };
-            var success = function(){
+            var success = function(result){
                 console.log( "success!!!" );
-                browserHistory.push('/login');
+                that.props.updateAppStatus('user', result.user);
+                browserHistory.push('/');
             };
             $("#serverErrorDiv").hide(200);
             validator.clearErrorFromField('email', 'emailError');

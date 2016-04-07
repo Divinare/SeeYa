@@ -80,3 +80,11 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO general;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public to general;
 
 
+If you get an error when doing migrations it may be because you have used different user to create the database than what sequelize is using to connect to the database. You can either change the connection settings in config.json or you can do the following:
+log in to psql in devdb database as postgres user and run this
+
+REASSIGN OWNED BY "Pete" TO general  //assuming Pete was the user that was used to create the database and general is the on you want to give the ownership to
+You can use \d when logged into devdb to view the relations and their owners
+
+If you already ran the migration sequelize may claim migrations are up to date. Undo the latest migration and redo it, that should work.
+

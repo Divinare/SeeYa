@@ -8,6 +8,7 @@ var errorMessages = require("../../common/validators/errorMessage.js")
 var utils = require("../../common/utils.js")
 var crypto = require('crypto');
 var userService = require('../services/UserService.js');
+var sessionService = require('../services/sessionService.js');
 
 module.exports = {
 
@@ -47,7 +48,8 @@ module.exports = {
                 password: hash,
                 salt: salt
             }).then(function(user){
-                res.status(201).send({});
+                var response = sessionService.login(req, res, user);
+                res.status(201).send(response);
             }).catch(function(err){
                 helper.sendErr(res, 400, err);
             });

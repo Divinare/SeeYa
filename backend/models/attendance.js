@@ -2,8 +2,11 @@
 
 module.exports = function(sequelize, DataTypes) {
 	var Attendance = sequelize.define("Attendance", {
-    name: { type: DataTypes.STRING, allowNull: false, validate: { len: { args: [3,30], msg: "Name must be 3-30 characters long"} } },
-    email: { type: DataTypes.STRING, allowNull: true },
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     comment: { type: DataTypes.STRING },
     sendEmail: {type: DataTypes.BOOLEAN, defaultValue: false}
   }, {
@@ -11,11 +14,19 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
         associate: function(models) {
           Attendance.belongsTo(models.Event, {
-            onDelete: 'cascade'
+            foreignKey: 'EventId',
+            onDelete: 'cascade',
+            unique: 'pkIndex'
           });
-      }
+          Attendance.belongsTo(models.User,{
+            onDelete: 'cascade',
+            foreignKey: 'userId',
+            unique: 'pkIndex'
+          });
+        }
     }
-  });
+  }
+  );
 
   return Attendance;
 };
