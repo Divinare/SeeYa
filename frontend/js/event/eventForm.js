@@ -330,7 +330,7 @@ const EventForm = React.createClass({
 
     setDateFieldPlaceHolder: function() {
     	var inputField = document.getElementsByClassName("dateInputField")[0].getElementsByClassName("form-control")[0];
-    	inputField.placeholder = "DD:MM:YYYY";
+    	inputField.placeholder = "Date (DD:MM:YYYY)";
     },
 
 	/*** CATEGORY ***/
@@ -522,15 +522,21 @@ const EventForm = React.createClass({
 	/*** VALIDATIONS ***/
 
 	validateField: function(func, params, field, customMessage) {
+			console.log("FIELD::::: " + field);
+
 		var errorMessage = func(params, customMessage);
+		var formInputField = field.replace("Error", "");
 		if(CommonUtils.isEmpty(errorMessage)) {
 			// Clear the error message if it exists
 			$("#" + field).text("");
+			$("#" + formInputField).removeClass("invalid");
+
 			return true;
 		}
 		// Validation failed
 		else {
 			$("#" + field).text(errorMessage);
+			$("#" + formInputField).addClass("invalid");
 			return false;
 		}
 	},
@@ -550,26 +556,26 @@ const EventForm = React.createClass({
 		}
 
 		return (
-			<div>
+			<div className="eventFormContainer">
 				<h1 className="centeredHeader">{that.getEditOrCreateTitle()}</h1>
 
 				<div className='form' id="eventForm">
 
 					{/* Name */}
-					<div className='form-group'>
-						<input type='text' className='form-control' id='name' value={this.state.name} onChange={this.handleChange('name')} placeholder='Name of the event'/>
+					<div className='form-group' id="name">
+						<input type='text' className='form-control' id='name' value={this.state.name} onChange={this.handleChange('name')} placeholder='Event name'/>
 					</div>
 					<span className="validationError" id="nameError"></span>
 
 					{/* Address */}
-					<div className='form-group'>
+					<div className='form-group' id="address">
 						<input type='text' onBlur={this.addressOnBlur} value={this.state.address.streetAddress} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
 					</div>
 					<span className="validationError" id="addressError"></span>
 					<span className="validationError" id="latLngError"></span>
 
 					{/* Date */}
-					<div className='form-group'>
+					<div className='form-group' id="date">
 				        <div className="dateInputField">
 
 							<DatePicker
@@ -589,9 +595,9 @@ const EventForm = React.createClass({
 					<span className="validationError" id="dateError"></span>
 
 					{/* Time */}
-					<div className='form-group'>
+					<div className='form-group' id="time">
 						<div className='input-group'>
-							<input type='text' className='form-control' id='time' value={this.state.time} onChange={this.handleChange("time")} placeholder="hh:mm" />
+							<input type='text' className='form-control' id='time' value={this.state.time} onChange={this.handleChange("time")} placeholder="Time (hh:mm)" />
 							<span className="input-group-btn">
 								 <button className="btn btn-default" type="button" onClick={this.setCurrentTime}><i className="glyphicon glyphicon-time"></i></button>
 							</span>
@@ -600,7 +606,7 @@ const EventForm = React.createClass({
 					<span className="validationError" id="timeError"></span>
 
 					{/* Category */}
-					<div className='form-group'>
+					<div className='form-group' id="category">
 							<EventFormDropdown
 								ref={'dropDown'}
 								itemClassName={"itemDropdownEventForm"}
@@ -611,7 +617,7 @@ const EventForm = React.createClass({
 					<span className="validationError" id="categoryError"></span>
 
 					{/* Description */}
-					<div className='form-group'>
+					<div className='form-group' id="description">
 						<textarea type='text' className='form-control' id='description' maxLength="500" value={this.state.description} onChange={this.handleChange('description')} placeholder="Description"/>
 					</div>
 					<span id="charactersLeft"></span>

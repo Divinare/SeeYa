@@ -18,7 +18,7 @@ const About = React.createClass({
 	
 
 		return (
-			<div id="aboutPage">
+			<div className="aboutPageContainer">
 				<h1>Welcome! We are happy to See you!</h1>
 				<br />
 				<br />

@@ -1,3 +1,7 @@
+.signUpPageContainer {
+    padding: 40px;
+}
+
 .signupContent {
     width: 100%;
     height: 100%;
@@ -7,10 +11,4 @@
     top: 0;
     left: 0;
     position:absolute;
-}   
-
-.invalid {
-    border-style: solid !important;
-    border-width: 2px !important;
-    border-color: red !important;
 }

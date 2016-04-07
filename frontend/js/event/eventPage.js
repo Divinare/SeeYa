@@ -227,7 +227,7 @@ const EventPage = React.createClass({
         //let popover = <Popover title="popover">very popover. such engagement</Popover>;
 
         return (
-            <div>
+            <div className="eventPageContainer">
                 <div>
                     <h2>{eventName}</h2>
                     {date}<br/>

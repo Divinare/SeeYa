@@ -8,6 +8,7 @@ module.exports = {
 	   Returns: Address object of event
 	*/
 	getValue: function(event, property) {
+		console.log("LOL? " + property);
 		//console.log("AT PARSER!");
 		//console.log(event);
 		//console.log(property);
@@ -19,11 +20,19 @@ module.exports = {
 		} else if(property == 'attendances') {
 			return "" + event['Attendances'].length;
 		} else if(property == 'timestamp') {
-			var unixTimestamp = event['timestamp'];
+			console.log(":Ö_Ö " + property);
+			console.log("PROP: " + parseInt(event[property]));
+			return parseInt(event[property]);
+			/*var unixTimestamp = event['timestamp'];
 			var date = Moment.unix(unixTimestamp/1000).format("DD.MM.YYYY");
 			var time = Moment.unix(unixTimestamp/1000).format("HH:mm")
 			return time + ' ' + date;
+			*/
 		} else {
+			console.log("AT ELESE")
+			console.log("AT ELESE")
+			console.log("AT ELESE")
+			console.log("AT ELESE")
 			return event[property];
 		}
 	},

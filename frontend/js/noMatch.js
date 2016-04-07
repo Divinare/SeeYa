@@ -22,7 +22,7 @@ var NoMatch = React.createClass({
 	render: function(){
 		console.log("at no match component");
 		return (
-			<div className='right-container'>
+			<div className='noMatchPageContainer'>
 				<h1>The page you were looking for does not exist!</h1>
 			</div>
 			)

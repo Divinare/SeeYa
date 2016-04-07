@@ -9,7 +9,7 @@
 
 
 body {
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 html {
@@ -35,17 +35,24 @@ img{
     /* color: #FFF; */
     color: #4E4E4E;
     z-index: 99;
-    padding: 40px;
     width: 400px;
     top: 60px;
     height: 100%;
     /*background-color: rgba(0,0,0,0.55);*/
     background-color: rgba(228,228,228,0.55);
     overflow-y: auto;
+    overflow-x: hidden;
+
 }
 
 .form-control {
     border-radius: 3px !important;
+}
+
+.invalid {
+    border-style: solid !important;
+    border-width: 2px !important;
+    border-color: rgb(234, 89, 98) !important;
 }
 
 .content {

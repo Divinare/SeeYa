@@ -11,11 +11,6 @@ var SortTypes = {
   DESC: 'DESC',
 };
 
-/* NOTE:
-    If function name starts with _ that means it is related to 
-    fixed-data-table API
-*/
-
 const EventList = React.createClass({
 
     getInitialState: function() {
@@ -103,10 +98,12 @@ const EventList = React.createClass({
     },
 
     _sortRowsBy: function(sortBy) {
+        console.log("AT SORT ROWS!!! " + sortBy);
         sortBy = sortBy.toLowerCase();
         var eventListData = this.props.eventListData;
         var rows = this.props.filteredEventList.slice();
         var sortDir = eventListData.sortDir;
+        console.log("SORT DIR IS " + sortDir);
         if (sortBy === eventListData.sortBy) {
             sortDir = sortDir === SortTypes.ASC ? SortTypes.DESC : SortTypes.ASC;
         } else {
@@ -114,10 +111,14 @@ const EventList = React.createClass({
         }
         rows.sort((eventA, eventB) => {
           var sortVal = 0;
+            console.log(UTILS.eventParser.getValue(eventA, sortBy) + " === " + UTILS.eventParser.getValue(eventB, sortBy))
           if (UTILS.eventParser.getValue(eventA, sortBy) > UTILS.eventParser.getValue(eventB, sortBy)) {
+            console.log("1")
             sortVal = 1;
           }
           if (UTILS.eventParser.getValue(eventA, sortBy) < UTILS.eventParser.getValue(eventB, sortBy)) {
+            console.log("-1")
+           
             sortVal = -1;
           }
           
@@ -136,9 +137,16 @@ const EventList = React.createClass({
         this.props.updateAppStatus('eventListData', eventListData);
       },
 
-     _renderHeader: function(headerName) {
+     _renderHeader: function(headerName, sortBy) {
+
+        if(headerName == "Attendances") {
+            return (
+                <div className='link' id="eventListPeopleIcon" onClick={this._sortRowsBy.bind(null, sortBy)}></div>
+            );
+        }
+
         return (
-            <div className='link' onClick={this._sortRowsBy.bind(null, headerName)}>{headerName}</div>
+            <div className='link' onClick={this._sortRowsBy.bind(null, sortBy)}>{headerName}</div>
         );
      },
 
@@ -201,22 +209,29 @@ const EventList = React.createClass({
         }
     },
 
+    _formatTimestamp: function(timestamp) {
+        return Moment.unix(timestamp/1000).format("DD.MM.YYYY");
+
+    },
+
     createEventListRows: function(eventList) {
         var _this = this;
         var items = [];
         items.push(
             <tr key="z">
-                <th key="x"></th>
-                <th key="y">{this._renderHeader("Name")}</th>
-                <th key="v">{this._renderHeader("Attendances")}</th>
+                <th className="eventListItem" key="x"></th>
+                <th className="eventListItem" key="y">{this._renderHeader("Name", "name")}</th>
+                <th className="eventListItem" key="c">{this._renderHeader("Attendances", "attendances")}</th>
+                <th className="eventListItem" key="v">{this._renderHeader("When", "timestamp")}</th>
              </tr>
             );
         eventList.map(function(event) {
             items.push(
                 <tr key={event.id}>
-                    <td key={"a"+event.id}><div id="eventListMapIconContainer" onClick={_this.centerMapToMarker.bind(null, event.id, -1)}><img src="../../assets/seeya_marker.png" width="25px" height="25px"></img></div></td>
-                    <td key={"b"+event.id}>{_this.cellRenderer("name", event.name, event.id)}</td>
-                    <td key={"c"+event.id}>{event.Attendances.length}</td>                            
+                    <td className="eventListItem" key={"a"+event.id}><div id="eventListMapIconContainer" onClick={_this.centerMapToMarker.bind(null, event.id, -1)}><img src="../../assets/seeya_marker.png" width="25px" height="25px"></img></div></td>
+                    <td className="eventListItem" key={"b"+event.id}>{_this.cellRenderer("name", event.name, event.id)}</td>
+                    <td className="eventListItem" key={"c"+event.id}>{event.Attendances.length}</td>
+                    <td className="eventListItem" key={"d"+event.id}>{_this._formatTimestamp(event.timestamp)}</td>                            
                 </tr>
             );
         });
@@ -259,7 +274,7 @@ const EventList = React.createClass({
         // Return event table with real data
         //} else {
             return (
-                <div>
+                <div className="eventListContainer">
                     <h2 className="topic">Events</h2>
                         {eventListTable}
                     <div className="eventList-filter-bar">

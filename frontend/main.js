@@ -42,18 +42,13 @@ $(document).click(function() {
 const Main = React.createClass({
 
     getInitialState: function() {
-        var currentTimestamp = Moment().unix()
-        var nextMonthTimestamp = Moment().add('months', 1)/1000;
-
         var eventListData = [];
         eventListData['tableHeight'] = 0;
         eventListData['tableWidth'] = 0;
         eventListData['sortBy'] = 'name';
         eventListData['sortDir'] = null;
         eventListData['filters'] = {
-            category: "Sports",
-            fromTimestamp: currentTimestamp,
-            toTimestamp: nextMonthTimestamp
+            category: "Sports"
         };
         eventListData['tableContentNames'] = ['name', 'attendances', 'streetAddress', 'timestamp'];
         
