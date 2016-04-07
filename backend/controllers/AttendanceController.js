@@ -38,9 +38,7 @@ module.exports = {
 		console.log(attendanceToAdd)
 
         var success = function(user){
-            Attendance.create({
-                name: attendanceToAdd.name,
-                email: attendanceToAdd.email,
+            Attendance.upsert({ //insert or update
                 comment: attendanceToAdd.comment,
                 EventId: attendanceToAdd.event.id,
                 userId: user.id
