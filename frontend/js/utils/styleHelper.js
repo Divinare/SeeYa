@@ -59,13 +59,16 @@ module.exports = {
 	},
 
 	toggleRightContainer: function(show) {
-        console.log("AT TOGGLE RIGHT CONTAINER");
         var toggleHeightMobile = window.innerHeight - 188;
         var className = $('.right-container').attr('class');
+
+        var animationGoing = (className.indexOf("toDesktop") != -1 || className.indexOf("toMobile") != -1 ) ? true : false;
+        if(animationGoing) {
+            return;
+        }
         // SHOW
         if(className.indexOf("showing") == -1 && show) {
             if(this.isDesktop()) {
-                console.log("SHOW DESKTOP");
                 $(".right-container").animate({'right':'+=350px'},350);
                 $(".right-container").addClass("showing");
             } else {
@@ -75,7 +78,6 @@ module.exports = {
         // HIDE
         } else if(className.indexOf("showing") != -1 && !show) {
             if(this.isDesktop()) {
-                console.log("HIDE DESKTOP");
                 $(".right-container").animate({'right':'-=350px'},350);
                 $(".right-container").removeClass("showing");
             } else {
@@ -95,7 +97,6 @@ module.exports = {
 
     resetRightContainer: function() {
         var className = $('.right-container').attr('class');
-
         if(this.isDesktop()) {
             if(className.indexOf("toDesktop") == -1) {
                 $(".right-container").addClass("toDesktop");
