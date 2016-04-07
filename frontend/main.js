@@ -111,6 +111,8 @@ const Main = React.createClass({
             $(".right-container").css('height', eventListHeight);
             $(".right-container").css('width', eventListWidth);
 
+            UTILS.styleHelper.resetRightContainer();          
+
             var eventListData = this.state.eventListData;
             eventListData['tableHeight'] = eventListHeight;
             eventListData['tableWidth'] = eventListWidth;
@@ -156,6 +158,10 @@ const Main = React.createClass({
         return this.state[propName];
     },
 
+    hideRightContainer: function() {
+        UTILS.styleHelper.showRightContainer();
+    },
+
     render: function() {
         var that = this;
         var showFrontpage = this.state.showFrontpage;
@@ -199,7 +205,7 @@ const Main = React.createClass({
                         updateAppStatus={this.updateAppStatus}
                         hideRightContainer={this.hideRightContainer} />
 
-                        <div className="right-container showing" onClick={UTILS.styleHelper.showRightContainer}>
+                        <div className="right-container showing" onClick={this.hideRightContainer}>
                             <Link to={"/"}><img id="homeIcon" src="assets/back_to_home_dark_icon.png" alt="cleyhouse" onClick={this.show} /></Link>
                             {childrenWithProps}
                         </div>

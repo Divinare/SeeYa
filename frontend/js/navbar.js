@@ -28,6 +28,17 @@ module.exports = React.createClass({
         $("#navbar-mobile").addClass("hidden");
     },
 
+    linkClicked: function(func) {
+        console.log("FUNC");
+        console.log(func);
+        if(func != null && func != "") {
+            func();
+        }
+        UTILS.styleHelper.resetRightContainer();
+    },
+
+    // onClick={UTILS.messageComponent.showMessageComponent("Test message")}
+
     render: function(){
         return (
             <div id="navbarContent">
@@ -35,7 +46,7 @@ module.exports = React.createClass({
                     <ul id="navbar-menu">
                         <div className="navbar-left-container">
                             <span id="navbarLogoContainer">
-                                <div id="navbar-logo"><Link to="/"></Link></div>
+                                <div id="navbar-logo" onClick={this.linkClicked.bind(null, "")}><Link to="/"></Link></div>
                             </span>
                             <li className="navbar-desktop-element"><Link to="/about">About</Link></li>
                             <li className="navbar-desktop-element"><Link to="/eventForm">New event</Link></li>

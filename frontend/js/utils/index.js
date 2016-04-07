@@ -4,6 +4,6 @@ module.exports = {
 	url: require('./url'),
 	helper: require('./helper'),
 	eventParser: require('./eventParser'),	
-	styleHelper: require('./styleHelper')
-
+	styleHelper: require('./styleHelper'),
+    messageComponent: require('./messageComponent')
 }

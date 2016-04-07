@@ -1,4 +1,4 @@
-
+var commonUtils = require("../../../common/utils.js");
 
 function showMessageComponent(message, displayTime, type) {
 
@@ -32,6 +32,9 @@ function showMessageComponent(message, displayTime, type) {
 }
 
 function hideComponent(msgComponent, displayTime) {
+	if(commonUtils.isEmpty(displayTime)) {
+		displayTime = 3000;
+	}
 	setTimeout(function(){ msgComponent.hide(500); }, displayTime);
 }
 
