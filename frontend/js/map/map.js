@@ -250,34 +250,57 @@ var Map = React.createClass({
         return marker;
     },
 
+    _renderInfoWindow: function(event) {
+
+
+        var time = UTILS.eventParser.getValue(event, 'timestamp');
+        var streetAddress = UTILS.eventParser.getValue(event, 'streetAddress');
+        var attendances = UTILS.eventParser.getValue(event, 'attendances');
+
+        return (
+            <div className="infowindowContainer">
+                <h3>{event.name}</h3>
+                <p>{time}</p>
+                <p>{streetAddress}</p>
+                <p>People attending: {attendances}</p>
+                <a>Attend</a>
+            </div>
+        )
+    },
+
     createInfowindow: function(map, marker, event) {
         var that = this;
         var infowindowContent = '';
-        if(event == null) {
-            var infowindowContent = document.createElement('div');
-            infowindowContent.className = "link";
-            infowindowContent.innerHTML = 'Create new event here';
-            infowindowContent.onclick = function(){
-                that.transitionToEventForm();
-            };
 
 
 
-        } else {
-            var time = UTILS.eventParser.getValue(event, 'timestamp');
-            var streetAddress = UTILS.eventParser.getValue(event, 'streetAddress');
-            var attendances = UTILS.eventParser.getValue(event, 'attendances');
-            infowindowContent = '<h3>' + event.name + '</h3>'
-                            + '<a> Join to this event</a>'
-                            + '<p>' + time + '</p>'
-                            + '<p>' + streetAddress + '</p>'
-                            + '<p>Attendances: ' + attendances + '</p>'
-                            + '<a>Zoom on map </a>';
-        }
+        var infowindowContainer = document.createElement('div');
+        ReactDOM.render(this._renderInfoWindow(event), infowindowContainer );
+        //infowindow.setContent( div );
+
+        var infowindow = new google.maps.InfoWindow({
+            content: infowindowContainer
+        });
+
+
+      //  infowindow.open(map, this);
+
+        /*
+        var time = UTILS.eventParser.getValue(event, 'timestamp');
+        var streetAddress = UTILS.eventParser.getValue(event, 'streetAddress');
+        var attendances = UTILS.eventParser.getValue(event, 'attendances');
+        infowindowContent = '<h3>' + event.name + '</h3>'
+                        + '<a> Join to this event</a>'
+                        + '<p>' + time + '</p>'
+                        + '<p>' + streetAddress + '</p>'
+                        + '<p>Attendances: ' + attendances + '</p>'
+                        + '<a>Zoom on map </a>';
 
         var infowindow = new google.maps.InfoWindow({
             content: infowindowContent
         });
+        */
+
         return infowindow;
     },
 
