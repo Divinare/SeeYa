@@ -120,6 +120,8 @@ const EventForm = React.createClass({
 	/*** ADDRESS ***/
 
 	initAutocomplete: function() {
+		console.log("INITING AUTOCOMPLETE")
+		console.log(document.getElementById("address"))
 	  // Create the autocomplete object, restricting the search to geographical location types.
 	  autocomplete = new google.maps.places.Autocomplete(
 	      /** @type {!HTMLInputElement} */
@@ -138,7 +140,10 @@ const EventForm = React.createClass({
 	codeAddressFromString: function() {
 		var that = this;
 	    var address = document.getElementById('address').value;
-	    
+
+	    console.log("ADDRESS: ")
+	    console.log(address)
+
 	    geocoder.geocode( { 'address': address}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
 				console.log("results")
@@ -261,10 +266,6 @@ const EventForm = React.createClass({
 		this.refs.dropDown.selectNoToggle(event.Category.name);
 		var latLng = new google.maps.LatLng(event.lat,event.lon);
 		//var latLng = new google.maps.LatLng(14.4583953, 100.1314186)
-		console.log("ADDRESS:")
-		console.log(event.Address)
-		console.log(event.lat)
-		console.log(event.lon)
 		var address = {
 			streetAddress: event.Address.streetAddress,
 			city: event.Address.city,
@@ -562,20 +563,20 @@ const EventForm = React.createClass({
 				<div className='form' id="eventForm">
 
 					{/* Name */}
-					<div className='form-group' id="name">
+					<div className='form-group'>
 						<input type='text' className='form-control' id='name' value={this.state.name} onChange={this.handleChange('name')} placeholder='Event name'/>
 					</div>
 					<span className="validationError" id="nameError"></span>
 
 					{/* Address */}
-					<div className='form-group' id="address">
+					<div className='form-group'>
 						<input type='text' onBlur={this.addressOnBlur} value={this.state.address.streetAddress} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
 					</div>
 					<span className="validationError" id="addressError"></span>
 					<span className="validationError" id="latLngError"></span>
 
 					{/* Date */}
-					<div className='form-group' id="date">
+					<div className='form-group' id='date'>
 				        <div className="dateInputField">
 
 							<DatePicker
@@ -595,7 +596,7 @@ const EventForm = React.createClass({
 					<span className="validationError" id="dateError"></span>
 
 					{/* Time */}
-					<div className='form-group' id="time">
+					<div className='form-group'>
 						<div className='input-group'>
 							<input type='text' className='form-control' id='time' value={this.state.time} onChange={this.handleChange("time")} placeholder="Time (hh:mm)" />
 							<span className="input-group-btn">
@@ -617,7 +618,7 @@ const EventForm = React.createClass({
 					<span className="validationError" id="categoryError"></span>
 
 					{/* Description */}
-					<div className='form-group' id="description">
+					<div className='form-group'>
 						<textarea type='text' className='form-control' id='description' maxLength="500" value={this.state.description} onChange={this.handleChange('description')} placeholder="Description"/>
 					</div>
 					<span id="charactersLeft"></span>
