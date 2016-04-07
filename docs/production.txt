@@ -1,0 +1,3 @@
+To start gulp at production:
+
+pm2 start gulp

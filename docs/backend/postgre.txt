@@ -30,6 +30,8 @@ DATABASE management:
 We do this by using dump files, read documentation: http://www.postgresql.org/docs/9.4/static/backup-dump.html
 
 EXPORT
+
+Connect to posgres first
 Create a dumpfile of a dabatase, outfile = some output filename:
 pg_dump -Fc devdb > seedsdb.dump
 
@@ -41,6 +43,12 @@ pg_restore --verbose --clean --no-acl --no-owner -h localhost -U joe -d devdb se
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -U Pete -d devdb seedsdb.dump
 
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -U admin -d devdb seedsdb.dump
+
+
+
+To move DB to the production:
+
+
 
 
 
