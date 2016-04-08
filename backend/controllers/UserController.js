@@ -8,7 +8,7 @@ var errorMessages = require("../../common/validators/errorMessage.js")
 var utils = require("../../common/utils.js")
 var crypto = require('crypto');
 var userService = require('../services/UserService.js');
-var sessionService = require('../services/sessionService.js');
+var sessionService = require('../services/SessionService.js');
 
 module.exports = {
 
