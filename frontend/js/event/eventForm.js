@@ -18,11 +18,13 @@ import { browserHistory } from 'react-router';
 
 const EventForm = React.createClass({
     getInitialState: function() {
-    	console.log("GET INITIAL STATE")
 	    return {
 	    	event: null,
 	    	name: "",
-	    	address: {},
+	    	streetAddress: "",
+	    	city: null,
+	    	country: null,
+	    	zipCode: null,
 	    	latLng: [],
 	    	date: Moment(), // unix_timestamp
 	    	selectedDay: null,
@@ -74,7 +76,6 @@ const EventForm = React.createClass({
 		var that = this;
 		this.props.handleResize();
 		if(this.isEditForm()){
-			console.log("editform")
 			var error = function(){
 				//there was an error fetching the event, maybe it has been deleted. For now just redirect to home page
 				browserHistory.push('/')	
@@ -120,8 +121,6 @@ const EventForm = React.createClass({
 	/*** ADDRESS ***/
 
 	initAutocomplete: function() {
-		console.log("INITING AUTOCOMPLETE")
-		console.log(document.getElementById("address"))
 	  // Create the autocomplete object, restricting the search to geographical location types.
 	  autocomplete = new google.maps.places.Autocomplete(
 	      /** @type {!HTMLInputElement} */
@@ -141,21 +140,13 @@ const EventForm = React.createClass({
 		var that = this;
 	    var address = document.getElementById('address').value;
 
-	    console.log("ADDRESS: ")
-	    console.log(address)
-
 	    geocoder.geocode( { 'address': address}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-				console.log("results")
-				console.log(results)
 				var address_components = results[0].address_components;
 				var newAddress = that.getAddressFromAddressComponents(address_components);
 				var updatedAddress = that.getUpdatedAddress(newAddress);
 
-		   		that.setState({
-		   			latLng: results[0].geometry.location,
-		   			address: updatedAddress
-				})
+				that.updateAddress(results[0].geometry.location, newAddress);
 		   		that.centerAndSetMarker(results[0].geometry.location);
 
 			} else {
@@ -169,17 +160,26 @@ const EventForm = React.createClass({
 		map.setCenter(latLng);
 		var marker = new google.maps.Marker({
 		    map: map,
-		    position: latLng
+		    position: latLng,
+		    draggable: true
 		});
-		var icon = new google.maps.MarkerImage("../../assets/seeya_marker.png", null, null, null, new google.maps.Size(21,30));
+		var icon = new google.maps.MarkerImage("../../assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
 		marker.setIcon(icon);
 
 		if(this.props.newEventMarker != null) {
-			console.log("REMOVING MARKER : codeAddressFromString");
 			this.props.newEventMarker.setMap(null);
 		}
 		this.props.updateAppStatus("newEventMarker", marker);
-		console.log("ending center and ")
+  	},
+
+  	updateAddress: function(latLng, newAddress) {
+   		this.setState({
+   			latLng: latLng,
+   			streetAddress: newAddress.streetAddress,
+   			city: newAddress.city,
+   			country: newAddress.country,
+   			zipCode: newAddress.zipCode
+		})
   	},
 
 	codeAddressFromLatLng: function(latLng) {
@@ -189,10 +189,7 @@ const EventForm = React.createClass({
 				if (results[1]) {
 					var newAddress = that.getAddressFromAddressComponents(results[1].address_components);
 					var updatedAddress = that.getUpdatedAddress(newAddress);
-					that.setState({
-						address: updatedAddress,
-						latLng: latLng
-					});
+					that.updateAddress(latLng, updatedAddress);
 				} else {
 					console.log("____ No address found from latLng")
 				}
@@ -203,8 +200,6 @@ const EventForm = React.createClass({
 	},
 
 	getAddressFromAddressComponents: function(address_components) {
-		console.log("at getAddressFromAddressComponents");
-		console.log(address_components);
 		if(typeof address_components == "undefined") {
 			// Nothing to do here if address_components doesn't exist
 			return {};
@@ -262,26 +257,21 @@ const EventForm = React.createClass({
 		var time = moment.format("HH:mm");
 		moment.hour(0);
 		moment.minute(0);
-		//var date = moment.format("DD.MM.YYYY")
 		this.refs.dropDown.selectNoToggle(event.Category.name);
 		var latLng = new google.maps.LatLng(event.lat,event.lon);
-		//var latLng = new google.maps.LatLng(14.4583953, 100.1314186)
-		var address = {
-			streetAddress: event.Address.streetAddress,
-			city: event.Address.city,
-			country: event.Address.country,
-			zipCode: event.Address.zipCode
-		}
-		console.log(address)
+
 		this.setState({
 			event: event,
 			name: event.name,
+			latlng: latLng,
+			streetAddress: event.Address.streetAddress,
+			city: event.Address.city,
+			country: event.Address.country,
+			zipCode: event.Address.zipCode,
 			time: time,
 			date: moment,
 			description: event.description,
-			selectedCategory: event.Category.name,
-			latlng: latLng,
-			address: address
+			selectedCategory: event.Category.name
 		});
 		this.centerAndSetMarker(latLng);
 	},
@@ -428,9 +418,10 @@ const EventForm = React.createClass({
 		var that = this;
 		//e.preventDefault();
 		var address = {
-			streetAddress: this.state.address,
-			country: this.state.address.country,
-			zipCode: this.state.address.zipCode,
+			streetAddress: this.state.streetAddress,
+			city: this.state.city,
+			country: this.state.country,
+			zipCode: this.state.zipCode,
 		}
 		var latLng;
 		if(this.state.latLng.length == 0) {
@@ -442,9 +433,8 @@ const EventForm = React.createClass({
 
 
 		var name = this.state.name;
-		var address = this.state.address;
 		// Override current streetAddress with the one in address input field
-		address.streetAddress = document.getElementById("address").value;
+		//address.streetAddress = document.getElementById("address").value;
 
 		var dateTimestamp = this.state.date.unix()*1000;
 		console.log("DATE TIME STAMP")
@@ -570,7 +560,7 @@ const EventForm = React.createClass({
 
 					{/* Address */}
 					<div className='form-group'>
-						<input type='text' onBlur={this.addressOnBlur} value={this.state.address.streetAddress} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
+						<input type='text' onBlur={this.addressOnBlur} value={this.state.streetAddress} onChange={this.handleChange('streetAddress')} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
 					</div>
 					<span className="validationError" id="addressError"></span>
 					<span className="validationError" id="latLngError"></span>

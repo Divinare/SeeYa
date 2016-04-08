@@ -40,7 +40,7 @@ img{
     top: 60px;
     height: 100%;
     /*background-color: rgba(0,0,0,0.55);*/
-    background-color: rgba(228,228,228,0.55);
+    background-color: rgba(255, 255, 255, 0.7);
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -126,8 +126,8 @@ img{
 #homeIcon {
     display: block;   
     position: absolute;
-    /* TODO? background-image: url("assets/seeya_logo.png");
-    background-size: cover; */
+    background-image: url("assets/back_to_home_dark_icon.png");
+    background-size: cover;
     top: 10px;
     left: 10px;
     border: 0;

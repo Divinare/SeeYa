@@ -204,7 +204,7 @@ const Main = React.createClass({
 
                         <div className="right-container showing" onClick={this.hideRightContainer}>
                             <div className="rightContainerContainer">
-                                <Link to={"/"}><img id="homeIcon" src="assets/back_to_home_dark_icon.png" alt="cleyhouse" onClick={this.show} /></Link>
+                                <Link to={"/"}><div id="homeIcon" onClick={this.show}></div></Link>
                                 {childrenWithProps}
                             </div>
                         </div>

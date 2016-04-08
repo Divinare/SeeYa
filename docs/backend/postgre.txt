@@ -69,7 +69,7 @@ Adding a user general with password:
 
 psql -h localhost -U postgres
 
-CREATE USER general WITH PASSWORD 'test';
+CREATE USER general WITH PASSWORD 'random123';
 REVOKE CONNECT ON DATABASE devdb FROM PUBLIC;
 GRANT CONNECT ON DATABASE devdb TO general;
 

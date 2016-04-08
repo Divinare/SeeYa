@@ -21,6 +21,8 @@ var Map = React.createClass({
     componentDidMount: function () {
         this.initMap();
         this.props.handleResize();
+
+        var allowDrawMarkers = !(location === 'eventForm' || location === 'editForm');
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -31,11 +33,16 @@ var Map = React.createClass({
         if(this.state != null && nextProps.filteredEventList.length > 0) {
             if(allowDrawMarkers) {
                 this.addAllMarkers(nextProps);
+                if(allowDrawMarkers) {
+                    var newEventMarker = this.props.newEventMarker;
+                    if(!$.isEmptyObject(newEventMarker)) {
+                        console.log("SETTING OFF MARKER");
+                        this.props.newEventMarker.setMap(null);
+                        //this.props.updateAppStatus(newEventMarker, null);
 
-                var newEventMarker = this.props.newEventMarker;
-                if(!$.isEmptyObject(newEventMarker)) {
-                    this.props.newEventMarker.setMap(null);
+                    }
                 }
+
             }
         }
 
@@ -94,7 +101,15 @@ var Map = React.createClass({
         google.maps.event.addListener(map, 'click', function(event) {
             that.closeOpenedInfowindow();
             if(UTILS.helper.isAtLocation("eventForm")) {
-                that.addNewEventMarker(event.latLng, map);
+                var newEventMarker = that.props.newEventMarker;
+                if(newEventMarker == null) {
+                    that.addNewEventMarker(event.latLng, map);
+                } else {
+                    // if !newEventMarker doesn't exist on map
+                    if(newEventMarker.getMap() == null) {
+                        that.addNewEventMarker(event.latLng, map);
+                    }
+                }
             }
             UTILS.styleHelper.hideRightContainer();
         });
@@ -176,7 +191,7 @@ var Map = React.createClass({
         filteredEventList.map(function(event) {
             if(!$.isEmptyObject(event)) {
                 var icon = new google.maps.MarkerImage("assets/seeya_marker.png", null, null, null, new google.maps.Size(21,30));
-                var marker = that.createMarker({ lat: event.lat, lng: event.lon }, map, icon);
+                var marker = that.createMarker({ lat: event.lat, lng: event.lon }, map, icon, false);
                 var infowindow =  that.createInfowindow(map, marker, event);
                 google.maps.event.addListener(marker, 'click', function() {
                     that.openInfowindow(map, marker, infowindow);
@@ -210,7 +225,7 @@ var Map = React.createClass({
         var that = this;
         var icon = new google.maps.MarkerImage("assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
 
-        var marker = this.createMarker(latLng, map, icon);
+        var marker = this.createMarker(latLng, map, icon, true);
 
 
 
@@ -238,10 +253,11 @@ var Map = React.createClass({
 
     },
 
-    createMarker: function(location, map, icon) {
+    createMarker: function(location, map, icon, draggable) {
         var that = this;
         var marker = new google.maps.Marker({
             position: location,
+            draggable: draggable,
             map: map
         });
         if(typeof icon != 'undefined') {
