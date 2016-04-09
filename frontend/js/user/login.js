@@ -1,8 +1,8 @@
 import { browserHistory, Link } from 'react-router';
 
 var React = require('react');
-var validator = require('../../common/validators/validator.js');
-var utils = require('../../common/utils.js');
+var validator = require('../../../common/validators/validator.js');
+var utils = require('../../../common/utils.js');
 const PASSWORD_EMPTY = "Password is required!";
 
 const About = React.createClass({

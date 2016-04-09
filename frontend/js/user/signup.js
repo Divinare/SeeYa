@@ -1,7 +1,7 @@
 import { browserHistory, Link } from 'react-router';
 var React = require('react');
-var validator = require('../../common/validators/validator.js');
-var utils = require('../../common/utils.js');
+var validator = require('../../../common/validators/validator.js');
+var utils = require('../../../common/utils.js');
 
 const About = React.createClass({
     getInitialState: function() {
@@ -95,7 +95,7 @@ const About = React.createClass({
 
     render: function(){
         return (
-            <div className="signUpPageContainer">
+            <div className="signupPageContainer">
                 <div className="row">
                     <div className="col-xs-12">  
                         <h1>Signup</h1>

@@ -46,8 +46,8 @@ module.exports = React.createClass({
                         { !this.props.loginStatusPending ? 
                             <div className="navbar-right-container">
                                 { (this.props.user !== null) ? 
-                                    <div>
-                                        <li className="navbar-desktop-element">{this.props.user.username}</li> 
+                                    <div className="navbarCommonElement">
+                                        <li id="navbarUsername"><Link to="/settings">{this.props.user.username}</Link></li> 
                                         <li className="navbar-desktop-element"><Link to="/logout">Log out</Link></li>
                                     </div>
                                     :
@@ -62,6 +62,7 @@ module.exports = React.createClass({
                         }
                     </ul>
                 </div>
+                {/* BLACK NAVBAR SELECT WINDOW */}
                 <div id="navbar-mobile" className="hidden">
                     <ul className="menu-mobile">
                         <li onClick={this.closeNavbar}><Link to="/"><strong>SeeYa</strong></Link></li>

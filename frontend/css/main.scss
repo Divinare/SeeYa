@@ -10,7 +10,6 @@
 
 body {
     overflow: hidden;
-    font-family: 'Roboto', sans-serif !important;
 }
 
 html {
@@ -79,7 +78,8 @@ img{
 .link:hover { 
    /* text-decoration: underline; */
     /* color: #23527c; */
-    color: #BFEEF7;
+   /* If white color background do color: #BFEEF7; */
+    color: #212121;
 }
 
 

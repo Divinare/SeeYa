@@ -98,12 +98,10 @@ const EventList = React.createClass({
     },
 
     _sortRowsBy: function(sortBy) {
-        console.log("AT SORT ROWS!!! " + sortBy);
         sortBy = sortBy.toLowerCase();
         var eventListData = this.props.eventListData;
         var rows = this.props.filteredEventList.slice();
         var sortDir = eventListData.sortDir;
-        console.log("SORT DIR IS " + sortDir);
         if (sortBy === eventListData.sortBy) {
             sortDir = sortDir === SortTypes.ASC ? SortTypes.DESC : SortTypes.ASC;
         } else {

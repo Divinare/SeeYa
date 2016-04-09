@@ -77,6 +77,19 @@
 
 }
 
+.navbarCommonElement {
+    display: inline;
+}
+
+#navbarUsername {
+    cursor: pointer;
+}
+
+#navbarUsername a {
+    color: #12B381 !important;
+
+}
+
 /***********************/
 /*       DESKTOP       */
 /***********************/
@@ -117,11 +130,12 @@
         background-image: url("assets/navbar_toggle.png");
         background-size: cover;
         position: relative;
-        top: 1px;
-        width: 30px;
-        height: 30px;
         cursor: pointer;
+    }
 
+    #navbarUsername {
+        position: relative;
+        left: -10px;
     }
     
 

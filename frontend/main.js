@@ -16,10 +16,10 @@ var NoMatch = require('./js/noMatch.js');
 var EventList = require('./js/event/eventList.js');
 var EventForm = require('./js/event/eventForm.js');
 var EventPage = require('./js/event/eventPage.js');
-var Signup = require('./js/signup.js')
-var Login = require('./js/login.js')
-var Logout = require('./js/logout.js')
-var Settings = require('./js/settings.js')
+var Signup = require('./js/user/signup.js');
+var Login = require('./js/user/login.js');
+var Logout = require('./js/user/logout.js');
+var Settings = require('./js/user/settings.js');
 
 import { render } from 'react-dom'
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
@@ -60,8 +60,7 @@ const Main = React.createClass({
             eventListData: eventListData,
             newEventMarker: null,
             markers: [],
-            userId:null,
-            username: null,
+            user: null,
             loginStatusPending: true,
             showRightContainer: false
         };
@@ -173,7 +172,8 @@ const Main = React.createClass({
                 handleResize: that.handleResize,
                 updateAppStatus: that.updateAppStatus,
                 getAppStatus: that.getAppStatus,
-                getEvents: that.getEvents
+                getEvents: that.getEvents,
+                user: that.state.user
             })
         });
 
@@ -189,7 +189,7 @@ const Main = React.createClass({
 
         return (
             <div className="application">
-                <Navbar loginStatusPending={that.state.loginStatusPending} user={that.state.user}/>
+                <Navbar loginStatusPending={this.state.loginStatusPending} user={this.state.user}/>
                 <div id="messageComponent"></div>
                 <div className="content">
                     <Map
@@ -215,6 +215,21 @@ const Main = React.createClass({
     
     }
 });
+
+/*
+var SettingsComponent = React.createClass({
+
+    render: function() {
+        return (
+            <div>
+                <Settings
+                    user={this.props.user}
+                    handleResize={this.props.handleResize} />
+            </div>
+        );
+    }
+});
+*/
 
 render((
     <Router history={browserHistory}>
