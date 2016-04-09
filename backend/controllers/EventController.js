@@ -221,20 +221,6 @@ module.exports = {
         }
         userService.getLoggedInUser(req, res, success, notAuthorized);
     },
-
-    findAttendees: function(req, res){
-        console.log("FIND EVENT ATTENDEES")
-        var eventId = req.params.eventId;
-        Attendance.findAll({
-            where: { EventId: eventId },
-            include: [ models.User ]
-        }).then(function (attendances) {
-            console.log("ATTENDANCES")
-            console.log(attendances)
-        }).catch(function(err){
-            res.status(500).send(error);
-        });
-    },
 };
 
 function validateEvent(eventToAdd) {

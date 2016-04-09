@@ -1,18 +1,28 @@
 {
   "development": {
-    "username": "general",
-    "password": "test",
+    "username": null,
+    "password": null,
     "dialect": "postgres",
     "database":"devdb",
     "protocol": "postgres",
     "port": 5432,
     "host": "127.0.0.1"
   },
-  "production": {
+  "production_old": {
     "username": "root",
     "password": null,
     "database": "prod_db",
     "host": "127.0.0.1",
     "dialect": "postgres"
+  },
+
+  "production": {
+    "username": "general",
+    "password": "hedEhe7wanazu5u",
+    "dialect": "postgres",
+    "database":"devdb",
+    "protocol": "postgres",
+    "port": 5432,
+    "host": "127.0.0.1"
   }
 }

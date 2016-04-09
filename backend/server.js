@@ -19,7 +19,7 @@ var app = express();
 //encrypted cookie, the user info should be fetched from db according to information in this cookie
 app.use(session({
   cookieName: 'seeyaSession',
-  secret: 'random_string_goes_here',    //TODO user something truly random
+  secret: 'fustUwecRabuZaFremuqes8uxUnuMU',
   duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
   activeDuration: 5 * 60 * 1000, // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
   ephemeral: true //lose the session when browser closes
@@ -33,7 +33,7 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(express.static(dist));

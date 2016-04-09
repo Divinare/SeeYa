@@ -33,20 +33,6 @@ module.exports = {
         });
 	},
 
-    findByEvent: function(req, res){
-        console.log("FIND BY EVENT")
-        var eventId = req.params.eventId;
-        Attendance.findAll({
-            where: { EventId: eventId },
-            include: [ models.User ]
-        }).then(function (attendances) {
-            console.log("ATTENDANCES")
-            console.log(attendances)
-        }).catch(function(err){
-            res.status(500).send(error);
-        });
-    },
-
 	create: function (req, res) {
 		var attendanceToAdd = req.body;
 		console.log(attendanceToAdd.event)
