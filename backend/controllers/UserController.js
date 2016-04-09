@@ -23,6 +23,46 @@ module.exports = {
         });
     },  
 
+    findAttendeesByEvent: function(req, res){
+        console.log("FIND EVENT ATTENDEES")
+        var eventId = req.params.id;
+
+        models.User.findAll({
+            attributes: ['id', 'username'],
+            include: [{
+                model: models.Attendance,
+                attributes: ['comment'],
+                where: {
+                    EventId: eventId
+                },
+            }],
+            raw: true   //we don't want instances, just the plain data
+        }).then(function(attendees){
+            var response = {};
+            response.users = attendees;
+            res.status(200).send(response);
+        }).catch(function(err){
+            console.log("error")
+            console.log(err)
+            res.status(500).send(err);
+        });
+
+
+
+
+
+       /* models.Attendance.findAll({
+            where: { EventId: eventId },
+            include: [ models.User ]
+        }).then(function (attendances) {
+            console.log("ATTENDANCES")
+            console.log(attendances)
+            res.status(200).send({});
+        }).catch(function(err){
+            res.status(500).send(error);
+        });*/
+    },
+
     //TODO make this shorter, validation in its own function for example
     create: function (req, res) {
         console.log("NEW USER TRYING TO SIGN UP")

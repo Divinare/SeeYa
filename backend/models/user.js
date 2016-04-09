@@ -18,6 +18,9 @@ module.exports = function(sequelize, DataTypes) {
                     through: models.Attendance,
                     foreignKey: 'userId'
                 });
+                User.hasMany(models.Attendance, {
+                    foreignKey: 'userId'
+                })
             }
         }
   });

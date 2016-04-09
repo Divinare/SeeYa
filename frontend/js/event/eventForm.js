@@ -40,7 +40,7 @@ const EventForm = React.createClass({
 	componentWillMount: function() {
 	},
 
-	componentDidUpdate: function() {
+	componentDidUpdate: function(prevProps, prevState) {
 		var newEventMarker = this.props.newEventMarker;
 		if(newEventMarker != null && !$.isEmptyObject(newEventMarker)) {
 
@@ -69,6 +69,9 @@ const EventForm = React.createClass({
 				}
 			}
 
+		}
+		if( prevState.loading ){
+			this.initAutocomplete();
 		}
 	},
                 
@@ -121,11 +124,14 @@ const EventForm = React.createClass({
 	/*** ADDRESS ***/
 
 	initAutocomplete: function() {
-	  // Create the autocomplete object, restricting the search to geographical location types.
-	  autocomplete = new google.maps.places.Autocomplete(
-	      /** @type {!HTMLInputElement} */
-	      (document.getElementById("address")),
-	      {types: ['geocode']});
+	  	var input = document.getElementById("address")
+	  	if( input != null){
+		  // Create the autocomplete object, restricting the search to geographical location types.
+		  autocomplete = new google.maps.places.Autocomplete(
+		      /** @type {!HTMLInputElement} */
+		      (document.getElementById("address")),
+		      {types: ['geocode']});
+	  	}
 	},	
 
 	addressOnBlur: function(){
@@ -617,7 +623,6 @@ const EventForm = React.createClass({
 					<div className="form-group">
 			            <button className="btn btn-default" onClick={this.handleSubmit}>Submit</button>
 				    </div>
-			
 				</div>
 			</div>
 		)

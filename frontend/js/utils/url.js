@@ -8,7 +8,8 @@ module.exports = {
 		'category': REST + '/categories/'
 	},
 	'getFilteredEntries': {
-		'filteredEvents': REST + '/filteredEvents/'
+		'filteredEvents': REST + '/filteredEvents/',
+		'usersAttendingEvent': REST + '/users/eventAttendees/'
 	},
 	'getEntry' : {
 		'event': REST + '/events/',

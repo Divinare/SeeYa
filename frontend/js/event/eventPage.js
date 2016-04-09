@@ -17,7 +17,12 @@ const EventPage = React.createClass({
         return {
              event: null,
              showModal: false,
-             editingAllowed: false
+             editingAllowed: false,
+             loginStatusPending: true,
+             fetchingAttendees: true,
+             attendees: [],
+             userAttending: null,    //tells if the user is attending this event already or not
+             comment: null
         };
 
     },
@@ -28,6 +33,20 @@ const EventPage = React.createClass({
 
     open: function() {
         this.setState({ showModal: true });
+    },
+
+    componentDidUpdate: function(prevProps, prevState) {
+        if( prevState.fetchingAttendees && !this.state.fetchingAttendees ){  //we got the attendees now
+            if( !this.state.loginStatusPending ){
+                this.updateUserAttendingInfo();
+            } 
+        }
+
+        if( prevState.loginStatusPending && !this.state.loginStatusPending ){    //login status updated
+            if( !this.state.fetchingAttendees ){
+                this.updateUserAttendingInfo();
+            }
+        }
     },
 
     componentWillUpdate: function(){
@@ -51,17 +70,46 @@ const EventPage = React.createClass({
         }
     },
 
+    //only call this method when the user log in status has been checked and attendances have been fetched
+    updateUserAttendingInfo: function(){
+        var loggedInUser = this.props.getAppStatus('user');
+        console.log("ATTENDEES")
+        console.log(this.state.attendees)
+        console.log("logged in user")
+        console.log(loggedInUser)
+        var attending = false;
+        for(var i = 0; i < this.state.attendees.length; i++){
+            if( this.state.attendees[i].id === loggedInUser.id){
+                this.setState({
+                    userAttending: true,
+                    comment: this.state.attendees[i]['Attendances.comment']
+                })
+                attending = true;
+            }
+        }
+        if( !attending ){
+            this.setState({
+                userAttending: false
+            })
+        }   
+    },
+
     componentWillMount: function() {
         
     },
 
     componentDidMount: function() {
-        console.log("EVENT PAGE MOUNTED")
-        this.props.handleResize();
-        var that = this;
         var tokens = UTILS.helper.getUrlTokens();
         var eventId = tokens[tokens.length - 1];
+        this.props.handleResize();
+        this.fetchEvent(eventId);
+        this.checkIfUserLoggedIn();
+        this.fetchAttendees(eventId);
 
+    },
+
+    fetchEvent: function(eventId){
+        var that = this;
         var onSuccess = function (data) {
             if(that.isMounted()){
                 that.setState({
@@ -75,10 +123,47 @@ const EventPage = React.createClass({
             console.log("Error on fetching event!");
             browserHistory.push('/');   //TODO ADD NOTIFICATION TO THE USER SAYING THE EVENT WAS NOT FOUND
         }
-        console.log("GETTING EVENT: " + eventId);
         UTILS.rest.getEntry('event', eventId, onSuccess, onError);
-
     },
+
+    checkIfUserLoggedIn: function(){
+        var that = this;
+        var success = function(result) {
+            that.props.updateAppStatus('user', result.user);
+            that.setState({
+                loginStatusPending: false
+            })
+        }
+        var error = function( jqXhr, textStatus, errorThrown ){
+            that.props.updateAppStatus('user', null);
+            that.setState({
+                loginStatusPending: false
+            })
+        }
+        UTILS.rest.isLoggedIn(success, error);
+    },
+
+    fetchAttendees: function(eventId){
+        var that = this;
+        var success = function(result) {
+            var attendees = [];
+            if( result != null && result.users != null){
+                attendees = result.users;
+            }
+            that.setState({
+                fetchingAttendees: false,
+                attendees: attendees
+            })
+        }
+        var error = function(jqXhr, textStatus, errorThrown){
+            console.log(errorThrown)
+            that.setState({
+                fetchingAttendees: false,
+            })
+        }
+        UTILS.rest.getUsersAttendingEvent(eventId, success, error);
+    },
+
 
     addAttendance: function(e) {
         var that = this;
@@ -117,13 +202,13 @@ const EventPage = React.createClass({
     createEditButton: function() {
         var tokens = UTILS.helper.getUrlTokens();
         var eventId = tokens[tokens.length - 1];
+        return <div className="btn btn-default btn-block" onClick={this.moveToEditForm}>EDIT</div>
+    },
 
-        if(this.state.event != null) {
-            console.log(this.state.event);
-            return <div className="btn btn-default"><Link to={"/events/" + eventId + "/edit"}>EDIT</Link></div>;
-        } else {
-            return <div className="btn btn-default"><Link to={"/events/" + eventId + "/edit"}>EDIT</Link></div>;
-        }
+    moveToEditForm: function(){
+        var tokens = UTILS.helper.getUrlTokens();
+        var eventId = tokens[tokens.length - 1];
+        browserHistory.push("/events/" + eventId + "/edit")
     },
 
     handleChange: function(key) {
@@ -132,6 +217,10 @@ const EventPage = React.createClass({
             state[key] = e.target.value;
             this.setState(state);
         }.bind(this);
+    },
+
+    cancelAttendance: function(){
+        console.log("canceling attendance not supported yet")
     },
 
 
@@ -232,6 +321,13 @@ const EventPage = React.createClass({
 
         //let popover = <Popover title="popover">very popover. such engagement</Popover>;
 
+        var user = this.props.getAppStatus('user')
+        if( this.state.loginStatusPending || this.state.event === null || this.state.fetchingAttendees){
+            return (
+                <h2 className="eventPageContainer centeredVertHor">loading...</h2>
+            )
+        }
+
         return (
             <div className="eventPageContainer">
                 <div>
@@ -247,27 +343,47 @@ const EventPage = React.createClass({
 
                     <br />
                     { that.state.editingAllowed ? 
-                    <div className="btn-group">
+                    <div>
                         {this.createEditButton()}
                         { peopleAttending > 0 ? btn : ''}
-                        <button className="btn btn-danger" onClick={that.handleRemove}>Delete</button>
+                        <button className="btn btn-danger btn-block" onClick={that.handleRemove}>Delete</button>
                     </div> : 
                     ''
                     }
 
                 </div>
-                <div >
-                    <h2>Attend {eventName}</h2>
-                    <form className='form' id='form' role='form' data-toggle="validator" data-disable="false"> {/* onSubmit={event.preventDefault() */}
-                        <div className='form-group'>
-                            <textArea type='text' value={this.state.description} onChange={this.handleChange('comment')} className='form-control' id='comment' placeholder='Comment'/>
-                        </div>
-                        <div className="form-group">
-                            <button className="btn btn-default btn-block" type="button" onClick={this.addAttendance}>Attend</button>
-                        </div>
+                { ( user !== null ) ? 
+                    <div >
+                        { ( this.state.userAttending === true ) ?
+                            <h2>You are attending {eventName}</h2>
+                            :
+                            <h2>Attend {eventName}</h2>
+                        }
+                        <form className='form' id='form' role='form' data-toggle="validator" data-disable="false"> {/* onSubmit={event.preventDefault() */}
+                            <div className='form-group'>
+                                <textArea type='text' value={this.state.comment} onChange={this.handleChange('comment')} className='form-control' id='comment' placeholder='Optional comment'/>
+                            </div>
+                            <div className="form-group">
+                                { ( this.state.userAttending === false ) ?
 
-                    </form>
-                </div> 
+                                    <button className="btn btn-default btn-block" type="button" onClick={this.addAttendance}>Attend</button>
+                                :
+                                    <div className = "input-group-btn">
+                                        <button className="btn btn-default btn-block" type="button" onClick={this.addAttendance}>Update comment</button>
+                                        <button className="btn btn-danger btn-block" type="button" onClick={this.addAttendance}>Cancel attendance (not supported yet)</button>
+                                    </div>
+                      
+                                }
+                            </div>
+
+                        </form>
+                    </div> 
+                :
+                    <div>
+                        <br/>
+                        <div><Link to={"/login/"}>Log in</Link> or <Link to={"/signup/"}>sign up</Link> to attend </div>
+                    </div>
+                }
             </div>
         )
     }

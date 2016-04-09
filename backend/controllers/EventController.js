@@ -17,7 +17,7 @@ module.exports = {
             where: { id: eventId },
             include: [ models.Address,
                       models.Attendance,
-                      models.Category ] //creator of the event
+                      models.Category ]
 
         })
         .then(function (event) {
@@ -220,26 +220,21 @@ module.exports = {
             }
         }
         userService.getLoggedInUser(req, res, success, notAuthorized);
-
-
-
-/*
-        var eventId = req.params.id;
-        models.Event.destroy({
-            where: {
-                id: eventId
-            }
-        }).then(function(){
-            res.status(200).send();
-        }).catch(function(err){
-            helper.sendErr(res, 400, err);
-        });*/
-
     },
 
-   /* sendErr: function(statusCode, err){
-        res.status(statusCode).send(err.message);
-    }*/
+    findAttendees: function(req, res){
+        console.log("FIND EVENT ATTENDEES")
+        var eventId = req.params.eventId;
+        Attendance.findAll({
+            where: { EventId: eventId },
+            include: [ models.User ]
+        }).then(function (attendances) {
+            console.log("ATTENDANCES")
+            console.log(attendances)
+        }).catch(function(err){
+            res.status(500).send(error);
+        });
+    },
 };
 
 function validateEvent(eventToAdd) {
