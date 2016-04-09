@@ -66,8 +66,6 @@ const EventList = React.createClass({
         if(headerName == 'name') {
             this.centerMapToMarker(eventId, 12);
             //this.transitionTo('eventPage', {id: eventId});
-            console.log("EventId: " + eventId);
-
             browserHistory.push('events/' + eventId);
 
             //this.context.router.transitionTo('eventPage', {id: eventId});
@@ -109,14 +107,10 @@ const EventList = React.createClass({
         }
         rows.sort((eventA, eventB) => {
           var sortVal = 0;
-            console.log(UTILS.eventParser.getValue(eventA, sortBy) + " === " + UTILS.eventParser.getValue(eventB, sortBy))
           if (UTILS.eventParser.getValue(eventA, sortBy) > UTILS.eventParser.getValue(eventB, sortBy)) {
-            console.log("1")
             sortVal = 1;
           }
           if (UTILS.eventParser.getValue(eventA, sortBy) < UTILS.eventParser.getValue(eventB, sortBy)) {
-            console.log("-1")
-           
             sortVal = -1;
           }
           
@@ -226,7 +220,7 @@ const EventList = React.createClass({
         eventList.map(function(event) {
             items.push(
                 <tr key={event.id}>
-                    <td className="eventListItem" key={"a"+event.id}><div id="eventListMapIconContainer" onClick={_this.centerMapToMarker.bind(null, event.id, -1)}><img src="../../assets/seeya_marker.png" width="25px" height="25px"></img></div></td>
+                    <td className="eventListItem" key={"a"+event.id}><div id="eventListMapIconContainer" onClick={_this.centerMapToMarker.bind(null, event.id, -1)}><img src="../../assets/marker_gatherup_straight.png" width="25px" height="25px"></img></div></td>
                     <td className="eventListItem" key={"b"+event.id}>{_this.cellRenderer("name", event.name, event.id)}</td>
                     <td className="eventListItem" key={"c"+event.id}>{event.Attendances.length}</td>
                     <td className="eventListItem" key={"d"+event.id}>{_this._formatTimestamp(event.timestamp)}</td>                            

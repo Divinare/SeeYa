@@ -99,7 +99,5 @@ module.exports = {
         cookie.user = user;
         delete cookie.user.dataValues.password;
         delete cookie.user.dataValues.salt;
-        console.log("COOKIE.USER")
-        console.log(cookie.user)
     }
 }

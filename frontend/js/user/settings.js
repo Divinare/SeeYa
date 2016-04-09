@@ -37,11 +37,14 @@ const Settings = React.createClass({
     },
 
     toggleUsernameFields: function() {
+        $(".usernameForm").show(500);
+        $(".passwordForm").hide(500);
 
     },
 
     togglePasswordFields: function() {
-
+        $(".usernameForm").hide(500);
+        $(".passwordForm").show(500);
 
     },
 
@@ -79,9 +82,9 @@ const Settings = React.createClass({
                     <h3>Username: {username}</h3>
                     <p className="link" onClick={this.toggleUsernameFields}>Change username</p>
 
-                    <form className="form usernameForm">
+                    <form className="form usernameForm hiddenForToggle">
                         <div className="form-group">
-                            <label className="control-label">Email *</label>
+                            <label className="control-label">Email</label>
                                 <input type="text" id="email" name="email" placeholder="" className="form-control" onChange={this.handleChange('username')}/>
                                 <span id="emailError"></span>
                         </div>
@@ -94,21 +97,20 @@ const Settings = React.createClass({
 
                     <p className="link" onClick={this.togglePasswordFields}>Change password</p>
 
-                    <form className="form passwordForm">
-
+                    <form className="form passwordForm hiddenForToggle">
 
                         <div className="form-group">
-                            <label className="control-label">Old password *</label>
+                            <label className="control-label">Old password</label>
                                 <input type="password" id="password" name="password" className="form-control" onChange={this.handleChange('oldPassword')}/>
                                 <span id="passwordError"></span>
                         </div>
                         <div className="form-group">
-                            <label className="control-label">New password *</label>
+                            <label className="control-label">New password</label>
                                 <input type="password" id="password" name="password" className="form-control" onChange={this.handleChange('password')}/>
                                 <span id="passwordError"></span>
                         </div>
                         <div className="form-group">
-                            <label className="control-label">Repeat new password *</label>
+                            <label className="control-label">Repeat new password</label>
                                 <input type="password" id="repeatPassword" name="repeatPassword" className="form-control" onChange={this.handleChange('repeatPassword')}/>
                                 <span id="repeatPasswordError"></span>
                         </div>
@@ -123,7 +125,7 @@ const Settings = React.createClass({
         } else{
             return (
             <div className="settingsPageContainer">
-                <p>Not authorized. Please login first to change settings</p>
+                <h4>Please login first to change settings</h4>
             </div>
             )
         }
