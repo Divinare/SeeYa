@@ -98,6 +98,7 @@ const Main = React.createClass({
     },
 
     handleResize: function(e) {
+        console.log("AT HANDLE RESIZE!!!");
         if(typeof map !== 'undefined') {
             $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight());
             $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
@@ -176,16 +177,6 @@ const Main = React.createClass({
             })
         });
 
-/*
-        var container;
-        if(this.state.showRightContainer) {
-            container = ;
-        } else {
-            container = <div className="toggleRightContainer" onClick={this.toggleRightContainer}></div>
-        }
-        */
-
-
         return (
             <div className="application">
                 <Navbar loginStatusPending={this.state.loginStatusPending} user={this.state.user}/>
@@ -202,10 +193,13 @@ const Main = React.createClass({
                         hideRightContainer={this.hideRightContainer} />
 
                         <div className="right-container showing" onClick={this.hideRightContainer}>
-                            <div className="rightContainerContainer">
+                            <div className="rightContainerContent">
                                 <Link to={"/"}><div id="homeIcon" onClick={this.show}></div></Link>
                                 {childrenWithProps}
+
                             </div>
+                                <div className="rightContainerBottomBar"><a className="link bottomBarLink">Terms of service</a><a className="link bottomBarLink">Contact us</a></div>
+
                         </div>
                 </div>  
                 
@@ -214,21 +208,6 @@ const Main = React.createClass({
     
     }
 });
-
-/*
-var SettingsComponent = React.createClass({
-
-    render: function() {
-        return (
-            <div>
-                <Settings
-                    user={this.props.user}
-                    handleResize={this.props.handleResize} />
-            </div>
-        );
-    }
-});
-*/
 
 render((
     <Router history={browserHistory}>

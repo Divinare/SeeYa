@@ -45,6 +45,20 @@ img{
 
 }
 
+.rightContainerContent {
+    height: 100%;
+}
+
+.rightContainerBottomBar {
+    position: absolute;
+    right: 2px;
+    bottom: 5px;
+}
+
+.bottomBarLink {
+    padding-right: 8px;
+}
+
 .form-control {
     border-radius: 3px !important;
 }
@@ -73,6 +87,7 @@ img{
     cursor: pointer;
     /*color: #FFFFFF; */
     color: #4E4E4E;
+    text-decoration: none;
 }
 
 .link:hover { 
@@ -80,6 +95,7 @@ img{
     /* color: #23527c; */
    /* If white color background do color: #BFEEF7; */
     color: #212121;
+    text-decoration: none;
 }
 
 
@@ -110,6 +126,11 @@ img{
 .hidden {
     display: none !important;
 }
+
+.hiddenForToggle {
+    display: none;
+}
+
 
 #messageComponent {
     z-index: 9999;
