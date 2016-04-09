@@ -190,7 +190,7 @@ var Map = React.createClass({
 
         filteredEventList.map(function(event) {
             if(!$.isEmptyObject(event)) {
-                var icon = new google.maps.MarkerImage("assets/seeya_marker.png", null, null, null, new google.maps.Size(21,30));
+                var icon = new google.maps.MarkerImage("assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(21,30));
                 var marker = that.createMarker({ lat: event.lat, lng: event.lon }, map, icon, false);
                 var infowindow =  that.createInfowindow(map, marker, event);
                 google.maps.event.addListener(marker, 'click', function() {

@@ -125,7 +125,7 @@ const Settings = React.createClass({
         } else{
             return (
             <div className="settingsPageContainer">
-                <p>Not authorized. Please login first to change settings</p>
+                <h4>Please login first to change settings</h4>
             </div>
             )
         }
