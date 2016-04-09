@@ -73,7 +73,6 @@ const Main = React.createClass({
     },
 
     componentDidMount: function() {
-        console.log("MAIN MOUNTED")
         var that = this;
         var success = function(result) {
             console.log("is logged in");

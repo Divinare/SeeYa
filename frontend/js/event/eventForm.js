@@ -70,8 +70,6 @@ const EventForm = React.createClass({
 			}
 
 		}
-
-
 		if( prevState.loading ){
 			this.initAutocomplete();
 		}

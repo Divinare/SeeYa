@@ -21,6 +21,8 @@ router.get('/events/:id', EventCtrl.findOne);
 router.get('/attendances/:id', AttendanceCtrl.findOne);
 router.get('/categories/:id', CategoryCtrl.findOne);
 
+router.get('/users/eventAttendees/:id', UserCtrl.findAttendeesByEvent);
+
 router.post('/events', EventCtrl.create);
 router.post('/attendances', AttendanceCtrl.create);
 router.post('/categories', CategoryCtrl.create);

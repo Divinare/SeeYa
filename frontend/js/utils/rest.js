@@ -42,6 +42,17 @@ var getFilteredEntries = function(name, category, fromTimestamp, toTimestamp, on
     });
 }
 
+var getUsersAttendingEvent = function(eventId, onSuccess, onError){
+    var url = URL.getFilteredEntries['usersAttendingEvent'];
+    $.ajax({ 
+        type: 'GET', 
+        url: url+eventId,
+        dataType: 'json',
+        success: onSuccess,
+        error: onError
+    });
+}
+
 
 var getEntry = function(name, id, onSuccess, onError) {
     var url = URL.getEntry[name];
@@ -118,6 +129,7 @@ module.exports = {
 
     getAllEntries: getAllEntries,
     getFilteredEntries: getFilteredEntries,
+    getUsersAttendingEvent: getUsersAttendingEvent,
     getEntry: getEntry,
     addEntry: addEntry,
     removeEntry: removeEntry,

@@ -28,10 +28,25 @@ module.exports = {
           }
           */
           res.send(attendances);
-      });
+        }).catch(function(err){
+            res.status(500).send(error);
+        });
 	},
 
-	//TODO: when we have users check that the user is not already attending the event
+    findByEvent: function(req, res){
+        console.log("FIND BY EVENT")
+        var eventId = req.params.eventId;
+        Attendance.findAll({
+            where: { EventId: eventId },
+            include: [ models.User ]
+        }).then(function (attendances) {
+            console.log("ATTENDANCES")
+            console.log(attendances)
+        }).catch(function(err){
+            res.status(500).send(error);
+        });
+    },
+
 	create: function (req, res) {
 		var attendanceToAdd = req.body;
 		console.log(attendanceToAdd.event)
