@@ -14,7 +14,6 @@ var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
 
 var rsync = require('gulp-rsync');
-var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');
 
 var frontend_path = 'frontend';

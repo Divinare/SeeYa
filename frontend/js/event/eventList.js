@@ -66,8 +66,6 @@ const EventList = React.createClass({
         if(headerName == 'name') {
             this.centerMapToMarker(eventId, 12);
             //this.transitionTo('eventPage', {id: eventId});
-            console.log("EventId: " + eventId);
-
             browserHistory.push('events/' + eventId);
 
             //this.context.router.transitionTo('eventPage', {id: eventId});
@@ -109,14 +107,10 @@ const EventList = React.createClass({
         }
         rows.sort((eventA, eventB) => {
           var sortVal = 0;
-            console.log(UTILS.eventParser.getValue(eventA, sortBy) + " === " + UTILS.eventParser.getValue(eventB, sortBy))
           if (UTILS.eventParser.getValue(eventA, sortBy) > UTILS.eventParser.getValue(eventB, sortBy)) {
-            console.log("1")
             sortVal = 1;
           }
           if (UTILS.eventParser.getValue(eventA, sortBy) < UTILS.eventParser.getValue(eventB, sortBy)) {
-            console.log("-1")
-           
             sortVal = -1;
           }
           
