@@ -1,15 +1,51 @@
 Server ip: 37.139.24.156
 
-users: root, general
-ssh access to root account has been disabled for security reasons according to the instructions here:
-https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04
-the user general can use commands that need super user priviledges by using sudo before the command.
-
-Connect:
+CONNECT:
 The following command assumes that you have a private key called seeya in the same folder where you are running
 the command from. The public key has to be configured to the server.
 
 ssh -i seeya general@37.139.24.156
+
+if you want to use the default key (id_rsa), you can just use this command
+
+ssh general@37.139.24.156
+
+
+HOW TO START THE APP ON THE SERVER:
+- When the server reboots it should automatically restart the app. If this doesn't happen or you have to start or stop the app when you are doing an upgrade for example you can use the following commands (notice that you might need to run the commands from the EventMeetup folder, not sure if it is necessary):
+
+pm2 start gulp
+Starts the app. If this is not working and says that gulpfile cannot be found you can run pm2 delete <id> (see below), and try to start again. After starting the app you should run pm2 save, this will tell pm2 to restart all the processes currently ran by pm2 on server reboot.
+
+pm2 list 
+This command will show the processes that have been started by using pm2 (a program we use to manage running our app). So if you ran the pm2 start gulp first, you should now see something like this:
+
+        ┌──────────┬────┬──────┬──────┬────────┬─────────┬────────┬──────────────┬──────────┐                    │ App name │ id │ mode │ pid  │ status │ restart │ uptime │ memory       │ watching │                    ├──────────┼────┼──────┼──────┼────────┼─────────┼────────┼──────────────┼──────────┤                    │ gulp     │ 0  │ fork │ 1096 │ online │ 0       │ 11h    │ 134.199 MB   │ disabled │                    └──────────┴────┴──────┴──────┴────────┴─────────┴────────┴──────────────┴──────────┘    
+In the id column you see the id used by pm2 to identify the process.
+
+pm2 stop <id>
+Can be used to stop the app. The id part of the command is the id you see when you run pm2 list. So usually pm2 stop 0 should stop our app since we don't at least currently use pm2 for anything else. 
+
+pm2 delete <id>
+Will remove process from pm2 list. You might need this command sometimes if pm2 start gulp is not working properly
+
+pm2 logs
+See the logs of processes currently managed by pm2
+
+More info for example here: http://pm2.keymetrics.io/docs/usage/quick-start/ and in google!
+
+
+
+
+
+
+
+USERS: root, general
+The password for the general user is seeyaServer0104 (in case you need to do commands that need super user privileges)
+
+ssh access to root account has been disabled for security reasons according to the instructions here:
+https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04
+the user general can use commands that need super user privileges by using sudo before the command.
 
 NOTICE:
 - About ram: The current server only has 512 mb ram available. If this does not seem to be enough, there are two things we can do:
@@ -27,10 +63,6 @@ The configuration is currently so that local connections have peer authenticatio
 TODO:
 - We should probably enable https and we might need an ssl certificate for that. Instructions can be found from here: https://www.digitalocean.com/community/tutorials/how-to-install-an-ssl-certificate-from-a-commercial-certificate-authority
 We should be able to get a certificate for free for a year from namecheap with the student developer pack.
-
-- We should make the app restart automatically if it crashes. Some instructions can be found from https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-14-04
-The parts with PM2 have not been done but probably should be.
-
 
 
 

@@ -88,3 +88,4 @@ You can use \d when logged into devdb to view the relations and their owners
 
 If you already ran the migration sequelize may claim migrations are up to date. Undo the latest migration and redo it, that should work.
 
+
