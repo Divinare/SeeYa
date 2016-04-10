@@ -236,5 +236,47 @@ module.exports = {
         } else {
             return failed("eventTimestamp", customMessage);
         }
+    },
+
+    validateContactSubject: function(subjectId, customMessage) {
+
+        if(utils.isEmpty(subjectId)) {
+            return failed("contactSubjectIdEmpty", customMessage);
+        }
+        var intSubjectId = parseInt(subjectId);
+        if(intSubjectId === 1 || intSubjectId === 2 || intSubjectId === 3) {
+            return "";
+        } else {
+            return failed("contactWrongSubjectId", customMessage);
+        }
+    },
+
+    validateContactEmail: function(email, customMessage) {
+        /* Email in the contact model can also be empty! */
+        if(utils.isEmpty(email)) {
+            return "";
+        }
+        var re = /\S+@\S+\.\S+/;
+        var errorMessages = []
+        if( !re.test(email) ){
+            errorMessages.push(failed('contactEmailFormat', customMessage));
+        }
+        if( email.length > fieldLengths.userEmailMax ){
+            errorMessages.push(failed('contactEmailTooLong', customMessage));
+        }
+        return errorMessages;
+    },
+
+    validateContactDescription: function(description, customMessage) {
+        if(utils.isEmpty(description)) {
+            return failed("contactDescriptionEmpty", customMessage);
+        }
+        if(description.length > fieldLengths.contactDescriptionMaxLength) {
+            return failed("contactDescriptionTooLong", customMessage);
+        }
+        if(description.length < fieldLengths.contactDescriptionMinLength) {
+            return failed("contactDescriptionTooShort", customMessage);
+        }
+        return "";
     }
 }
