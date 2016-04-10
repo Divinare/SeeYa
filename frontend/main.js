@@ -20,6 +20,8 @@ var Signup = require('./js/user/signup.js');
 var Login = require('./js/user/login.js');
 var Logout = require('./js/user/logout.js');
 var Settings = require('./js/user/settings.js');
+var ContactUs = require('./js/contactUs.js');
+var TermsOfService = require('./js/termsOfService.js');
 
 import { render } from 'react-dom'
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
@@ -198,7 +200,10 @@ const Main = React.createClass({
                                 {childrenWithProps}
 
                             </div>
-                                <div className="rightContainerBottomBar"><a className="link bottomBarLink">Terms of service</a><a className="link bottomBarLink">Contact us</a></div>
+                                <div className="rightContainerBottomBar">
+                                    <Link to="/termsOfService" className="link bottomBarLink">Terms of service</Link>
+                                    <Link to="/contact" className="link bottomBarLink">Contact us</Link>
+                                </div>
 
                         </div>
                 </div>  
@@ -221,6 +226,8 @@ render((
             <Route path="login" component={Login} />
             <Route path="logout" component={Logout} />
             <Route path="settings" component={Settings} />
+            <Route path="contact" component={ContactUs} />
+            <Route path="termsOfService" component={TermsOfService} />
             <Route path="*" component={NoMatch} />
         </Route>
     </Router>
