@@ -39,14 +39,22 @@ const Settings = React.createClass({
     },
 
     toggleUsernameFields: function() {
-        $(".usernameForm").show(500);
-        $(".passwordForm").hide(500);
+        if($(".usernameForm").is(":visible")) {
+            $(".usernameForm").hide(500);
+        } else {
+            $(".usernameForm").show(500);
+            $(".passwordForm").hide(500);
+        }
 
     },
 
     togglePasswordFields: function() {
-        $(".usernameForm").hide(500);
-        $(".passwordForm").show(500);
+        if($(".passwordForm").is(":visible")) {
+            $(".passwordForm").hide(500);
+        } else {
+            $(".usernameForm").hide(500);
+            $(".passwordForm").show(500);
+        }
 
     },
 
