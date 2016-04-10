@@ -384,6 +384,24 @@ const EventPage = React.createClass({
                         <div><Link to={"/login/"}>Log in</Link> or <Link to={"/signup/"}>sign up</Link> to attend </div>
                     </div>
                 }
+                {this.state.attendees.length > 0 ?
+                    <div>
+                        <h3>Who is attending?</h3>
+                        {this.state.attendees.map(attendee =>
+                            <div className="row">
+                                <div className="col-xs-6">
+                                    {attendee.username}
+                                </div>
+                                <div className="col-xs-6">
+                                    {attendee['Attendances.comment']}
+                                </div>   
+                            </div>
+                        )}
+                    </div>
+                    :
+                    ''
+                }
+  
             </div>
         )
     }

@@ -10,6 +10,7 @@ module.exports = {
                 where: { email: req.seeyaSession.user.email }
             }).then(function (user) {
                 success(user);
+                return null;
             }).catch(function(err){
                 error(err);
             });
