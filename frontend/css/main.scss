@@ -164,6 +164,19 @@ img{
     filter: alpha(opacity=100); /* For IE8 and earlier */
 }
 
+.sideBarContent {
+    position: relative;
+    padding: 40px;
+    height: 100%;
+}
+
+.centeredVertHor {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
 /*** ANIMATIONS ***/
 
 @keyframes toDesktopAnimation {

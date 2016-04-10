@@ -552,9 +552,13 @@ const EventForm = React.createClass({
 		if(this.state.loading){
 			return <div>Loading...</div>
 		}
+		var containerClass = "eventFormContainer"
+		if(this.isEditForm()){
+			containerClass = ""
+		}
 
 		return (
-			<div className="eventFormContainer">
+			<div className={containerClass}>
 				<h1 className="centeredHeader">{that.getEditOrCreateTitle()}</h1>
 
 				<div className='form' id="eventForm">

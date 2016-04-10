@@ -22,6 +22,8 @@ var Logout = require('./js/user/logout.js');
 var Settings = require('./js/user/settings.js');
 var ContactUs = require('./js/contactUs.js');
 var TermsOfService = require('./js/termsOfService.js');
+var RequireLogin = require('./js/user/requireLogin.js');
+var AttendForm = require('./js/event/attendForm.js');
 
 import { render } from 'react-dom'
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
@@ -75,6 +77,16 @@ const Main = React.createClass({
 
     componentDidMount: function() {
         var that = this;
+        this.checkLoginStatus();
+        window.addEventListener('resize', this.handleResize);
+        this.handleResize();
+    },
+
+    checkLoginStatus: function(){
+        this.setState({
+            loginStatusPending:true
+        })
+        var that = this;
         var success = function(result) {
             console.log("is logged in");
             console.log(result)
@@ -90,13 +102,7 @@ const Main = React.createClass({
             })
             console.log("is not logged in");
         }
-        this.setState({
-            loginStatusPending:true
-        })
-        UTILS.rest.isLoggedIn(success, error);
-
-        window.addEventListener('resize', this.handleResize);
-        this.handleResize();
+         UTILS.rest.isLoggedIn(success, error);
     },
 
     handleResize: function(e) {
@@ -219,15 +225,18 @@ render((
         <Route path="/" component={Main}>
             <IndexRoute component={EventList} />
             <Route path="events/:id" component={EventPage} />
-            <Route path="events/:id/edit" component={EventForm} />
             <Route path="eventForm" component={EventForm} />
             <Route path="about" component={About} />
             <Route path="signup" component={Signup} />
             <Route path="login" component={Login} />
             <Route path="logout" component={Logout} />
-            <Route path="settings" component={Settings} />
             <Route path="contact" component={ContactUs} />
             <Route path="termsOfService" component={TermsOfService} />
+            <Route component={RequireLogin} >
+                <Route path="settings" component={Settings} />
+                <Route path="join/:id" component={AttendForm} />
+                <Route path="events/:id/edit" component={EventForm} />
+            </Route>
             <Route path="*" component={NoMatch} />
         </Route>
     </Router>

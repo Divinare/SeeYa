@@ -223,6 +223,11 @@ const EventPage = React.createClass({
         console.log("canceling attendance not supported yet")
     },
 
+    redirectToAttendForm: function(){
+        var tokens = UTILS.helper.getUrlTokens();
+        var eventId = tokens[tokens.length - 1];
+        browserHistory.push("/join/" + eventId);
+    },
 
     render: function(){
         var that = this;
@@ -331,7 +336,7 @@ const EventPage = React.createClass({
         return (
             <div className="eventPageContainer">
                 <div>
-                    <h2>{eventName}</h2>
+                    <h2>{eventName} <button className="pull-right btn btn-primary btn-sm" onClick={this.redirectToAttendForm}>Join</button></h2>
                     {date}<br/>
                     {time}<br/>
                     {address}
@@ -343,47 +348,16 @@ const EventPage = React.createClass({
 
                     <br />
                     { that.state.editingAllowed ? 
-                    <div>
-                        {this.createEditButton()}
-                        { peopleAttending > 0 ? btn : ''}
-                        <button className="btn btn-danger btn-block" onClick={that.handleRemove}>Delete</button>
-                    </div> : 
-                    ''
+                        <div>
+                            {this.createEditButton()}
+                            { peopleAttending > 0 ? btn : ''}
+                            <button className="btn btn-danger btn-block" onClick={that.handleRemove}>Delete</button>
+                        </div> 
+                        :
+                        ''
                     }
 
                 </div>
-                { ( user !== null ) ? 
-                    <div >
-                        { ( this.state.userAttending === true ) ?
-                            <h2>You are attending {eventName}</h2>
-                            :
-                            <h2>Attend {eventName}</h2>
-                        }
-                        <form className='form' id='form' role='form' data-toggle="validator" data-disable="false"> {/* onSubmit={event.preventDefault() */}
-                            <div className='form-group'>
-                                <textArea type='text' value={this.state.comment} onChange={this.handleChange('comment')} className='form-control' id='comment' placeholder='Optional comment'/>
-                            </div>
-                            <div className="form-group">
-                                { ( this.state.userAttending === false ) ?
-
-                                    <button className="btn btn-default btn-block" type="button" onClick={this.addAttendance}>Attend</button>
-                                :
-                                    <div className = "input-group-btn">
-                                        <button className="btn btn-default btn-block" type="button" onClick={this.addAttendance}>Update comment</button>
-                                        <button className="btn btn-danger btn-block" type="button" onClick={this.addAttendance}>Cancel attendance (not supported yet)</button>
-                                    </div>
-                      
-                                }
-                            </div>
-
-                        </form>
-                    </div> 
-                :
-                    <div>
-                        <br/>
-                        <div><Link to={"/login/"}>Log in</Link> or <Link to={"/signup/"}>sign up</Link> to attend </div>
-                    </div>
-                }
                 {this.state.attendees.length > 0 ?
                     <div>
                         <h3>Who is attending?</h3>
