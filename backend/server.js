@@ -39,6 +39,7 @@ app.use(cookieParser());
 app.use(express.static(dist));
 
 var rest = '/api';
+
 app.use(rest, routes);
 
 app.get('*', function (req, res) {

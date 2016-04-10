@@ -21,18 +21,26 @@ const errors = {
 
     eventName: "Name must be 3-30 characters long.",
     eventAddress: "Address incorrect. Did you select it from the list of address suggestions?",
-    eventLatLng: "Coordinates for address doesn't exist. Put a marker on the map",
+    eventLatLng: "Coordinates for address doesn't exist. Put a marker on the map.",
     eventDate: "Date cannot be left empty.",
-    eventDateWrongFormat: "Wrong date format. The correct one is DD:MM:YYYY, for example 25.06.2016",
-    eventDateWrongFormat: "Wrong date format. The correct one is DD:MM:YYYY, for example 25.06.2016",
+    eventDateWrongFormat: "Wrong date format. The correct one is DD:MM:YYYY, for example 25.06.2016.",
+    eventDateWrongFormat: "Wrong date format. The correct one is DD:MM:YYYY, for example 25.06.2016.",
     eventDateMaxLimit: "Date can be max one year in the future.",
 
     eventCategory: "Category error",
-    eventTime: "Time cannot be left empty.",
+    eventTime: "Time cannot be left empty",
     eventTimeFormat: "Wrong time format. The correct one is hh:mm, for example 17:30",
     eventTimeFuture: "Time needs to be in the future",
-    eventDescription: "Description can be max 500 characters long.",
-    eventTimestamp: "Timestamp must be in the future."
+    eventDescription: "Description can be max 500 characters long",
+    eventTimestamp: "Timestamp must be in the future",
+
+    contactSubjectIdEmpty: "Suject cannot be empty. Please select one from the list.",
+    contactWrongSubjectId: "Subject id must be either 1, 2 or 3.",
+    contactEmailFormat: "Wrong format. Email address in form 'abc@cde.efg' expected.",
+    contactEmailTooLong: "Email too long.",
+    contactDescriptionEmpty: "Description cannot be left empty.",
+    contactDescriptionTooLong: "Description can be max " + fieldLengths.contactDescriptionMaxLength + " long.",
+    contactDescriptionTooShort: "Description must be at least 1 character long."
 }
 
 module.exports = {

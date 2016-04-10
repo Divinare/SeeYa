@@ -101,7 +101,6 @@ const EventForm = React.createClass({
 			this.fetchCategories();
 		}
 		this.setDateFieldPlaceHolder();
-		this.setupDescriptionAutoresize();
 	},
 
 	// Called when a field is changed
@@ -386,39 +385,46 @@ const EventForm = React.createClass({
 	/*** DESCRIPTION ***/
 
 	maxLengthForDesription: function() {
-		var textLength = $("#description").val();
-		if(typeof textLength !== "undefined") {
-			if(textLength.length == 0) {
-				$("#charactersLeft").css("display", "none");
-			} else {
-				var charactersLeft = fieldLengths.eventDescriptionMaxLength - textLength.length;
-				if(charactersLeft < 0) {
-					charactersLeft = 0;
-				}
-				$("#charactersLeft").text("Characters left: " + charactersLeft);
-				$("#charactersLeft").css("display", "block");
-			}
-		}
+        var description = $("#description").val();
+        if(typeof description == "undefined") {
+            return;
+        }
+        if(description.length == 0) {
+            $("#charactersLeft").css("display", "none");
+        } else {
+            var charactersLeft = fieldLengths.eventDescriptionMaxLength - description.length;
+            if(charactersLeft < 0) {
+                charactersLeft = 0;
+            }
+            $("#charactersLeft").text("Characters left: " + charactersLeft);
+            $("#charactersLeft").css("display", "block");
+        }
+        
+        this.descriptionAutoresize();
 	},
 
-	setupDescriptionAutoresize: function() {
+	descriptionAutoresize: function() {
+		
+        var description = $("#description").val();
+        if(typeof description == "undefined") {
+            return;
+        }
+        var lineHeight = parseInt($('#description').css('lineHeight'),10);
+        if(description.length === 0) {
+            $('#description').css("height", 3*lineHeight);
+            return;
+        }
 
-		$('textarea').keyup(function (e) {
-			var element = $("#description");
-			var text = $("#description").val();
-			if(text.length == 0) {
-				element.css("height", 0);
-			} else {
-		    	var rows = $(this).val().split("\n");
-				var currentHeight = element.height();
-				var newHeight = ((rows.length +1)*20);
-				if(newHeight > currentHeight) {
-					element.css("height", newHeight);
-				}
-			}
-
-		});
+        if(typeof $('#description')[0] !== "undefined") {
+            var linesCount = $('#description')[0].scrollHeight / lineHeight;
+            var currentHeight = $('#description')[0].clientHeight;
+            var newHeight = linesCount*lineHeight;
+            if(currentHeight < newHeight) {
+                $('#description').css("height", newHeight);
+            }
+        }
 	},
+	
 
 	/*** SUBMIT ***/
 
