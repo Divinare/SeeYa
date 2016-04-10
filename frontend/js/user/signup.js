@@ -1,7 +1,8 @@
 import { browserHistory, Link } from 'react-router';
 var React = require('react');
-var validator = require('../../../common/validators/validator.js');
+var commonValidator = require('../../../common/validators/validator.js');
 var utils = require('../../../common/utils.js');
+var validator = UTILS.validator;
 
 const About = React.createClass({
     getInitialState: function() {
@@ -31,10 +32,10 @@ const About = React.createClass({
 
     submit: function(){
         var that = this;
-        var validEmail = validator.validateField(validator.validateEmail, 
+        var validEmail = validator.validateField(commonValidator.validateEmail, 
                                             this.state.email,
-                                            ["email"],
-                                            ["emailError"]
+                                            "#email",
+                                            "#emailError"
                                             );
 
         var params = {"password" :this.state.password, 
@@ -42,17 +43,17 @@ const About = React.createClass({
         };
 
 
-       var passwordsMatching = validator.validateField(validator.matchPasswords, 
-                                                    params,
-                                                    ["password", "repeatPassword"],
-                                                    ["passwordError", "repeatPasswordError"]
-                                                    );
-
-        var validPassword = validator.validateField(validator.validatePassword, 
+        var validPassword = validator.validateField(commonValidator.validatePassword, 
                                                 this.state.password,
-                                                ["password"],
-                                                ["passwordError"]
+                                                "#repeatPassword",
+                                                "#passwordError"
                                                 );
+
+       var passwordsMatching = validator.validateField(commonValidator.matchPasswords, 
+                                                    params,
+                                                    "#password",
+                                                    "#repeatPasswordError"
+                                                    );
 
         if(validEmail && passwordsMatching && validPassword){
             console.log("form is valid")

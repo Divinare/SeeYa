@@ -87,7 +87,7 @@ module.exports = {
         }
 
         if(utils.notEmpty(address.zipCode)) {
-            if(address.zipCode.length > fieldLengths.eventAddressCountryMax) {
+            if(address.zipCode.length > fieldLengths.eventAddressZipCodeMax) {
                 return failed("eventAddress", "ZipCode in the address can be max " + fieldLengths.eventAddressCountryMax + " letters");
             }
         }
@@ -222,43 +222,5 @@ module.exports = {
         } else {
             return failed("eventTimestamp", customMessage);
         }
-    },
-
-     validateField: function(func, params, fields, errorFields, message) {
-        var errorArr = func(params, message);
-
-        if( errorArr.constructor !== Array ){   
-            //the function we called only returned error message, not an array of messages
-            //put the message into an array, so the rest of this function works correctly
-            if(utils.notEmpty(errorArr)){
-                var tempArr = [];
-                tempArr.push(errorArr);
-                errorArr = tempArr;
-            }
-        }
-
-        // Validation failed
-        if( errorArr.length > 0 ) {
-            for(var i = 0; i < fields.length; i++){
-                module.exports.setErrorToField(fields[i], errorArr, errorFields[i]);
-            }
-            return false;
-        } else {
-            for(var i = 0; i < fields.length; i++){
-                module.exports.clearErrorFromField(fields[i], errorFields[i]);
-            }
-            return true;
-        }
-    },
-
-    setErrorToField: function(inputField, errorArray, errorMessageField){
-        $("#" + inputField).addClass('invalid')
-        var errorText = errorArray.join('<br/>')
-        $("#" + errorMessageField).html(errorText);
-    },
-
-    clearErrorFromField: function(inputField, errorMessageField){
-        $("#" + inputField).removeClass('invalid')
-        $("#" + errorMessageField).text("");
     }
 }

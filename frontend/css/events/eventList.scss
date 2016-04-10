@@ -34,17 +34,17 @@
 
 #eventListMapIconContainer {
     cursor: pointer;
-    width: 13px;
+    width: 17px;
     height: 20px;
     margin-top: 3px;
     margin-bottom: 3px;
 }
 
 #eventListMapIconContainer img {
-    width: 14px;
+    width: 17px;
     height: 20px;
-    opacity: 0.5;
-    filter: alpha(opacity=40); /* For IE8 and earlier */
+    /*opacity: 0.5;
+    filter: alpha(opacity=40); *//* For IE8 and earlier */
 }
 
 

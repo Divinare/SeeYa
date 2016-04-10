@@ -5,5 +5,7 @@ module.exports = {
 	helper: require('./helper'),
 	eventParser: require('./eventParser'),	
 	styleHelper: require('./styleHelper'),
-    messageComponent: require('./messageComponent')
+    messageComponent: require('./messageComponent'),
+    validator: require('./validator')
+
 }

@@ -5,9 +5,11 @@ var EventFormDropdown = require('./eventFormDropdown.js');
 var DatePicker = require('react-bootstrap-datetimepicker');
 var Select = require('react-select');
 var Moment = require('moment')
-var Validator = require('../../../common/validators/validator.js');
-var CommonUtils = require('../../../common/utils.js');
+var commonUtils = require('../../../common/utils.js');
+var commonValidator = require('../../../common/validators/validator.js');
 var fieldLengths = require('../../../common/validators/fieldLengths.js');
+var validator = UTILS.validator;
+
 
 var autocomplete;
 var placesService;
@@ -240,10 +242,10 @@ const EventForm = React.createClass({
 
 	//TODO we probably don't want to ever use the old city, country and zipcode? So should just be null if it is null?
 	getUpdatedAddress: function(newAddress) {
-		var newStreetAddress = (CommonUtils.notEmpty(newAddress.streetAddress)) ? newAddress.streetAddress : null;
-		var newCountry = (CommonUtils.notEmpty(newAddress.country)) ? newAddress.country : null;
-		var newZipCode = (CommonUtils.notEmpty(newAddress.zipCode)) ? newAddress.zipCode : null;
-		var newCity = (CommonUtils.notEmpty(newAddress.city)) ? newAddress.city : null;
+		var newStreetAddress = (commonUtils.notEmpty(newAddress.streetAddress)) ? newAddress.streetAddress : null;
+		var newCountry = (commonUtils.notEmpty(newAddress.country)) ? newAddress.country : null;
+		var newZipCode = (commonUtils.notEmpty(newAddress.zipCode)) ? newAddress.zipCode : null;
+		var newCity = (commonUtils.notEmpty(newAddress.city)) ? newAddress.city : null;
 
 		var updatedAddress = {
 			streetAddress: newStreetAddress,
@@ -363,7 +365,7 @@ const EventForm = React.createClass({
 	},
 
 	combineTimeAndDate: function(dateTimestamp, time){
-		if(CommonUtils.isEmpty(time)) {
+		if(commonUtils.isEmpty(time)) {
 			time = "00:00";
 		}
 		var hours = parseInt(time.substring(0, 2))
@@ -443,8 +445,6 @@ const EventForm = React.createClass({
 		//address.streetAddress = document.getElementById("address").value;
 
 		var dateTimestamp = this.state.date.unix()*1000;
-		console.log("DATE TIME STAMP")
-		console.log(dateTimestamp)
 
 		var dateInputFieldVal = document.getElementsByClassName("dateInputField")[0].getElementsByClassName("form-control")[0].value;
 		if(dateInputFieldVal.length == 0) {
@@ -454,13 +454,13 @@ const EventForm = React.createClass({
 		var time = this.state.time;
 		var description = this.state.description;
 		// VALIDATIONS
-		var valid1 = this.validateField(Validator.validateEventName, name, "nameError");
-		var valid2 = this.validateField(Validator.validateEventAddress, address, "addressError");
-		var valid3 = this.validateField(Validator.validateEventLatLng, this.state.latLng, "latLngError");
-		var valid4 = this.validateField(Validator.validateEventDate, dateTimestamp, "dateError");
-		var valid5 = this.validateField(Validator.validateEventCategory, category, "categoryError", "Select category from the list");
-		var valid6 = this.validateField(Validator.validateEventTime, [time, dateTimestamp], "timeError");
-		var valid7 = this.validateField(Validator.validateEventDescription, description, "");
+		var valid1 = validator.validateField(commonValidator.validateEventName, name, "#name", "#nameError");
+		var valid2 = validator.validateField(commonValidator.validateEventAddress, address, "#address", "#addressError");
+		var valid3 = validator.validateField(commonValidator.validateEventLatLng, this.state.latLng, "#latLng", "#latLngError");
+		var valid4 = validator.validateField(commonValidator.validateEventDate, dateTimestamp, "#date", "#dateError");
+		var valid5 = validator.validateField(commonValidator.validateEventCategory, category, "#category", "#categoryError", "Select category from the list");
+		var valid6 = validator.validateField(commonValidator.validateEventTime, [time, dateTimestamp], "#time", "#timeError");
+		var valid7 = validator.validateField(commonValidator.validateEventDescription, description, "#description", "#descriptionError", "");
 
 		// If one of the validations fail, prevent submitting form
 		if(!valid1 || !valid2 || !valid3 || !valid4 || !valid5 || !valid6 || !valid7) {
@@ -517,13 +517,13 @@ const EventForm = React.createClass({
 	},
 
 	/*** VALIDATIONS ***/
-
+/*
 	validateField: function(func, params, field, customMessage) {
 			console.log("FIELD::::: " + field);
 
 		var errorMessage = func(params, customMessage);
 		var formInputField = field.replace("Error", "");
-		if(CommonUtils.isEmpty(errorMessage)) {
+		if(commonUtils.isEmpty(errorMessage)) {
 			// Clear the error message if it exists
 			$("#" + field).text("");
 			$("#" + formInputField).removeClass("invalid");
@@ -537,6 +537,7 @@ const EventForm = React.createClass({
 			return false;
 		}
 	},
+	*/
 
 	getEditOrCreateTitle: function(){
 		if(this.isEditForm()){

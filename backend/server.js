@@ -45,6 +45,10 @@ app.get('*', function (req, res) {
   res.render('index');
 });
 
+/*
+
+COMMENTED THESE OUT JUST TO CHECK IF IT IS USELESS OR NOT T.Joe
+So far nothing critical has happened so maybe its useless :P
 
 app.use(function(req, res, next) { 
   var err;
@@ -83,6 +87,7 @@ app.use(function(err, req, res, next) {
     message: err.message
   });
 });
+*/
 
 app.set('port', process.env.PORT || 1337);
 

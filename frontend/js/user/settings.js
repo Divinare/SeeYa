@@ -51,6 +51,60 @@ const Settings = React.createClass({
     submitUsername: function() {
 
 
+        var that = this;
+        var validEmail = validator.validateField(validator.validateEmail, 
+                                            this.state.email,
+                                            ["email"],
+                                            ["emailError"]
+                                            );
+
+        var params = {"password" :this.state.password, 
+            "repeatPassword": this.state.repeatPassword
+        };
+
+
+       var passwordsMatching = validator.validateField(validator.matchPasswords, 
+                                                    params,
+                                                    ["password", "repeatPassword"],
+                                                    ["passwordError", "repeatPasswordError"]
+                                                    );
+
+        var validPassword = validator.validateField(validator.validatePassword, 
+                                                this.state.password,
+                                                ["password"],
+                                                ["passwordError"]
+                                                );
+
+        if(validEmail && passwordsMatching && validPassword){
+            console.log("form is valid")
+            var userData = {
+                email: this.state.email,
+                password: this.state.password,
+                repeatPassword: this.state.repeatPassword
+            }
+            var error = function( jqXhr, textStatus, errorThrown){
+                console.log("error")
+                console.log( errorThrown );
+                console.log(jqXhr)
+                console.log(jqXhr.responseJSON.userEmail)
+                if( jqXhr.responseJSON.userEmail.length > 0){
+                    validator.setErrorToField('email', [that.state.email + ' already in use'], 'emailError');
+                }
+                $('#serverErrorDiv').show(500);
+
+            };
+            var success = function(result){
+                console.log( "success!!!" );
+                that.props.updateAppStatus('user', result.user);
+                browserHistory.push('/');
+            };
+            $("#serverErrorDiv").hide(200);
+            validator.clearErrorFromField('email', 'emailError');
+            UTILS.rest.addEntry('user', userData, success, error);
+        } else{
+            console.log("form is invalid")
+        }
+
     },
 
     submitPassword: function() {
@@ -68,8 +122,6 @@ const Settings = React.createClass({
 
 
     render: function(){
-        console.log("USER:");
-        console.log(this.props.user);
 
         var username;
         if(this.props.user != null) {

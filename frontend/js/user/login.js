@@ -1,8 +1,9 @@
 import { browserHistory, Link } from 'react-router';
 
 var React = require('react');
-var validator = require('../../../common/validators/validator.js');
+var commonValidator = require('../../../common/validators/validator.js');
 var utils = require('../../../common/utils.js');
+var validator = UTILS.validator;
 const PASSWORD_EMPTY = "Password is required!";
 
 const About = React.createClass({
@@ -34,16 +35,16 @@ const About = React.createClass({
     */
     submit: function(){
         var that = this;
-        var validEmail = validator.validateField(validator.validateNotEmpty, 
+        var validEmail = validator.validateField(commonValidator.validateNotEmpty, 
                                             this.state.email,
-                                            ["email"],
-                                            ["emailError"]
+                                            "#email",
+                                            "#emailError"
                                             );
 
-        var validPassword = validator.validateField(validator.validateNotEmpty, 
+        var validPassword = validator.validateField(commonValidator.validateNotEmpty, 
                                             this.state.password,
-                                            ["password"],
-                                            ["passwordError"],
+                                            "#password",
+                                            "#passwordError",
                                             PASSWORD_EMPTY
                                             );
 
