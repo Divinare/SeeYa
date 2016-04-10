@@ -16,6 +16,20 @@ module.exports = {
 
     /*** USER ***/
 
+
+    validateUsername: function(username, customMessage) {
+        if(utils.isEmpty(username)) {
+            return failed("userUsernameEmpty", customMessage);
+        }
+        if(username.length < fieldLengths.userUsernameMin) {
+            return failed("userUsernameTooShort", customMessage);
+        }
+        if(username.length > fieldLengths.userUsernameMax) {
+            return failed("userUsernameTooLong", customMessage);
+        }
+        return "";
+    },
+
     validateEmail: function(email, customMessage){
         /*Validation regex taken from here: http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
         This just checks that the email is of form anystring@anystring.anystring, there are more complex validations
@@ -24,12 +38,12 @@ module.exports = {
         var re = /\S+@\S+\.\S+/;
         var errorMessages = []
         if( !re.test(email) ){
-            errorMessages.push(errorMessage.getError('userEmailFormat', customMessage));
+            errorMessages.push(failed('userEmailFormat', customMessage));
         }
         if( email.length > fieldLengths.userEmailMax ){
-            errorMessages.push(errorMessage.getError('userEmailTooLong', customMessage));
+            errorMessages.push(failed('userEmailTooLong', customMessage));
         }else if( email.length < fieldLengths.userEmailMin ){
-            errorMessages.push(errorMessage.getError('userEmailTooShort', customMessage));
+            errorMessages.push(failed('userEmailTooShort', customMessage));
         }
         return errorMessages;
     },
@@ -47,13 +61,13 @@ module.exports = {
         var msg = '';
         if( utils.notEmpty(password) ){
             if( password.length > fieldLengths.userPasswordMax ){
-                msg = errorMessage.getError('userPasswordTooLong', customMessage);
+                msg = failed('userPasswordTooLong', customMessage);
             }
             else if( password.length < fieldLengths.userPasswordMin ){
-                var msg = errorMessage.getError('userPasswordTooShort', customMessage);
+                var msg = failed('userPasswordTooShort', customMessage);
             }
         }else{
-            msg = errorMessage.getError('userPasswordTooShort', customMessage);
+            msg = failed('userPasswordTooShort', customMessage);
         }
         return msg;
 

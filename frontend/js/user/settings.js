@@ -1,8 +1,10 @@
 import { browserHistory, Link } from 'react-router';
 
 var React = require('react');
-var validator = require('../../../common/validators/validator.js');
+var commonValidator = require('../../../common/validators/validator.js');
 var utils = require('../../../common/utils.js');
+var validator = UTILS.validator;
+
 
 const Settings = React.createClass({
     getInitialState: function() {
@@ -52,31 +54,21 @@ const Settings = React.createClass({
 
 
         var that = this;
-        var validEmail = validator.validateField(validator.validateEmail, 
-                                            this.state.email,
-                                            ["email"],
-                                            ["emailError"]
+        var validUsername = validator.validateField(commonValidator.validateUsername, 
+                                            this.state.username,
+                                            "#username",
+                                            "#usernameError"
                                             );
 
-        var params = {"password" :this.state.password, 
-            "repeatPassword": this.state.repeatPassword
-        };
+        if(!validUsername) {
+            return;
+        }
+            console.log("username is valid");
 
 
-       var passwordsMatching = validator.validateField(validator.matchPasswords, 
-                                                    params,
-                                                    ["password", "repeatPassword"],
-                                                    ["passwordError", "repeatPasswordError"]
-                                                    );
 
-        var validPassword = validator.validateField(validator.validatePassword, 
-                                                this.state.password,
-                                                ["password"],
-                                                ["passwordError"]
-                                                );
 
-        if(validEmail && passwordsMatching && validPassword){
-            console.log("form is valid")
+            /*
             var userData = {
                 email: this.state.email,
                 password: this.state.password,
@@ -101,13 +93,35 @@ const Settings = React.createClass({
             $("#serverErrorDiv").hide(200);
             validator.clearErrorFromField('email', 'emailError');
             UTILS.rest.addEntry('user', userData, success, error);
-        } else{
-            console.log("form is invalid")
         }
-
+        */
     },
 
     submitPassword: function() {
+
+        var params = {"password" :this.state.password, 
+            "repeatPassword": this.state.repeatPassword
+        };
+
+
+        var validPassword = validator.validateField(commonValidator.validatePassword, 
+                                                this.state.password,
+                                                "#repeatPassword",
+                                                "#passwordError"
+                                                );
+
+       var passwordsMatching = validator.validateField(commonValidator.matchPasswords, 
+                                                    params,
+                                                    "#password",
+                                                    "#repeatPasswordError"
+                                                    );
+
+
+        if(!validPassword || !passwordsMatching) {
+            return;
+        }
+
+        // TODO check old password & submit...
 
 
     },
@@ -136,9 +150,9 @@ const Settings = React.createClass({
 
                     <form className="form usernameForm hiddenForToggle">
                         <div className="form-group">
-                            <label className="control-label">Email</label>
-                                <input type="text" id="email" name="email" placeholder="" className="form-control" onChange={this.handleChange('username')}/>
-                                <span id="emailError"></span>
+                            <label className="control-label">Username</label>
+                                <input type="text" id="username" className="form-control" onChange={this.handleChange('username')}/>
+                                <span id="usernameError"></span>
                         </div>
                        {/* Submit */}
                         <div className="form-group">
@@ -153,8 +167,8 @@ const Settings = React.createClass({
 
                         <div className="form-group">
                             <label className="control-label">Old password</label>
-                                <input type="password" id="password" name="password" className="form-control" onChange={this.handleChange('oldPassword')}/>
-                                <span id="passwordError"></span>
+                                <input type="password" id="oldPassword" name="password" className="form-control" onChange={this.handleChange('oldPassword')}/>
+                                <span id="oldPasswordError"></span>
                         </div>
                         <div className="form-group">
                             <label className="control-label">New password</label>

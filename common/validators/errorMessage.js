@@ -1,8 +1,14 @@
 var utils = require('../utils.js');
 
+var fieldLengths = require('./fieldLengths.js');
+
+
 const errors = {
     emptyString: "Field is empty",
     
+    userUsernameEmpty: "Username cannot be empty. It must be 3-30 characters long.",
+    userUsernameTooShort: "Username must be at least " + fieldLengths.userUsernameMin + " characters long.",
+    userUsernameTooLong: "Username can be max " + fieldLengths.userUsernameMax + " characters long.",
     userEmailFormat: "Wrong format. Email address in form 'abc@cde.efg' expected",
     userEmailTooLong: "Email too long",
     userEmailTooShort: "Email too short",
