@@ -35,6 +35,10 @@ http://localhost:1337/api/attendances
  }
 }
 
+DELETING ATTENDANCES:
+DELETE: http://localhost:1337/api/attendances/2
+(would delete the attendance of the currently logged in user from the event with id = 2)
+
 MODIFYING EVENTS:
 POST: http://localhost:1337/api/events/1
 { "name": "MODIFIED",
