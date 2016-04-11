@@ -57,27 +57,29 @@ module.exports = {
 
     //TODO: add check that the user is signed in and the creator of the event
     delete: function(req, res){
+        console.log("DELETING ATTENDANCE")
         var success = function(user){
-            var attendanceId = req.params.id;
-            Attendance.findOne({
-                where: { id: attendanceId }
-            }).then(function (attendance) {
-                if( user.id === attendance.userId ){
-                    models.Attendance.destroy({
-                        where: {
-                            id: attendanceId
-                        }
-                    }).then(function(){
-                        res.status(200).send();
-                    }).catch(function(err){
-                        helper.sendErr(res, 400, err);
-                    });
+            var eventId = req.params.eventId;
+            console.log("userid: " + user.id)
+            console.log("eventId: " + eventId)
+            Attendance.destroy({
+                where: { 
+                    userId: user.id,
+                    EventId: eventId
+                }
+            }).then(function (affectedRows) {
+                console.log("affectedRows: " + affectedRows)
+                if(affectedRows === 0){
+                    res.status(400).send({message: "You haven't joined this event!"})
                 }else{
-                    helper.sendErr(res, 400, err);  //not authorized
+                     res.status(200).send();
                 }
             }).catch(function(err){
-                helper.sendErr(res, 400, err); 
+                helper.sendErr(res, 400, err);
             });
+        }
+        var error = function(err){
+            helper.sendErr(res, 400, err);
         }
         userService.getLoggedInUser(req, res, success, error);
     }

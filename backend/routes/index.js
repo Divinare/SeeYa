@@ -36,7 +36,7 @@ router.post('/events/:id', EventCtrl.update);
 router.post('/categories/:id', CategoryCtrl.update);
 
 router.delete('/events/:id', EventCtrl.delete);
-router.delete('/attendances/:id', AttendanceCtrl.delete);
+router.delete('/attendances/:eventId', AttendanceCtrl.delete);
 router.delete('/categories/:id', CategoryCtrl.delete);
 
 module.exports = router;

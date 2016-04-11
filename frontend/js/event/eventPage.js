@@ -129,16 +129,20 @@ const EventPage = React.createClass({
     checkIfUserLoggedIn: function(){
         var that = this;
         var success = function(result) {
-            that.props.updateAppStatus('user', result.user);
-            that.setState({
-                loginStatusPending: false
-            })
+            if(that.isMounted()){
+                that.props.updateAppStatus('user', result.user);
+                that.setState({
+                    loginStatusPending: false
+                })
+            }
         }
         var error = function( jqXhr, textStatus, errorThrown ){
-            that.props.updateAppStatus('user', null);
-            that.setState({
-                loginStatusPending: false
-            })
+            if(that.isMounted()){
+                 that.props.updateAppStatus('user', null);
+                that.setState({
+                    loginStatusPending: false
+                })
+            }
         }
         UTILS.rest.isLoggedIn(success, error);
     },
@@ -146,20 +150,24 @@ const EventPage = React.createClass({
     fetchAttendees: function(eventId){
         var that = this;
         var success = function(result) {
-            var attendees = [];
-            if( result != null && result.users != null){
-                attendees = result.users;
+            if(that.isMounted()){
+               var attendees = [];
+                if( result != null && result.users != null){
+                    attendees = result.users;
+                }
+                that.setState({
+                    fetchingAttendees: false,
+                    attendees: attendees
+                })
             }
-            that.setState({
-                fetchingAttendees: false,
-                attendees: attendees
-            })
         }
         var error = function(jqXhr, textStatus, errorThrown){
             console.log(errorThrown)
-            that.setState({
-                fetchingAttendees: false,
-            })
+            if(that.isMounted()){
+                that.setState({
+                    fetchingAttendees: false,
+                })
+            }
         }
         UTILS.rest.getUsersAttendingEvent(eventId, success, error);
     },
@@ -189,12 +197,12 @@ const EventPage = React.createClass({
         var eventToRemove = this.state.event;
         if(deleteConfirmed){
             var success = function(){
-                    that.props.getEvents();
-                    browserHistory.push('/');
+                that.props.getEvents();
+                browserHistory.push('/');
             }
             var error = function( jqXhr, textStatus, errorThrown ){
-                    console.log( errorThrown );
-                }
+                console.log( errorThrown );
+            }
             UTILS.rest.removeEntry('event', this.state.event.id, success, error);   
         }
     },
@@ -333,10 +341,18 @@ const EventPage = React.createClass({
             )
         }
 
+        var joinBtnText = ''
+        if( this.state.userAttending ){
+            joinBtnText = "My attendance"
+        }else{
+            joinBtnText = "Join"
+        }
+        var counter = 0;
+
         return (
             <div className="eventPageContainer">
                 <div>
-                    <h2>{eventName} <button className="pull-right btn btn-primary btn-sm" onClick={this.redirectToAttendForm}>Join</button></h2>
+                    <h3>{eventName} <button className="pull-right btn btn-primary btn-sm" onClick={this.redirectToAttendForm}>{joinBtnText}</button></h3>
                     {date}<br/>
                     {time}<br/>
                     {address}
@@ -362,7 +378,7 @@ const EventPage = React.createClass({
                     <div>
                         <h3>Who is attending?</h3>
                         {this.state.attendees.map(attendee =>
-                            <div className="row">
+                            <div className="row" key={counter++}>
                                 <div className="col-xs-6">
                                     {attendee.username}
                                 </div>

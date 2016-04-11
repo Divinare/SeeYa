@@ -105,17 +105,33 @@ const AttendForm = React.createClass({
             event: event
         }
         var success = function(){
+            that.props.getEvents();
             if(that.state.userAttending){
                 msgComponent.showMessageComponent('Comment updated', SHOW_MSG_SEC * 1000, 'success')
             }else{
-                msgComponent.showMessageComponent('Successfully joined' + that.state.event.name, SHOW_MSG_SEC * 1000, 'success')
+                msgComponent.showMessageComponent('Successfully joined ' + that.state.event.name, SHOW_MSG_SEC * 1000, 'success')
                 browserHistory.push('/');
             }  
         };              
         var error = function( jqXhr, textStatus, errorThrown ){
             console.log( errorThrown );
-        }
+        };
         UTILS.rest.addEntry('attendance', data, success, error);
+    },
+
+    removeAttendance: function(){
+        var that = this;
+            
+        var success = function(){
+            msgComponent.showMessageComponent('Attendance canceled for ' + that.state.event.name, SHOW_MSG_SEC * 1000, 'success')
+            that.props.getEvents();
+            browserHistory.push('/events/' + that.state.event.id);
+        };   
+
+        var error = function( jqXhr, textStatus, errorThrown ){
+            msgComponent.showMessageComponent('Failed to remove the attendance. This looks like an error in the website. Please take a minute and report it, so we can improve your experience in the future', SHOW_MSG_SEC * 1000, 'error')
+        }
+        UTILS.rest.removeEntry('attendance', this.state.event.id, success, error);
     },
 
     handleChange: function(key) {
@@ -137,7 +153,7 @@ const AttendForm = React.createClass({
                  { ( this.props.user !== null ) ? 
                         <div >
                             { ( this.state.userAttending === true ) ?
-                                <h2>You are attending {this.state.event.name}</h2>
+                                <h2>You have joined {this.state.event.name}</h2>
                                 :
                                 <h2>Attend {this.state.event.name}</h2>
                             }
@@ -152,9 +168,8 @@ const AttendForm = React.createClass({
                                     :
                                         <div className = "input-group-btn">
                                             <button className="btn btn-default btn-block" type="button" onClick={this.addAttendance}>Update comment</button>
-                                            <button className="btn btn-danger btn-block" type="button" onClick={this.addAttendance}>Cancel attendance (not supported yet)</button>
+                                            <button className="btn btn-danger btn-block" type="button" onClick={this.removeAttendance}>Cannot go</button>
                                         </div>
-                          
                                     }
                                 </div>
 
@@ -166,6 +181,10 @@ const AttendForm = React.createClass({
                             <div><Link to={"/login/"}>Log in</Link> or <Link to={"/signup/"}>sign up</Link> to attend </div>
                         </div>
                     }
+
+                    <Link to={"/events/" + this.state.event.id} className="btn btn-primary">
+                        <span className="glyphicon glyphicon-chevron-left"></span> Back
+                    </Link>
      
             </div>
         )
