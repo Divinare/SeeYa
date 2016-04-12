@@ -101,6 +101,7 @@ const EventForm = React.createClass({
 			this.fetchCategories();
 		}
 		this.setDateFieldPlaceHolder();
+		this.setDateSelectionPositionFunction();
 	},
 
 	// Called when a field is changed
@@ -343,6 +344,21 @@ const EventForm = React.createClass({
     setDateFieldPlaceHolder: function() {
     	var inputField = document.getElementsByClassName("dateInputField")[0].getElementsByClassName("form-control")[0];
     	inputField.placeholder = "Date (DD:MM:YYYY)";
+    },
+
+    setDateSelectionPositionFunction: function() {
+		$(".glyphicon-calendar").parent().click(
+			function() {
+				setTimeout(function(){ 
+					$(".bootstrap-datetimepicker-widget").css("top", "-16px");
+					var topDateSelect = $(".dropdown-menu").offset().top;
+					var topCalendar = $(".glyphicon-calendar").parent().offset().top;
+					var distance = Math.abs(topDateSelect-topCalendar)-277;
+					$(".bootstrap-datetimepicker-widget").css("top", distance + "px");
+					$(".right-container").scrollTop(0);
+				}, 1);
+			}
+		)
     },
 
 	/*** CATEGORY ***/
@@ -602,6 +618,17 @@ const EventForm = React.createClass({
 					<span className="validationError" id="addressError"></span>
 					<span className="validationError" id="latLngError"></span>
 
+					{/* Category */}
+					<div className='form-group' id="category">
+							<EventFormDropdown
+								ref={'dropDown'}
+								itemClassName={"itemDropdownEventForm"}
+								list={this.state.categories} selectCategory={this.selectCategory} 
+								selected={this.state.selectedCategory}
+							/> 						
+						</div>
+					<span className="validationError" id="categoryError"></span>
+
 					{/* Date */}
 					<div className='form-group' id='date'>
 				        <div className="dateInputField">
@@ -632,17 +659,6 @@ const EventForm = React.createClass({
 						</div>
 					</div>
 					<span className="validationError" id="timeError"></span>
-
-					{/* Category */}
-					<div className='form-group' id="category">
-							<EventFormDropdown
-								ref={'dropDown'}
-								itemClassName={"itemDropdownEventForm"}
-								list={this.state.categories} selectCategory={this.selectCategory} 
-								selected={this.state.selectedCategory}
-							/> 						
-						</div>
-					<span className="validationError" id="categoryError"></span>
 
 					{/* Description */}
 					<div className='form-group'>

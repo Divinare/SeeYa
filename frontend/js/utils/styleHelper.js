@@ -32,7 +32,6 @@ module.exports = {
 			return eventListHeight-20;
 		} else if( screenType == 'tablet') {
 			var eventListHeight = (window.innerHeight-141);
-			console.log("RET EVNETLIST HEIGHT: " + eventListHeight);
 			return eventListHeight;
 		}
 	},
