@@ -554,29 +554,6 @@ const EventForm = React.createClass({
 		}
 	},
 
-	/*** VALIDATIONS ***/
-/*
-	validateField: function(func, params, field, customMessage) {
-			console.log("FIELD::::: " + field);
-
-		var errorMessage = func(params, customMessage);
-		var formInputField = field.replace("Error", "");
-		if(commonUtils.isEmpty(errorMessage)) {
-			// Clear the error message if it exists
-			$("#" + field).text("");
-			$("#" + formInputField).removeClass("invalid");
-
-			return true;
-		}
-		// Validation failed
-		else {
-			$("#" + field).text(errorMessage);
-			$("#" + formInputField).addClass("invalid");
-			return false;
-		}
-	},
-	*/
-
 	getEditOrCreateTitle: function(){
 		if(this.isEditForm()){
 			return "Edit event"
