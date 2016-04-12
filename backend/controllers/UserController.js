@@ -83,7 +83,7 @@ module.exports = {
             var endTime = new Date().getTime();
            // console.log("hashing took: " + (endTime - startTime) + "ms" );
             models.User.create({
-                username: userEmail,
+                username: "Anonymous",
                 email: userEmail, 
                 password: hash,
                 salt: salt

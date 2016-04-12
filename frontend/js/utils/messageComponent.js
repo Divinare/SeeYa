@@ -26,14 +26,28 @@ function showMessageComponent(message, displayTime, type) {
 		width -= messageComponentMargin;
 	}
 	msgComponent.css("width", width);
+	adjustMessageComponentHeight();
+
 	msgComponent.show(800);
 
 	hideComponent(msgComponent, displayTime);
 }
 
+function adjustMessageComponentHeight() {
+	// TODO:
+	// http://stackoverflow.com/questions/5703552/css-center-text-horizontal-and-vertical-inside-a-div-block
+
+
+
+}
+
 function hideComponent(msgComponent, displayTime) {
 	if(commonUtils.isEmpty(displayTime)) {
 		displayTime = 3000;
+	}
+	if(displayTime == -1) {
+		// Displaying untill the user hides it 
+		return;
 	}
 	setTimeout(function(){ msgComponent.hide(500); }, displayTime);
 }

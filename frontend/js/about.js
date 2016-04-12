@@ -11,7 +11,7 @@ const About = React.createClass({
 	},
 
 	show: function() {
-		window.UTILS.helper.showMessageComponent("Event was created succesfully!", 3000, "error");
+		window.UTILS.helper.showMessageComponent("Event was created succesfully!", -1, "success");
 	},
 
 	render: function(){
@@ -19,7 +19,7 @@ const About = React.createClass({
 
 		return (
 			<div className="aboutPageContainer">
-				<h1>Welcome! We are happy to See you!</h1>
+				<h1 onClick={this.show}>Welcome! We are happy to See you!</h1>
 				<br />
 				<br />
 				<p>SeeYa is a community for creating and joining events nearby. Discover new events, gain new experiences with other people and have fun.</p>
