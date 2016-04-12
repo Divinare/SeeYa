@@ -136,8 +136,6 @@ const Main = React.createClass({
                 eventList: eventList,
                 filteredEventList: eventList
             })
-            console.log("EVENTLIST: " )
-            console.log(eventList)
         }
 
 

@@ -123,6 +123,9 @@ module.exports = {
         return "";
     },
     validateEventDate: function(unixTimestamp, customMessage) {
+        if( unixTimestamp === null ){
+            return failed("eventDateWrongFormat", "");
+        }
         if(utils.isEmpty(unixTimestamp)) {
             return failed("eventDate","");
         }

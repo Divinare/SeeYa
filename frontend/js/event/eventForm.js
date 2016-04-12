@@ -287,14 +287,21 @@ const EventForm = React.createClass({
 
     handleNewDateChange: function(timestamp) {
     	if(timestamp == "Invalid date") {
+    		console.log("INVALID DATE")
     		timestamp = this.readDateFromInputField(timestamp);
     	}
-    	var moment = Moment(timestamp, "x")
-    	moment.hours(0);
-    	moment.minutes(0);
-	    this.setState({
-	       date: moment
-	    });
+    	if(timestamp !== ""){
+    		var moment = Moment(timestamp, "x")
+	    	moment.hours(0);
+	    	moment.minutes(0);
+		    this.setState({
+		       date: moment
+		    });
+    	}else{
+    		this.setState({
+    			date: null
+    		})
+    	}
     },
 
     readDateFromInputField: function(timestamp) {
@@ -323,7 +330,14 @@ const EventForm = React.createClass({
 		}
 		var dateString = date + "-" + month + "-" + year + "-" + "00:00";
 
-		return Moment(dateString, "DD-MM-YYYY-HH:mm");
+		var moment = Moment(dateString, "DD-MM-YYYY-HH:mm");
+		if( moment.isValid() ){
+			console.log("valid")
+			return moment;
+		}else{
+			console.log("invalid")
+			return ""
+		}
     },
 
     setDateFieldPlaceHolder: function() {
@@ -450,8 +464,10 @@ const EventForm = React.createClass({
 		// Override current streetAddress with the one in address input field
 		//address.streetAddress = document.getElementById("address").value;
 
-		var dateTimestamp = this.state.date.unix()*1000;
-
+		var dateTimestamp = null
+		if( this.state.date !== null){
+			dateTimestamp  = this.state.date.unix()*1000;
+		}
 		var dateInputFieldVal = document.getElementsByClassName("dateInputField")[0].getElementsByClassName("form-control")[0].value;
 		if(dateInputFieldVal.length == 0) {
 			dateTimestamp = "";
@@ -552,6 +568,14 @@ const EventForm = React.createClass({
 		return "What would you like to do?"
 	},
 
+	updateDateField: function(){
+		if( this.state.date !== null ){
+			return this.state.date.format('x')
+		}else{
+			return document.getElementsByClassName("dateInputField")[0].getElementsByClassName("form-control")[0].value;
+		}
+	},
+
 	render: function(){
 		var that = this;
 
@@ -588,7 +612,7 @@ const EventForm = React.createClass({
 
 							<DatePicker
 								inputFormat="DD.MM.YYYY"
-								dateTime={this.state.date.format('x')}
+								dateTime={this.state.updateDateField}
 								size="md"
 								mode="date"
 								viewMode="days"
