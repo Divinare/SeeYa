@@ -106,7 +106,6 @@ const Main = React.createClass({
     },
 
     handleResize: function(e) {
-        console.log("AT HANDLE RESIZE!!!");
         if(typeof map !== 'undefined') {
             $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight());
             $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
@@ -124,6 +123,7 @@ const Main = React.createClass({
             
             google.maps.event.trigger(map,'resize');
             map.setZoom( map.getZoom() );
+            UTILS.messageComponent.adjustMessageComponentWidth();
         }
 
     },

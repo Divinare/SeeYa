@@ -11,12 +11,11 @@ const About = React.createClass({
 	},
 
 	show: function() {
-		window.UTILS.helper.showMessageComponent("Event was created succesfully!", -1, "success");
+		window.UTILS.helper.showMessageComponent("Event was created succesfully! More dsa dsadsa dsad sadsad asdsa dsadsad lines just to demo this component", -1, "success");
 	},
 
 	render: function(){
 	
-
 		return (
 			<div className="aboutPageContainer">
 				<h1 onClick={this.show}>Welcome! We are happy to See you!</h1>
