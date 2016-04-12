@@ -350,7 +350,7 @@ const EventPage = React.createClass({
         var counter = 0;
 
         return (
-            <div className="eventPageContainer">
+            <div>
                 <div>
                     <h3>{eventName} <button className="pull-right btn btn-primary btn-sm" onClick={this.redirectToAttendForm}>{joinBtnText}</button></h3>
                     {date}<br/>

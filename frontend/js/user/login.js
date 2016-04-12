@@ -86,7 +86,7 @@ const About = React.createClass({
 
     render: function(){
         return (
-            <div className="row loginPageContainer">
+            <div className="row">
                 <div className="col-xs-12">  
                     <h1>Login</h1>
                     <div id='serverErrorDiv'></div>

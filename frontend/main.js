@@ -206,7 +206,7 @@ const Main = React.createClass({
                             <div className="rightContainerContent">
                                 <Link to={"/"}><div id="homeIcon" onClick={this.show}></div></Link>
                                 {childrenWithProps}
-
+                                
                             </div>
                                 <div className="rightContainerBottomBar">
                                     <Link to="/termsOfService" className="link bottomBarLink">Terms of service</Link>

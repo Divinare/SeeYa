@@ -21,7 +21,7 @@ var TermsOfService = React.createClass({
 
     render: function(){
         return (
-            <div className='termsOfServicePageContainer'>
+            <div >
                 <h1>TermsOfServicePage under construction.</h1>
             </div>
             )

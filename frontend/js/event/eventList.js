@@ -266,7 +266,7 @@ const EventList = React.createClass({
         // Return event table with real data
         //} else {
             return (
-                <div className="eventListContainer">
+                <div >
                     <h2 className="topic">Events</h2>
                         {eventListTable}
                     <div className="eventList-filter-bar">

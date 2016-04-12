@@ -110,8 +110,8 @@ const AttendForm = React.createClass({
                 msgComponent.showMessageComponent('Comment updated', SHOW_MSG_SEC * 1000, 'success')
             }else{
                 msgComponent.showMessageComponent('Successfully joined ' + that.state.event.name, SHOW_MSG_SEC * 1000, 'success')
-                browserHistory.push('/');
-            }  
+            }
+            browserHistory.push('/events/' + that.state.event.id); 
         };              
         var error = function( jqXhr, textStatus, errorThrown ){
             console.log( errorThrown );

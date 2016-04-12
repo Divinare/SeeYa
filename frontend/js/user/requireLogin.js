@@ -42,7 +42,7 @@ const RequireLogin = React.createClass({
 
     render: function(){
         return(
-            <div className="sideBarContent">
+            <div>
                 { this.state.loginStatusPending ? 
                     <h2 className="centeredVertHor">Loading...</h2>
                     :
