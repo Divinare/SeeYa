@@ -33,7 +33,9 @@ const About = React.createClass({
      This is because if our validations have changed after the user first signed up, 
      we still want them to be able to sign in.
     */
-    submit: function(){
+    submit: function(e){
+        console.log("SUBMIT")
+        e.preventDefault();
         var that = this;
         var validEmail = validator.validateField(commonValidator.validateNotEmpty, 
                                             this.state.email,
@@ -109,7 +111,7 @@ const About = React.createClass({
 
                        {/* Submit */}
                         <div className="form-group">
-                            <button type="button" onClick={this.submit} className="btn btn-default">Login</button>
+                            <button type="submit" onClick={this.submit} className="btn btn-default">Login</button>
                         </div>
                     </form>
                 </div>  

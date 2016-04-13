@@ -30,7 +30,8 @@ const About = React.createClass({
     },
 
 
-    submit: function(){
+    submit: function(e){
+        e.preventDefault();
         var that = this;
         var validEmail = validator.validateField(commonValidator.validateEmail, 
                                             this.state.email,
@@ -125,7 +126,7 @@ const About = React.createClass({
 
                            {/* Submit */}
                             <div className="form-group">
-                                <button type="button" onClick={this.submit} className="btn btn-default">Signup</button>
+                                <button type="submit" onClick={this.submit} className="btn btn-default">Signup</button>
                             </div>
                         </form>
                     </div>  
