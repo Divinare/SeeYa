@@ -3,6 +3,11 @@ var Router = require('react-router');
 var Moment = require('moment');
 var _ = require('lodash');
 var validator = require('bootstrap-validator');
+var Confirm = require('../modal/confirm.js')
+var reactDom = require('react-dom')
+var msgComponent = require('../utils/messageComponent.js');
+//import { render } from 'react-dom'
+const SHOW_MSG_SEC = 5;
 
 var Link = Router.Link;
 
@@ -73,10 +78,6 @@ const EventPage = React.createClass({
     //only call this method when the user log in status has been checked and attendances have been fetched
     updateUserAttendingInfo: function(){
         var loggedInUser = this.props.getAppStatus('user');
-        console.log("ATTENDEES")
-        console.log(this.state.attendees)
-        console.log("logged in user")
-        console.log(loggedInUser)
         var attending = false;
         for(var i = 0; i < this.state.attendees.length; i++){
             if( this.state.attendees[i].id === loggedInUser.id){
@@ -105,7 +106,6 @@ const EventPage = React.createClass({
         this.fetchEvent(eventId);
         this.checkIfUserLoggedIn();
         this.fetchAttendees(eventId);
-
     },
 
     fetchEvent: function(eventId){
@@ -190,21 +190,53 @@ const EventPage = React.createClass({
         UTILS.rest.addEntry('attendance', data, success, error);
     },
 
-    handleRemove: function(){
+    confirmDelete: function(){
         var that = this;
-        var deleteConfirmed = confirm("Are you sure you want to delete the event?")
+        return this.showModal('Are you sure?', {
+            description: 'Do you really want to delete the event?',
+            confirmLabel: 'Yes',
+            abortLabel: 'No'
+        }).then((function(_this) {
+            return function() {
+                return that.removeEvent();    //this is called if the user clicks on the confirmbutton
+                //return $(_this).parent().remove();
+            };
+        })(this));
+    },
 
-        var eventToRemove = this.state.event;
-        if(deleteConfirmed){
-            var success = function(){
-                that.props.getEvents();
-                browserHistory.push('/');
-            }
-            var error = function( jqXhr, textStatus, errorThrown ){
-                console.log( errorThrown );
-            }
-            UTILS.rest.removeEntry('event', this.state.event.id, success, error);   
+    showModal: function(message, options) {
+        var cleanup, component, props, wrapper;
+        if (options == null) {
+            options = {};
         }
+        props = $.extend({
+            message: message
+        }, options);
+        wrapper = document.body.appendChild(document.createElement("div"));
+        component = reactDom.render(<Confirm {...props}/>, wrapper);
+        cleanup = function() {
+            reactDom.unmountComponentAtNode(wrapper);
+            return setTimeout(function() {
+                return wrapper.remove();
+            });
+        };
+        return component.promise.always(cleanup).promise();
+    },
+
+    removeEvent: function(){
+        var that = this;
+        var eventToRemove = this.state.event;
+        var success = function(){
+            that.props.getEvents();
+            browserHistory.push('/');
+            msgComponent.showMessageComponent('Event ' + that.state.event.name + ' deleted', SHOW_MSG_SEC * 1000, 'success')
+        }
+        var error = function( jqXhr, textStatus, errorThrown ){
+            browserHistory.push('/');
+            msgComponent.showMessageComponent('Failed to remove the event. Please try again and report the error if it persists', SHOW_MSG_SEC * 1000, 'error')
+            console.log( errorThrown );
+        }
+        UTILS.rest.removeEntry('event', this.state.event.id, success, error);
     },
 
     createEditButton: function() {
@@ -367,7 +399,7 @@ const EventPage = React.createClass({
                         <div>
                             {this.createEditButton()}
                             { peopleAttending > 0 ? btn : ''}
-                            <button className="btn btn-danger btn-block" onClick={that.handleRemove}>Delete</button>
+                            <button className="btn btn-danger btn-block" onClick={that.confirmDelete}>Delete</button>
                         </div> 
                         :
                         ''
