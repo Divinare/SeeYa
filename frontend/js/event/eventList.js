@@ -190,7 +190,7 @@ const EventList = React.createClass({
 
         if(eventList.length > 0) {
             return (
-                <table className="eventList-table">
+                <table className="eventListTable">
                     <tbody key="tableBody">
                         {this.createEventListRows(eventList)}
                     </tbody>
@@ -217,10 +217,14 @@ const EventList = React.createClass({
                 <th className="eventListItem" key="v">{this._renderHeader("When", "timestamp")}</th>
              </tr>
             );
+
+ //<td className="eventListItem" key={"a"+event.id}><div id="eventListMapIconContainer" onClick={_this.centerMapToMarker.bind(null, event.id, -1)}><img src="../../assets/marker_gatherup_straight.png" width="25px" height="25px"></img></div></td>
+
+
         eventList.map(function(event) {
             items.push(
                 <tr key={event.id}>
-                    <td className="eventListItem" key={"a"+event.id}><div id="eventListMapIconContainer" onClick={_this.centerMapToMarker.bind(null, event.id, -1)}><img src="../../assets/marker_gatherup_straight.png" width="25px" height="25px"></img></div></td>
+                    <td className="eventListItem" key={"a"+event.id}>M</td>
                     <td className="eventListItem" key={"b"+event.id}>{_this.cellRenderer("name", event.name, event.id)}</td>
                     <td className="eventListItem" key={"c"+event.id}>{event.Attendances.length}</td>
                     <td className="eventListItem" key={"d"+event.id}>{_this._formatTimestamp(event.timestamp)}</td>                            
@@ -266,14 +270,16 @@ const EventList = React.createClass({
         // Return event table with real data
         //} else {
             return (
-                <div >
-                    <h2 className="topic">Events</h2>
+                <div id="eventListContainer">
+                    <h2 id="eventListTopic">Events</h2>
+
+                    <div id="eventListTableContainer">
                         {eventListTable}
-                    <div className="eventList-filter-bar">
+                    </div>
+
+                    <div id="eventListBottomBar">
                         <span id="select-dropdown">
                             <Dropdown
-                                singleRow={true}
-                                categoriesContentId={"categoriesContentEventList"}
                                 list={this.state.categories}
                                 selectCategory={this.selectCategory}
                                 selected={selectedCategory} />

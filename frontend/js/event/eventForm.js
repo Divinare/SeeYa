@@ -577,7 +577,7 @@ const EventForm = React.createClass({
 		}
 
 		return (
-			<div>
+			<div id="eventFormContainer">
 				<h1 className="centeredHeader">{that.getEditOrCreateTitle()}</h1>
 
 				<div className='form' id="eventForm">

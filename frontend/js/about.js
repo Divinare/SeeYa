@@ -17,7 +17,7 @@ const About = React.createClass({
 	render: function(){
 	
 		return (
-			<div>
+			<div id="aboutContainer">
 				<h1 onClick={this.show}>Welcome! We are happy to See you!</h1>
 				<br />
 				<br />

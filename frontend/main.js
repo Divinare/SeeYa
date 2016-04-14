@@ -109,20 +109,17 @@ const Main = React.createClass({
         if(typeof map !== 'undefined') {
             $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight());
             $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
-            var eventListHeight = UTILS.styleHelper.getEventListHeight();
-            var eventListWidth = UTILS.styleHelper.getEventListWidth();
+            var eventListHeight = UTILS.styleHelper.getRightContainerHeight();
+            var eventListWidth = UTILS.styleHelper.getRightContainerWidth();
             $(".right-container").css('height', eventListHeight);
             $(".right-container").css('width', eventListWidth);
 
-            UTILS.styleHelper.resetRightContainer();          
-
-            var eventListData = this.state.eventListData;
-            eventListData['tableHeight'] = eventListHeight;
-            eventListData['tableWidth'] = eventListWidth;
-            this.updateAppStatus('eventListData', eventListData);
+            UTILS.styleHelper.resetRightContainer();
+            UTILS.styleHelper.resizeEventList();
             
-            google.maps.event.trigger(map,'resize');
-            map.setZoom( map.getZoom() );
+            // Are these needed? T. Joe 14.4.2016
+            // google.maps.event.trigger(map,'resize');
+            //   map.setZoom( map.getZoom() );
             UTILS.messageComponent.adjustMessageComponentWidth();
         }
 
@@ -186,7 +183,8 @@ const Main = React.createClass({
                 user: that.state.user
             })
         });
-
+                               
+        // HOMEICON:   <Link to={"/"}><div id="homeIcon" onClick={this.show}></div></Link>
         return (
             <div className="application">
                 <Navbar loginStatusPending={this.state.loginStatusPending} user={this.state.user}/>
@@ -204,9 +202,7 @@ const Main = React.createClass({
 
                         <div className="right-container showing" onClick={this.hideRightContainer}>
                             <div className="rightContainerContent">
-                                <Link to={"/"}><div id="homeIcon" onClick={this.show}></div></Link>
                                 {childrenWithProps}
-                                
                             </div>
                                 <div className="rightContainerBottomBar">
                                     <Link to="/termsOfService" className="link bottomBarLink">Terms of service</Link>

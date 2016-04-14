@@ -43,7 +43,7 @@ module.exports = React.createClass({
 
     render: function(){
         return (
-            <div>
+            <div id="logoutContainer">
                 Logging out...
             </div>
         )

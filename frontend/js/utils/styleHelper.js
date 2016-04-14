@@ -24,7 +24,7 @@ module.exports = {
 		return window.innerWidth;
 	},
 
-	getEventListHeight: function() {
+	getRightContainerHeight: function() {
 		var screenType = this.getScreenType();
 		if(screenType == 'desktop') {	
 			var eventListHeight = window.innerHeight;
@@ -36,7 +36,7 @@ module.exports = {
 		}
 	},
 
-	getEventListWidth: function() {
+	getRightContainerWidth: function() {
 		var screenType = this.getScreenType();
 
 		if(screenType == 'desktop') {
@@ -125,6 +125,20 @@ module.exports = {
                     $(".right-container").removeClass("toMobile");
                  }, 499);
             }
+        }
+    },
+
+    resizeEventList: function() {
+
+        if(typeof $("#eventListTopic")[0] !== "undefined") {
+            var eventListTopicHeight = $("#eventListTopic")[0].clientHeight;
+            var eventListBottomBarHeight = $("#eventListBottomBar")[0].clientHeight;
+            var rightContainerPadding = 40;
+            var newHeight = (this.getRightContainerHeight()-(rightContainerPadding*2)-eventListTopicHeight-eventListBottomBarHeight);
+            $("#eventListTableContainer").css("height", newHeight+"px");
+            /*console.log("NEW HEIGHT");
+            console.log(rightContainerPadding);
+            console.log(newHeight);*/
         }
     }
 }

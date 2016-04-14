@@ -1,5 +1,26 @@
-.eventListContainer {
-    padding: 20px;
+#eventListContainer {
+    height: 100%;
+    width: 100%;
+}
+
+/* MAIN DIVS */
+
+#eventListTopic {
+    margin: 0px;
+    height: 35px;
+}
+
+#eventListTableContainer {
+    height: 85%;
+    overflow-y: auto;
+}
+
+#eventListBottomBar {
+    /*border-top: 1px solid #eee; */
+    height: 40px;
+    position: relative;
+    width: 100%;
+    display: flex;
 }
 
 .eventListNameLink {
@@ -12,9 +33,10 @@
     color: #23527c;
 }
 
-.eventList-table {
+.eventListTable {
 	width: 100%;
     font-size: 1.1em;
+    overflow: auto;
 }
 
 .eventListItem {
@@ -48,22 +70,6 @@
 }
 
 
-
-/* FILTERS */
-
-.eventList-filter-bar {
-    /*border-top: 1px solid #eee; */
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 60px;
-    width: 100%;
-    display: flex;
-}
-
 /* Category */
 
 #categoriesContentEventList {
@@ -92,7 +98,7 @@
     background: #ffffff;
     padding: 10px 20px 10px 20px;
     text-decoration: none;
-    background-color: rgba(0,0,0,0.35);
+    background-color: rgb(86, 151, 212);
     color: #FFF;
     border: 1px solid #FFF;
     height: 40px;

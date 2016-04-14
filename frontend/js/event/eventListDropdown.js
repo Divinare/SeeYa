@@ -18,7 +18,7 @@ var Dropdown = React.createClass({
     },
 
     toggleShowCategories: function(e) {
-        var id = this.props.categoriesContentId
+        var id = "categoriesContentEventList";
         if($("#" + id).css('display') == 'none') {
             $("#" + id).slideDown(150, function(){ });
         } else {
@@ -27,17 +27,45 @@ var Dropdown = React.createClass({
     },
 
 
+    renderListItemsMultipleColumns: function() {
+        var _this = this;
+        var items = [];
+        var list = this.props.list;
+        for(var i = 0; i < list.length; i += 2) {
+            var itemLeft = list[i];
+            console.log("left: " + itemLeft.name);
+
+            var leftDiv = <span key={itemLeft.name} className="itemDropdownEventForm itemRightDropdownEventForm" onClick={_this.select.bind(null, itemLeft.name)}><div>{itemLeft.name}</div></span>;
+            var rightDiv;
+            if(i+1 < list.length) {
+                var itemRight = list[i+1];
+                console.log("right: " + itemRight.name);
+                rightDiv = <span key={itemRight.name} className="itemDropdownEventForm itemRightDropdownEventForm" onClick={_this.select.bind(null, itemRight.name)}><div>{itemRight.name}</div></span>;
+            } else {
+                rightDiv = <span></span>
+            }
+            items.push(
+                <div key={i+"eventFormRow"} className="eventFormListRow">
+                        {leftDiv}
+                        {rightDiv}
+                </div>);
+        };
+        return items;
+    },
+
 
     render: function() {
+
+        var listItems = this.renderListItemsMultipleColumns();
+
+
         return (
 
             <div id={this.props.dropdownId}>
-                <div id={this.props.categoriesContentId}>
-                {this.props.list.map(item =>
-                    <div key={item.name} className="item unSelected" onClick={this.select.bind(null, item.name)}>{item.name}</div>
-                )}
+                <div id="categoriesContentEventList">
+                    {listItems}
                 </div>
-                <div id="category" className="dropdownBtnEventList" onClick={this.toggleShowCategories}>{this.props.selected}</div>
+                <div id="category" className="dropdownBtnEventList" onClick={this.toggleShowCategories}>Categories</div>
             </div>
             
         );

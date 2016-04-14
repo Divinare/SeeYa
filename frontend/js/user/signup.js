@@ -97,7 +97,7 @@ const About = React.createClass({
 
     render: function(){
         return (
-            <div>
+            <div id="signupContainer">
                 <div className="row">
                     <div className="col-xs-12">  
                         <h1>Signup</h1>

@@ -149,7 +149,7 @@ const AttendForm = React.createClass({
             )
         }
         return(
-            <div>
+            <div id="attendFormContainer">
                  { ( this.props.user !== null ) ? 
                         <div >
                             { ( this.state.userAttending === true ) ?
