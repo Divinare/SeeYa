@@ -47,19 +47,16 @@ const Main = React.createClass({
 
     getInitialState: function() {
         var eventListData = [];
-        eventListData['tableHeight'] = 0;
-        eventListData['tableWidth'] = 0;
         eventListData['sortBy'] = 'name';
         eventListData['sortDir'] = null;
-        eventListData['filters'] = {
-            category: "Sports"
-        };
+        eventListData['filters'] = [];
         eventListData['tableContentNames'] = ['name', 'attendances', 'streetAddress', 'timestamp'];
         
         return {
             showFrontpage: true,
             frontpageLoaded: false,
             eventList: [],
+            categories: [],
             filteredEventList: [],
             eventListData: eventListData,
             newEventMarker: null,
@@ -73,6 +70,9 @@ const Main = React.createClass({
 
     componentWillMount: function() {
         this.getEvents();
+        if(this.state.categories.length == 0) {
+            this.getCategories();
+        }
     },
 
     componentDidMount: function() {
@@ -151,7 +151,35 @@ const Main = React.createClass({
 
     },
 
+    getCategories: function() {
+        var that = this;
+        var onSuccess = function (data) {
+            console.log("GOT CATEGORIES");
+        var eventListData = that.state.eventListData;
+        var categories = [];
+        for(var index in data) {
+            var category = data[index];
+            console.log("CATEGORY::: " + category.name);
+            categories.push(category);
+            eventListData['filters'][category.name] = false;
+        }
+        that.setState({
+            categories: categories,
+            eventListData: eventListData
+        })
+        };
+        var onError = function() {
+            console.log("Error on fetching event!");
+        }
+        console.log("FETCHING CATEGORIES");
+        UTILS.rest.getAllEntries('category', onSuccess, onError);
+
+    },
+
     updateAppStatus: function(propName, newValue) {
+        console.log("AT UPDATE APP STATUS::!!!");
+        console.log("propName " + propName);
+        console.log(newValue);
         var state = {};
         state[propName] = newValue;
         this.setState(state);
@@ -173,8 +201,9 @@ const Main = React.createClass({
         var childrenWithProps = React.Children.map(this.props.children, function(child) {
             return React.cloneElement(child, {
                 eventList: that.state.eventList,
-                filteredEventList: that.state.filteredEventList,
                 eventListData: that.state.eventListData,
+                categories: that.state.categories,
+                filteredEventList: that.state.filteredEventList,
                 newEventMarker: that.state.newEventMarker,
                 handleResize: that.handleResize,
                 updateAppStatus: that.updateAppStatus,

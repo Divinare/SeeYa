@@ -51,8 +51,11 @@ module.exports = {
         models.Event.findAll({
             include: [ models.Address,
                     models.Attendance,
-                  { model: models.Category, where: {'name': categoryFilter} }
-                  ]
+                    { model: models.Category, where: {
+                            $or: [{name: "Singles"}, {name: "Other"}]
+                        }
+                    }
+                ]
         }).then(function (events) {
             res.send(events);
         });

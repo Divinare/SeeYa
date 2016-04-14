@@ -17,29 +17,15 @@ const EventList = React.createClass({
         var eventListData = this.props.eventListData;
         var selectedCategory = eventListData['filters'].category;
         return {
-            categories: [],
             selectedCategory: selectedCategory
         }
     },
 
     componentDidMount: function() {
-
+        console.log("AT COMPONEND DID MOUNT");
         this.props.handleResize();
         var that = this;
 
-        var onSuccess = function (data) {
-            var categories = [];
-            for(var index in data) {
-                categories.push(data[index]);
-            }
-            that.setState({
-                categories: categories
-            })
-        };
-        var onError = function() {
-            console.log("Error on fetching event!");
-        }
-        UTILS.rest.getAllEntries('category', onSuccess, onError);
         $("#homeIcon").css("display", "none");
     },
 
@@ -218,9 +204,6 @@ const EventList = React.createClass({
              </tr>
             );
 
- //<td className="eventListItem" key={"a"+event.id}><div id="eventListMapIconContainer" onClick={_this.centerMapToMarker.bind(null, event.id, -1)}><img src="../../assets/marker_gatherup_straight.png" width="25px" height="25px"></img></div></td>
-
-
         eventList.map(function(event) {
             items.push(
                 <tr key={event.id}>
@@ -238,7 +221,8 @@ const EventList = React.createClass({
 
     render: function() {
         var _this = this;
-
+        console.log("EVNETLIST DATA");
+        console.log(this.props.eventListData);
         // Use eventList if filteredEventList is empty
         var eventList = this.props.filteredEventList;
         var eventListData = this.props.eventListData;
@@ -261,7 +245,7 @@ const EventList = React.createClass({
 
 
         //var fromDate = moment.unix(value).format("MM/DD/YYYY");
-
+        
         // Display loading text while loading eventList
         //if($.isEmptyObject(eventList)) {
         //  return (
@@ -280,7 +264,9 @@ const EventList = React.createClass({
                     <div id="eventListBottomBar">
                         <span id="select-dropdown">
                             <Dropdown
-                                list={this.state.categories}
+                                updateAppStatus={this.props.updateAppStatus}
+                                eventListData={this.props.eventListData}
+                                list={this.props.categories}
                                 selectCategory={this.selectCategory}
                                 selected={selectedCategory} />
                         </span>
