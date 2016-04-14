@@ -124,23 +124,8 @@
 .itemDropdownEventList {
     width: 43%;
     display: inline-block;
-    cursor: pointer;
-}
-
-.itemDropdownEventList div {
-    padding: 8px;
-}
-
-.itemDropdownEventList div:hover {
-    background-color: #EAEAEA;
-}
-
-.itemRightDropdownEventList {
     margin-left: 5%;
-}
 
-.itemLeftDropdownEventList {
-    margin-left: 2%;
 }
 
 .eventListDropdownCheckbox {
@@ -149,6 +134,17 @@
     margin-right: 5px !important;
 }
 
+.eventListItemCategoryName {
+    display: inline-block;
+    padding: 8px;
+    width: 85%;
+    cursor: pointer;
+}
+
+.eventListItemCategoryName:hover {
+    background-color: #EAEAEA;
+
+}
 
 .select-dropdown {
     flex: 0 0 65%;

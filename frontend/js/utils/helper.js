@@ -86,6 +86,39 @@ module.exports = {
 
     showMessageComponent: function(message, displayTime, type) {
     	messageComponent.showMessageComponent(message, displayTime, type);
+    },
+
+    hideCategoryDropdownEventform: function() {
+	    var eventTarget = $(event.target)[0];
+	    var shouldHideEventForm = true;
+	    if(typeof eventTarget != 'undefined' && eventTarget != null) {
+	        if(eventTarget.className == "eventFormListRow") {
+	            shouldHideEventForm = false;
+	        }
+	    }
+	    if(shouldHideEventForm) {
+	        $("#categoryContentEventform").slideUp(150, function(){ });
+	    }
+
+
+    },
+
+    hideCategoryDropdownEventlist: function() {
+	    var eventTarget = $(event.target)[0];
+	    var shouldHideCategories = true;
+	    if(typeof eventTarget != 'undefined' && eventTarget != null) {
+	        console.log("??????? ")
+	        if(eventTarget.className == "eventFormListRow"
+	            || eventTarget.className == "dropdownBtnEventList"
+	            || eventTarget.className == "eventListItemCategoryName"
+	            || eventTarget.className == "itemDropdownEventList"
+	            || eventTarget.className == "eventListDropdownCheckbox") {
+	            shouldHideCategories = false;
+	        }
+	    }
+	    if(shouldHideCategories) {
+	        $("#categoriesContentEventList").slideUp(150, function(){ });
+	    }
     }
 
 

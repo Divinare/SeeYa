@@ -29,18 +29,9 @@ import { render } from 'react-dom'
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
 
 $(document).click(function() {
-    var eventTarget = $(event.target)[0];
-    var shouldHideEventForm = true;
-    if(typeof eventTarget != 'undefined' && eventTarget != null) {
-        if(eventTarget.className == "eventFormListRow") {
-            shouldHideEventForm = false;
-        }
-    }
-    if(shouldHideEventForm) {
-        $("#categoryContentEventform").slideUp(150, function(){ });
-    }
+    UTILS.helper.hideCategoryDropdownEventform();
+    UTILS.helper.hideCategoryDropdownEventlist();
 
-    $("#categoriesContentEventList").slideUp(150, function(){ });
 });
 
 const Main = React.createClass({

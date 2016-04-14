@@ -11,7 +11,9 @@ var Dropdown = React.createClass({
         this.setState({
             divId: this.props.divId
         })
-
+        $('.eventListDropdownCheckbox').click(function(event) {
+            event.preventDefault();
+         });
     },
 
     select: function(item) {
@@ -30,56 +32,39 @@ var Dropdown = React.createClass({
     },
 
     changeFilterValue: function(name) {
-        console.log("change filter value to " + name)
-        this.props.updateAppStatus()
-
         var eventListData = this.props.eventListData;
         var currentVal = eventListData['filters'][name]
         eventListData['filters'][name] = !currentVal;
-        console.log(eventListData);
         this.props.updateAppStatus('eventListData', eventListData);
     },
 
-
     renderListItemsMultipleColumns: function() {
-        var _this = this;
         var items = [];
         var list = this.props.list;
         var eventListData = this.props.eventListData;
         var filtersArray = eventListData['filters'];
-        console.log("FILTERS #¤£@@@@@@@@@@@@@@@@@22");
-        console.log(filtersArray);
 
         for(var i = 0; i < list.length; i += 2) {
             var itemLeft = list[i];
             var filterLeftValue = filtersArray[itemLeft.name];
-            console.log("left: " + itemLeft.name);
-            console.log("VALUE???? " + filterLeftValue)
 
-            var leftDiv = <div key={itemLeft.name} className="itemDropdownEventList itemRightDropdownEventList" onClick={_this.changeFilterValue.bind(null, itemLeft.name)}>
-                <div>
-                    <input className="eventListDropdownCheckbox" type="checkbox"
-                      checked={filterLeftValue}
-                      onClick={this.changeFilterValue.bind(null, itemLeft.name)}
-                      value={filterLeftValue} />
+            var leftDiv = <div key={itemLeft.name} className="itemDropdownEventList" onClick={this.changeFilterValue.bind(null, itemLeft.name)}>
+                <input className="eventListDropdownCheckbox" type="checkbox"
+                  checked={filterLeftValue}
+                  value={filterLeftValue} />
 
-                    {itemLeft.name}
-                </div>
+                <div className="eventListItemCategoryName">{itemLeft.name}</div>
             </div>;
             var rightDiv;
             if(i+1 < list.length) {
                 var itemRight = list[i+1];
                 var filterRightValue = filtersArray[itemRight.name];
-                console.log("right: " + itemRight.name);
-                rightDiv = <div key={itemRight.name} className="itemDropdownEventList itemRightDropdownEventList" onClick={_this.changeFilterValue.bind(null, itemRight.name)}>
-                   <div>
-                        <input className="eventListDropdownCheckbox" type="checkbox"
-                          checked={filterRightValue}
-                          onClick={this.changeFilterValue.bind(null, itemRight.name)}
-                          value={filterRightValue} />
+                rightDiv = <div key={itemRight.name} className="itemDropdownEventList" onClick={this.changeFilterValue.bind(null, itemRight.name)}>
+                    <input className="eventListDropdownCheckbox" type="checkbox"
+                      checked={filterRightValue}
+                      value={filterRightValue} />
 
-                        {itemRight.name}
-                    </div>
+                    <div className="eventListItemCategoryName">{itemRight.name}</div>
                 </div>;
             } else {
                 rightDiv = <span></span>
