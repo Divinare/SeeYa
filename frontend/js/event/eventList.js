@@ -224,7 +224,7 @@ const EventList = React.createClass({
         eventList.map(function(event) {
             items.push(
                 <tr key={event.id}>
-                    <td className="eventListItem" key={"a"+event.id}>M</td>
+                    <td className="eventListItem" key={"a"+event.id}><div id="eventListMapIconContainer" onClick={_this.centerMapToMarker.bind(null, event.id, -1)}></div></td>
                     <td className="eventListItem" key={"b"+event.id}>{_this.cellRenderer("name", event.name, event.id)}</td>
                     <td className="eventListItem" key={"c"+event.id}>{event.Attendances.length}</td>
                     <td className="eventListItem" key={"d"+event.id}>{_this._formatTimestamp(event.timestamp)}</td>                            
