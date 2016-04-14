@@ -599,7 +599,6 @@ const EventForm = React.createClass({
 					<div className='form-group' id="category">
 							<EventFormDropdown
 								ref={'dropDown'}
-								itemClassName={"itemDropdownEventForm"}
 								list={this.state.categories} selectCategory={this.selectCategory} 
 								selected={this.state.selectedCategory}
 							/> 						

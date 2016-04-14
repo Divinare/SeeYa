@@ -114,6 +114,10 @@ const About = React.createClass({
                             <button type="submit" onClick={this.submit} className="btn btn-default">Login</button>
                         </div>
                     </form>
+
+                    <h3 id="areYouNewTopic">Are you new to Seeya?</h3>
+                    <div className="btn btn-default signupButton"><Link to="/signup">Sign up</Link></div>
+
                 </div>  
             </div>
         )

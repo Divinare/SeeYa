@@ -60,7 +60,9 @@
     z-index: 10;
     max-height: 300px;
     overflow-y: auto;
-    border-top: 1px solid #ADADAD;
+    border: 1px solid #ADADAD;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 #categorySelectEventform {
@@ -81,13 +83,29 @@
 }
 
 .itemDropdownEventForm {
-    width: 50%;
+    width: 43%;
     display: inline-block;
     cursor: pointer;
 }
 
+.itemDropdownEventForm div {
+    padding: 8px;
+}
+
+.itemDropdownEventForm div:hover {
+    background-color: #EAEAEA;
+}
+
+.itemRightDropdownEventForm {
+    margin-left: 5%;
+}
+
+.itemLeftDropdownEventForm {
+    margin-left: 2%;
+}
+
 .eventFormListRow {
-    padding: 5px;
+    /* padding: 5px; */
 }
 
 .validationError {
