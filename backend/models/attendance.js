@@ -3,18 +3,23 @@
 module.exports = function(sequelize, DataTypes) {
 	var Attendance = sequelize.define("Attendance", {
     id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
     comment: {
-      type: DataTypes.STRING,
-      allowNull: true
+        type: DataTypes.STRING,
+        allowNull: true
     },
     sendEmail: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-      allowNull: false
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
+    },
+    confirmed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
     }
   }, {
         timestamps: true,

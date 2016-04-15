@@ -29,6 +29,14 @@ module.exports = function(sequelize, DataTypes) {
         maxAttendees: {
             type : DataTypes.INTEGER,
             allowNull: true
+        },
+        confirmStart: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
+        confirmEnd: {
+            type: DataTypes.DATE,
+            allowNull: true
         }
   }, {
         timestamps: true,
@@ -52,6 +60,10 @@ module.exports = function(sequelize, DataTypes) {
                 Event.hasMany(models.EventQueue, {
                     foreignKey: 'eventId'
                 })
+                Event.belongsToMany(models.Language, {
+                    through: models.EventLanguage,
+                    foreignKey: 'eventId'
+                });
             }
         }
     });
