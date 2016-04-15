@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
-	var Attendance = sequelize.define("Attendance", {
+    var EventQueue = sequelize.define("EventQueue", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -20,12 +20,12 @@ module.exports = function(sequelize, DataTypes) {
         timestamps: true,
         classMethods: {
         associate: function(models) {
-          Attendance.belongsTo(models.Event, {
+          EventQueue.belongsTo(models.Event, {
             foreignKey: 'eventId',
             onDelete: 'cascade',
             unique: 'pkIndex'
           });
-          Attendance.belongsTo(models.User,{
+          EventQueue.belongsTo(models.User,{
             onDelete: 'cascade',
             foreignKey: 'userId',
             unique: 'pkIndex'
@@ -35,5 +35,5 @@ module.exports = function(sequelize, DataTypes) {
   }
   );
 
-  return Attendance;
+  return EventQueue;
 };

@@ -33,7 +33,7 @@ module.exports = {
                 model: models.Attendance,
                 attributes: ['comment'],
                 where: {
-                    EventId: eventId
+                    eventId: eventId
                 },
             }],
             raw: true   //we don't want instances, just the plain data
@@ -52,7 +52,7 @@ module.exports = {
 
 
        /* models.Attendance.findAll({
-            where: { EventId: eventId },
+            where: { eventId: eventId },
             include: [ models.User ]
         }).then(function (attendances) {
             console.log("ATTENDANCES")

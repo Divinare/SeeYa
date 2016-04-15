@@ -99,8 +99,6 @@ module.exports = {
 	    if(shouldHideEventForm) {
 	        $("#categoryContentEventform").slideUp(150, function(){ });
 	    }
-
-
     },
 
     hideCategoryDropdownEventlist: function() {

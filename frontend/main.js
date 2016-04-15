@@ -31,7 +31,6 @@ import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'reac
 $(document).click(function() {
     UTILS.helper.hideCategoryDropdownEventform();
     UTILS.helper.hideCategoryDropdownEventlist();
-
 });
 
 const Main = React.createClass({

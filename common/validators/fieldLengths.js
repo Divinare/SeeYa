@@ -1,3 +1,5 @@
+/* Use the same lengths as in backend models! */
+
 module.exports = {
     userUsernameMin: 3,
     userUsernameMax: 30,
@@ -8,9 +10,9 @@ module.exports = {
 
     eventNameMax: 30,
     eventNameMin: 3,
-    eventAddressCountryMax: 50,
-    eventAddressZipCodeMax: 25,
-    eventAddressStreetAddressMax: 50,
+    eventAddressCountryMax: 255,
+    eventAddressZipCodeMax: 255,
+    eventAddressStreetAddressMax: 255,
     eventAddressStreetAddressMin: 5,
     eventMaxDaysInTheFuture: 365,
     eventDescriptionMaxLength: 500,
