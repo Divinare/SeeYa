@@ -15,6 +15,8 @@ const About = React.createClass({
 	},
 
 	render: function(){
+
+
 	
 		return (
 			<div id="aboutContainer">

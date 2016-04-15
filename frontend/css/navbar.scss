@@ -126,6 +126,18 @@
         background-size: cover;
     }
 
+    #logomarker {
+    
+        background-image: url("assets/imagestash/logo_seeYa_gradient.png");
+        background-size: cover;
+          width: 100px;
+            height: 100px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+
+    }
+
     .navbarToggleMobile {
         display: block;
         background-image: url("assets/navbar_toggle.png");
