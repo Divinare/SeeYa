@@ -45,14 +45,24 @@ module.exports = {
     },
 
     filterEvents: function (req, res) {
-        var categoryFilter = req.params.category;
-        console.log("Category FILTER: " + categoryFilter);
+        var categoryFilters = req.params.category;
 
+        if(categoryFilters == "all") {
+            module.exports.findAll(req, res);
+            return;
+        }
+        var filterArray = categoryFilters.split(",");
+        
+        var categoryFilters = [];
+        for(var filter in filterArray) {
+            var obj = {name: filterArray[filter]}
+            categoryFilters.push(obj);
+        }
         models.Event.findAll({
             include: [ models.Address,
                     models.Attendance,
                     { model: models.Category, where: {
-                            $or: [{name: "Singles"}, {name: "Other"}]
+                            $or: categoryFilters
                         }
                     }
                 ]

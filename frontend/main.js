@@ -60,10 +60,6 @@ const Main = React.createClass({
     },
 
     componentWillMount: function() {
-        console.log("COMPONENT WILL MOUNT!!!!!!!!!!!!!!!");
-        console.log("COMPONENT WILL MOUNT!!!!!!!!!!!!!!!");
-        console.log("COMPONENT WILL MOUNT!!!!!!!!!!!!!!!");
-        console.log("COMPONENT WILL MOUNT!!!!!!!!!!!!!!!");
         this.getEvents();
         if(this.state.categories.length == 0) {
             this.getCategories();
@@ -122,11 +118,9 @@ const Main = React.createClass({
     },
 
     getEvents: function() {
-        console.log("GET EVENTSSSS")
-        console.log("GET EVENTSSSS")
-        console.log("GET EVENTSSSS")
-        console.log("GET EVENTSSSS")
-        console.log("GET EVENTSSSS")
+        console.log("AT GET EVENTS!");
+        console.log("AT GET EVENTS!");
+        console.log("AT GET EVENTS!");
         var that = this;
         var onSuccess = function(eventList) {
             //var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
@@ -135,21 +129,10 @@ const Main = React.createClass({
                 filteredEventList: eventList
             })
         }
-
-
-        /*
-        var categoryFilter = {
-            name: "category",
-            value: this.state.eventListData['filters'].category
-        };
-        */
-        var categoryFilter = this.state.eventListData['filters'].category;
-
-        // TODO:
-        UTILS.rest.getFilteredEntries('filteredEvents', categoryFilter, null, null, onSuccess);
-        //UTILS.rest.getAllEntries('events', onSuccess);
-
-
+        var categoryFilters = this.state.eventListData['filters'];
+        console.log("CATEGORY FILTERS: ");
+        console.log(categoryFilters);
+        UTILS.rest.getFilteredEntries('filteredEvents', categoryFilters, null, null, onSuccess);
     },
 
     getCategories: function() {
@@ -178,9 +161,6 @@ const Main = React.createClass({
     },
 
     updateAppStatus: function(propName, newValue) {
-        console.log("AT UPDATE APP STATUS::!!!");
-        console.log("propName " + propName);
-        console.log(newValue);
         var state = {};
         state[propName] = newValue;
         this.setState(state);

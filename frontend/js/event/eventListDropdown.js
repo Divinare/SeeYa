@@ -36,6 +36,7 @@ var Dropdown = React.createClass({
         var currentVal = eventListData['filters'][name]
         eventListData['filters'][name] = !currentVal;
         this.props.updateAppStatus('eventListData', eventListData);
+        this.props.getEvents();
     },
 
     renderListItemsMultipleColumns: function() {

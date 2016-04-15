@@ -10,28 +10,23 @@ var getAllEntries = function(name, onSuccess, onError) {
     });
 }
 
-var getFilteredEntries = function(name, category, fromTimestamp, toTimestamp, onSuccess, onError) {
+var getFilteredEntries = function(name, categoryFilters, fromTimestamp, toTimestamp, onSuccess, onError) {
     console.log("at getFilteredEntries");
     var url = URL.getFilteredEntries[name];
-    url += category + '/' + fromTimestamp + '/' + toTimestamp + '/';
-    /*
-    var urlFilters = [];
-
-    var filterMappings = [];
-    filterMappings["category"] = 0;
-
-    for(var i = 0; i < filters.length; i++) {
-        var filter = filters[i];
-        console.log(filter.name);
-        console.log(filterMappings[filter.name]);
-        urlFilters[filterMappings[filter.name]] = filter.value;
+    console.log(categoryFilters.length);
+    var filters = [];
+    for(var filterName in categoryFilters) {
+        if(categoryFilters[filterName] == true) {
+            filters.push(filterName);      
+        }
     }
-    console.log(urlFilters);
-    for(var i = 0; i < urlFilters.length; i++) {
-        url +=  urlFilters[i] + '/';
+    if(filters.length > 0) {
+        url += filters.join() + '/';
+    } else {
+        url += "all/";
     }
-    console.log(url);
-    */
+    url += fromTimestamp + '/' + toTimestamp + '/';
+
     console.log("getting filtered entries from: " + url);
     $.ajax({ 
         type: 'GET', 
