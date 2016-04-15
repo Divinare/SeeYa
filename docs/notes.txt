@@ -1,17 +1,42 @@
 
-
 Add this to eventlist column attribute?
 fixed={true}
 
-
-
-
-
-
-
-
+__________________________________________________________________________________________
 
 Miksi map.js ja mapView.js ei refaktoroitu erilleen?
 -> rupesi tulemaan liikaa spagettia, map.js:lle olisi pitänyt antaa usein funktioita, joissa oli kutsuja mapView sisäisiin funktioihin jne
 
+__________________________________________________________________________________________
+
 -> hankalaa esim. joku context menun valintojen tekeminen kun pitää antaa funktoina taas joku tietorakenne, mitä tapahtuu kun zoomataan, tehdään eventti jne.. Funktioissa, jotka map.js:lle annetaan on suurimmaksi osaksi sama koodi kuin mapViewissä, joten tämä menee vaan sekavammaksi ja turhaksi
+
+__________________________________________________________________________________________
+__________________________________________________________________________________________
+__________________________________________________________________________________________
+SETTING UP THE DATABASE:
+__________________________________________________________________________________________
+
+psql -U admin -d template1
+drop database devdb;
+create database devdb;
+
+-------Sitte toisessa terminaalissa siinä projektin kansiossa ajat komennon: 
+gulp
+
+-------ja sitte ku se pyörii meet takas siihen toiseen terminaaliin ja laitat:
+
+\connect devdb
+
+
+insert into "Categories" (id, name, "createdAt", "updatedAt") VALUES
+(1, 'Sports', current_timestamp, current_timestamp),
+(2, 'Beer', current_timestamp, current_timestamp),
+(3, 'Food & Drink', current_timestamp, current_timestamp),
+(4, 'Games', current_timestamp, current_timestamp),
+(5, 'Singles', current_timestamp, current_timestamp),
+(6, 'Music', current_timestamp, current_timestamp),
+(7, 'Other', current_timestamp, current_timestamp);
+
+__________________________________________________________________________________________
+__________________________________________________________________________________________
