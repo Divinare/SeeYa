@@ -18,16 +18,17 @@ module.exports = {
 
 
     validateUsername: function(username, customMessage) {
+        var errors = [];
         if(utils.isEmpty(username)) {
-            return failed("userUsernameEmpty", customMessage);
+            errors.push(failed("userUsernameEmpty", customMessage));
         }
         if(username.length < fieldLengths.userUsernameMin) {
-            return failed("userUsernameTooShort", customMessage);
+            errors.push( failed("userUsernameTooShort", customMessage) );
         }
         if(username.length > fieldLengths.userUsernameMax) {
-            return failed("userUsernameTooLong", customMessage);
+            errors.push( failed("userUsernameTooLong", customMessage) );
         }
-        return "";
+        return errors;
     },
 
     validateEmail: function(email, customMessage){

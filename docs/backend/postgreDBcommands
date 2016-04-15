@@ -19,3 +19,6 @@ insert into "Categories" (id, name, "createdAt", "updatedAt") VALUES
 (6, 'Music', current_timestamp, current_timestamp),
 (7, 'Other', current_timestamp, current_timestamp);
 
+
+//INSERTING USERS:
+insert into "Users" values (DEFAULT, 'Anonymous9', 'abc', 'asa@as.com', 'afsd', current_timestamp, current_timestamp);
