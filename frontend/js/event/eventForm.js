@@ -497,7 +497,7 @@ const EventForm = React.createClass({
 		var valid3 = validator.validateField(commonValidator.validateEventLatLng, this.state.latLng, "#latLng", "#latLngError");
 		var valid4 = validator.validateField(commonValidator.validateEventDate, dateTimestamp, "#date", "#dateError");
 		var valid5 = validator.validateField(commonValidator.validateEventCategory, category, "#category", "#categoryError", "Select category from the list");
-		var valid6 = validator.validateField(commonValidator.validateEventTime, [time, dateTimestamp], "#time", "#timeError");
+		var valid6 = validator.validateField(commonValidator.validateEventTime, [time, dateTimestamp], "#time-container", "#timeError");
 		var valid7 = validator.validateField(commonValidator.validateEventDescription, description, "#description", "#descriptionError", "");
 
 		// If one of the validations fail, prevent submitting form
@@ -627,7 +627,7 @@ const EventForm = React.createClass({
 
 					{/* Time */}
 					<div className='form-group'>
-						<div className='input-group'>
+						<div className='input-group' id='time-container'>
 							<input type='text' className='form-control' id='time' value={this.state.time} onChange={this.handleChange("time")} placeholder="Time (hh:mm)" />
 							<span className="input-group-btn">
 								 <button className="btn btn-default" type="button" onClick={this.setCurrentTime}><i className="glyphicon glyphicon-time"></i></button>
