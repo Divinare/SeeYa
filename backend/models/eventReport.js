@@ -15,7 +15,8 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
             associate: function(models) {
                 EventReport.belongsTo(models.Event, {
-                    foreignKey: 'eventId'
+                    foreignKey: 'eventId',
+                    onDelete: 'cascade'
                 });
             }
         }

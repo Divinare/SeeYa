@@ -15,7 +15,8 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
             associate: function(models) {
                 UserReport.belongsTo(models.User, {
-                    foreignKey: 'userId'
+                    foreignKey: 'userId',
+                    onDelete: 'cascade'
                 });
             }
         }
