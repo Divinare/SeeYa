@@ -80,7 +80,7 @@ module.exports = React.createClass({
                             </div>
                         }
                     </ul>
-                    <div id="navbarClose" onClick={this.closeNavbar}>X</div>
+                    <div id="navbarClose" onClick={this.closeNavbar}></div>
                 </div>
             </div>
         )

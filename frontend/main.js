@@ -144,7 +144,7 @@ const Main = React.createClass({
             var category = data[index];
             console.log("CATEGORY::: " + category.name);
             categories.push(category);
-            eventListData['filters'][category.name] = false;
+            eventListData['filters'][category.name] = true;
         }
         that.setState({
             categories: categories,
