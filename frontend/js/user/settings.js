@@ -153,7 +153,7 @@ const Settings = React.createClass({
         if(this.state.signedIn){
             return (
                 <div id="settingsContainer">
-                    <h3>New username: {username}</h3>
+                    <h3>{username}</h3>
                     <p className="link" onClick={this.toggleUsernameFields}>Change username</p>
 
                     <form className="form usernameForm hiddenForToggle">

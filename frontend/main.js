@@ -60,6 +60,10 @@ const Main = React.createClass({
     },
 
     componentWillMount: function() {
+        console.log("COMPONENT WILL MOUNT!!!!!!!!!!!!!!!");
+        console.log("COMPONENT WILL MOUNT!!!!!!!!!!!!!!!");
+        console.log("COMPONENT WILL MOUNT!!!!!!!!!!!!!!!");
+        console.log("COMPONENT WILL MOUNT!!!!!!!!!!!!!!!");
         this.getEvents();
         if(this.state.categories.length == 0) {
             this.getCategories();
@@ -107,6 +111,7 @@ const Main = React.createClass({
 
             UTILS.styleHelper.resetRightContainer();
             UTILS.styleHelper.resizeEventList();
+            UTILS.styleHelper.resizeRightContainerContent();
             
             // Are these needed? T. Joe 14.4.2016
             // google.maps.event.trigger(map,'resize');
@@ -117,6 +122,11 @@ const Main = React.createClass({
     },
 
     getEvents: function() {
+        console.log("GET EVENTSSSS")
+        console.log("GET EVENTSSSS")
+        console.log("GET EVENTSSSS")
+        console.log("GET EVENTSSSS")
+        console.log("GET EVENTSSSS")
         var that = this;
         var onSuccess = function(eventList) {
             //var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
@@ -221,13 +231,14 @@ const Main = React.createClass({
                         hideRightContainer={this.hideRightContainer} />
 
                         <div className="right-container showing" onClick={this.hideRightContainer}>
-                            <div className="rightContainerContent">
+                            <div id="rightContainerToolbar"></div>
+                            <div id="rightContainerContent">
                                 {childrenWithProps}
                             </div>
-                                <div className="rightContainerBottomBar">
-                                    <Link to="/termsOfService" className="link bottomBarLink">Terms of service</Link>
-                                    <Link to="/contact" className="link bottomBarLink">Contact us</Link>
-                                </div>
+                            <div id="rightContainerBottomBar">
+                                <Link to="/termsOfService" className="link bottomBarLink">Terms of service</Link>
+                                <Link to="/contact" className="link bottomBarLink">Contact us</Link>
+                            </div>
 
                         </div>
                 </div>  

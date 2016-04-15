@@ -67,7 +67,7 @@ module.exports = {
         }
         // SHOW
         if(className.indexOf("showing") == -1 && show) {
-            $(".rightContainerContent").css("visibility", "visible");
+            $("#rightContainerContent").css("visibility", "visible");
 
             if(this.isDesktop()) {
                 $(".right-container").animate({'right':'+=350px'},350);
@@ -79,14 +79,14 @@ module.exports = {
         // HIDE
         } else if(className.indexOf("showing") != -1 && !show) {
 
-            $(".rightContainerContent").css("visibility", "hidden");
+            $("#rightContainerContent").css("visibility", "hidden");
             if(this.isDesktop()) {
                 $(".right-container").animate({'right':'-=350px'},350);
                 $(".right-container").removeClass("showing");
             } else {
                 $(".right-container").animate({'top':'+=' + toggleHeightMobile + 'px'},350);
                 $(".right-container").removeClass("showing");
-                $(".rightContainerContent").css("visibility", "hidden");
+                $("#rightContainerContent").css("visibility", "hidden");
             }
         }   
     },
@@ -101,7 +101,7 @@ module.exports = {
 
     resetRightContainer: function() {
         var className = $('.right-container').attr('class');
-        $(".rightContainerContent").css("visibility", "visible");
+        $("#rightContainerContent").css("visibility", "visible");
 
         if(this.isDesktop()) {
             if(className.indexOf("toDesktop") == -1) {
@@ -128,13 +128,23 @@ module.exports = {
         }
     },
 
+    resizeRightContainerContent: function() {
+
+            var toolbarHeight = $("#rightContainerToolbar")[0].clientHeight;
+            var bottomBarHeight = $("#rightContainerBottomBar")[0].clientHeight;
+            var rightContainerPadding = 40;
+            var newHeight = (this.getRightContainerHeight()-rightContainerPadding-toolbarHeight-bottomBarHeight);
+            $("#rightContainerContent").css("height", newHeight+"px");
+    },
+
     resizeEventList: function() {
 
         if(typeof $("#eventListTopic")[0] !== "undefined") {
+            var toolbarHeight = $("#rightContainerToolbar")[0].clientHeight;
             var eventListTopicHeight = $("#eventListTopic")[0].clientHeight;
             var eventListBottomBarHeight = $("#eventListBottomBar")[0].clientHeight;
             var rightContainerPadding = 40;
-            var newHeight = (this.getRightContainerHeight()-(rightContainerPadding*2)-eventListTopicHeight-eventListBottomBarHeight);
+            var newHeight = (this.getRightContainerHeight()-(rightContainerPadding*2)-eventListTopicHeight-eventListBottomBarHeight-toolbarHeight);
             $("#eventListTableContainer").css("height", newHeight+"px");
             /*console.log("NEW HEIGHT");
             console.log(rightContainerPadding);
