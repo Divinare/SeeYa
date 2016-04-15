@@ -392,8 +392,6 @@ const EventPage = React.createClass({
                     {peopleAttendingStr}<br/>
                     <span id="description"></span><br/>
 
-                    <div>modal was here T. joe</div>
-
                     <br />
                     { that.state.editingAllowed ? 
                         <div>
