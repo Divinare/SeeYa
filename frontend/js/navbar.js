@@ -62,12 +62,26 @@ module.exports = React.createClass({
                         }
                     </ul>
                 </div>
-                {/* BLACK NAVBAR SELECT WINDOW */}
+                {/* WHITE NAVBAR SELECT WINDOW */}
                 <div id="navbar-mobile" className="hidden">
+
+
                     <ul className="menu-mobile">
+
+
+                            
+                          <li onClick={this.closeNavbar}> <Link to="/"><div id="logomarker" >  </div></Link></li>
+                         
+                          
+                          <br />
+
+
                         <li onClick={this.closeNavbar}><Link to="/"><strong>SeeYa</strong></Link></li>
+
+                        
                         <li><Link to="/about" onClick={this.closeNavbar}>About</Link></li>
                         <li><Link to="/eventForm" onClick={this.closeNavbar}>New event</Link></li>
+
 
                         { (this.props.user !== null) ? 
                             <div>
@@ -80,7 +94,7 @@ module.exports = React.createClass({
                             </div>
                         }
                     </ul>
-                    <div id="navbarClose" onClick={this.closeNavbar}>X</div>
+                    <div id="navbarClose" onClick={this.closeNavbar}></div>
                 </div>
             </div>
         )

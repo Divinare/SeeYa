@@ -31,7 +31,6 @@ import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'reac
 $(document).click(function() {
     UTILS.helper.hideCategoryDropdownEventform();
     UTILS.helper.hideCategoryDropdownEventlist();
-
 });
 
 const Main = React.createClass({
@@ -107,6 +106,7 @@ const Main = React.createClass({
 
             UTILS.styleHelper.resetRightContainer();
             UTILS.styleHelper.resizeEventList();
+            UTILS.styleHelper.resizeRightContainerContent();
             
             // Are these needed? T. Joe 14.4.2016
             // google.maps.event.trigger(map,'resize');
@@ -117,6 +117,9 @@ const Main = React.createClass({
     },
 
     getEvents: function() {
+        console.log("AT GET EVENTS!");
+        console.log("AT GET EVENTS!");
+        console.log("AT GET EVENTS!");
         var that = this;
         var onSuccess = function(eventList) {
             //var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
@@ -125,21 +128,10 @@ const Main = React.createClass({
                 filteredEventList: eventList
             })
         }
-
-
-        /*
-        var categoryFilter = {
-            name: "category",
-            value: this.state.eventListData['filters'].category
-        };
-        */
-        var categoryFilter = this.state.eventListData['filters'].category;
-
-        // TODO:
-        UTILS.rest.getFilteredEntries('filteredEvents', categoryFilter, null, null, onSuccess);
-        //UTILS.rest.getAllEntries('events', onSuccess);
-
-
+        var categoryFilters = this.state.eventListData['filters'];
+        console.log("CATEGORY FILTERS: ");
+        console.log(categoryFilters);
+        UTILS.rest.getFilteredEntries('filteredEvents', categoryFilters, null, null, onSuccess);
     },
 
     getCategories: function() {
@@ -152,7 +144,7 @@ const Main = React.createClass({
             var category = data[index];
             console.log("CATEGORY::: " + category.name);
             categories.push(category);
-            eventListData['filters'][category.name] = false;
+            eventListData['filters'][category.name] = true;
         }
         that.setState({
             categories: categories,
@@ -168,9 +160,6 @@ const Main = React.createClass({
     },
 
     updateAppStatus: function(propName, newValue) {
-        console.log("AT UPDATE APP STATUS::!!!");
-        console.log("propName " + propName);
-        console.log(newValue);
         var state = {};
         state[propName] = newValue;
         this.setState(state);
@@ -221,13 +210,14 @@ const Main = React.createClass({
                         hideRightContainer={this.hideRightContainer} />
 
                         <div className="right-container showing" onClick={this.hideRightContainer}>
-                            <div className="rightContainerContent">
+                            <div id="rightContainerToolbar"></div>
+                            <div id="rightContainerContent">
                                 {childrenWithProps}
                             </div>
-                                <div className="rightContainerBottomBar">
-                                    <Link to="/termsOfService" className="link bottomBarLink">Terms of service</Link>
-                                    <Link to="/contact" className="link bottomBarLink">Contact us</Link>
-                                </div>
+                            <div id="rightContainerBottomBar">
+                                <Link to="/termsOfService" className="link bottomBarLink">Terms of service</Link>
+                                <Link to="/contact" className="link bottomBarLink">Contact us</Link>
+                            </div>
 
                         </div>
                 </div>  

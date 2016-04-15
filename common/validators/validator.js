@@ -103,7 +103,7 @@ module.exports = {
 
         if(utils.notEmpty(address.zipCode)) {
             if(address.zipCode.length > fieldLengths.eventAddressZipCodeMax) {
-                return failed("eventAddress", "ZipCode in the address can be max " + fieldLengths.eventAddressCountryMax + " letters");
+                return failed("eventAddress", "ZipCode in the address can be max " + fieldLengths.eventAddressZipCodeMax + " letters");
             }
         }
 

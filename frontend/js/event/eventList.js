@@ -265,6 +265,7 @@ const EventList = React.createClass({
                         <span id="select-dropdown">
                             <Dropdown
                                 updateAppStatus={this.props.updateAppStatus}
+                                getEvents={this.props.getEvents}
                                 eventListData={this.props.eventListData}
                                 list={this.props.categories}
                                 selectCategory={this.selectCategory}

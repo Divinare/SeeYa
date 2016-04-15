@@ -41,7 +41,7 @@ module.exports = {
         var success = function(user){
             Attendance.upsert({ //insert or update
                 comment: attendanceToAdd.comment,
-                EventId: attendanceToAdd.event.id,
+                eventId: attendanceToAdd.event.id,
                 userId: user.id
             }).then(function(attendance){
                 res.send(attendance)
@@ -65,7 +65,7 @@ module.exports = {
             Attendance.destroy({
                 where: { 
                     userId: user.id,
-                    EventId: eventId
+                    eventId: eventId
                 }
             }).then(function (affectedRows) {
                 console.log("affectedRows: " + affectedRows)
