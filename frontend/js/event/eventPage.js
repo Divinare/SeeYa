@@ -115,9 +115,7 @@ const EventPage = React.createClass({
             browserHistory.push('/');
         }
 
-        var editFunc = function() {
-            browserHistory.push('/');
-        }
+        var editFunc = this.moveToEditForm;
 
         var deleteFunc = function() {
             browserHistory.push('/');
