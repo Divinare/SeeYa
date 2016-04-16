@@ -218,14 +218,18 @@ module.exports = {
                 models.Event.findOne({
                     where: { id: eventId}
                 }).then(function( event ) {
-                    if( event.get('creator') === user.id){
-                        event.destroy().then(function(){
-                            res.status(200).send();
-                        }).catch(function(err){
-                            helper.sendResponse(res, 400, err);
-                        });
-                    }else{  //user hasn't created this event
-                        notAuthorized();
+                        if(event !== null){
+                            if( event.get('creator') === user.id || user.role === 'Admin'){
+                            event.destroy().then(function(){
+                                res.status(200).send();
+                            }).catch(function(err){
+                                helper.sendResponse(res, 400, err);
+                            });
+                        }else{  //user hasn't created this event
+                            notAuthorized();
+                        }
+                    }else{
+                        helper.sendResponse(res, 401, {message: 'Event does not exist'});
                     }
                 })
             }else{  //not logged in at all

@@ -24,3 +24,7 @@ insert into "Users" values (DEFAULT, 'Anonymous9', 'abc', 'asa@as.com', 'afsd', 
 //DELETING USERS:
 Delete all users whose username starts with Anonymous
 delete from "Users" where username like 'Anonymous%';
+
+//UPDATING USERS
+//Make a user with username 'super' have admin rights
+UPDATE "Users" SET role = 'Admin' where username = 'super'

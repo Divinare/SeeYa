@@ -27,6 +27,7 @@ const EventPage = React.createClass({
              fetchingAttendees: true,
              attendees: [],
              userAttending: null,    //tells if the user is attending this event already or not
+             adminUser: false,
              comment: null
         };
 
@@ -42,13 +43,13 @@ const EventPage = React.createClass({
 
     componentDidUpdate: function(prevProps, prevState) {
         if( prevState.fetchingAttendees && !this.state.fetchingAttendees ){  //we got the attendees now
-            if( !this.state.loginStatusPending ){
+            if( !this.state.loginStatusPending && this.props.getAppStatus('user') != null ){
                 this.updateUserAttendingInfo();
             } 
         }
 
         if( prevState.loginStatusPending && !this.state.loginStatusPending ){    //login status updated
-            if( !this.state.fetchingAttendees ){
+            if( !this.state.fetchingAttendees && this.props.getAppStatus('user') != null){
                 this.updateUserAttendingInfo();
             }
         }
@@ -131,9 +132,15 @@ const EventPage = React.createClass({
         var success = function(result) {
             if(that.isMounted()){
                 that.props.updateAppStatus('user', result.user);
+                var admin = false;
+                if(result.user.role === 'Admin'){
+                    admin = true;
+                }
                 that.setState({
-                    loginStatusPending: false
+                    loginStatusPending: false,
+                    adminUser: admin
                 })
+
             }
         }
         var error = function( jqXhr, textStatus, errorThrown ){
@@ -397,11 +404,18 @@ const EventPage = React.createClass({
                         <div>
                             {this.createEditButton()}
                             { peopleAttending > 0 ? btn : ''}
+                        </div> 
+                        :
+                        ''
+                    }
+                    { that.state.editingAllowed || that.state.adminUser ? 
+                        <div>
                             <button className="btn btn-danger btn-block" onClick={that.confirmDelete}>Delete</button>
                         </div> 
                         :
                         ''
                     }
+
 
                 </div>
                 {this.state.attendees.length > 0 ?
