@@ -137,7 +137,10 @@ var ContactUs = React.createClass({
         return (
             <div id="contactUsContainer">
                 <h2 id="contactusTopic">Contact us</h2>
-                <p>Send email to gatherup@gmail.com</p>
+                <p>
+                Send email to:
+                <a href="mailto:gatherupThisIsnotthecorrectaddress@gmail.com?Subject=Hello%20again" target="_top"> gatherup@gmail.com</a>
+                </p>
                 <div className="form-group">
                         <label className="control-label">Subject *</label>
                             <input type="text" id="subject" placeholder="Click to select" className="form-control" onChange={this.handleChange('subjectId')}/>
