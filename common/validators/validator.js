@@ -282,5 +282,20 @@ module.exports = {
             return failed("contactDescriptionTooShort", customMessage);
         }
         return "";
+    },
+
+
+    /*** ATTENDANCE ***/
+    validateAttendanceComment: function(comment, customMessage){
+        if(utils.isEmpty(comment)){
+            return "";
+        }
+
+        if( comment.length > fieldLengths.attendanceCommentMax){
+            return failed("attendanceCommentTooLong", customMessage);
+        }
+
+        return "";
     }
+
 }

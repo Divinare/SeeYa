@@ -24,15 +24,13 @@ POST: http://localhost:1337/api/events
 
 
 
-CREATING NEW ATTENDANCES:
+CREATING/UPDATING NEW ATTENDANCES:
 http://localhost:1337/api/attendances
- { "attendeeName": "yrjö",
- "email":"test@testing.com",
- "comment": "testi kommentti",
- "event":{
-   "id": "2"
-   
- }
+ { 
+  "comment": "might be a bit late",
+  "event":{
+    "id": "2"
+  }
 }
 
 DELETING ATTENDANCES:

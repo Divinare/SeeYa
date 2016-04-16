@@ -64,24 +64,21 @@ module.exports = {
         });*/
     },
 
-    //TODO make this shorter, validation in its own function for example
     create: function (req, res) {
         //Validate fields
         console.log("NEW USER TRYING TO SIGN UP")
-        var addErrorsIfNotEmpty = module.exports.addErrorsIfNotEmpty;
-        var addErrorIfNotEmpty = module.exports.addErrorIfNotEmpty;
         var userData = req.body;
         var userEmail = userData.email;
         var username = userData.username;
         var userPassword = userData.password;
         var repeatPassword = userData.repeatPassword;
         var validationErrors = {'userEmail':[], 'username':[], 'userPassword':[], 'userRepeatPassword': []};
-        validationErrors['userEmail'] = addErrorsIfNotEmpty(validationErrors['userEmail'], validator.validateEmail(userEmail));
+        validationErrors['userEmail'] = helper.addErrorsIfNotEmpty(validationErrors['userEmail'], validator.validateEmail(userEmail));
         if(utils.notEmpty(username)){ //username is optional, only validate if the user has filled it
-            validationErrors['username'] = addErrorsIfNotEmpty(validationErrors['username'], validator.validateUsername(username));
+            validationErrors['username'] = helper.addErrorsIfNotEmpty(validationErrors['username'], validator.validateUsername(username));
         }
-        addErrorIfNotEmpty(validationErrors['userPassword'], validator.validatePassword(userPassword));
-        addErrorIfNotEmpty(validationErrors['userRepeatPassword'], validator.matchPasswords({"password":userPassword, "repeatPassword": repeatPassword}));
+        helper.addErrorIfNotEmpty(validationErrors['userPassword'], validator.validatePassword(userPassword));
+        helper.addErrorIfNotEmpty(validationErrors['userRepeatPassword'], validator.matchPasswords({"password":userPassword, "repeatPassword": repeatPassword}));
 
         console.log("validationerrors: ")
         console.log(validationErrors)
@@ -102,51 +99,26 @@ module.exports = {
                 }
 
                 //Check if there were any errors and send them back to the client if there were
-                var errorCount = 0;
-                for (var property in validationErrors) {
-                    if (validationErrors.hasOwnProperty(property)) {
-                        if( validationErrors[property].length > 0 ){
-                            errorCount++;
-                        }else{
-                            delete validationErrors[property]
-                        }
-                    }
-                }
-                if( errorCount > 0 ){
-                    helper.sendError(res, 400, validationErrors);
-                    return;
-                }
-
-                if( utils.isEmpty(username) ){
-                    models.User.findAll({
-                        where:{
-                            username: {
-                                $like: 'Anonymous%'
+                if( !helper.sendErrorsIfFound(res, validationErrors) ){
+                    //if false is returned no messages were sent, i.e. user input is valid and we can continue
+                   if( utils.isEmpty(username) ){
+                        models.User.findAll({
+                            where:{
+                                username: {
+                                    $like: 'Anonymous%'
+                                }
                             }
-                        }
-                    }).then(function(users){
-                        var id = generateNextId(users);
-                        finishSignUp(req, res, 'Anonymous' + id);
-                    })
-                }else{
-                    finishSignUp(req, res, username);
+                        }).then(function(users){
+                            var id = generateNextId(users);
+                            finishSignUp(req, res, 'Anonymous' + id);
+                        })
+                    }else{
+                        finishSignUp(req, res, username);
+                    }
                 }
             });
               
         });
-    },
-
-    addErrorIfNotEmpty: function(array, errorMsg){
-        if(utils.notEmpty(errorMsg)){
-            array.push(errorMsg);
-        }
-    },
-
-    addErrorsIfNotEmpty: function(array, errorArr){
-        if(errorArr.length > 0){
-            array = array.concat(errorArr);
-        }
-        return array;
     },
 };
 

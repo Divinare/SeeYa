@@ -19,6 +19,8 @@ module.exports = {
 
     contactEmailMaxLength: 254,
     contactDescriptionMaxLength: 500,
-    contactDescriptionMinLength: 1
+    contactDescriptionMinLength: 1,
+
+    attendanceCommentMax: 255
 
 }

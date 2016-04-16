@@ -1,8 +1,9 @@
 import { browserHistory, Link } from 'react-router';
 var React = require('react');
-var validator = require('../../../common/validators/validator.js');
 var utils = require('../../../common/utils.js');
 var msgComponent = require('../utils/messageComponent.js');
+var validator = require('../../../common/validators/validator.js');
+var frontValidator = require('../utils/validator.js')
 const SHOW_MSG_SEC = 5;
 
 const AttendForm = React.createClass({
@@ -29,10 +30,7 @@ const AttendForm = React.createClass({
     //only call this method when attendances have been fetched
     updateUserAttendingInfo: function(){
         var loggedInUser = this.props.getAppStatus('user');
-        console.log("ATTENDEES")
-        console.log(this.state.attendees)
-        console.log("logged in user")
-        console.log(loggedInUser)
+
         var attending = false;
         for(var i = 0; i < this.state.attendees.length; i++){
             if( this.state.attendees[i].id === loggedInUser.id){
@@ -71,7 +69,8 @@ const AttendForm = React.createClass({
 
         var onError = function() {
             console.log("Error on fetching event!");
-            browserHistory.push('/');   //TODO ADD NOTIFICATION TO THE USER SAYING THE EVENT WAS NOT FOUND
+            msgComponent.showMessageComponent('The event was not found.', SHOW_MSG_SEC * 1000, 'error')
+            browserHistory.push('/');
         }
         UTILS.rest.getEntry('event', eventId, onSuccess, onError);
     },
@@ -98,25 +97,43 @@ const AttendForm = React.createClass({
     },
 
     addAttendance: function(e) {
+        console.log("ADDING attendance")
         var that = this;
         var event = this.state.event;
         var data = {
             comment: this.state.comment,
             event: event
         }
-        var success = function(){
-            that.props.getEvents();
-            if(that.state.userAttending){
-                msgComponent.showMessageComponent('Comment updated', SHOW_MSG_SEC * 1000, 'success')
-            }else{
-                msgComponent.showMessageComponent('Successfully joined ' + that.state.event.name, SHOW_MSG_SEC * 1000, 'success')
-            }
-            browserHistory.push('/events/' + that.state.event.id); 
-        };              
-        var error = function( jqXhr, textStatus, errorThrown ){
-            console.log( errorThrown );
-        };
-        UTILS.rest.addEntry('attendance', data, success, error);
+        var commentValid = frontValidator.validateField(
+                                validator.validateAttendanceComment,
+                                this.state.comment,
+                                "#comment",
+                                "#commentError"  
+                            )
+        if( commentValid ){
+            var success = function(){
+                console.log("SUCCESS")
+                that.props.getEvents();
+                if(that.state.userAttending){
+                    msgComponent.showMessageComponent('Comment updated', SHOW_MSG_SEC * 1000, 'success')
+                }else{
+                    msgComponent.showMessageComponent('Successfully joined ' + that.state.event.name, SHOW_MSG_SEC * 1000, 'success')
+                }
+                browserHistory.push('/events/' + that.state.event.id); 
+            };              
+            var error = function( jqXhr, textStatus, errorThrown ){
+                console.log("ERROR")
+                console.log(jqXhr)
+                if( jqXhr.responseJSON.errors.comment != null && jqXhr.responseJSON.errors.comment.length > 0){
+                    frontValidator.setErrorToField('#comment', jqXhr.responseJSON.errors.userEmail, '#commentError');
+                }else{
+                    msgComponent.showMessageComponent('An error occurred when trying to join. Was the event deleted? Please try again and report the error if it persists.', SHOW_MSG_SEC * 1000, 'error')
+                }
+               // console.log( errorThrown );
+            };
+            frontValidator.clearErrorFromField('#comment', '#commentError');
+            UTILS.rest.addEntry('attendance', data, success, error);
+        }
     },
 
     removeAttendance: function(){
@@ -157,9 +174,10 @@ const AttendForm = React.createClass({
                                 :
                                 <h2>Attend {this.state.event.name}</h2>
                             }
-                            <form className='form' id='form' role='form' data-toggle="validator" data-disable="false"> 
+                            <form className='form' id='form' role='form'> 
                                 <div className='form-group'>
                                     <textArea type='text' value={this.state.comment} onChange={this.handleChange('comment')} className='form-control' id='comment' placeholder='Optional comment'/>
+                                    <span id="commentError"></span>
                                 </div>
                                 <div className="form-group">
                                     { ( this.state.userAttending === false ) ?
@@ -194,9 +212,3 @@ const AttendForm = React.createClass({
 
 module.exports = AttendForm;
 
-
-/*
-
-
-
-                    */

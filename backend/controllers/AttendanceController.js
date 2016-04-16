@@ -4,6 +4,7 @@ var Sequelize = require('sequelize');
 var Attendance = models.Attendance;
 var helper = require("../helpers/helper.js");
 var userService = require('../services/UserService.js');
+var validator = require("../../common/validators/validator.js");
 
 module.exports = {
 	findOne: function (req, res) {
@@ -33,26 +34,41 @@ module.exports = {
         });
 	},
 
+    //Create and update
 	create: function (req, res) {
 		var attendanceToAdd = req.body;
-		console.log(attendanceToAdd.event)
-		console.log(attendanceToAdd)
+        var comment = attendanceToAdd.comment;
+        var validationErrors = {'comment':[]};
+        helper.addErrorIfNotEmpty(validationErrors['comment'], validator.validateAttendanceComment(comment));
 
-        var success = function(user){
-            Attendance.upsert({ //insert or update
-                comment: attendanceToAdd.comment,
-                eventId: attendanceToAdd.event.id,
-                userId: user.id
-            }).then(function(attendance){
-                res.send(attendance)
-            }).catch(function(err){
+        if( !helper.sendErrorsIfFound(res, validationErrors) ){
+            //if false is returned no messages were sent, i.e. user input is valid and we can continue
+            //console.log(attendanceToAdd.event)
+            //console.log(attendanceToAdd)
+            console.log("creating / updating attendance")
+
+            var success = function(user){
+                Attendance.upsert({ //insert or update
+                    comment: attendanceToAdd.comment,
+                    eventId: attendanceToAdd.event.id,
+                    userId: user.id
+                }).then(function(created){
+                    if(created){
+                        console.log("created")
+                        res.status(201).send({message: 'created'});
+                    }else{
+                        console.log("updated")
+                        res.status(200).send({message: 'updated'});
+                    }
+                }).catch(function(err){
+                    helper.sendErr(res, 400, err);
+                });
+            }
+            var error = function(err){
                 helper.sendErr(res, 400, err);
-            });
+            }
+            userService.getLoggedInUser(req, res, success, error);
         }
-        var error = function(err){
-            helper.sendErr(res, 400, err);
-        }
-        userService.getLoggedInUser(req, res, success, error);
 	},
 
     //TODO: add check that the user is signed in and the creator of the event

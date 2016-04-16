@@ -41,7 +41,9 @@ const errors = {
     contactEmailTooLong: "Email too long.",
     contactDescriptionEmpty: "Description cannot be left empty.",
     contactDescriptionTooLong: "Description can be max " + fieldLengths.contactDescriptionMaxLength + " long.",
-    contactDescriptionTooShort: "Description must be at least 1 character long."
+    contactDescriptionTooShort: "Description must be at least 1 character long.",
+
+    attendanceCommentTooLong: "The comment can be max " + fieldLengths.attendanceCommentMax + " long."
 }
 
 module.exports = {
