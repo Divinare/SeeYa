@@ -22,7 +22,7 @@ var TermsOfService = React.createClass({
     render: function(){
         return (
             <div id="termsOfServiceContainer">
-                <h2>Terms of Service</h2>
+                <h2 className="topicText">Terms of Service</h2>
 
 
                 <p>SeeYa is a community for creating and joining events nearby. Discover new events, gain new experiences with other people and have fun.</p>

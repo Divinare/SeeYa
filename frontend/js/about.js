@@ -20,7 +20,7 @@ const About = React.createClass({
 	
 		return (
 			<div id="aboutContainer">
-				<h2 id="aboutTopic" onClick={this.show}>Welcome! We are happy to See you!</h2>
+				<h2 className="topicText" onClick={this.show}>Welcome! We are happy to See you!</h2>
 				
 				<p>SeeYa is a community for creating and joining events nearby. Discover new events, gain new experiences with other people and have fun.</p>
 				<p>Simple and easy way to explore events near you or far away. SeeYa was developed in 2016 by a small group of friends in Helsinki, Finland.  </p>

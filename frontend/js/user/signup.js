@@ -75,7 +75,7 @@ const About = React.createClass({
             <div id="signupContainer">
                 <div className="row">
                     <div className="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-12 col-md-offset-0 col-md-12">  
-                        <h2 id="signupTopic">Sign up</h2>
+                        <h2 className="topicText">Sign up</h2>
                         <form className="form">
                             <div className="form-group">
                                     <input type="text" id="email" name="email" placeholder="Email" className="form-control" onChange={this.handleChange('email')}/>
