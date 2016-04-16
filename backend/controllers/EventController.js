@@ -153,52 +153,6 @@ module.exports = {
         userService.getLoggedInUser(req, res, success, notAuthorized);
     },
 
-/*
-    update: function (req, res) {
-        var controlId = req.params.id;
-        var eventToModify = req.body;
-        var success = function(user){
-            //TODO load first the event, and check that the user has created it.
-
-
-                   // var requiredProps = ['name', 'description',]
-            models.Address.findOrCreate({
-                where: {
-                    streetAddress: eventToModify.address.streetAddress,
-                    country: eventToModify.address.country,
-                    city: eventToModify.address.city,
-                    zipCode: eventToModify.address.zipCode
-                }
-            }).spread(function(address, created){
-               models.Event.findOne({
-                    where: { id: controlId}
-                }).then(function( event) {
-                    event.setAddress(address)
-                    event.name = req.body['name'];
-                    event.description = req.body['description']
-                    event.lat = req.body['lat']
-                    event.lon = req.body['lon']
-                    event.timestamp = req.body['timestamp']
-                    //  event.requiresRegistration = req.body['requiresRegistration']
-                    event.save().then(function(savedEvent) {      //check that the saved event variable works
-                        res.status(200).send(savedEvent);
-                    }).catch(function(err){
-                        helper.sendErr(res, 400, err);
-                    })
-                }).catch(function(err){
-                    helper.sendErr(res, 400, err);
-                });
-            }).catch(function(err){
-                helper.sendErr(res, 400, err);
-            });
-        }
-        var notAuthoriced = function(error){
-            helper.sendErr(res, 400, {message: 'Not authorized'});
-        }
-        userService.getLoggedInUser(req, res, success, notAuthoriced);
-
-    },*/
-
     delete: function(req, res){
          console.log("")
          console.log("")
@@ -308,7 +262,17 @@ function createEvent(req, res, category, user) {
                 console.log("user: " + user)
                 event.setUser(user)     //this should say setCreator instead of setUser, but seems to work only this way, change it if you know how!
                 console.log(event.name + ' created successfully');
-                res.send(event); 
+
+                models.Attendance.create({
+                    eventId: event.id,
+                    userId: user.id
+                }).then(function(){
+                    res.send(event); 
+                }).catch(function(err){
+                    //Creating the attendance failed for some reason, we can still send ok, adding the attendance is just extra
+                    console.log("ERROR creating attendance for the event that was just created")
+                    res.send(event); 
+                })
             }).catch(function(err){
                 console.log("... ERROR on creating event")
                 console.log(err)

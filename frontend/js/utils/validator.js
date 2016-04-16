@@ -21,9 +21,9 @@ module.exports = {
     **/
      validateField: function(func, params, inputField, errorField, message) {
 
-        console.log("AT VALIDATE FIELD");
+        //console.log("AT VALIDATE FIELD");
        // console.log(func);
-        console.log(params);
+        //console.log(params);
 
         // Func is for example: validator.validateField(validator.validateEmail, ...);
         var errorArr = func(params, message);
