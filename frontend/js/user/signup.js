@@ -70,37 +70,35 @@ const About = React.createClass({
        }.bind(this);
     },
 
-    render: function(){
+    render: function(){ // col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-12 col-md-offset-0 col-md-12
         return (
             <div id="signupContainer">
-                <div className="row">
-                    <div className="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-12 col-md-offset-0 col-md-12">  
-                        <h2 className="topicText">Sign up</h2>
-                        <form className="form">
-                            <div className="form-group">
-                                    <input type="text" id="email" name="email" placeholder="Email" className="form-control" onChange={this.handleChange('email')}/>
-                                    <span id="emailError"></span>
-                            </div>
-                            <div className="form-group">
-                                <input type="text" id="username" name="username" placeholder="Username (optional)" className="form-control" onChange={this.handleChange('username')}/>
-                                <span id="usernameError"></span>
-                            </div>
-                            <div className="form-group">
-                                    <input type="password" required='true' id="password" name="password" placeholder="Password" className="form-control" onChange={this.handleChange('password')}/>
-                                    <span id="passwordError"></span>
-                            </div>
-                            <div className="form-group">
-                                    <input type="password" id="repeatPassword" name="repeatPassword" placeholder="Repeat password" className="form-control" onChange={this.handleChange('repeatPassword')}/>
-                                    <span id="repeatPasswordError"></span>
-                            </div>
-        
-                           {/* Submit */}
-                            <div className="form-group">
-                                <button type="submit" onClick={this.submit} className="btn btn-primary btn-block">Sign up</button>
-                            </div>
-                        </form>
-                    </div>  
-                </div>
+                <div id="signupForm">  
+                    <h2 className="topicText">Sign up</h2>
+                    <form className="form">
+                        <div className="form-group">
+                                <input type="text" id="email" name="email" placeholder="Email" className="form-control" onChange={this.handleChange('email')}/>
+                                <span id="emailError"></span>
+                        </div>
+                        <div className="form-group">
+                            <input type="text" id="username" name="username" placeholder="Username (optional)" className="form-control" onChange={this.handleChange('username')}/>
+                            <span id="usernameError"></span>
+                        </div>
+                        <div className="form-group">
+                                <input type="password" required='true' id="password" name="password" placeholder="Password" className="form-control" onChange={this.handleChange('password')}/>
+                                <span id="passwordError"></span>
+                        </div>
+                        <div className="form-group">
+                                <input type="password" id="repeatPassword" name="repeatPassword" placeholder="Repeat password" className="form-control" onChange={this.handleChange('repeatPassword')}/>
+                                <span id="repeatPasswordError"></span>
+                        </div>
+    
+                       {/* Submit */}
+                        <div className="form-group">
+                            <button type="submit" onClick={this.submit} className="btn btn-primary btn-block">Sign up</button>
+                        </div>
+                    </form>
+                </div>  
             </div>
             )
     }

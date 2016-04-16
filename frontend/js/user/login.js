@@ -94,8 +94,8 @@ const About = React.createClass({
 
     render: function(){
         return (
-            <div className="row" id="loginContainer">
-                <div className="col-xs-12">  
+            <div id="loginContainer">
+                <div id="loginForm">  
                     <h2 className="topicText">Have an account?</h2>
                     <div id='serverErrorDiv'></div>
                     <form className="form">
