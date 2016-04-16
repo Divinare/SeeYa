@@ -71,9 +71,6 @@ dd {
     background-color: rgba(255, 255, 255, 0.7);
     overflow-x: hidden;
     padding-top: 40px;
-    padding-left: 40px;
-    padding-right: 40px;
-
 }
 
 #rightContainerToolbar {
@@ -81,16 +78,18 @@ dd {
 }
 
 #rightContainerContent {
+    overflow-y: auto;
     height: 100%;
     position: relative;
-    overflow-y: auto;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 #rightContainerBottomBar {
-    height: 40px;
-    padding-top: 10px;
-    position: absolute;
+    height: 35px;
+    padding-top: 5px;
     right: 2px;
+    position: absolute;
 }
 
 .bottomBarLink {
