@@ -46,7 +46,16 @@ const EventForm = React.createClass({
 	componentDidUpdate: function(prevProps, prevState) {
 		var newEventMarker = this.props.newEventMarker;
 		if(newEventMarker != null && !$.isEmptyObject(newEventMarker)) {
-
+/*
+        google.maps.event.addListener(newEventMarker, 'dragend', function(evt){
+            console.log("DRAG EVENT ENDED")
+            console.log("event")
+            console.log(evt)
+            console.log("lng")
+            console.log(evt.latLng.lng())
+            
+        });
+*/
 			var lat = newEventMarker.position.lat();
 			var lng = newEventMarker.position.lng();
 			console.log(lat);
@@ -103,6 +112,7 @@ const EventForm = React.createClass({
 		}
 		this.setDateFieldPlaceHolder();
 		this.setDateSelectionPositionFunction();
+
 	},
 
 	// Called when a field is changed

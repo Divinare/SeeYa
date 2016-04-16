@@ -52,6 +52,7 @@ var Dropdown = React.createClass({
             var leftDiv = <div key={itemLeft.name} className="itemDropdownEventList" onClick={this.changeFilterValue.bind(null, itemLeft.name)}>
                 <input className="eventListDropdownCheckbox" type="checkbox"
                   checked={filterLeftValue}
+                  onChange={function(){}}
                   value={filterLeftValue} />
 
                 <div className="eventListItemCategoryName">{itemLeft.name}</div>
@@ -63,6 +64,7 @@ var Dropdown = React.createClass({
                 rightDiv = <div key={itemRight.name} className="itemDropdownEventList" onClick={this.changeFilterValue.bind(null, itemRight.name)}>
                     <input className="eventListDropdownCheckbox" type="checkbox"
                       checked={filterRightValue}
+                      onChange={function(){}}
                       value={filterRightValue} />
 
                     <div className="eventListItemCategoryName">{itemRight.name}</div>

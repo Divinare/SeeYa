@@ -82,7 +82,7 @@ var Map = React.createClass({
         var that = this;
 
         var mapOptions = {
-            center: { lat: 60.205294, lng: 24.936092},
+            center: { lat: 60.205294, lng: 24.936092},  //TODO center to user's location?
             zoom: this.state.initialZoom,
             minZoom: 5,
             maxZoom: 17,
