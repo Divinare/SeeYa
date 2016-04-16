@@ -44,18 +44,25 @@ const EventForm = React.createClass({
 	},
 
 	componentDidUpdate: function(prevProps, prevState) {
+        var that = this;
+        var newEventMarker = this.props.newEventMarker;
+        if(newEventMarker != null && !$.isEmptyObject(newEventMarker)) {
+
+            google.maps.event.addListener(newEventMarker, 'dragend', function(evt){
+                console.log(evt.latLng.lng())
+                that.codeAddressFromLatLng(evt.latLng);
+            });
+        }
+
+        /*
 		var newEventMarker = this.props.newEventMarker;
 		if(newEventMarker != null && !$.isEmptyObject(newEventMarker)) {
-/*
-        google.maps.event.addListener(newEventMarker, 'dragend', function(evt){
-            console.log("DRAG EVENT ENDED")
-            console.log("event")
-            console.log(evt)
-            console.log("lng")
-            console.log(evt.latLng.lng())
-            
-        });
-*/
+
+            google.maps.event.addListener(newEventMarker, 'dragend', function(evt){
+                console.log(evt.latLng.lng())
+                
+            });
+
 			var lat = newEventMarker.position.lat();
 			var lng = newEventMarker.position.lng();
 			console.log(lat);
@@ -84,7 +91,7 @@ const EventForm = React.createClass({
 		}
 		if( prevState.loading ){
 			this.initAutocomplete();
-		}
+		}*/
 	},
                 
 	componentDidMount: function() {
@@ -206,6 +213,8 @@ const EventForm = React.createClass({
 		geocoder.geocode({'location': latLng}, function(results, status) {
 			if (status === google.maps.GeocoderStatus.OK) {
 				if (results[1]) {
+                    console.log("RESULT 1")
+                    console.log(results[1])
 					var newAddress = that.getAddressFromAddressComponents(results[1].address_components);
 					var updatedAddress = that.getUpdatedAddress(newAddress);
 					that.updateAddress(latLng, updatedAddress);
