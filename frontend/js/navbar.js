@@ -65,17 +65,10 @@ module.exports = React.createClass({
                 {/* WHITE NAVBAR SELECT WINDOW */}
                 <div id="navbar-mobile" className="hidden">
 
-
                     <ul className="menu-mobile">
-
-
                             
-                          <li onClick={this.closeNavbar}> <Link to="/"><div id="logomarker" >  </div></Link></li>
+                          <li> <Link to="/" onClick={this.closeNavbar}><div id="logomarker"></div></Link></li>
                          
-                          
-                          <br />
-
-
                         <li onClick={this.closeNavbar}><Link to="/"><strong>SeeYa</strong></Link></li>
 
                         
