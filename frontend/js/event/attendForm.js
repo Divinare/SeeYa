@@ -164,10 +164,10 @@ const AttendForm = React.createClass({
                                 <div className="form-group">
                                     { ( this.state.userAttending === false ) ?
 
-                                        <button className="btn btn-default btn-block" type="button" onClick={this.addAttendance}>Attend</button>
+                                        <button className="btn btn-primary btn-block" type="button" onClick={this.addAttendance}>Join</button>
                                     :
                                         <div className = "input-group-btn">
-                                            <button className="btn btn-default btn-block" type="button" onClick={this.addAttendance}>Update comment</button>
+                                            <button className="btn btn-primary btn-block" type="button" onClick={this.addAttendance}>Update comment</button>
                                             <button className="btn btn-danger btn-block" type="button" onClick={this.removeAttendance}>Cannot go</button>
                                         </div>
                                     }
@@ -182,7 +182,7 @@ const AttendForm = React.createClass({
                         </div>
                     }
 
-                    <Link to={"/events/" + this.state.event.id} className="btn btn-primary">
+                    <Link to={"/events/" + this.state.event.id} className="btn btn-default">
                         <span className="glyphicon glyphicon-chevron-left"></span> Back
                     </Link>
      
