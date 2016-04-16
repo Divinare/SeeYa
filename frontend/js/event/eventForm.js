@@ -9,7 +9,8 @@ var commonUtils = require('../../../common/utils.js');
 var commonValidator = require('../../../common/validators/validator.js');
 var fieldLengths = require('../../../common/validators/fieldLengths.js');
 var validator = UTILS.validator;
-
+var msgComponent = require('../utils/messageComponent.js');
+var constants = require('../utils/constants.js');
 
 var autocomplete;
 var placesService;
@@ -535,7 +536,7 @@ const EventForm = React.createClass({
 		    console.log( errorThrown );
 		};
 
-		var moveOn = function(){
+		var returnHome = function(){
 			that.props.getEvents();
 		    browserHistory.push('/');
 		}
@@ -550,7 +551,8 @@ const EventForm = React.createClass({
 		if(this.isEditForm()){
 			success = function(createdEventData) {
 		    	addMissingEventFields(createdEventData);
-		        moveOn();
+		        returnHome();
+                msgComponent.showMessageComponent('Event edited successfully', constants.SHOW_MSG_MS_DEFAULT, 'success')
 			};
 			UTILS.rest.editEntry('event', this.props.params.id, eventData, success, error);
 		} else{
@@ -561,7 +563,8 @@ const EventForm = React.createClass({
 			    	that.props.updateAppStatus('newEventMarker', null);
 		    	}
 		        //that.props.addEventToFilteredEventList(createdEventData);
-		        moveOn();
+		        returnHome();
+                msgComponent.showMessageComponent('Event created successfully', constants.SHOW_MSG_MS_DEFAULT, 'success')
 			};
 			UTILS.rest.addEntry('event', eventData, success, error);
 		}
