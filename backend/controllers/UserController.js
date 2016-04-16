@@ -178,7 +178,7 @@ function finishSignUp(req, res, username){
     //Called if the hashing does not succeed for some reason. Don't know what could cause this
     var errorCallBack = function(err){
         console.log("caught error!!!!")
-        helper.sendError(res, 400, [{"message": "Unknown error in creating a user, please try again and report the error to the administrator if the error persists"}]);
+        helper.sendError(res, 400, {"message": "Unknown error in creating a user, please try again and report the error to the administrator if the error persists"});
     }
 
     // var startTime = new Date().getTime();

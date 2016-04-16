@@ -4,12 +4,12 @@ var React = require('react');
 var commonValidator = require('../../../common/validators/validator.js');
 var utils = require('../../../common/utils.js');
 var validator = UTILS.validator;
+var frontValidator = require('../utils/validator.js')
 const PASSWORD_EMPTY = "Password is required!";
 
 const About = React.createClass({
     getInitialState: function() {
         return {
-            showPassword: false,
             email: "",
             password: ""
         };
@@ -21,11 +21,6 @@ const About = React.createClass({
     componentDidMount: function() {
         this.props.handleResize();
         $('#serverErrorDiv').hide();
-    },
-
-    toggleShowPassword: function() {
-        $('#password').prop('type', $('#showPassword').prop('checked') ? 'text' : 'password');
-   //     document.getElementById('password').type = this.showPassword ? 'text' : 'password'
     },
 
 
@@ -59,9 +54,18 @@ const About = React.createClass({
             var error = function( jqXhr, textStatus, errorThrown){
                // console.log(jqXhr)
                console.log("error function")
-               console.log(jqXhr.responseJSON.errorMessage)
-               $("#serverErrorDiv").text(jqXhr.responseJSON.errorMessage);
-               $("#serverErrorDiv").show(500);
+               console.log(jqXhr.responseJSON.errors)
+               if(jqXhr.responseJSON.errors != null && jqXhr.responseJSON.errors.loginDetails != null){
+                     console.log("login detail error")
+                     console.log(jqXhr.responseJSON.errors['loginDetails'])
+                    $("#serverErrorDiv").text(jqXhr.responseJSON.errors['loginDetails']);
+                    $("#serverErrorDiv").show(500);
+                    frontValidator.setErrorToField('#email', [], '#emailError');
+                    frontValidator.setErrorToField('#password', [], '#passwordError');
+                    
+               }
+
+        
             };
             var success = function(result){
                 console.log( "success!!!" );
@@ -69,6 +73,8 @@ const About = React.createClass({
                 that.props.updateAppStatus('user', result.user);
                 browserHistory.push('/');
             };
+            frontValidator.clearErrorFromField('#email', '#emailError');
+            frontValidator.clearErrorFromField('#password', '#passwordError');
             $("#serverErrorDiv").hide(200);
             UTILS.rest.addEntry('session', userData, success, error);
 
@@ -94,24 +100,17 @@ const About = React.createClass({
                     <div id='serverErrorDiv'></div>
                     <form className="form">
                         <div className="form-group">
-                            <label className="control-label" htmlFor="email">Email *</label>
-                                <input type="text" id="email" name="email" placeholder="" className="form-control" onChange={this.handleChange('email')}/>
+                                <input type="text" id="email" name="email" placeholder="Email" className="form-control" onChange={this.handleChange('email')}/>
                                 <span id="emailError"></span>
                         </div>
                         <div className="form-group">
-                            <label className="control-label" htmlFor="password">Password *</label>
-                                <input type="password" id="password" name="password" placeholder="" className="form-control" onChange={this.handleChange('password')}/>
+                                <input type="password" id="password" name="password" placeholder="Password" className="form-control" onChange={this.handleChange('password')}/>
                                 <span id="passwordError"></span>
                         </div>
-                        <div className = "form-group">
-                            <div className = "checkbox">
-                                <label><input type = "checkbox" id="showPassword" name="showPassword" onChange={this.toggleShowPassword} />Show password</label>
-                            </div>
-                       </div>
 
                        {/* Submit */}
                         <div className="form-group">
-                            <button type="submit" onClick={this.submit} className="btn btn-default">Login</button>
+                            <button type="submit" onClick={this.submit} className="btn btn-primary btn-block">Log in</button>
                         </div>
                     </form>
 

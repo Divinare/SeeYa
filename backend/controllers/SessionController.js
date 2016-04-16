@@ -60,12 +60,12 @@ module.exports = {
                         var response = sessionService.login(req, res, user);
                         helper.sendResponse(res, 200, response);
                     }else{
-                        helper.sendErrJsonObj(res, httpUnAuthorized, {errorMessage: errorMessages.getError('userEmailOrPasswordDontMatch')});
+                        helper.sendError(res, httpUnAuthorized, {loginDetails: errorMessages.getError('userEmailOrPasswordDontMatch')});
                     }
                 }
                 security.hashPassword(password, user.salt, errorCallBack, checkPassword)
             }else{
-                helper.sendErrJsonObj(res, httpUnAuthorized, {errorMessage: errorMessages.getError('userEmailOrPasswordDontMatch')});
+                helper.sendError(res, httpUnAuthorized, {loginDetails: errorMessages.getError('userEmailOrPasswordDontMatch')});
             }
         });
     },
