@@ -111,7 +111,10 @@ var Map = React.createClass({
                     }
                 }
             }
-            UTILS.styleHelper.hideRightContainer();
+            if( !UTILS.styleHelper.isDesktop() ){
+               UTILS.styleHelper.hideRightContainer(); 
+            }
+            
         });
 
         var location = UTILS.helper.getLocation();

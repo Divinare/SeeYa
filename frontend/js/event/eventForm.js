@@ -28,14 +28,16 @@ const EventForm = React.createClass({
 	    	city: null,
 	    	country: null,
 	    	zipCode: null,
-	    	latLng: [],
+	    	latLng: {},
 	    	date: Moment(), // unix_timestamp
 	    	selectedDay: null,
 	    	selectedCategory: "", //TODO: get the default category from backend
 	    	time: "",
 	    	description: "",
 	    	categories: [],
-	    	loading:false
+	    	loading:false,
+            dragEndListenerCreated: false,
+            counter: 0
 
 	    };
 	},
@@ -46,52 +48,18 @@ const EventForm = React.createClass({
 	componentDidUpdate: function(prevProps, prevState) {
         var that = this;
         var newEventMarker = this.props.newEventMarker;
-        if(newEventMarker != null && !$.isEmptyObject(newEventMarker)) {
+        var prevEventMarker = prevProps.newEventMarker;
+        if(newEventMarker != null && 
+            !$.isEmptyObject(newEventMarker) && 
+            (prevProps == null || prevEventMarker === null || $.isEmptyObject(prevEventMarker) ))  {
 
             google.maps.event.addListener(newEventMarker, 'dragend', function(evt){
-                console.log(evt.latLng.lng())
                 that.codeAddressFromLatLng(evt.latLng);
             });
-        }
-
-        /*
-		var newEventMarker = this.props.newEventMarker;
-		if(newEventMarker != null && !$.isEmptyObject(newEventMarker)) {
-
-            google.maps.event.addListener(newEventMarker, 'dragend', function(evt){
-                console.log(evt.latLng.lng())
-                
+            this.setState({
+                dragEndListenerCreated: true
             });
-
-			var lat = newEventMarker.position.lat();
-			var lng = newEventMarker.position.lng();
-			console.log(lat);
-			console.log(lng);
-			var currentLatLng = this.state.latLng;
-
-			if(currentLatLng.length == 0) {		
-				this.codeAddressFromLatLng(newEventMarker.position);
-			} else {
-
-				console.log(currentLatLng);
-				var currentLat = this.state.latLng.lat();
-				var currentLng = this.state.latLng.lng();
-
-				console.log(currentLat);
-				console.log(currentLng);
-		
-				if(lat != currentLat && lng != currentLng) {
-					this.codeAddressFromLatLng(newEventMarker.position);
-
-				} else {
-					console.log("... Doing nothing because the State has the same latLng")
-				}
-			}
-
-		}
-		if( prevState.loading ){
-			this.initAutocomplete();
-		}*/
+        }
 	},
                 
 	componentDidMount: function() {
@@ -120,6 +88,11 @@ const EventForm = React.createClass({
 		}
 		this.setDateFieldPlaceHolder();
 		this.setDateSelectionPositionFunction();
+
+        var firstClickListener = google.maps.event.addListener(map, 'click', function(event) {
+            that.codeAddressFromLatLng(event.latLng);
+            google.maps.event.removeListener(firstClickListener);
+        });
 
 	},
 
@@ -180,7 +153,7 @@ const EventForm = React.createClass({
 
 	    geocoder.geocode( { 'address': address}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-				var address_components = results[0].address_components;
+				var address_components = results[0];
 				var newAddress = that.getAddressFromAddressComponents(address_components);
 				var updatedAddress = that.getUpdatedAddress(newAddress);
 
@@ -195,6 +168,7 @@ const EventForm = React.createClass({
   	},
 
   	centerAndSetMarker: function(latLng){
+        var that = this;
 		map.setCenter(latLng);
 		var marker = new google.maps.Marker({
 		    map: map,
@@ -208,6 +182,9 @@ const EventForm = React.createClass({
 			this.props.newEventMarker.setMap(null);
 		}
 		this.props.updateAppStatus("newEventMarker", marker);
+        google.maps.event.addListener(marker, 'dragend', function(evt){
+                that.codeAddressFromLatLng(evt.latLng);
+            });
   	},
 
   	updateAddress: function(latLng, newAddress) {
@@ -224,22 +201,32 @@ const EventForm = React.createClass({
 		var that = this;
 		geocoder.geocode({'location': latLng}, function(results, status) {
 			if (status === google.maps.GeocoderStatus.OK) {
-				if (results[1]) {
-                    console.log("RESULT 1")
-                    console.log(results[1])
-					var newAddress = that.getAddressFromAddressComponents(results[1].address_components);
+				if (results[0]) {
+                    console.log("RESULT 0")
+                    console.log(results[0])
+					var newAddress = that.getAddressFromAddressComponents(results[0]);
 					var updatedAddress = that.getUpdatedAddress(newAddress);
 					that.updateAddress(latLng, updatedAddress);
 				} else {
 					console.log("____ No address found from latLng")
-				}
+                    msgComponent.showMessageComponent('Could not find any address there, please try again', constants.SHOW_MSG_MS_DEFAULT, 'error')
+				    that.returnMarker();
+                }
 			} else {
-					console.log('____ Geocoder failed due to: ' + status);
+				console.log('____ Geocoder failed due to: ' + status);
+                if(status === google.maps.GeocoderStatus.ZERO_RESULTS){
+                    msgComponent.showMessageComponent('Could not find any address there, please try again', constants.SHOW_MSG_MS_DEFAULT, 'error')
+                }
+                else if(status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT){
+                    msgComponent.showMessageComponent('Cannot find addresses this fast, please wait a few seconds and try again', constants.SHOW_MSG_MS_DEFAULT, 'error')
+                }
+                that.returnMarker();
 			}
 		});
 	},
 
-	getAddressFromAddressComponents: function(address_components) {
+	getAddressFromAddressComponents: function(geocodingResult) {
+        var address_components = geocodingResult.address_components;
 		if(typeof address_components == "undefined") {
 			// Nothing to do here if address_components doesn't exist
 			return {};
@@ -253,6 +240,9 @@ const EventForm = React.createClass({
 		    	if (addressObj.types[j] === 'country') {
 		    		newAddress.country = addressObj.long_name
 		    	}
+                if (addressObj.types[j] === 'locality') {
+                    newAddress.city = addressObj.long_name;
+                }
 		    	if (addressObj.types[j] === 'postal_code') {
 		    		newAddress.zipCode = addressObj.long_name;
 		    	}
@@ -264,11 +254,11 @@ const EventForm = React.createClass({
 		    	}
 		    }
 	    }
-	    newAddress.streetAddress = $("#address").val();
-	    if( streetNumber != null && typeof newAddress.streetAddress != 'undefined' 
+	    newAddress.streetAddress = geocodingResult.formatted_address;
+	   /* if( streetNumber != null && typeof newAddress.streetAddress != 'undefined' 
 	    	&& newAddress.streetAddress != null ){
 	    	newAddress.streetAddress = newAddress.streetAddress + " " + streetNumber
-	    }
+	    }*/
 	    return newAddress;
 	},
 
@@ -287,6 +277,32 @@ const EventForm = React.createClass({
 		}
 		return updatedAddress;
 	},
+
+    //returns marker to original position. Used if geocoding doesn't find any address from where the user
+    //put the marker
+    returnMarker: function(){
+        var that = this;
+        console.log("AT RETURN MARKER")
+        console.log(this.props.newEventMarker)
+        console.log(this.state.latLng)
+        console.log(this.state.latLng.length)
+
+        if($.isEmptyObject(this.state.latLng)){ //there was no marker before
+            //remove the marker and add again firstclicklistener
+            this.props.newEventMarker.setMap(null);
+            this.props.updateAppStatus('newEventMarker', null);
+            var firstClickListener = google.maps.event.addListener(map, 'click', function(event) {
+                that.codeAddressFromLatLng(event.latLng);
+                google.maps.event.removeListener(firstClickListener);
+            });
+
+        }
+
+        if( this.props.newEventMarker != null && this.state.latLng != null ){
+            console.log("RETURNING MARKER")
+            this.props.newEventMarker.setPosition(this.state.latLng)
+        }
+    },
 
 	// Called when editing event
 	autoFillEventDetails: function(event) {

@@ -45,13 +45,11 @@ var EventFormDropdown = React.createClass({
         var list = this.props.list;
         for(var i = 0; i < list.length; i += 2) {
             var itemLeft = list[i];
-            console.log("left: " + itemLeft.name);
 
             var leftDiv = <span key={itemLeft.name} className="itemDropdownEventForm itemRightDropdownEventForm" onClick={_this.select.bind(null, itemLeft.name)}><div>{itemLeft.name}</div></span>;
             var rightDiv;
             if(i+1 < list.length) {
                 var itemRight = list[i+1];
-                console.log("right: " + itemRight.name);
                 rightDiv = <span key={itemRight.name} className="itemDropdownEventForm itemRightDropdownEventForm" onClick={_this.select.bind(null, itemRight.name)}><div>{itemRight.name}</div></span>;
             } else {
                 rightDiv = <span></span>
