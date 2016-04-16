@@ -22,18 +22,18 @@ const EventList = React.createClass({
     },
 
     componentDidMount: function() {
-        console.log("AT COMPONEND DID MOUNT");
+        this.setToolbarIcons();
         this.props.handleResize();
         var that = this;
+    },
 
-        $("#homeIcon").css("display", "none");
+    setToolbarIcons: function() {
+        var toolbarComponentData = {}
+        this.props.updateToolbarIcons(toolbarComponentData);
+
     },
 
     componentWillMount :function() {
-    },
-
-    componentWillUnmount: function() {
-        $("#homeIcon").css("display", "block");
     },
 
     componentWillReceiveProps: function() {

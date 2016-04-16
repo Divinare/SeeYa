@@ -2,6 +2,7 @@ import { browserHistory, Link } from 'react-router';
 
 module.exports = React.createClass({
     componentDidMount: function() {
+        this.setToolbarIcons();
         this.props.handleResize();
         //logout
         var that = this;
@@ -19,6 +20,17 @@ module.exports = React.createClass({
                 browserHistory.push('/');
             };
         UTILS.rest.logout(success, error);
+    },
+
+    setToolbarIcons: function() {
+        var homeFunc = function() {
+            browserHistory.push('/');
+        }
+
+        var toolbarComponentData = {
+            "home": homeFunc
+        }
+        this.props.updateToolbarIcons(toolbarComponentData);
     },
 
     deleteCookie: function(name){

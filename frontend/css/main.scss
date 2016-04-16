@@ -74,7 +74,7 @@ dd {
 }
 
 #rightContainerToolbar {
-    height: 40px;
+    height: 35px;
 }
 
 #rightContainerContent {
@@ -183,26 +183,6 @@ dd {
     left: 50px;
     padding: 10px;
     border-radius: 30px;
-}
-
-#homeIcon {
-    display: block;   
-    position: absolute;
-    background-image: url("assets/back_to_home_dark_icon.png");
-    background-size: cover;
-    top: 10px;
-    left: 10px;
-    border: 0;
-    width: 35px;
-    height: 35px;
-    opacity: 0.8;
-    filter: alpha(opacity=40); /* For IE8 and earlier */
-
-}
-
-#homeIcon:hover {
-    opacity: 1.0;
-    filter: alpha(opacity=100); /* For IE8 and earlier */
 }
 
 .sideBarContent {

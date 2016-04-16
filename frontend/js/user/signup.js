@@ -19,8 +19,20 @@ const About = React.createClass({
     },
 
     componentDidMount: function() {
+        this.setToolbarIcons();
         this.props.handleResize();
 
+    },
+
+    setToolbarIcons: function() {
+        var homeFunc = function() {
+            browserHistory.push('/');
+        }
+
+        var toolbarComponentData = {
+            "home": homeFunc
+        }
+        this.props.updateToolbarIcons(toolbarComponentData);
     },
 
     submit: function(e){
