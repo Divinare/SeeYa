@@ -27,6 +27,7 @@ const AttendForm = React.createClass({
         }
     },
 
+
     //only call this method when attendances have been fetched
     updateUserAttendingInfo: function(){
         var loggedInUser = this.props.getAppStatus('user');
@@ -47,6 +48,7 @@ const AttendForm = React.createClass({
     },
 
     componentDidMount: function(){
+        this.setToolbarIcons();
         this.props.handleResize();
         this.setState({
             fetchingAttendees: true
@@ -55,6 +57,17 @@ const AttendForm = React.createClass({
         var eventId = tokens[tokens.length - 1];
         this.fetchEvent(eventId);
         this.fetchAttendees(eventId);
+    },
+
+    setToolbarIcons: function() {
+        var homeFunc = function() {
+            browserHistory.push('/');
+        }
+
+        var toolbarComponentData = {
+            "home": homeFunc
+        }
+        this.props.updateToolbarIcons(toolbarComponentData);
     },
 
     fetchEvent: function(eventId){

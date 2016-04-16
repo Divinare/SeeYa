@@ -8,8 +8,8 @@ window.ReactDOM = require('react-dom');
 
 var Moment = require('moment');
 
-var Frontpage = require('./js/frontpage.js');
 var Navbar = require('./js/navbar.js');
+var Toolbar = require('./js/toolbar.js');
 var Map = require('./js/map/map.js');
 var About = require('./js/about.js');
 var NoMatch = require('./js/noMatch.js');
@@ -53,7 +53,8 @@ const Main = React.createClass({
             markers: [],
             user: null,
             loginStatusPending: true,
-            showRightContainer: false
+            showRightContainer: false,
+            toolbarComponentData: {}
         };
 
     },
@@ -173,6 +174,10 @@ const Main = React.createClass({
         UTILS.styleHelper.showRightContainer();
     },
 
+    updateToolbarIcons: function(updateToolbarIcons) {
+        this.refs.toolbar.updateToolbarIcons(updateToolbarIcons);
+    },
+
     render: function() {
         var that = this;
         var showFrontpage = this.state.showFrontpage;
@@ -185,15 +190,15 @@ const Main = React.createClass({
                 categories: that.state.categories,
                 filteredEventList: that.state.filteredEventList,
                 newEventMarker: that.state.newEventMarker,
-                handleResize: that.handleResize,
-                updateAppStatus: that.updateAppStatus,
+                user: that.state.user,
                 getAppStatus: that.getAppStatus,
                 getEvents: that.getEvents,
-                user: that.state.user
+                handleResize: that.handleResize,
+                updateAppStatus: that.updateAppStatus,
+                updateToolbarIcons: that.updateToolbarIcons
             })
         });
-                               
-        // HOMEICON:   <Link to={"/"}><div id="homeIcon" onClick={this.show}></div></Link>
+
         return (
             <div className="application">
                 <Navbar loginStatusPending={this.state.loginStatusPending} user={this.state.user}/>
@@ -210,7 +215,10 @@ const Main = React.createClass({
                         hideRightContainer={this.hideRightContainer} />
 
                         <div className="right-container showing" onClick={this.hideRightContainer}>
-                            <div id="rightContainerToolbar"></div>
+                            <div id="rightContainerToolbar">
+                                <Toolbar
+                                    ref={'toolbar'}/>
+                            </div>
                             <div id="rightContainerContent">
                                 {childrenWithProps}
                             </div>

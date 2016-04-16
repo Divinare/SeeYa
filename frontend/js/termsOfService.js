@@ -1,4 +1,5 @@
 var React = require('react');
+import { browserHistory } from 'react-router';
 
 var TermsOfService = React.createClass({
 
@@ -15,7 +16,18 @@ var TermsOfService = React.createClass({
     },
 
     componentDidMount: function() {
+        this.setToolbarIcons();
+    },
 
+    setToolbarIcons: function() {
+        var homeFunc = function() {
+            browserHistory.push('/');
+        }
+
+        var toolbarComponentData = {
+            "home": homeFunc
+        }
+        this.props.updateToolbarIcons(toolbarComponentData);
     },
 
 

@@ -103,10 +103,30 @@ const EventPage = React.createClass({
     componentDidMount: function() {
         var tokens = UTILS.helper.getUrlTokens();
         var eventId = tokens[tokens.length - 1];
+        this.setToolbarIcons();
         this.props.handleResize();
         this.fetchEvent(eventId);
         this.checkIfUserLoggedIn();
         this.fetchAttendees(eventId);
+    },
+
+    setToolbarIcons: function() {
+        var homeFunc = function() {
+            browserHistory.push('/');
+        }
+
+        var editFunc = this.moveToEditForm;
+
+        var deleteFunc = function() {
+            browserHistory.push('/');
+        }
+
+        var toolbarComponentData = {
+            "home": homeFunc,
+            "edit": editFunc,
+            "delete": deleteFunc
+        }
+        this.props.updateToolbarIcons(toolbarComponentData);
     },
 
     fetchEvent: function(eventId){

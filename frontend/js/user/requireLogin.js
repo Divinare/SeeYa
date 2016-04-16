@@ -56,7 +56,8 @@ const RequireLogin = React.createClass({
                             updateAppStatus: this.props.updateAppStatus,
                             getAppStatus: this.props.getAppStatus,
                             getEvents: this.props.getEvents,
-                            user: this.state.user
+                            user: this.state.user,
+                            updateToolbarIcons: this.props.updateToolbarIcons
                         })}
                     </div>
                 }

@@ -1,4 +1,5 @@
 var React = require('react');
+import { browserHistory } from 'react-router';
 
 var NoMatch = React.createClass({
 
@@ -15,8 +16,20 @@ var NoMatch = React.createClass({
 	},
 
 	componentDidMount: function() {
-
+		this.setToolbarIcons();
 	},
+
+	setToolbarIcons: function() {
+        var homeFunc = function() {
+            browserHistory.push('/');
+        }
+
+        var toolbarComponentData = {
+            "home": homeFunc
+        }
+        this.props.updateToolbarIcons(toolbarComponentData);
+    },
+
 
 
 	render: function(){

@@ -95,6 +95,7 @@ const EventForm = React.createClass({
 	},
                 
 	componentDidMount: function() {
+        this.setToolbarIcons();
 		var that = this;
 		this.props.handleResize();
 		if(this.isEditForm()){
@@ -121,6 +122,17 @@ const EventForm = React.createClass({
 		this.setDateSelectionPositionFunction();
 
 	},
+
+    setToolbarIcons: function() {
+        var homeFunc = function() {
+            browserHistory.push('/');
+        }
+
+        var toolbarComponentData = {
+            "home": homeFunc
+        }
+        this.props.updateToolbarIcons(toolbarComponentData);
+    },
 
 	// Called when a field is changed
 	handleChange: function(key) {
@@ -285,6 +297,7 @@ const EventForm = React.createClass({
 		var time = moment.format("HH:mm");
 		moment.hour(0);
 		moment.minute(0);
+
 		this.refs.dropDown.selectNoToggle(event.Category.name);
 		var latLng = new google.maps.LatLng(event.lat,event.lon);
 

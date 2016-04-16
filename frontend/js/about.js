@@ -1,17 +1,28 @@
 var React = require('react');
 
+import { browserHistory } from 'react-router';
+
+
 const About = React.createClass({
 
 	componentDidMount: function() {
+		this.setToolbarIcons();
 		this.props.handleResize();
 	},
 
+	setToolbarIcons: function() {
+        var homeFunc = function() {
+            browserHistory.push('/');
+        }
+
+        var toolbarComponentData = {
+            "home": homeFunc
+        }
+        this.props.updateToolbarIcons(toolbarComponentData);
+    },
+
 	componentWillMount: function() {
 
-	},
-
-	show: function() {
-		window.UTILS.helper.showMessageComponent("Event was created succesfully! More dsa dsadsa dsad sadsad asdsa dsadsad lines just to demo this component", -1, "success");
 	},
 
 	render: function(){
@@ -20,7 +31,7 @@ const About = React.createClass({
 	
 		return (
 			<div id="aboutContainer">
-				<h2 className="topicText" onClick={this.show}>Welcome! We are happy to See you!</h2>
+				<h2 className="topicText">Welcome! We are happy to See you!</h2>
 				
 				<p>SeeYa is a community for creating and joining events nearby. Discover new events, gain new experiences with other people and have fun.</p>
 				<p>Simple and easy way to explore events near you or far away. SeeYa was developed in 2016 by a small group of friends in Helsinki, Finland.  </p>

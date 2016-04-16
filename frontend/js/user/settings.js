@@ -21,6 +21,7 @@ const Settings = React.createClass({
     },
 
     componentDidMount: function() {
+        this.setToolbarIcons();
         var that = this;
         var success = function() {
             console.log("is logged in");
@@ -36,6 +37,17 @@ const Settings = React.createClass({
         }
         UTILS.rest.isLoggedIn(success, error);
         this.props.handleResize();
+    },
+
+    setToolbarIcons: function() {
+        var homeFunc = function() {
+            browserHistory.push('/');
+        }
+
+        var toolbarComponentData = {
+            "home": homeFunc
+        }
+        this.props.updateToolbarIcons(toolbarComponentData);
     },
 
     toggleUsernameFields: function() {
