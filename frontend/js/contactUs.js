@@ -136,7 +136,7 @@ var ContactUs = React.createClass({
     render: function(){
         return (
             <div id="contactUsContainer">
-                <h2 id="contactusTopic">Contact us</h2>
+                <h2 className="topicText">Contact us</h2>
                 <p>
                 Send email to:
                 <a href="mailto:gatherupThisIsnotthecorrectaddress@gmail.com?Subject=Hello%20again" target="_top"> gatherup@gmail.com</a>

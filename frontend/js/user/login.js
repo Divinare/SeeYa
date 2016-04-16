@@ -96,7 +96,7 @@ const About = React.createClass({
         return (
             <div className="row" id="loginContainer">
                 <div className="col-xs-12">  
-                    <h2 id="loginTopicText">Have an account?</h2>
+                    <h2 className="topicText">Have an account?</h2>
                     <div id='serverErrorDiv'></div>
                     <form className="form">
                         <div className="form-group">
