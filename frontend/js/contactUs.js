@@ -136,7 +136,7 @@ var ContactUs = React.createClass({
     render: function(){
         return (
             <div id="contactUsContainer">
-                <h2>Contact us</h2>
+                <h2 id="contactusTopic">Contact us</h2>
                 <p>Send email to gatherup@gmail.com</p>
                 <div className="form-group">
                         <label className="control-label">Subject *</label>
