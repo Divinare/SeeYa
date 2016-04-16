@@ -23,7 +23,7 @@ var NoMatch = React.createClass({
 		console.log("at no match component");
 		return (
 			<div id="noMatchContainer">
-				<h1>Unfortunately we couldn't find the page you're looking for.</h1>
+				<h2>Unfortunately we couldn't find the page you're looking for.</h2>
 
 				<br />
 
