@@ -83,8 +83,6 @@ var logout = function(onSuccess, onError) {
 }
 
 var addEntry = function(name, data, onSuccess, onError) {
-    console.log("AT ADD ENTRY")
-    console.log(onSuccess)
     var url = URL.addEntry[name];
     $.ajax({
         type: 'POST',
