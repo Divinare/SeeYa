@@ -25,8 +25,6 @@ var TermsOfService = React.createClass({
                 <h2>Terms of Service</h2>
 
 
-                <br />
-                <br />
                 <p>SeeYa is a community for creating and joining events nearby. Discover new events, gain new experiences with other people and have fun.</p>
                 <p>Simple and easy way to explore events near you or far away. SeeYa was developed in 2016 by a small group of friends in Helsinki, Finland.
                 <em>This text is emphasized.</em></p>
