@@ -29,7 +29,7 @@ import { render } from 'react-dom'
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
 
 $(document).click(function() {
-    UTILS.helper.hideCategoryDropdownEventform();
+    UTILS.helper.hideSingeSelectDropdown();
     UTILS.helper.hideCategoryDropdownEventlist();
 });
 
@@ -118,9 +118,6 @@ const Main = React.createClass({
     },
 
     getEvents: function() {
-        console.log("AT GET EVENTS!");
-        console.log("AT GET EVENTS!");
-        console.log("AT GET EVENTS!");
         var that = this;
         var onSuccess = function(eventList) {
             //var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
@@ -130,20 +127,16 @@ const Main = React.createClass({
             })
         }
         var categoryFilters = this.state.eventListData['filters'];
-        console.log("CATEGORY FILTERS: ");
-        console.log(categoryFilters);
         UTILS.rest.getFilteredEntries('filteredEvents', categoryFilters, null, null, onSuccess);
     },
 
     getCategories: function() {
         var that = this;
         var onSuccess = function (data) {
-            console.log("GOT CATEGORIES");
         var eventListData = that.state.eventListData;
         var categories = [];
         for(var index in data) {
             var category = data[index];
-            console.log("CATEGORY::: " + category.name);
             categories.push(category);
             eventListData['filters'][category.name] = true;
         }
@@ -155,7 +148,6 @@ const Main = React.createClass({
         var onError = function() {
             console.log("Error on fetching event!");
         }
-        console.log("FETCHING CATEGORIES");
         UTILS.rest.getAllEntries('category', onSuccess, onError);
 
     },

@@ -29,8 +29,6 @@ const Toolbar = React.createClass({
         var toolbarComponentData = this.state.toolbarComponentData;
         var toolbarIcons = [];
         for(var toolbarComponent in toolbarComponentData) {
-            console.log(toolbarComponent);
-            console.log(toolbarComponentData[toolbarComponent]);
             var iconName = toolbarComponent + "Icon";
             var iconFunc = toolbarComponentData[toolbarComponent];
             var iconContainer = <div key={toolbarComponent} className="toolbarIcon" id={iconName} onClick={iconFunc}></div>;

@@ -1,18 +1,26 @@
 import { browserHistory, Link } from 'react-router';
 var React = require('react');
+var SingleSelectDropdown = require('./singleSelectDropdown.js');
 
 var fieldLengths = require('../../common/validators/fieldLengths.js');
 var commonUtils = require('../../common/utils.js');
 var commonValidator = require('../../common/validators/validator.js');
+var contactSubjects = require('../../common/contactSubjects.js');
+
 var validator = UTILS.validator;
 
 var ContactUs = React.createClass({
     getInitialState: function() {
 
+        var subject = [];
+
+        var subjects = contactSubjects.getContactSubjects();
+
         return {
-            subjectId: "",
+            subjectedSubject: "",
             email: "",
-            description: ""
+            description: "",
+            subjects: subjects
         };
     },
     componentWillMount: function() {
@@ -144,6 +152,20 @@ var ContactUs = React.createClass({
 
     },
 
+    selectSubject: function(subject) {
+        console.log(subject);
+        this.setState({
+            subjectedSubject: subject
+        })
+    },
+
+    /*
+
+        <input type="text" id="subject" placeholder="Click to select" className="form-control" onChange={this.handleChange('subjectId')}/>
+    <span id="subjectError"></span>
+
+    */
+
     render: function(){
         return (
             <div id="contactUsContainer">
@@ -154,8 +176,11 @@ var ContactUs = React.createClass({
                 </p>
                 <div className="form-group">
                         <label className="control-label">Subject *</label>
-                            <input type="text" id="subject" placeholder="Click to select" className="form-control" onChange={this.handleChange('subjectId')}/>
-                            <span id="subjectError"></span>
+                            <SingleSelectDropdown
+                                multipleColumns={false}
+                                list={this.state.subjects}
+                                select={this.selectSubject} 
+                                selected={this.state.subjectedSubject} />   
                     </div>
                     <div className="form-group">
                         <label className="control-label">Email</label>

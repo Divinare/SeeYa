@@ -88,7 +88,8 @@ module.exports = {
     	messageComponent.showMessageComponent(message, displayTime, type);
     },
 
-    hideCategoryDropdownEventform: function() {
+    hideSingeSelectDropdown: function() {
+    	console.log("hide single select");
 	    var eventTarget = $(event.target)[0];
 	    var shouldHideEventForm = true;
 	    if(typeof eventTarget != 'undefined' && eventTarget != null) {
@@ -97,15 +98,15 @@ module.exports = {
 	        }
 	    }
 	    if(shouldHideEventForm) {
-	        $("#categoryContentEventform").slideUp(150, function(){ });
+	        $("#singleSelectContent").slideUp(150, function(){ });
 	    }
+	    console.log("...");
     },
 
     hideCategoryDropdownEventlist: function() {
 	    var eventTarget = $(event.target)[0];
 	    var shouldHideCategories = true;
 	    if(typeof eventTarget != 'undefined' && eventTarget != null) {
-	        console.log("??????? ")
 	        if(eventTarget.className == "eventFormListRow"
 	            || eventTarget.className == "dropdownBtnEventList"
 	            || eventTarget.className == "eventListItemCategoryName"
