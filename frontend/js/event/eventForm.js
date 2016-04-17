@@ -519,7 +519,7 @@ const EventForm = React.createClass({
 			zipCode: this.state.zipCode,
 		}
 		var latLng;
-		if(this.state.latLng.length == 0) {
+		if($.isEmptyObject(this.state.latLng)) {
 			latLng = [];
 		} else {
 			latLng = [this.state.latLng.lat(), this.state.latLng.lng()];
@@ -651,6 +651,7 @@ const EventForm = React.createClass({
 					{/* Category */}
 					<div className='form-group' id="category">
 							<SingleSelectDropdown
+                                inputFieldId={"categoryInputField"}
                                 multipleColumns={true}
 								list={this.state.categories}
                                 select={this.selectCategory} 

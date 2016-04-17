@@ -17,7 +17,7 @@ var ContactUs = React.createClass({
         var subjects = contactSubjects.getContactSubjects();
 
         return {
-            subjectedSubject: "",
+            selectedSubject: "",
             email: "",
             description: "",
             subjects: subjects
@@ -103,14 +103,31 @@ var ContactUs = React.createClass({
 
     handleSubmit: function() {
 
+
+        var subjectId = "";
+        var subjects = contactSubjects.getContactSubjects();
+        var selectedSubject = this.state.selectedSubject;
+        // Get the correct subject id of selectedSubject
+        for(var subject in subjects) {
+            var subjectObj = subjects[subject];
+            if(selectedSubject == subjectObj.name) {
+                subjectId = subjectObj.id;
+            }
+        }
+
+        var email = this.state.email;
+        if(email == "") {
+            email = null;
+        }
+
         var validSubject = validator.validateField(commonValidator.validateContactSubject, 
-                                            this.state.subjectId,
+                                            subjectId,
                                             "#subject",
                                             "#subjectError"
                                             );
 
         var validEmail = validator.validateField(commonValidator.validateContactEmail, 
-                                            this.state.email,
+                                            email,
                                             "#email",
                                             "#emailError"
                                             );
@@ -121,15 +138,16 @@ var ContactUs = React.createClass({
                                             "#descriptionError"
                                             );
 
-
+        console.log("VALID validSubject: " + validSubject);
+        console.log("subjectId " + subjectId);
         if(!validSubject || !validEmail || !validDescription) {
             console.log("... Form was not valid, validSubject: " + validSubject + " validEmail: " + validEmail + " validDescription: " + validDescription);
             return;
         }
         console.log("Sending contact information")
         var contactData = {
-            subjectId: this.state.subjectId,
-            email: this.state.email,
+            subjectId: subjectId,
+            email: email,
             description: this.state.description,
         }
         var error = function( jqXhr, textStatus, errorThrown){
@@ -155,7 +173,7 @@ var ContactUs = React.createClass({
     selectSubject: function(subject) {
         console.log(subject);
         this.setState({
-            subjectedSubject: subject
+            selectedSubject: subject
         })
     },
 
@@ -178,9 +196,10 @@ var ContactUs = React.createClass({
                         <label className="control-label">Subject *</label>
                             <SingleSelectDropdown
                                 multipleColumns={false}
+                                inputFieldId={"subject"}
                                 list={this.state.subjects}
                                 select={this.selectSubject} 
-                                selected={this.state.subjectedSubject} />   
+                                selected={this.state.selectedSubject} />   
                     </div>
                     <div className="form-group">
                         <label className="control-label">Email</label>

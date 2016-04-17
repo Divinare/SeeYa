@@ -23,7 +23,9 @@ var EventFormDropdown = React.createClass({
     select: function(item) {
         console.log("AT SELECT !! " + item);
         this.props.select(item);
-        $("#singleSelectInput").val(item);
+        var inputFieldId = this.props.inputFieldId;
+        console.log("INPUT ID: " + inputFieldId);
+        $("#" + inputFieldId).val(item);
         this.toggleShowCategories();
     },
 
@@ -41,8 +43,6 @@ var EventFormDropdown = React.createClass({
         var _this = this;
         var items = [];
         var list = this.props.list;
-        console.log("LIST:");
-        console.log(list);
         for(var i = 0; i < list.length; i += 2) {
             var itemLeft = list[i];
 
@@ -67,17 +67,10 @@ var EventFormDropdown = React.createClass({
         var _this = this;
         var items = [];
         var list = this.props.list;
-        console.log("LIST:");
-        console.log(list);
         for(var i = 0; i < list.length; i++) {
             var item = list[i];
-
             var itemDiv = <span key={item.name} className="itemDropdownSingleColumn" onClick={_this.select.bind(null, item.name)}><div>{item.name}</div></span>;
-            
-            items.push(
-                <div key={i+"singleSelectRow"} className="singleSelectListRow">
-                        {itemDiv}
-                </div>);
+            items.push(itemDiv);
         };
         return items;
     },
@@ -94,7 +87,7 @@ var EventFormDropdown = React.createClass({
                 <div id="singleSelectContent">
                     {listItems}
                 </div>
-                <input type='text' className='form-control' id='singleSelectInput' onClick={this.toggleShowCategories} placeholder='Click to select category' />
+                <input type='text' className='form-control' id={this.props.inputFieldId} onClick={this.toggleShowCategories} placeholder='Click to select category' />
             </div>
         );
     }

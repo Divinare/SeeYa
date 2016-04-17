@@ -8,19 +8,31 @@ var userService = require('../services/UserService.js');
 module.exports = {
 
     create: function (req, res) {
-        var contactToAdd = req.body;
-        console.log("CONTACT TO ADD :");
-        console.log(contactToAdd)
-
-        Contact.create({
-            subjectId: contactToAdd.subjectId,
-            userId: 1, // TODO
-            email: contactToAdd.email,
-            description: contactToAdd.description
-        }).then(function(contact){
-            res.send(contact)
-        }).catch(function(err){
-            helper.sendErr(res, 400, err);
-        });
+        var success = function(user) {
+            createCategory(req, res, user);
+        }
+        var error = function(err){
+            createCategory(req, res, null);
+        }
+        userService.getLoggedInUser(req, res, success, error);
     }
 };
+
+
+function createCategory(req, res, user) {
+    var contactToAdd = req.body;
+    var userId = null;
+    if(user != null) {
+        userId = user.id;
+    }
+    Contact.create({
+        subjectId: contactToAdd.subjectId,
+        userId: userId,
+        email: contactToAdd.email,
+        description: contactToAdd.description
+    }).then(function(contact){
+        res.send(contact)
+    }).catch(function(err){
+        helper.sendErr(res, 400, err);
+    });
+}

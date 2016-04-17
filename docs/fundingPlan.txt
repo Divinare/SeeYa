@@ -34,7 +34,7 @@ we divide the profits to ourselves based on:
 
 Lastly,
 
-if we reach some point, lets say 1mil, we no longer can raise the profit % because we have hired 
+If we reach some point, lets say 1mil, we no longer can raise the profit % because we have hired 
 people to work for us. And if we sell/or stop the company; needs to be decided later in the future if we cant make agreement, goes based on hours
 
 options are:
@@ -42,6 +42,3 @@ options are:
 1. based on hours
 
 2. we agree and lock % that everyone gets BUT if some of us wants to make money, we can raise his salary but it doesnt affect to the % that he gets from the company profit.
-
-
-

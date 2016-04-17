@@ -18,6 +18,7 @@ module.exports = {
     eventDescriptionMaxLength: 500,
 
     contactEmailMaxLength: 254,
+    contactEmailMinLength: 3,
     contactDescriptionMaxLength: 500,
     contactDescriptionMinLength: 1,
 

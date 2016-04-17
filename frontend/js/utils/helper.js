@@ -70,7 +70,6 @@ module.exports = {
 				console.log(marker.position[prop])
 				array.push(marker.position[prop])
 			}
-
 			return array;
 		}
 	},
@@ -89,7 +88,6 @@ module.exports = {
     },
 
     hideSingeSelectDropdown: function() {
-    	console.log("hide single select");
 	    var eventTarget = $(event.target)[0];
 	    var shouldHideEventForm = true;
 	    if(typeof eventTarget != 'undefined' && eventTarget != null) {
@@ -100,7 +98,6 @@ module.exports = {
 	    if(shouldHideEventForm) {
 	        $("#singleSelectContent").slideUp(150, function(){ });
 	    }
-	    console.log("...");
     },
 
     hideCategoryDropdownEventlist: function() {
@@ -119,6 +116,4 @@ module.exports = {
 	        $("#categoriesContentEventList").slideUp(150, function(){ });
 	    }
     }
-
-
 };

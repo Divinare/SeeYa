@@ -265,9 +265,13 @@ module.exports = {
         if( !re.test(email) ){
             errorMessages.push(failed('contactEmailFormat', customMessage));
         }
-        if( email.length > fieldLengths.userEmailMax ){
+        if( email.length > fieldLengths.contactEmailMaxLength){
             errorMessages.push(failed('contactEmailTooLong', customMessage));
         }
+        else if( email.length < fieldLengths.contactEmailMinLength){
+            errorMessages.push(failed('contactEmailTooShort', customMessage));
+        }
+
         return errorMessages;
     },
 
