@@ -37,7 +37,7 @@ const EventForm = React.createClass({
 	    	categories: [],
 	    	loading:false,
             dragEndListenerCreated: false,
-            counter: 0
+            infoWindow: null
 
 	    };
 	},
@@ -89,10 +89,12 @@ const EventForm = React.createClass({
 		this.setDateFieldPlaceHolder();
 		this.setDateSelectionPositionFunction();
 
-        var firstClickListener = google.maps.event.addListener(map, 'click', function(event) {
+       /* var firstClickListener = google.maps.event.addListener(map, 'click', function(event) {
             that.codeAddressFromLatLng(event.latLng);
             google.maps.event.removeListener(firstClickListener);
-        });
+        });*/
+        
+        this.createFirstClickListener();
 
 	},
 
@@ -142,7 +144,9 @@ const EventForm = React.createClass({
 	addressOnBlur: function(){
 		var that = this;
 		setTimeout(function () {
-        	that.codeAddressFromString();
+            if(!that.state.markerLocked){
+                that.codeAddressFromString();
+            }
     	}, 100);
 	},
 
@@ -197,7 +201,14 @@ const EventForm = React.createClass({
 		})
   	},
 
-	codeAddressFromLatLng: function(latLng) {
+    /**
+        Finds the address from latLng and updates it into state.
+        If no address is found a message is shown to the user and the marker is returned where it was before (or 
+        deleted if there was no marker)
+        Calls the function in the callBack parameter if given and passes a boolean to indicate whether an address
+        was found. Also the status code gotten from google maps is passed to the callback
+    **/
+	codeAddressFromLatLng: function(latLng, callBack) {
 		var that = this;
 		geocoder.geocode({'location': latLng}, function(results, status) {
 			if (status === google.maps.GeocoderStatus.OK) {
@@ -207,20 +218,29 @@ const EventForm = React.createClass({
 					var newAddress = that.getAddressFromAddressComponents(results[0]);
 					var updatedAddress = that.getUpdatedAddress(newAddress);
 					that.updateAddress(latLng, updatedAddress);
+                    if( callBack != null ){
+                        callBack(true, status);
+                    }
 				} else {
 					console.log("____ No address found from latLng")
                     msgComponent.showMessageComponent('Could not find any address there, please try again', constants.SHOW_MSG_MS_DEFAULT, 'error')
 				    that.returnMarker();
+                    if( callBack != null ){
+                        callBack(false, status);
+                    }
                 }
 			} else {
 				console.log('____ Geocoder failed due to: ' + status);
                 if(status === google.maps.GeocoderStatus.ZERO_RESULTS){
-                    msgComponent.showMessageComponent('Could not find any address there, please try again', constants.SHOW_MSG_MS_DEFAULT, 'error')
+                    //msgComponent.showMessageComponent('Could not find any address there, please try again', constants.SHOW_MSG_MS_DEFAULT, 'error')
                 }
                 else if(status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT){
-                    msgComponent.showMessageComponent('Cannot find addresses this fast, please wait a few seconds and try again', constants.SHOW_MSG_MS_DEFAULT, 'error')
+                    //msgComponent.showMessageComponent('Cannot find addresses this fast, please wait a few seconds and try again', constants.SHOW_MSG_MS_DEFAULT, 'error')
                 }
                 that.returnMarker();
+                if( callBack != null ){
+                    callBack(false, status);
+                }
 			}
 		});
 	},
@@ -304,6 +324,42 @@ const EventForm = React.createClass({
         }
     },
 
+    /**
+        Creates a listener that geocodes the address when the user clicks the map for the first time
+        The click listener is removed from the map after the marker has been added.
+    **/
+    createFirstClickListener: function(){
+        var that = this;
+        var firstClickListener = google.maps.event.addListener(map, 'click', function(event) {
+            var afterGeocoding = function(addressFound, status){    //what we want to do after the coordinates have been reverse geocoded into a address
+                console.log("AFTER GEOCODING")
+                var infowindow = new google.maps.InfoWindow({
+                    content: '<div>Drag and drop me to update location</div>'
+                });
+                this.setState({
+                    infowindow: infowindow
+                })
+                infowindow.open(map, that.props.newEventMarker);
+
+                if( !addressFound ){
+                    this.showErrorOnNoAddressFound(status);
+                }else{
+                   // msgComponent.showMessageComponent('You can change the location of the event with drag and drop or by inputting the address in the form on the right', constants.SHOW_MSG_MS_DEFAULT, 'success')
+                }
+            }.bind(this);
+            that.codeAddressFromLatLng(event.latLng, afterGeocoding);
+            google.maps.event.removeListener(firstClickListener);
+        }.bind(this));
+    },  
+
+    showErrorOnNoAddressFound: function(status){
+        if( status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT ){
+            msgComponent.showMessageComponent('Cannot find addresses this fast, please wait a few seconds and try again', constants.SHOW_MSG_MS_DEFAULT, 'error')
+        } else {
+            msgComponent.showMessageComponent('Could not find any address there, please try again', constants.SHOW_MSG_MS_DEFAULT, 'error')
+        }
+    },
+
 	// Called when editing event
 	autoFillEventDetails: function(event) {
 		this.setState({
@@ -320,7 +376,7 @@ const EventForm = React.createClass({
 		this.setState({
 			event: event,
 			name: event.name,
-			latlng: latLng,
+			latLng: latLng,
 			streetAddress: event.Address.streetAddress,
 			city: event.Address.city,
 			country: event.Address.country,
@@ -517,7 +573,9 @@ const EventForm = React.createClass({
 			zipCode: this.state.zipCode,
 		}
 		var latLng;
-		if(this.state.latLng.length == 0) {
+        console.log("latlng")
+        console.log(this.state.latLng)
+		if(this.state.latLng == null || $.isEmptyObject(this.state.latLng)) {
 			latLng = [];
 		} else {
 			latLng = [this.state.latLng.lat(), this.state.latLng.lng()];
@@ -642,9 +700,14 @@ const EventForm = React.createClass({
 					{/* Address */}
 					<div className='form-group'>
 						<input type='text' onBlur={this.addressOnBlur} value={this.state.streetAddress} onChange={this.handleChange('streetAddress')} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
-					</div>
+                    </div>
 					<span className="validationError" id="addressError"></span>
 					<span className="validationError" id="latLngError"></span>
+                   {/* <div className = "form-group">
+                        <div className = "checkbox">
+                            <label><input type = "checkbox" id="lockMarker" name="lockMarker" />Lock marker</label>
+                        </div>
+                    </div>*/}
 
 					{/* Category */}
 					<div className='form-group' id="category">
