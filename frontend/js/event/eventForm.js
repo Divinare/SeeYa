@@ -141,15 +141,6 @@ const EventForm = React.createClass({
 	  	}
 	},	
 
-	addressOnBlur: function(){
-		var that = this;
-		setTimeout(function () {
-            if(!that.state.markerLocked){
-                that.codeAddressFromString();
-            }
-    	}, 100);
-	},
-
 	// Gets address from input field and tries to get the corresponding address information
 	codeAddressFromString: function() {
 		var that = this;
@@ -699,7 +690,7 @@ const EventForm = React.createClass({
 
 					{/* Address */}
 					<div className='form-group'>
-						<input type='text' onBlur={this.addressOnBlur} value={this.state.streetAddress} onChange={this.handleChange('streetAddress')} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
+						<input type='text' value={this.state.streetAddress} onChange={this.handleChange('streetAddress')} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
                     </div>
 					<span className="validationError" id="addressError"></span>
 					<span className="validationError" id="latLngError"></span>
