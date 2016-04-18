@@ -35,9 +35,7 @@ const EventForm = React.createClass({
 	    	time: "",
 	    	description: "",
 	    	categories: [],
-	    	loading:false,
-            dragEndListenerCreated: false,
-            infoWindow: null
+	    	loading:false
 
 	    };
 	},
@@ -54,12 +52,18 @@ const EventForm = React.createClass({
             (prevProps == null || prevEventMarker === null || $.isEmptyObject(prevEventMarker) ))  {
 
             google.maps.event.addListener(newEventMarker, 'dragend', function(evt){
-                that.codeAddressFromLatLng(evt.latLng);
+                if($('#sync').is(':checked')){
+                    that.codeAddressFromLatLng(evt.latLng, that.afterGeocoding);
+                }
             });
-            this.setState({
-                dragEndListenerCreated: true
-            });
+            if(that.isEditForm()){
+                var infowindow = that.createInfoWindow();
+                infowindow.open(map, newEventMarker);
+            }
         }
+        if(!this.state.loading && newEventMarker != null && this.isEditForm()){
+            
+        }         
 	},
                 
 	componentDidMount: function() {
@@ -75,7 +79,10 @@ const EventForm = React.createClass({
 				loading: true
 			});
 			UTILS.rest.getEntry('event', that.props.params.id, that.autoFillEventDetails, error);
-		}
+		}else{
+            this.createFirstClickListener();
+        }
+        
 
 		// TODO LINK:
 		// http://stackoverflow.com/questions/7865446/google-maps-places-api-v3-autocomplete-select-first-option-on-enter
@@ -93,8 +100,6 @@ const EventForm = React.createClass({
             that.codeAddressFromLatLng(event.latLng);
             google.maps.event.removeListener(firstClickListener);
         });*/
-        
-        this.createFirstClickListener();
 
 	},
 
@@ -131,7 +136,9 @@ const EventForm = React.createClass({
 	/*** ADDRESS ***/
 
 	initAutocomplete: function() {
+        console.log("INITING AUTOCOMPLETE")
 	  	var input = document.getElementById("address")
+         console.log(input)
 	  	if( input != null){
 		  // Create the autocomplete object, restricting the search to geographical location types.
 		  autocomplete = new google.maps.places.Autocomplete(
@@ -141,10 +148,23 @@ const EventForm = React.createClass({
 	  	}
 	},	
 
+    addressOnBlur: function(){
+        var that = this;
+        setTimeout(function () {
+            if($('#sync').is(':checked')){
+                that.codeAddressFromString();
+            }else{
+                that.setState({
+                    streetAddress: document.getElementById('address').value
+                })
+            }
+        }, 100);
+    },
+
 	// Gets address from input field and tries to get the corresponding address information
 	codeAddressFromString: function() {
 		var that = this;
-	    var address = document.getElementById('address').value;
+	    var address = document.getElementById('address').value
 
 	    geocoder.geocode( { 'address': address}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
@@ -157,6 +177,8 @@ const EventForm = React.createClass({
 
 			} else {
 				console.log("Geocode was not successful for the following reason: " + status);
+                that.returnMarker();
+                that.afterGeocoding(false, status);
 			}
  		});
 
@@ -164,22 +186,31 @@ const EventForm = React.createClass({
 
   	centerAndSetMarker: function(latLng){
         var that = this;
-		map.setCenter(latLng);
-		var marker = new google.maps.Marker({
-		    map: map,
-		    position: latLng,
-		    draggable: true
-		});
-		var icon = new google.maps.MarkerImage("../../assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
-		marker.setIcon(icon);
+        var marker = this.props.newEventMarker;
+        if(marker == null) {
+            map.setCenter(latLng);
+            marker = new google.maps.Marker({
+                map: map,
+                position: latLng,
+                draggable: true
+            });
+            var icon = new google.maps.MarkerImage("../../assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
+            marker.setIcon(icon);
+            google.maps.event.addListener(marker, 'dragend', function(evt){
+                if($('#sync').is(':checked')){
+                     that.codeAddressFromLatLng(evt.latLng, that.afterGeocoding);
+                }
+            });
+            this.props.updateAppStatus("newEventMarker", marker);
+        }
+        map.setCenter(latLng);
+        marker.setPosition(latLng);
 
-		if(this.props.newEventMarker != null) {
+		/*if(this.props.newEventMarker != null) {
 			this.props.newEventMarker.setMap(null);
 		}
-		this.props.updateAppStatus("newEventMarker", marker);
-        google.maps.event.addListener(marker, 'dragend', function(evt){
-                that.codeAddressFromLatLng(evt.latLng);
-            });
+		this.props.updateAppStatus("newEventMarker", marker);*/
+ 
   	},
 
   	updateAddress: function(latLng, newAddress) {
@@ -296,20 +327,16 @@ const EventForm = React.createClass({
         console.log("AT RETURN MARKER")
         console.log(this.props.newEventMarker)
         console.log(this.state.latLng)
-        console.log(this.state.latLng.length)
 
         if($.isEmptyObject(this.state.latLng)){ //there was no marker before
             //remove the marker and add again firstclicklistener
             this.props.newEventMarker.setMap(null);
             this.props.updateAppStatus('newEventMarker', null);
-            var firstClickListener = google.maps.event.addListener(map, 'click', function(event) {
-                that.codeAddressFromLatLng(event.latLng);
-                google.maps.event.removeListener(firstClickListener);
-            });
+            createFirstClickListener();
 
         }
 
-        if( this.props.newEventMarker != null && this.state.latLng != null ){
+        if( this.props.newEventMarker != null && this.state.latLng != null && !$.isEmptyObject(this.state.latLng) ){
             console.log("RETURNING MARKER")
             this.props.newEventMarker.setPosition(this.state.latLng)
         }
@@ -321,29 +348,36 @@ const EventForm = React.createClass({
     **/
     createFirstClickListener: function(){
         var that = this;
+   
         var firstClickListener = google.maps.event.addListener(map, 'click', function(event) {
-            var afterGeocoding = function(addressFound, status){    //what we want to do after the coordinates have been reverse geocoded into a address
-                console.log("AFTER GEOCODING")
-                var infowindow = new google.maps.InfoWindow({
-                    content: '<div>Drag and drop me to update location</div>'
-                });
-                this.setState({
-                    infowindow: infowindow
-                })
-                infowindow.open(map, that.props.newEventMarker);
-
-                if( !addressFound ){
-                    this.showErrorOnNoAddressFound(status);
-                }else{
-                   // msgComponent.showMessageComponent('You can change the location of the event with drag and drop or by inputting the address in the form on the right', constants.SHOW_MSG_MS_DEFAULT, 'success')
+            var showErrorAndCreateInfoWindow = function(addressFound, status){
+                if(addressFound){
+                    var infowindow = this.createInfoWindow();
+                    infowindow.open(map, that.props.newEventMarker);
+                    that.afterGeocoding(addressFound, status);
                 }
             }.bind(this);
-            that.codeAddressFromLatLng(event.latLng, afterGeocoding);
+            that.codeAddressFromLatLng(event.latLng, showErrorAndCreateInfoWindow);
             google.maps.event.removeListener(firstClickListener);
         }.bind(this));
+        
+ 
     },  
 
-    showErrorOnNoAddressFound: function(status){
+    createInfoWindow: function(){
+        return (new google.maps.InfoWindow({
+            content: '<div>Drag and drop me <br/> to update location</div><input type=\'checkbox\' id=sync checked=\'true\'></input><label for=\'sync\'>&nbsp;Auto sync with address</label>'
+        }) );
+    },
+
+  afterGeocoding: function(addressFound, status){    //show error message if no address found by the geocoder
+        console.log("AFTER GEOCODING")
+        if( !addressFound ){
+            this.showNoAddressFoundError(status);
+        }
+    },
+
+    showNoAddressFoundError: function(status){
         if( status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT ){
             msgComponent.showMessageComponent('Cannot find addresses this fast, please wait a few seconds and try again', constants.SHOW_MSG_MS_DEFAULT, 'error')
         } else {
@@ -380,6 +414,7 @@ const EventForm = React.createClass({
 			selectedCategory: event.Category.name
 		});
 		this.centerAndSetMarker(latLng);
+        this.initAutocomplete();
 	},
 
 	/*** DATE ***/
@@ -558,6 +593,7 @@ const EventForm = React.createClass({
 
     handleSubmit: function(e) {
 		var that = this;
+
 		//e.preventDefault();
 		var address = {
 			streetAddress: this.state.streetAddress,
@@ -690,7 +726,7 @@ const EventForm = React.createClass({
 
 					{/* Address */}
 					<div className='form-group'>
-						<input type='text' value={this.state.streetAddress} onChange={this.handleChange('streetAddress')} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
+						<input type='text' value={this.state.streetAddress} onBlur={this.addressOnBlur} onChange={this.handleChange('streetAddress')} data-checkaddress='checkaddress' className='form-control' id='address' placeholder='Fill address here or click on the map' />
                     </div>
 					<span className="validationError" id="addressError"></span>
 					<span className="validationError" id="latLngError"></span>
