@@ -61,13 +61,15 @@ dd {
 }
 
 .right-container {
+    /* For black background: */
     /* color: #FFF; */
+    /*background-color: rgba(0,0,0,0.55);*/
+
     color: #4E4E4E;
     z-index: 99;
     width: 400px;
     top: 60px;
     height: 100%;
-    /*background-color: rgba(0,0,0,0.55);*/
     background-color: rgba(255, 255, 255, 0.7);
     overflow-x: hidden;
     padding-top: 40px;
@@ -212,7 +214,7 @@ dd {
 }
 
 @keyframes toMobileAnimation {
-    to {right: 10px;
+    to {right: 0px;
         top: 131px;}
 
 }
@@ -241,7 +243,7 @@ dd {
 @media (max-width: 799px) {
     .right-container {
         position: fixed;
-        right: 10px;
+        right: 0px;
         top: 131px;
      /*   top: 49%; */
     }
@@ -255,4 +257,18 @@ dd {
         background-color: rgba(228,228,228,0.55);
 
     }
+
+}
+
+/***********************/
+/*       MOBILE        */
+/***********************/
+
+@media (max-width: 450px) {
+
+    #rightContainerContent {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
 }

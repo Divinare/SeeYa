@@ -1,8 +1,8 @@
 //bootstrap break points
-var extraSmallScreenMaxWidth = 768;  
-var smallScreenMinWidth = 768;
-var mediumScreenMinWidth = 800; //992;
-var largeScreenMinWidth = 1170;
+var extraSmallScreenMaxWidth = 768;  // Delete this?
+var smallScreenMinWidth = 768;  // Name to mobile?
+var mediumScreenMinWidth = 800; // Name to tablet?
+var largeScreenMinWidth = 1170; // Name to desktop?
 
 var navbarHeight = 50;
 var mapBottomMargin = 20;

@@ -1,7 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
 
-var EventFormDropdown = require('./eventFormDropdown.js');
+var SingleSelectDropdown = require('../singleSelectDropdown.js');
 var DatePicker = require('react-bootstrap-datetimepicker');
 var Select = require('react-select');
 var Moment = require('moment')
@@ -370,7 +370,9 @@ const EventForm = React.createClass({
 		moment.hour(0);
 		moment.minute(0);
 
-		this.refs.dropDown.selectNoToggle(event.Category.name);
+        this.selectCategory(name);
+        $("#singleSelectInput").val(event.Category.name);
+
 		var latLng = new google.maps.LatLng(event.lat,event.lon);
 
 		this.setState({
@@ -573,8 +575,6 @@ const EventForm = React.createClass({
 			zipCode: this.state.zipCode,
 		}
 		var latLng;
-        console.log("latlng")
-        console.log(this.state.latLng)
 		if(this.state.latLng == null || $.isEmptyObject(this.state.latLng)) {
 			latLng = [];
 		} else {
@@ -711,11 +711,12 @@ const EventForm = React.createClass({
 
 					{/* Category */}
 					<div className='form-group' id="category">
-							<EventFormDropdown
-								ref={'dropDown'}
-								list={this.state.categories} selectCategory={this.selectCategory} 
-								selected={this.state.selectedCategory}
-							/> 						
+							<SingleSelectDropdown
+                                inputFieldId={"categoryInputField"}
+                                multipleColumns={true}
+								list={this.state.categories}
+                                select={this.selectCategory} 
+								selected={this.state.selectedCategory} /> 						
 						</div>
 					<span className="validationError" id="categoryError"></span>
 

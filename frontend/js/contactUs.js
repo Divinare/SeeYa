@@ -1,18 +1,26 @@
 import { browserHistory, Link } from 'react-router';
 var React = require('react');
+var SingleSelectDropdown = require('./singleSelectDropdown.js');
 
 var fieldLengths = require('../../common/validators/fieldLengths.js');
 var commonUtils = require('../../common/utils.js');
 var commonValidator = require('../../common/validators/validator.js');
+var contactSubjects = require('../../common/contactSubjects.js');
+
 var validator = UTILS.validator;
 
 var ContactUs = React.createClass({
     getInitialState: function() {
 
+        var subject = [];
+
+        var subjects = contactSubjects.getContactSubjects();
+
         return {
-            subjectId: "",
+            selectedSubject: "",
             email: "",
-            description: ""
+            description: "",
+            subjects: subjects
         };
     },
     componentWillMount: function() {
@@ -95,14 +103,31 @@ var ContactUs = React.createClass({
 
     handleSubmit: function() {
 
+
+        var subjectId = "";
+        var subjects = contactSubjects.getContactSubjects();
+        var selectedSubject = this.state.selectedSubject;
+        // Get the correct subject id of selectedSubject
+        for(var subject in subjects) {
+            var subjectObj = subjects[subject];
+            if(selectedSubject == subjectObj.name) {
+                subjectId = subjectObj.id;
+            }
+        }
+
+        var email = this.state.email;
+        if(email == "") {
+            email = null;
+        }
+
         var validSubject = validator.validateField(commonValidator.validateContactSubject, 
-                                            this.state.subjectId,
+                                            subjectId,
                                             "#subject",
                                             "#subjectError"
                                             );
 
         var validEmail = validator.validateField(commonValidator.validateContactEmail, 
-                                            this.state.email,
+                                            email,
                                             "#email",
                                             "#emailError"
                                             );
@@ -113,15 +138,16 @@ var ContactUs = React.createClass({
                                             "#descriptionError"
                                             );
 
-
+        console.log("VALID validSubject: " + validSubject);
+        console.log("subjectId " + subjectId);
         if(!validSubject || !validEmail || !validDescription) {
             console.log("... Form was not valid, validSubject: " + validSubject + " validEmail: " + validEmail + " validDescription: " + validDescription);
             return;
         }
         console.log("Sending contact information")
         var contactData = {
-            subjectId: this.state.subjectId,
-            email: this.state.email,
+            subjectId: subjectId,
+            email: email,
             description: this.state.description,
         }
         var error = function( jqXhr, textStatus, errorThrown){
@@ -144,6 +170,20 @@ var ContactUs = React.createClass({
 
     },
 
+    selectSubject: function(subject) {
+        console.log(subject);
+        this.setState({
+            selectedSubject: subject
+        })
+    },
+
+    /*
+
+        <input type="text" id="subject" placeholder="Click to select" className="form-control" onChange={this.handleChange('subjectId')}/>
+    <span id="subjectError"></span>
+
+    */
+
     render: function(){
         return (
             <div id="contactUsContainer">
@@ -154,8 +194,12 @@ var ContactUs = React.createClass({
                 </p>
                 <div className="form-group">
                         <label className="control-label">Subject *</label>
-                            <input type="text" id="subject" placeholder="Click to select" className="form-control" onChange={this.handleChange('subjectId')}/>
-                            <span id="subjectError"></span>
+                            <SingleSelectDropdown
+                                multipleColumns={false}
+                                inputFieldId={"subject"}
+                                list={this.state.subjects}
+                                select={this.selectSubject} 
+                                selected={this.state.selectedSubject} />   
                     </div>
                     <div className="form-group">
                         <label className="control-label">Email</label>

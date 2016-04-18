@@ -43,7 +43,7 @@ module.exports = {
 			return window.CONFIGS.rightContainerWidthDesktop;
 		} else if(screenType == 'tablet') {
 			var eventListWidth = window.innerWidth;
-			eventListWidth -= (marginWidth*2);
+			//eventListWidth -= (marginWidth*2);
 			return eventListWidth;
 		}
 	},
@@ -120,7 +120,7 @@ module.exports = {
                 $(".right-container").addClass("toMobile");
                 setTimeout(function(){ 
                     $(".right-container").css("top", "131px");
-                    $(".right-container").css("right", "10px");
+                    $(".right-container").css("right", "0px");
                     $(".right-container").addClass("showing");
                     $(".right-container").removeClass("toMobile");
                  }, 499);
