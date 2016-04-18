@@ -23,6 +23,7 @@ const EventList = React.createClass({
 
     componentDidMount: function() {
         this.setToolbarIcons();
+        this.setToolbarStyles();
         this.props.handleResize();
         var that = this;
     },
@@ -30,10 +31,21 @@ const EventList = React.createClass({
     setToolbarIcons: function() {
         var toolbarComponentData = {}
         this.props.updateToolbarIcons(toolbarComponentData);
-
     },
 
-    componentWillMount :function() {
+    setToolbarStyles: function() {
+        $("#rightContainerToolbar").css("border", "none");
+    },
+
+    resetToolbarStyles: function() {
+        $("#rightContainerToolbar").css("border-bottom", "solid 1px #CBCED2");
+    },
+
+    componentWillMount: function() {
+    },
+
+    componentWillUnmount: function() {
+        this.resetToolbarStyles();
     },
 
     componentWillReceiveProps: function() {
