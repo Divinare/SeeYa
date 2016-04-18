@@ -121,53 +121,13 @@ var Map = React.createClass({
         if( location !== 'editForm' ){
             this.centerMapToUserLocation();
         }
-        
-        //  create the ContextMenuOptions object
-        var contextMenuOptions={};
-        contextMenuOptions.classNames={menu:'context_menu', menuSeparator:'context_menu_separator'};
-        
-        //  create an array of ContextMenuItem objects
-        var menuItems=[];
-        menuItems.push({className:'context_menu_item link', eventName:'create_event', label:'Create Event'});
-        menuItems.push({className:'context_menu_item link', eventName:'zoom_in_click', label:'Zoom in'});
-        menuItems.push({className:'context_menu_item link', eventName:'zoom_out_click', label:'Zoom out'});
-        //  a menuItem with no properties will be rendered as a separator
-        menuItems.push({});
-        menuItems.push({className:'context_menu_item link', eventName:'center_map_click', label:'Center map here'});
-        contextMenuOptions.menuItems=menuItems;
-        
-        var contextMenu = new ContextMenu(map, contextMenuOptions);
-        
-        //  display the ContextMenu on a Map right click
+
         google.maps.event.addListener(map, 'rightclick', function(mouseEvent){
-            contextMenu.show(mouseEvent.latLng);
-        });
-        
-        //  listen for the ContextMenu 'menu_item_selected' event
-        google.maps.event.addListener(contextMenu, 'menu_item_selected', function(latLng, eventName){
-            switch(eventName){
-                case 'create_event':
-                    var latLngObj = {
-                        lat: latLng.G,
-                        lng: latLng.K
-                    }
-                    that.addNewEventMarker(latLngObj, map);
-                    that.transitionToEventForm();
-                    break;
-                case 'zoom_in_click':
-                    map.setZoom(map.getZoom()+1);
-                    break;
-                case 'zoom_out_click':
-
-                    map.setZoom(map.getZoom()-1);
-                    break;
-                case 'center_map_click':
-
-                    map.panTo(latLng);
-                    break;
+            if(UTILS.styleHelper.isDesktop()) {
+                UTILS.styleHelper.toggleRightContainer();
             }
         });
-
+        
         window.map = map;
     },
 

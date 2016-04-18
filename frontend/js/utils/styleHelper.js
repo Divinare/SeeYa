@@ -57,10 +57,11 @@ module.exports = {
 		}
 	},
 
-	toggleRightContainer: function(show) {
+    // Shows or hides the right-container, depending on the boolean param "show"
+    // false = hides right-container, true = shows right-container
+	showOrHideRightContainer: function(show) {
         var toggleHeightMobile = window.innerHeight - 188;
         var className = $('.right-container').attr('class');
-
         var animationGoing = (className.indexOf("toDesktop") != -1 || className.indexOf("toMobile") != -1 ) ? true : false;
         if(animationGoing) {
             return;
@@ -91,12 +92,23 @@ module.exports = {
         }   
     },
 
+    // Hides or shows the right-container. If right-container is hidden, it shows it and vise versa.
+    toggleRightContainer: function() {
+        var className = $('.right-container').attr('class');
+        if(className.indexOf("showing") == -1) {
+            this.showRightContainer();
+        } else {
+            this.hideRightContainer();
+        }
+
+    },
+
     hideRightContainer: function() {
-        this.toggleRightContainer(false);
+        this.showOrHideRightContainer(false);
     },
 
     showRightContainer: function() {
-        this.toggleRightContainer(true);
+        this.showOrHideRightContainer(true);
     },
 
     resetRightContainer: function() {
