@@ -85,7 +85,7 @@ var Dropdown = React.createClass({
     },
 
     renderSelectAllOption: function() {
-        var selectAllOption = <span className="eventListDropdownRow">
+        var selectAllOption = <div id="showAllCategories" className="eventListDropdownRow">
             <div className="eventListDropdownSelectAllContainer" onClick={this.toggleAllCategories}>
                 <input className="eventListDropdownSelectAllCheckbox" type="checkbox"
                   checked={this.props.showAllCategories}
@@ -93,7 +93,7 @@ var Dropdown = React.createClass({
                   value={this.props.showAllCategories} />
                   <span className="eventListDropdownSelectAllTextField">Show all categories</span>
             </div>
-        </span>
+        </div>
         return selectAllOption;
 
     },
