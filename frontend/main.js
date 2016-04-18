@@ -60,7 +60,6 @@ const Main = React.createClass({
     },
 
     componentWillMount: function() {
-        this.getEvents();
         if(this.state.categories.length == 0) {
             this.getCategories();
         }
@@ -118,16 +117,34 @@ const Main = React.createClass({
     },
 
     getEvents: function() {
+        console.log("AT GET EVENTS");
+        console.log("AT GET EVENTS");
+        console.log("AT GET EVENTS");
+        console.log("AT GET EVENTS");
+        console.log("AT GET EVENTS");
+        console.log("AT GET EVENTS");
         var that = this;
         var onSuccess = function(eventList) {
             //var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
+            console.log("EVENTLIST -.-.-.-.-.-");
+            console.log(eventList);
             that.setState({
                 eventList: eventList,
                 filteredEventList: eventList
             })
         }
+        var onError = function() {
+            that.setState({
+                eventList: [],
+                filteredEventList: []
+            })
+        }
         var categoryFilters = this.state.eventListData['filters'];
-        UTILS.rest.getFilteredEntries('filteredEvents', categoryFilters, null, null, onSuccess);
+        console.log("categoryFilters")
+        console.log("categoryFilters")
+        console.log("categoryFilters")
+        console.log(categoryFilters)
+        UTILS.rest.getFilteredEntries('filteredEvents', categoryFilters, null, null, onSuccess, onError);
     },
 
     getCategories: function() {
@@ -144,6 +161,7 @@ const Main = React.createClass({
             categories: categories,
             eventListData: eventListData
         })
+        that.getEvents();
         };
         var onError = function() {
             console.log("Error on fetching event!");

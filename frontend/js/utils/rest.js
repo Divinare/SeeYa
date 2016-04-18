@@ -11,9 +11,7 @@ var getAllEntries = function(name, onSuccess, onError) {
 }
 
 var getFilteredEntries = function(name, categoryFilters, fromTimestamp, toTimestamp, onSuccess, onError) {
-    console.log("at getFilteredEntries");
     var url = URL.getFilteredEntries[name];
-    console.log(categoryFilters.length);
     var filters = [];
     for(var filterName in categoryFilters) {
         if(categoryFilters[filterName] == true) {
@@ -22,8 +20,6 @@ var getFilteredEntries = function(name, categoryFilters, fromTimestamp, toTimest
     }
     if(filters.length > 0) {
         url += filters.join() + '/';
-    } else {
-        url += "all/";
     }
     url += fromTimestamp + '/' + toTimestamp + '/';
 

@@ -17,7 +17,7 @@ const EventList = React.createClass({
         var eventListData = this.props.eventListData;
         var selectedCategory = eventListData['filters'].category;
         return {
-            selectedCategory: selectedCategory
+            showAllCategories: true
         }
     },
 
@@ -140,20 +140,6 @@ const EventList = React.createClass({
         );
      },
 
-    filterChange: function(filter, filterType) {
-        var that = this;
-        var onSuccess = function (filteredEvents) {
-            that.props.updateAppStatus('filteredEventList', filteredEvents);
-            var eventListData = that.props.eventListData;
-            eventListData['filters'][filterType] = filter;
-            that.props.updateAppStatus('filters', eventListData);
-        };
-        var onError = function() {
-            console.log("Error on fetching event!");
-        }
-        UTILS.rest.getFilteredEntries('filteredEvents', filter, null, null, onSuccess, onError);
-    },
-
     getTableSizes: function() {
         var tableWidth =  this.props.eventListData.tableWidth;
         var tableHeight = this.props.eventListData.tableHeight;
@@ -176,11 +162,25 @@ const EventList = React.createClass({
         return tableSizes;
     },
 
-    selectCategory: function(category) {
+    showOrHideAllCategories: function(show) {
+        var eventListData = this.props.eventListData;
+        
+        for(var filter in eventListData['filters']) {
+            eventListData['filters'][filter] = show;
+        }
+        this.props.updateAppStatus('eventListData', eventListData);
         this.setState({
-            selectedCategory: category
-        });
-        this.filterChange(category, "category");
+            showAllCategories: show
+        })
+        console.log("UPDATED EVENTLIST DATA");
+        console.log(eventListData);
+        this.props.getEvents();
+    },
+
+    setShowAllCategories: function(show) {
+        this.setState({
+            showAllCategories: show
+        })
     },
 
     createEventListTable: function(eventList) {
@@ -195,7 +195,7 @@ const EventList = React.createClass({
                 </table>
             );
         } else {
-            return <div>No events found.</div>
+            return <div>No events found. You can add more categories from the button below to find more events.</div>
         }
     },
 
@@ -233,8 +233,6 @@ const EventList = React.createClass({
 
     render: function() {
         var _this = this;
-        console.log("EVNETLIST DATA");
-        console.log(this.props.eventListData);
         // Use eventList if filteredEventList is empty
         var eventList = this.props.filteredEventList;
         var eventListData = this.props.eventListData;
@@ -276,12 +274,13 @@ const EventList = React.createClass({
                     <div id="eventListBottomBar">
                         <span id="select-dropdown">
                             <Dropdown
+                                showAllCategories={this.state.showAllCategories}
                                 updateAppStatus={this.props.updateAppStatus}
                                 getEvents={this.props.getEvents}
                                 eventListData={this.props.eventListData}
                                 list={this.props.categories}
-                                selectCategory={this.selectCategory}
-                                selected={selectedCategory} />
+                                showOrHideAllCategories={this.showOrHideAllCategories}
+                                setShowAllCategories={this.setShowAllCategories} />
                         </span>
                     </div>
                 </div>              

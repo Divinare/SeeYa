@@ -1,7 +1,6 @@
 var Dropdown = React.createClass({
     getInitialState: function() {
         return {
-            listVisible: false
         };
     },
 
@@ -14,12 +13,6 @@ var Dropdown = React.createClass({
         $('.eventListDropdownCheckbox').click(function(event) {
             event.preventDefault();
          });
-    },
-
-    select: function(item) {
-        this.props.selectCategory(item);
-        this.toggleShowCategories();
-        $("#category").val(item);
     },
 
     toggleShowCategories: function(e) {
@@ -37,6 +30,16 @@ var Dropdown = React.createClass({
         eventListData['filters'][name] = !currentVal;
         this.props.updateAppStatus('eventListData', eventListData);
         this.props.getEvents();
+
+        // Now update Show all markers status, mark as true if all categories are checked, otherwise false
+        var allFiltersTrue = true;
+        for(var filter in eventListData['filters']) {
+            if(!eventListData['filters'][filter]) {
+                allFiltersTrue = false;
+            }
+        }
+        this.props.setShowAllCategories(allFiltersTrue);
+
     },
 
     renderListItemsMultipleColumns: function() {
@@ -73,7 +76,7 @@ var Dropdown = React.createClass({
                 rightDiv = <span></span>
             }
             items.push(
-                <div key={i+"eventFormRow"} className="eventFormListRow">
+                <div key={i+"eventFormRow"} className="eventListDropdownRow">
                         {leftDiv}
                         {rightDiv}
                 </div>);
@@ -81,13 +84,38 @@ var Dropdown = React.createClass({
         return items;
     },
 
+    renderSelectAllOption: function() {
+        var selectAllOption = <span className="eventListDropdownRow">
+            <div className="eventListDropdownSelectAllContainer" onClick={this.toggleAllCategories}>
+                <input className="eventListDropdownSelectAllCheckbox" type="checkbox"
+                  checked={this.props.showAllCategories}
+                  onChange={function(){}}
+                  value={this.props.showAllCategories} />
+                  <span className="eventListDropdownSelectAllTextField">Show all categories</span>
+            </div>
+        </span>
+        return selectAllOption;
+
+    },
+
+    toggleAllCategories: function() {
+        if(this.props.showAllCategories) {
+            this.props.showOrHideAllCategories(false);
+        } else {
+            this.props.showOrHideAllCategories(true);
+        }
+    },
+
 
     render: function() {
         var listItems;
+        var selectAllOption;
         if(typeof this.props.list !== "undefined") {
             listItems = this.renderListItemsMultipleColumns();
+            selectAllOption = this.renderSelectAllOption();
         } else {
-            listItems = <span></span>
+            listItems = <span></span>;
+            selectAllOption = <span></span>;
         }
 
 
@@ -95,6 +123,7 @@ var Dropdown = React.createClass({
 
             <div id={this.props.dropdownId}>
                 <div id="categoriesContentEventList">
+                    {selectAllOption}
                     {listItems}
                 </div>
 

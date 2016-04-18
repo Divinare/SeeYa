@@ -74,7 +74,7 @@
 }
 
 
-/* Category dropdown */
+/* CATEGORY SELECT DROPDOWN */
 
 #categoriesContentEventList {
     width: 100%;
@@ -150,11 +150,31 @@
 
 .eventListItemCategoryName:hover {
     background-color: #EAEAEA;
-
 }
 
-.select-dropdown {
-    flex: 0 0 65%;
+/* NOTE: These are are classes because of "whether or not to hide check" uses classnames*/
+.eventListDropdownSelectAll {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.eventListDropdownSelectAllTextField {
+    margin-left: 5px;
+    display: inline-block;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.eventListDropdownSelectAllContainer {
+    width: 170px;
+    margin-left: 5%;
+}
+
+.eventListDropdownSelectAllTextField:hover {
+    background-color: #EAEAEA;
+}
+
+.eventListDropdownSelectAllCheckbox {
 }
 
 /* Time */

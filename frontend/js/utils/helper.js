@@ -101,16 +101,24 @@ module.exports = {
     },
 
     hideCategoryDropdownEventlist: function() {
+    	var classesThatShouldPreventHiding = [
+    		"eventListDropdownSelectAllTextField",
+    		"eventListDropdownSelectAllContainer",
+    		"eventListDropdownSelectAllCheckbox",
+    		"eventListDropdownRow",
+    		"dropdownBtnEventList",
+    		"eventListItemCategoryName",
+    		"itemDropdownEventList",
+    		"eventListDropdownCheckbox"
+    	];
 	    var eventTarget = $(event.target)[0];
 	    var shouldHideCategories = true;
 	    if(typeof eventTarget != 'undefined' && eventTarget != null) {
-	        if(eventTarget.className == "eventFormListRow"
-	            || eventTarget.className == "dropdownBtnEventList"
-	            || eventTarget.className == "eventListItemCategoryName"
-	            || eventTarget.className == "itemDropdownEventList"
-	            || eventTarget.className == "eventListDropdownCheckbox") {
-	            shouldHideCategories = false;
-	        }
+	    	for(var i = 0; i < classesThatShouldPreventHiding.length; i++) {
+	    		if(eventTarget.className == classesThatShouldPreventHiding[i]) {
+	    			shouldHideCategories = false;
+	    		}
+	    	}
 	    }
 	    if(shouldHideCategories) {
 	        $("#categoriesContentEventList").slideUp(150, function(){ });

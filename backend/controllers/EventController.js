@@ -33,8 +33,6 @@ module.exports = {
     },  
 
     findAll: function (req, res) {
-        console.log("SESSION: ")
-        console.log(req.session)
         models.Event.findAll({
             include: [ models.Address,
                   models.Attendance,
@@ -46,11 +44,6 @@ module.exports = {
 
     filterEvents: function (req, res) {
         var categoryFilters = req.params.category;
-
-        if(categoryFilters == "all") {
-            module.exports.findAll(req, res);
-            return;
-        }
         var filterArray = categoryFilters.split(",");
         
         var categoryFilters = [];
