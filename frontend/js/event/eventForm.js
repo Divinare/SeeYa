@@ -35,8 +35,11 @@ const EventForm = React.createClass({
 	    	time: "",
 	    	description: "",
 	    	categories: [],
-	    	loading:false
-
+	    	loadingEvent: false,
+            loadingUser: false,
+            infoWindow: null,
+            syncAddress: true,
+            changeListener: null
 	    };
 	},
 	
@@ -47,36 +50,62 @@ const EventForm = React.createClass({
         var that = this;
         var newEventMarker = this.props.newEventMarker;
         var prevEventMarker = prevProps.newEventMarker;
+
+        //If the event marker was previously null but not anymore, add a dragend listener on it
+        //Add also listener to the marker so that we can toggle showing the infowindow
         if(newEventMarker != null && 
             !$.isEmptyObject(newEventMarker) && 
-            (prevProps == null || prevEventMarker === null || $.isEmptyObject(prevEventMarker) ))  {
+            newEventMarker.map != null &&
+            (prevProps == null || prevEventMarker == null || $.isEmptyObject(prevEventMarker) ) &&
+            this.isMounted())  {
 
             google.maps.event.addListener(newEventMarker, 'dragend', function(evt){
-                if($('#sync').is(':checked')){
+                if(that.state.syncAddress){
                     that.codeAddressFromLatLng(evt.latLng, that.afterGeocoding);
                 }
             });
-            if(that.isEditForm()){
-                var infowindow = that.createInfoWindow();
-                infowindow.open(map, newEventMarker);
+
+            google.maps.event.addListener(newEventMarker, 'click', function(evt){
+                if(that.state.infoWindow != null){
+                    if(that.state.infoWindow.getMap() == null){
+                        that.state.infoWindow.open(map, newEventMarker)
+                        that.createChangeListener();
+                    }else{
+                        that.state.infoWindow.close()
+                    }
+                    
+                }
+            });
+        }       
+
+        //If we have now loaded the event and user, check that the user has rights to edit the event
+        if(!this.state.loadingEvent && 
+            !this.state.loadingUser && 
+            (prevState == null || prevState.loadingEvent || prevState.loadingUser)
+            ){
+            var user = this.props.getAppStatus('user')
+            if( user.id !== this.state.event.creator ){
+                that.clearNewEventMarker();
+                msgComponent.showMessageComponent('Event can only be modified by its creator', constants.SHOW_MSG_MS_DEFAULT, 'error')
+                browserHistory.push('/')
             }
         }
-        if(!this.state.loading && newEventMarker != null && this.isEditForm()){
-            
-        }         
 	},
                 
 	componentDidMount: function() {
+        console.log("did mount")
         this.setToolbarIcons();
 		var that = this;
 		this.props.handleResize();
+        this.clearNewEventMarker();     //just in case because for some reason there is a marker with map null when coming through the edit link here
 		if(this.isEditForm()){
 			var error = function(){
 				//there was an error fetching the event, maybe it has been deleted. For now just redirect to home page
-				browserHistory.push('/')	
+				that.clearNewEventMarker();
+                browserHistory.push('/')	
 			}
 			this.setState({
-				loading: true
+				loadingEvent: true
 			});
 			UTILS.rest.getEntry('event', that.props.params.id, that.autoFillEventDetails, error);
 		}else{
@@ -95,13 +124,34 @@ const EventForm = React.createClass({
 		}
 		this.setDateFieldPlaceHolder();
 		this.setDateSelectionPositionFunction();
-
-       /* var firstClickListener = google.maps.event.addListener(map, 'click', function(event) {
-            that.codeAddressFromLatLng(event.latLng);
-            google.maps.event.removeListener(firstClickListener);
-        });*/
-
 	},
+
+    updateLoggedInUser: function(){
+        var that = this;
+        var success = function(result) {
+            if(that.isMounted()){
+                that.props.updateAppStatus('user', result.user);
+                that.setState({
+                    loadingUser: false,
+                })
+            }
+        }
+        var error = function( jqXhr, textStatus, errorThrown ){
+            if(that.isMounted()){
+                that.props.updateAppStatus('user', null);
+                that.setState({
+                    loadingUser: false
+                })
+            }
+            that.clearNewEventMarker();
+            msgComponent.showMessageComponent('Please login first', constants.SHOW_MSG_MS_DEFAULT, 'error')
+            browserHistory.push("/login");
+        }
+        this.setState({
+            loadingUser: true
+        })
+        UTILS.rest.isLoggedIn(success, error);
+    },
 
     setToolbarIcons: function() {
         var homeFunc = function() {
@@ -138,7 +188,6 @@ const EventForm = React.createClass({
 	initAutocomplete: function() {
         console.log("INITING AUTOCOMPLETE")
 	  	var input = document.getElementById("address")
-         console.log(input)
 	  	if( input != null){
 		  // Create the autocomplete object, restricting the search to geographical location types.
 		  autocomplete = new google.maps.places.Autocomplete(
@@ -151,7 +200,7 @@ const EventForm = React.createClass({
     addressOnBlur: function(){
         var that = this;
         setTimeout(function () {
-            if($('#sync').is(':checked')){
+            if(that.state.syncAddress){
                 that.codeAddressFromString();
             }else{
                 that.setState({
@@ -185,9 +234,11 @@ const EventForm = React.createClass({
   	},
 
   	centerAndSetMarker: function(latLng){
+        console.log("centerAndSetMarker")
         var that = this;
         var marker = this.props.newEventMarker;
-        if(marker == null) {
+        if(marker == null || marker.map == null) {
+            console.log("creating new marker")
             map.setCenter(latLng);
             marker = new google.maps.Marker({
                 map: map,
@@ -197,24 +248,21 @@ const EventForm = React.createClass({
             var icon = new google.maps.MarkerImage("../../assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
             marker.setIcon(icon);
             google.maps.event.addListener(marker, 'dragend', function(evt){
-                if($('#sync').is(':checked')){
+                if(that.state.syncAddress){
                      that.codeAddressFromLatLng(evt.latLng, that.afterGeocoding);
                 }
             });
+            var infowindow = that.createInfoWindow();
+            infowindow.open(map, marker);
+            this.createChangeListener();
             this.props.updateAppStatus("newEventMarker", marker);
         }
         map.setCenter(latLng);
         marker.setPosition(latLng);
-
-		/*if(this.props.newEventMarker != null) {
-			this.props.newEventMarker.setMap(null);
-		}
-		this.props.updateAppStatus("newEventMarker", marker);*/
- 
   	},
 
   	updateAddress: function(latLng, newAddress) {
-   		this.setState({
+        this.setState({
    			latLng: latLng,
    			streetAddress: newAddress.streetAddress,
    			city: newAddress.city,
@@ -235,8 +283,6 @@ const EventForm = React.createClass({
 		geocoder.geocode({'location': latLng}, function(results, status) {
 			if (status === google.maps.GeocoderStatus.OK) {
 				if (results[0]) {
-                    console.log("RESULT 0")
-                    console.log(results[0])
 					var newAddress = that.getAddressFromAddressComponents(results[0]);
 					var updatedAddress = that.getUpdatedAddress(newAddress);
 					that.updateAddress(latLng, updatedAddress);
@@ -324,15 +370,11 @@ const EventForm = React.createClass({
     //put the marker
     returnMarker: function(){
         var that = this;
-        console.log("AT RETURN MARKER")
-        console.log(this.props.newEventMarker)
-        console.log(this.state.latLng)
 
         if($.isEmptyObject(this.state.latLng)){ //there was no marker before
             //remove the marker and add again firstclicklistener
-            this.props.newEventMarker.setMap(null);
-            this.props.updateAppStatus('newEventMarker', null);
-            createFirstClickListener();
+            this.clearNewEventMarker();
+            this.createFirstClickListener();
 
         }
 
@@ -348,29 +390,66 @@ const EventForm = React.createClass({
     **/
     createFirstClickListener: function(){
         var that = this;
-   
-        var firstClickListener = google.maps.event.addListener(map, 'click', function(event) {
-            var showErrorAndCreateInfoWindow = function(addressFound, status){
-                if(addressFound){
-                    var infowindow = this.createInfoWindow();
-                    infowindow.open(map, that.props.newEventMarker);
-                    that.afterGeocoding(addressFound, status);
+            var firstClickListener = google.maps.event.addListener(map, 'click', function(event) {
+                if(that.isMounted()){
+                    var showErrorAndCreateInfoWindow = function(addressFound, status){
+                        if(addressFound){
+                            var infowindow = that.createInfoWindow();
+                            infowindow.open(map, that.props.newEventMarker);
+                            that.createChangeListener();
+          
+                            that.afterGeocoding(addressFound, status);
+                        }
+                    };
+                    that.codeAddressFromLatLng(event.latLng, showErrorAndCreateInfoWindow);
+                    google.maps.event.removeListener(firstClickListener);
                 }
-            }.bind(this);
-            that.codeAddressFromLatLng(event.latLng, showErrorAndCreateInfoWindow);
-            google.maps.event.removeListener(firstClickListener);
-        }.bind(this));
+            });
         
- 
+       
     },  
 
-    createInfoWindow: function(){
-        return (new google.maps.InfoWindow({
-            content: '<div>Drag and drop me <br/> to update location</div><input type=\'checkbox\' id=sync checked=\'true\'></input><label for=\'sync\'>&nbsp;Auto sync with address</label>'
-        }) );
+    //hacky function because with react cannot add the listener in normal way
+    createChangeListener: function(){
+        var that = this;
+        var counter = 0;
+        var addChangeListener = function(){
+            if(that.state.changeListener == null){
+                 document.getElementById('sync').addEventListener('change', function(event){
+                    console.log("changed")
+                    that.setState({
+                        syncAddress: event.target.checked,
+                        changeListener: this
+                    })
+                })
+             }
+        }
+
+        var tryAdding = function(){
+            setTimeout(function () {
+                if(document.getElementById('sync') == null && counter < 20){
+                    counter++;
+                    tryAdding(); //wait a bit more if the infowindow didn't get visible yet
+                }else{
+                    addChangeListener();
+                }   
+            }, 100);
+        }
+        tryAdding();
     },
 
-  afterGeocoding: function(addressFound, status){    //show error message if no address found by the geocoder
+    createInfoWindow: function(){
+        var infoWindow = (new google.maps.InfoWindow({
+            content: '<div>Drag and drop me!</div><input type=\'checkbox\' id=sync checked=\'true\'></input><label for=\'sync\'>&nbsp;Auto sync with address</label>'
+        }) );
+        console.log("infowindow created")
+        this.setState({
+            infoWindow: infoWindow
+        })
+        return infoWindow
+    },
+
+    afterGeocoding: function(addressFound, status){    //show error message if no address found by the geocoder
         console.log("AFTER GEOCODING")
         if( !addressFound ){
             this.showNoAddressFoundError(status);
@@ -387,9 +466,6 @@ const EventForm = React.createClass({
 
 	// Called when editing event
 	autoFillEventDetails: function(event) {
-		this.setState({
-			loading:false
-		})
 		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
 		var time = moment.format("HH:mm");
 		moment.hour(0);
@@ -411,10 +487,14 @@ const EventForm = React.createClass({
 			time: time,
 			date: moment,
 			description: event.description,
-			selectedCategory: event.Category.name
+			selectedCategory: event.Category.name,
+            loadingEvent:false
 		});
-		this.centerAndSetMarker(latLng);
+        console.log("state set")
+
+        this.centerAndSetMarker(latLng);
         this.initAutocomplete();
+        
 	},
 
 	/*** DATE ***/
@@ -504,9 +584,12 @@ const EventForm = React.createClass({
             for(var index in data) {
                 categories.push(data[index]);
             }
-            that.setState({
-                categories: categories
-            })
+            if(that.isMounted()){
+                that.setState({
+                    categories: categories
+                })
+            }
+
         };
         var onError = function() {
             console.log("... Error on fetching categories!");
@@ -593,7 +676,6 @@ const EventForm = React.createClass({
 
     handleSubmit: function(e) {
 		var that = this;
-
 		//e.preventDefault();
 		var address = {
 			streetAddress: this.state.streetAddress,
@@ -658,6 +740,7 @@ const EventForm = React.createClass({
 
 		var returnHome = function(){
 			that.props.getEvents();
+            that.clearNewEventMarker();
 		    browserHistory.push('/');
 		}
 
@@ -678,10 +761,6 @@ const EventForm = React.createClass({
 		} else{
 			success = function(createdEventData) {
 		    	addMissingEventFields(createdEventData);
-				if(that.props.newEventMarker != null && !$.isEmptyObject(that.props.newEventMarker)) {
-			    	that.props.newEventMarker.setMap(null);
-			    	that.props.updateAppStatus('newEventMarker', null);
-		    	}
 		        //that.props.addEventToFilteredEventList(createdEventData);
 		        returnHome();
                 msgComponent.showMessageComponent('Event created successfully', constants.SHOW_MSG_MS_DEFAULT, 'success')
@@ -689,6 +768,17 @@ const EventForm = React.createClass({
 			UTILS.rest.addEntry('event', eventData, success, error);
 		}
 	},
+
+    clearNewEventMarker: function(){
+        console.log("clearing marker")
+        if( this.props.newEventMarker != null && !$.isEmptyObject(this.props.newEventMarker) ){
+            if(this.state.infoWindow != null){
+                this.state.infoWindow.setMap(null);
+            }
+            this.props.newEventMarker.setMap(null);
+        }
+        this.props.updateAppStatus('newEventMarker', null);
+    },
 
 	getEditOrCreateTitle: function(){
 		if(this.isEditForm()){
@@ -708,7 +798,7 @@ const EventForm = React.createClass({
 	render: function(){
 		var that = this;
 
-		if(this.state.loading){
+		if(this.state.loadingEvent){
 			return <div>Loading...</div>
 		}
 

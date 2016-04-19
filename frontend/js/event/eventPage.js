@@ -6,6 +6,7 @@ var validator = require('bootstrap-validator');
 var Confirm = require('../modal/confirm.js')
 var reactDom = require('react-dom')
 var msgComponent = require('../utils/messageComponent.js');
+var constants = require('../utils/constants.js');
 //import { render } from 'react-dom'
 const SHOW_MSG_SEC = 5;
 
@@ -142,7 +143,8 @@ const EventPage = React.createClass({
 
         var onError = function() {
             console.log("Error on fetching event!");
-            browserHistory.push('/');   //TODO ADD NOTIFICATION TO THE USER SAYING THE EVENT WAS NOT FOUND
+            msgComponent.showMessageComponent('Could not find the event', constants.SHOW_MSG_MS_DEFAULT, 'error')
+            browserHistory.push('/');
         }
         UTILS.rest.getEntry('event', eventId, onSuccess, onError);
     },
