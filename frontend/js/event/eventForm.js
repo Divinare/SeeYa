@@ -414,7 +414,7 @@ const EventForm = React.createClass({
         var that = this;
         var counter = 0;
         var addChangeListener = function(){
-            if(that.state.changeListener == null){
+            if(that.state.changeListener == null) {
                  document.getElementById('sync').addEventListener('change', function(event){
                     console.log("changed")
                     that.setState({
@@ -443,9 +443,11 @@ const EventForm = React.createClass({
             content: '<div>Drag and drop me!</div><input type=\'checkbox\' id=sync checked=\'true\'></input><label for=\'sync\'>&nbsp;Auto sync with address</label>'
         }) );
         console.log("infowindow created")
-        this.setState({
-            infoWindow: infoWindow
-        })
+        if(this.isMounted()){
+            this.setState({
+                infoWindow: infoWindow
+            })
+        }
         return infoWindow
     },
 
