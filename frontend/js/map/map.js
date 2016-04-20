@@ -1,4 +1,5 @@
 var React = require('react');
+var Moment = require('moment')
 var Router = require('react-router');
 var ContextMenu = require('./contextMenu.js');
 
@@ -187,33 +188,14 @@ var Map = React.createClass({
     addNewEventMarker: function(latLng, map) {
         var that = this;
         var icon = new google.maps.MarkerImage("assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
-
         var marker = this.createMarker(latLng, map, icon, true);
 
-
-
- 
-
-
-        //var infowindow =  this.createInfowindow(map, marker, null);
-        //this.openInfowindow(map, marker, infowindow);
-
-        //var pt = new google.maps.LatLng(lat, lng);
-     //   map.setCenter(latLng);
-     //   map.setZoom(8);
-/*
-        google.maps.event.addListener(infowindow, 'closeclick', function () {
-            that.deleteMarker(marker);
-        });
-*/
         // Delete current eventMarker if there is one
-        //this.deleteNewEventMarker();
         if(this.props.newEventMarker != null) {
             this.deleteMarker(this.props.newEventMarker);
         }
         // Update the new eventMarker
         this.props.updateAppStatus('newEventMarker', marker);
-
     },
 
     createMarker: function(location, map, icon, draggable) {
@@ -221,6 +203,7 @@ var Map = React.createClass({
         var marker = new google.maps.Marker({
             position: location,
             draggable: draggable,
+            animation: google.maps.Animation.DROP,
             map: map
         });
         if(typeof icon != 'undefined') {
@@ -230,15 +213,17 @@ var Map = React.createClass({
     },
 
     _renderInfoWindow: function(event) {
+        var unixTimestamp = UTILS.eventParser.getValue(event, 'timestamp');
+        var date = Moment.unix(unixTimestamp/1000).format("DD.MM.YYYY");
+        var hours = Moment.unix(unixTimestamp/1000).format("HH:mm")
+        var time = date + " " + hours;
 
-
-        var time = UTILS.eventParser.getValue(event, 'timestamp');
         var streetAddress = UTILS.eventParser.getValue(event, 'streetAddress');
         var attendances = UTILS.eventParser.getValue(event, 'attendances');
 
         return (
             <div className="infowindowContainer">
-                <h3>{event.name}</h3>
+                <div id="popupTopic">{event.name}</div>
                 <p>{time}</p>
                 <p>{streetAddress}</p>
                 <p>People attending: {attendances}</p>
@@ -250,9 +235,6 @@ var Map = React.createClass({
     createInfowindow: function(map, marker, event) {
         var that = this;
         var infowindowContent = '';
-
-
-
         var infowindowContainer = document.createElement('div');
         ReactDOM.render(this._renderInfoWindow(event), infowindowContainer );
         //infowindow.setContent( div );
