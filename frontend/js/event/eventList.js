@@ -34,11 +34,11 @@ const EventList = React.createClass({
     },
 
     setToolbarStyles: function() {
-        $("#rightContainerToolbar").css("border", "none");
+        $("#toolbarContainer").css("border", "none");
     },
 
     resetToolbarStyles: function() {
-        $("#rightContainerToolbar").css("border-bottom", "solid 1px #CBCED2");
+        $("#toolbarContainer").css("border-bottom", "solid 1px #CBCED2");
     },
 
     componentWillMount: function() {
