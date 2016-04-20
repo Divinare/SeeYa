@@ -85,6 +85,7 @@ const EventForm = React.createClass({
             ){
             var user = this.props.getAppStatus('user')
             if( user.id !== this.state.event.creator ){
+                console.log("gonna clear event marker")
                 that.clearNewEventMarker();
                 msgComponent.showMessageComponent('Event can only be modified by its creator', constants.SHOW_MSG_MS_DEFAULT, 'error')
                 browserHistory.push('/')
@@ -494,9 +495,10 @@ const EventForm = React.createClass({
 		});
         console.log("state set")
 
-        this.centerAndSetMarker(latLng);
-        this.initAutocomplete();
-        
+        if(this.isMounted()){
+            this.centerAndSetMarker(latLng);
+            this.initAutocomplete();
+        }
 	},
 
 	/*** DATE ***/
