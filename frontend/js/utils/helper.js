@@ -38,6 +38,16 @@ module.exports = {
 		return new Array();
 	},
 
+    urlTokenExistsInUrl: function(token) {
+        var tokens = this.getUrlTokens();
+        for(var i = 0; i < tokens.length; i++) {
+            if(tokens[i] == token) {
+                return true;
+            }
+        }
+        return false;
+    },
+
 	locationMatches: function(str){
 		var regex = new RegExp("^.*" + str)
 		//console.log(/^.*events\/\d+\/edit$/.test("http://localhost:1337/events/4/edit"))

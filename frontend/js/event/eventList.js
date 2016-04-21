@@ -63,7 +63,6 @@ const EventList = React.createClass({
         var that = this;
         if(headerName == 'name') {
             this.centerMapToMarker(eventId, 12);
-            //this.transitionTo('eventPage', {id: eventId});
             browserHistory.push('events/' + eventId);
 
             //this.context.router.transitionTo('eventPage', {id: eventId});

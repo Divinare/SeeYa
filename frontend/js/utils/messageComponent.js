@@ -2,6 +2,7 @@ var commonUtils = require("../../../common/utils.js");
 
 /* Message: message to display
    displayTime: display time in milliseconds, -1 for displaying until the user closes it
+   // if we use -1, TODO: close button. (Maybe without -1 there shouldn't be a close button)
    type = normal / success / error
 */
 

@@ -2,4 +2,36 @@
     font-size: 26px;
     border-bottom: 1px solid lightgrey;
     color: #4E4E4E;
+    margin-bottom: 10px;
+}
+
+#popupTopic:hover {
+    color: #000;
+}
+#popupPeopleIcon {
+    background-image: url(assets/people_icon_dark.png);
+    background-size: cover;
+    width: 25px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+#popupPeopleAttendingText {
+    position: relative;
+    top: -6px;
+}
+
+.popupListItem {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#popupJoinLink {
+    color: #337ab7;
+    font-weight: bold;
+}
+#popupJoinLink:hover {
+    color: #286090;
+    font-weight: bold;
 }

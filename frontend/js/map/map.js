@@ -4,7 +4,8 @@ var Router = require('react-router');
 var ContextMenu = require('./contextMenu.js');
 
 var CreateNewEventPopup = require('./createNewEventPopup.js');
-// https://developers.google.com/maps/documentation/javascript/examples/marker-animations
+
+import { browserHistory } from 'react-router'
 
 var Map = React.createClass({
     mixins: [ Router.Navigation ],
@@ -228,6 +229,27 @@ var Map = React.createClass({
         return marker;
     },
 
+    _handlePopupLinkClick: function(linkName, eventId) {
+        console.log("AT _handlePopupLinkClick " + linkName + " " + eventId);
+        console.log("AT _handlePopupLinkClick " + linkName + " " + eventId);
+        console.log("AT _handlePopupLinkClick " + linkName + " " + eventId);
+ 
+        if(linkName == "join") {
+            if(UTILS.helper.urlTokenExistsInUrl("join")) {
+                // Already at joinPage
+            } else {
+                browserHistory.push("/join/" + eventId);
+            }
+        } else if(linkName == "showEvent") {
+            if(UTILS.helper.urlTokenExistsInUrl("events")) {
+                // Already at eventPage
+            } else {
+                browserHistory.push('/events/' + eventId);
+            }
+
+        }
+    },
+
     _renderInfoWindow: function(event) {
         var unixTimestamp = UTILS.eventParser.getValue(event, 'timestamp');
         var date = Moment.unix(unixTimestamp/1000).format("DD.MM.YYYY");
@@ -239,11 +261,11 @@ var Map = React.createClass({
 
         return (
             <div className="infowindowContainer">
-                <div id="popupTopic">{event.name}</div>
-                <p>{time}</p>
-                <p>{streetAddress}</p>
-                <p>People attending: {attendances}</p>
-                <a>Attend</a>
+                <div id="popupTopic" className="link" onClick={this._handlePopupLinkClick.bind(null, "showEvent", event.id)}>{event.name}</div>
+                <div className="popupListItem">{time}</div>
+                <div className="popupListItem">{streetAddress}</div>
+                <div className="popupListItem"><span id="popupPeopleIcon"></span><span id="popupPeopleAttendingText"> attending: {attendances}</span></div>
+                <div id="popupJoinLink" className="popupListItem link" onClick={this._handlePopupLinkClick.bind(null, "join", event.id)}>Join to this event</div>
             </div>
         )
     },
