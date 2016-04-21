@@ -406,8 +406,6 @@ const EventForm = React.createClass({
                     google.maps.event.removeListener(firstClickListener);
                 }
             });
-        
-       
     },  
 
     //hacky function because with react cannot add the listener in normal way
@@ -469,35 +467,36 @@ const EventForm = React.createClass({
 
 	// Called when editing event
 	autoFillEventDetails: function(event) {
-		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
-		var time = moment.format("HH:mm");
-		moment.hour(0);
-		moment.minute(0);
-
-        this.selectCategory(name);
-        $("#singleSelectInput").val(event.Category.name);
-
-		var latLng = new google.maps.LatLng(event.lat,event.lon);
-
-		this.setState({
-			event: event,
-			name: event.name,
-			latLng: latLng,
-			streetAddress: event.Address.streetAddress,
-			city: event.Address.city,
-			country: event.Address.country,
-			zipCode: event.Address.zipCode,
-			time: time,
-			date: moment,
-			description: event.description,
-			selectedCategory: event.Category.name,
-            loadingEvent:false
-		});
-        console.log("state set")
-
         if(this.isMounted()){
-            this.centerAndSetMarker(latLng);
-            this.initAutocomplete();
+    		var moment = Moment(event.timestamp, "x");	//x for unix ms timestamp
+    		var time = moment.format("HH:mm");
+    		moment.hour(0);
+    		moment.minute(0);
+
+            this.selectCategory(name);
+            $("#singleSelectInput").val(event.Category.name);
+
+    		var latLng = new google.maps.LatLng(event.lat,event.lon);
+
+    		this.setState({
+    			event: event,
+    			name: event.name,
+    			latLng: latLng,
+    			streetAddress: event.Address.streetAddress,
+    			city: event.Address.city,
+    			country: event.Address.country,
+    			zipCode: event.Address.zipCode,
+    			time: time,
+    			date: moment,
+    			description: event.description,
+    			selectedCategory: event.Category.name,
+                loadingEvent:false
+    		});
+            if(this.isMounted()){
+                console.log("state set")
+                this.centerAndSetMarker(latLng);
+                this.initAutocomplete();
+            }
         }
 	},
 
