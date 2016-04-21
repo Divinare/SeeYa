@@ -438,7 +438,7 @@ const EventForm = React.createClass({
 
     createInfoWindow: function(){
         var infoWindow = (new google.maps.InfoWindow({
-            content: '<div>Drag and drop me!</div><input type=\'checkbox\' id=syncAddressCheckbox checked=\'true\'></input><label for=\'syncAddressCheckbox\'>&nbsp;Auto sync with address</label>'
+            content: '<div>Drag and drop me</div><input type=\'checkbox\' id=syncAddressCheckbox checked=\'true\'></input><label for=\'syncAddressCheckbox\'>&nbsp;Auto sync with address</label>'
         }) );
         console.log("infowindow created")
         if(this.isMounted()){
@@ -450,7 +450,6 @@ const EventForm = React.createClass({
     },
 
     afterGeocoding: function(addressFound, status){    //show error message if no address found by the geocoder
-        console.log("AFTER GEOCODING")
         if( !addressFound ){
             this.showNoAddressFoundError(status);
         }

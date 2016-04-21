@@ -190,7 +190,7 @@ const AttendForm = React.createClass({
                             { ( this.state.userAttending === true ) ?
                                 <h2>You have joined {this.state.event.name}</h2>
                                 :
-                                <h2>Attend {this.state.event.name}</h2>
+                                <h2>Join {this.state.event.name}</h2>
                             }
                             <form className='form' id='form' role='form'> 
                                 <div className='form-group'>

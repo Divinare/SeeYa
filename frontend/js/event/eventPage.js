@@ -46,12 +46,14 @@ const EventPage = React.createClass({
         if( prevState.fetchingAttendees && !this.state.fetchingAttendees ){  //we got the attendees now
             if( !this.state.loginStatusPending && this.props.getAppStatus('user') != null ){
                 this.updateUserAttendingInfo();
+                this.setToolbarIcons();
             } 
         }
 
         if( prevState.loginStatusPending && !this.state.loginStatusPending ){    //login status updated
             if( !this.state.fetchingAttendees && this.props.getAppStatus('user') != null){
                 this.updateUserAttendingInfo();
+                this.setToolbarIcons();
             }
         }
     },
@@ -109,7 +111,7 @@ const EventPage = React.createClass({
     componentDidMount: function() {
         var tokens = UTILS.helper.getUrlTokens();
         var eventId = tokens[tokens.length - 1];
-        this.setToolbarIcons();
+        //this.setToolbarIcons();
         this.props.handleResize();
         this.fetchEvent(eventId);
         this.checkIfUserLoggedIn();
@@ -124,13 +126,17 @@ const EventPage = React.createClass({
         var editFunc = this.moveToEditForm;
 
         var deleteFunc = function() {
-            browserHistory.push('/');
-        }
+            this.confirmDelete();
+        }.bind(this);
 
         var toolbarComponentData = {
-            "home": homeFunc,
-            "edit": editFunc,
-            "delete": deleteFunc
+            "home": homeFunc
+        }
+        if(this.state.editingAllowed){
+            toolbarComponentData["edit"] = editFunc;
+        }
+        if(this.state.editingAllowed || this.state.adminUser){
+            toolbarComponentData["delete"] = deleteFunc;
         }
         this.props.updateToolbarIcons(toolbarComponentData);
     },
@@ -355,15 +361,6 @@ const EventPage = React.createClass({
 
 
             if(typeof eventVar.Attendances !== 'undefined'){
-                /*
-                react-bootstrap removed:
-
-                btn = <Button
-                      bsStyle="default"
-                      onClick={this.open}>
-                      Show participants
-                    </Button>
-                    */
 
                  peopleAttending = eventVar.Attendances.length
             }
@@ -426,25 +423,6 @@ const EventPage = React.createClass({
                     {category}
                     {peopleAttendingStr}<br/>
                     <span id="description"></span><br/>
-
-                    <br />
-                    { that.state.editingAllowed ? 
-                        <div>
-                            {this.createEditButton()}
-                            { peopleAttending > 0 ? btn : ''}
-                        </div> 
-                        :
-                        ''
-                    }
-                    { that.state.editingAllowed || that.state.adminUser ? 
-                        <div>
-                            <button className="btn btn-danger btn-block" onClick={that.confirmDelete}>Delete</button>
-                        </div> 
-                        :
-                        ''
-                    }
-
-
                 </div>
                 {this.state.attendees.length > 0 ?
                     <div>
