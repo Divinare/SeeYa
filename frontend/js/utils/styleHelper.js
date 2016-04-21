@@ -69,6 +69,7 @@ module.exports = {
         // SHOW
         if(className.indexOf("showing") == -1 && show) {
             $("#rightContainerContent").css("visibility", "visible");
+            $("#rightContainerToolbar").css("visibility", "visible");
 
             if(this.isDesktop()) {
                 $(".right-container").animate({'right':'+=350px'},350);
@@ -81,13 +82,13 @@ module.exports = {
         } else if(className.indexOf("showing") != -1 && !show) {
 
             $("#rightContainerContent").css("visibility", "hidden");
+            $("#rightContainerToolbar").css("visibility", "hidden");
             if(this.isDesktop()) {
                 $(".right-container").animate({'right':'-=350px'},350);
                 $(".right-container").removeClass("showing");
             } else {
                 $(".right-container").animate({'top':'+=' + toggleHeightMobile + 'px'},350);
                 $(".right-container").removeClass("showing");
-                $("#rightContainerContent").css("visibility", "hidden");
             }
         }   
     },
@@ -114,6 +115,7 @@ module.exports = {
     resetRightContainer: function() {
         var className = $('.right-container').attr('class');
         $("#rightContainerContent").css("visibility", "visible");
+        $("#rightContainerToolbar").css("visibility", "visible");
 
         if(this.isDesktop()) {
             if(className.indexOf("toDesktop") == -1) {
@@ -123,7 +125,6 @@ module.exports = {
                     $(".right-container").css("right", "10px");
                     $(".right-container").addClass("showing");
                     $(".right-container").removeClass("toDesktop");
-
                  }, 499);
             }
         } else {

@@ -21,16 +21,13 @@ var EventFormDropdown = React.createClass({
     },
 
     select: function(item) {
-        console.log("AT SELECT !! " + item);
         this.props.select(item);
         var inputFieldId = this.props.inputFieldId;
-        console.log("INPUT ID: " + inputFieldId);
         $("#" + inputFieldId).val(item);
         this.toggleShowCategories();
     },
 
     toggleShowCategories: function(e) {
-        console.log("At toggle!");
         var id = "singleSelectContent";
         if($("#" + id).css('display') == 'none') {
             $("#" + id).slideDown(150, function(){ });

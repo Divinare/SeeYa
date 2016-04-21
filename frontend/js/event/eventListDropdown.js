@@ -45,8 +45,7 @@ var Dropdown = React.createClass({
     renderListItemsMultipleColumns: function() {
         var items = [];
         var list = this.props.list;
-        var eventListData = this.props.eventListData;
-        var filtersArray = eventListData['filters'];
+        var filtersArray = this.props.eventListData['filters'];
 
         for(var i = 0; i < list.length; i += 2) {
             var itemLeft = list[i];
@@ -84,13 +83,24 @@ var Dropdown = React.createClass({
         return items;
     },
 
+    isAllCategoriesSelected: function() {
+        var filtersArray = this.props.eventListData['filters'];
+        for(var filter in filtersArray) {
+            if(!filtersArray[filter]) {
+                return false;
+            }
+        }
+        return true;
+    },
+
     renderSelectAllOption: function() {
+        this.isAllCategoriesSelected();
         var selectAllOption = <div id="showAllCategories" className="eventListDropdownRow">
             <div className="eventListDropdownSelectAllContainer" onClick={this.toggleAllCategories}>
                 <input className="eventListDropdownSelectAllCheckbox" type="checkbox"
-                  checked={this.props.showAllCategories}
+                  checked={this.isAllCategoriesSelected()}
                   onChange={function(){}}
-                  value={this.props.showAllCategories} />
+                  value={this.isAllCategoriesSelected()} />
                   <span className="eventListDropdownSelectAllTextField">Show all categories</span>
             </div>
         </div>
@@ -121,7 +131,7 @@ var Dropdown = React.createClass({
 
         return (
 
-            <div id={this.props.dropdownId}>
+            <div id="eventListDropdown">
                 <div id="categoriesContentEventList">
                     {selectAllOption}
                     {listItems}

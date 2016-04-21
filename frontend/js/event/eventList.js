@@ -1,7 +1,7 @@
 var Router = require('react-router');
 var Moment = require('moment');
 
-var Dropdown = require('./eventListDropdown.js');
+var EventListDropdown = require('./eventListDropdown.js');
 //var Dateselect = require('../dateselect.js');
 //var DatePicker = require('../datepicker.js');
 import { browserHistory } from 'react-router'
@@ -195,7 +195,7 @@ const EventList = React.createClass({
                 </table>
             );
         } else {
-            return <div>No events found. You can add more categories from the button below to find more events.</div>
+            return <div>No events found. You can find more events by adding more categories from the button below.</div>
         }
     },
 
@@ -272,16 +272,14 @@ const EventList = React.createClass({
                     </div>
 
                     <div id="eventListBottomBar">
-                        <span id="select-dropdown">
-                            <Dropdown
-                                showAllCategories={this.state.showAllCategories}
-                                updateAppStatus={this.props.updateAppStatus}
-                                getEvents={this.props.getEvents}
-                                eventListData={this.props.eventListData}
-                                list={this.props.categories}
-                                showOrHideAllCategories={this.showOrHideAllCategories}
-                                setShowAllCategories={this.setShowAllCategories} />
-                        </span>
+                        <EventListDropdown
+                            showAllCategories={this.state.showAllCategories}
+                            updateAppStatus={this.props.updateAppStatus}
+                            getEvents={this.props.getEvents}
+                            eventListData={this.props.eventListData}
+                            list={this.props.categories}
+                            showOrHideAllCategories={this.showOrHideAllCategories}
+                            setShowAllCategories={this.setShowAllCategories} />
                     </div>
                 </div>              
                 )       

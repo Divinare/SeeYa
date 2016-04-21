@@ -27,6 +27,7 @@ var Map = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
+        var that = this;
         this.deleteMarkers(this.state.markers);
 
         var location = UTILS.helper.getLocation();
@@ -34,6 +35,7 @@ var Map = React.createClass({
         if(this.state != null && nextProps.filteredEventList.length > 0) {
             if(allowDrawMarkers) {
                 this.addAllMarkers(nextProps);
+                window.markersHaventLoaded = false;
                 if(allowDrawMarkers) {
                     var newEventMarker = this.props.newEventMarker;
                     if(!$.isEmptyObject(newEventMarker)) {
@@ -186,9 +188,10 @@ var Map = React.createClass({
     },
 
     addNewEventMarker: function(latLng, map) {
+        console.log("addNewEventMarker map.js")
         var that = this;
-        var icon = new google.maps.MarkerImage("assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
-        var marker = this.createMarker(latLng, map, icon, true);
+        var icon = new google.maps.MarkerImage("assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(24,29));
+        var marker = this.createMarker(latLng, map, icon, true, true);
 
         // Delete current eventMarker if there is one
         if(this.props.newEventMarker != null) {
@@ -198,14 +201,27 @@ var Map = React.createClass({
         this.props.updateAppStatus('newEventMarker', marker);
     },
 
-    createMarker: function(location, map, icon, draggable) {
-        var that = this;
-        var marker = new google.maps.Marker({
-            position: location,
-            draggable: draggable,
-            animation: google.maps.Animation.DROP,
-            map: map
-        });
+    createMarker: function(location, map, icon, draggable, showAnimation) {
+        var addAnimation = (window.markersHaventLoaded == true) ? true : false;
+        if(showAnimation) {
+            addAnimation = true;
+        }
+        var marker;
+        if(addAnimation) {
+            marker = new google.maps.Marker({
+                position: location,
+                draggable: draggable,
+                animation: google.maps.Animation.DROP,
+                map: map
+            });
+        } else {
+            marker = new google.maps.Marker({
+                position: location,
+                draggable: draggable,
+                map: map
+            });
+        }
+
         if(typeof icon != 'undefined') {
             marker.setIcon(icon);
         }

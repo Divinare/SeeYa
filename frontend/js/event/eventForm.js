@@ -234,18 +234,17 @@ const EventForm = React.createClass({
   	},
 
   	centerAndSetMarker: function(latLng){
-        console.log("centerAndSetMarker")
         var that = this;
         var marker = this.props.newEventMarker;
         if(marker == null || marker.map == null) {
-            console.log("creating new marker")
             map.setCenter(latLng);
             marker = new google.maps.Marker({
                 map: map,
                 position: latLng,
+                animation: google.maps.Animation.DROP,
                 draggable: true
             });
-            var icon = new google.maps.MarkerImage("../../assets/seeya_marker_new.png", null, null, null, new google.maps.Size(21,30));
+            var icon = new google.maps.MarkerImage("../../assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(24,29));
             marker.setIcon(icon);
             google.maps.event.addListener(marker, 'dragend', function(evt){
                 if(that.state.syncAddress){
@@ -440,7 +439,7 @@ const EventForm = React.createClass({
 
     createInfoWindow: function(){
         var infoWindow = (new google.maps.InfoWindow({
-            content: '<div>Drag and drop me!</div><input type=\'checkbox\' id=sync checked=\'true\'></input><label for=\'sync\'>&nbsp;Auto sync with address</label>'
+            content: '<div>Drag and drop me!</div><input type=\'checkbox\' id=syncAddressCheckbox checked=\'true\'></input><label for=\'sync\'>&nbsp;Auto sync with address</label>'
         }) );
         console.log("infowindow created")
         if(this.isMounted()){

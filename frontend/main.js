@@ -5,6 +5,7 @@ window.URL = UTILS.url;
 window.React = require('react');
 window.ReactDOM = require('react-dom');
 
+window.markersHaventLoaded = true; 
 
 var Moment = require('moment');
 
@@ -44,7 +45,6 @@ const Main = React.createClass({
         
         return {
             showFrontpage: true,
-            frontpageLoaded: false,
             eventList: [],
             categories: [],
             filteredEventList: [],
@@ -117,12 +117,6 @@ const Main = React.createClass({
     },
 
     getEvents: function() {
-        console.log("AT GET EVENTS");
-        console.log("AT GET EVENTS");
-        console.log("AT GET EVENTS");
-        console.log("AT GET EVENTS");
-        console.log("AT GET EVENTS");
-        console.log("AT GET EVENTS");
         var that = this;
         var onSuccess = function(eventList) {
             //var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
@@ -140,10 +134,6 @@ const Main = React.createClass({
             })
         }
         var categoryFilters = this.state.eventListData['filters'];
-        console.log("categoryFilters")
-        console.log("categoryFilters")
-        console.log("categoryFilters")
-        console.log(categoryFilters)
         UTILS.rest.getFilteredEntries('filteredEvents', categoryFilters, null, null, onSuccess, onError);
     },
 
@@ -191,7 +181,6 @@ const Main = React.createClass({
     render: function() {
         var that = this;
         var showFrontpage = this.state.showFrontpage;
-        var frontpageLoaded = this.state.frontpageLoaded;
 
         var childrenWithProps = React.Children.map(this.props.children, function(child) {
             return React.cloneElement(child, {
