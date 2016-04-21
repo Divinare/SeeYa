@@ -101,6 +101,11 @@ const EventPage = React.createClass({
         
     },
 
+    componentWillUnmount: function() {
+        console.log("UNMOUNT!?!?!?");
+        this.props.updateAppStatus("shownEventData", {});
+    },
+
     componentDidMount: function() {
         var tokens = UTILS.helper.getUrlTokens();
         var eventId = tokens[tokens.length - 1];
@@ -132,12 +137,13 @@ const EventPage = React.createClass({
 
     fetchEvent: function(eventId){
         var that = this;
-        var onSuccess = function (data) {
+        var onSuccess = function (eventData) {
             if(that.isMounted()){
                 that.setState({
-                    event: data
+                    event: eventData
                 })
-                that.updateEditingPrivileges(data);
+                that.updateEditingPrivileges(eventData);
+                that.props.updateAppStatus("shownEventData", eventData);
             }
         };
 

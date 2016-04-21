@@ -51,6 +51,7 @@ const Main = React.createClass({
             eventListData: eventListData,
             newEventMarker: null,
             markers: [],
+            shownEventData: {}, // data that is shown currently to the user, if any
             user: null,
             loginStatusPending: true,
             showRightContainer: false,
@@ -208,6 +209,7 @@ const Main = React.createClass({
                         filteredEventList={this.state.filteredEventList}
                         newEventMarker={this.state.newEventMarker}
                         markers={this.state.markers}
+                        shownEventData={this.state.shownEventData}
                         
                         handleResize={this.handleResize}
                         updateAppStatus={this.updateAppStatus}
@@ -222,7 +224,7 @@ const Main = React.createClass({
                                 {childrenWithProps}
                             </div>
                             <div id="rightContainerBottomBar">
-                                <Link to="/termsOfService" className="link bottomBarLink">Terms of service</Link>
+                                <Link to="/termsOfService" className="link bottomBarLink">Terms of Service</Link>
                                 <Link to="/contact" className="link bottomBarLink">Contact us</Link>
                             </div>
 

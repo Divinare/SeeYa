@@ -25,34 +25,49 @@ var Map = React.createClass({
         this.props.handleResize();
 
         var allowDrawMarkers = !(location === 'eventForm' || location === 'editForm');
+
+        console.log("MAP DID MOUNT!!!");
+        console.log(this.props.shownEventData);
+
     },
 
     componentWillReceiveProps: function(nextProps) {
+        console.log("MAP WILL RECEIVE PROPS!!!");
+        console.log(nextProps.shownEventData);
+
         var that = this;
+        console.log("DELETING MARKERS!");
         this.deleteMarkers(this.state.markers);
 
         var location = UTILS.helper.getLocation();
         var allowDrawMarkers = !(location === 'eventForm' || location === 'editForm');
+
         if(this.state != null && nextProps.filteredEventList.length > 0) {
             if(allowDrawMarkers) {
-                this.addAllMarkers(nextProps);
-                window.markersHaventLoaded = false;
-                if(allowDrawMarkers) {
-                    var newEventMarker = this.props.newEventMarker;
-                    if(!$.isEmptyObject(newEventMarker)) {
-                        console.log("SETTING OFF MARKER");
-                        this.props.newEventMarker.setMap(null);
-                        //this.props.updateAppStatus(newEventMarker, null);
-
-                    }
+                var newEventMarker = this.props.newEventMarker;
+                if(!$.isEmptyObject(newEventMarker)) {
+                    this.props.newEventMarker.setMap(null);
                 }
 
+                var drawEventMarker = (!$.isEmptyObject(nextProps.shownEventData)) ? true :  false
+                if(drawEventMarker) {
+                    console.log("draw eventmarker")
+                    console.log("draw eventmarker")
+                    console.log("draw eventmarker")
+                    console.log("draw eventmarker")
+                    console.log("draw eventmarker")
+                    this.addEventMarker(nextProps.shownEventData);
+                } else {
+                    console.log("draw ALL markers... :o");
+                    console.log("draw ALL markers... :o");
+                    console.log("draw ALL markers... :o");
+                    console.log("draw ALL markers... :o");
+                    console.log("draw ALL markers... :o");
+                    this.addAllMarkers(nextProps);
+                }
+                window.markersHaventLoaded = false;
             }
         }
-
-        if(nextProps.newEventMarker == null) {
-            //console.log("removing new eventMarker!");
-        }   
     },
 
     _zoomControl: function(controlDiv, map) {
@@ -157,31 +172,46 @@ var Map = React.createClass({
 
         filteredEventList.map(function(event) {
             if(!$.isEmptyObject(event)) {
-                var icon = new google.maps.MarkerImage("assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(24,29));
-                var marker = that.createMarker({ lat: event.lat, lng: event.lon }, map, icon, false);
-                var infowindow =  that.createInfowindow(map, marker, event);
-                google.maps.event.addListener(marker, 'click', function() {
-                    that.openInfowindow(map, marker, infowindow);
-                    //that.deleteNewEventMarker();
-                });
+                var marker = that._createEventMarker(event);
                 createdMarkers.push(marker);
-
-
-
             } else {
                 console.log("... Critical error in map.js maybe.");
             }
         });
                     
         if(!$.isEmptyObject(createdMarkers)) {
-//            this.props.updateAppStatus('markers', createdMarkers);
+
             this.setState({
                 markers: createdMarkers
             })
         }
+    },
 
+    addEventMarker: function(event) {
+        var createdMarkers = [];
+        var marker = this._createEventMarker(event);
+        console.log("GOT MARKER &&&&&&&&&");
+        console.log(marker);
+        createdMarkers.push(marker);
+        if(!$.isEmptyObject(createdMarkers)) {
+            this.setState({
+                markers: createdMarkers
+            })
+        }
+    },
 
-
+    _createEventMarker: function(event) {
+        console.log("AT CREATE MARKER :O---");
+        console.log(event);
+        console.log(map);
+        var that = this;
+        var icon = new google.maps.MarkerImage("assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(24,29));
+        var marker = this.createMarker({ lat: event.lat, lng: event.lon }, map, icon, false);
+        var infowindow =  this.createInfowindow(map, marker, event);
+        google.maps.event.addListener(marker, 'click', function() {
+            that.openInfowindow(map, marker, infowindow);
+        });
+        return marker;
     },
 
     transitionToEventForm: function() {
@@ -230,10 +260,6 @@ var Map = React.createClass({
     },
 
     _handlePopupLinkClick: function(linkName, eventId) {
-        console.log("AT _handlePopupLinkClick " + linkName + " " + eventId);
-        console.log("AT _handlePopupLinkClick " + linkName + " " + eventId);
-        console.log("AT _handlePopupLinkClick " + linkName + " " + eventId);
- 
         if(linkName == "join") {
             if(UTILS.helper.urlTokenExistsInUrl("join")) {
                 // Already at joinPage
