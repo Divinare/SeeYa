@@ -27,6 +27,10 @@ const AttendForm = React.createClass({
         }
     },
 
+    componentWillUnmount: function() {
+        this.props.updateAppStatus("shownEventData", {});
+    },
+
 
     //only call this method when attendances have been fetched
     updateUserAttendingInfo: function(){
@@ -72,11 +76,12 @@ const AttendForm = React.createClass({
 
     fetchEvent: function(eventId){
         var that = this;
-        var onSuccess = function (data) {
+        var onSuccess = function (eventData) {
             if(that.isMounted()){
                 that.setState({
-                    event: data
+                    event: eventData
                 })
+                that.props.updateAppStatus("shownEventData", eventData);
             }
         };
 

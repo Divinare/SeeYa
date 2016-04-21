@@ -104,11 +104,11 @@ const About = React.createClass({
        }.bind(this);
     },
 
-    render: function(){
+    render: function() {
         return (
             <div id="loginContainer">
                 <div id="loginForm">  
-                    <h2 className="topicText">Have an account?</h2>
+                    <h2 className="topicText">Login</h2>
                     <div id='serverErrorDiv'></div>
                     <form className="form">
                         <div className="form-group">
@@ -122,7 +122,7 @@ const About = React.createClass({
 
                        {/* Submit */}
                         <div className="form-group">
-                            <button type="submit" id="buttonSpacing" onClick={this.submit} className="btn btn-primary btn-block">Log in</button>
+                            <button type="submit" id="loginButton" onClick={this.submit} className="btn btn-primary btn-block">Log in</button>
                         </div>
                     </form>
 

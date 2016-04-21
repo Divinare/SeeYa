@@ -5,6 +5,7 @@ window.URL = UTILS.url;
 window.React = require('react');
 window.ReactDOM = require('react-dom');
 
+window.markersHaventLoaded = true; 
 
 var Moment = require('moment');
 
@@ -44,13 +45,13 @@ const Main = React.createClass({
         
         return {
             showFrontpage: true,
-            frontpageLoaded: false,
             eventList: [],
             categories: [],
             filteredEventList: [],
             eventListData: eventListData,
             newEventMarker: null,
             markers: [],
+            shownEventData: {}, // data that is shown currently to the user, if any
             user: null,
             loginStatusPending: true,
             showRightContainer: false,
@@ -117,12 +118,6 @@ const Main = React.createClass({
     },
 
     getEvents: function() {
-        console.log("AT GET EVENTS");
-        console.log("AT GET EVENTS");
-        console.log("AT GET EVENTS");
-        console.log("AT GET EVENTS");
-        console.log("AT GET EVENTS");
-        console.log("AT GET EVENTS");
         var that = this;
         var onSuccess = function(eventList) {
             //var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
@@ -140,10 +135,6 @@ const Main = React.createClass({
             })
         }
         var categoryFilters = this.state.eventListData['filters'];
-        console.log("categoryFilters")
-        console.log("categoryFilters")
-        console.log("categoryFilters")
-        console.log(categoryFilters)
         UTILS.rest.getFilteredEntries('filteredEvents', categoryFilters, null, null, onSuccess, onError);
     },
 
@@ -191,7 +182,6 @@ const Main = React.createClass({
     render: function() {
         var that = this;
         var showFrontpage = this.state.showFrontpage;
-        var frontpageLoaded = this.state.frontpageLoaded;
 
         var childrenWithProps = React.Children.map(this.props.children, function(child) {
             return React.cloneElement(child, {
@@ -219,6 +209,7 @@ const Main = React.createClass({
                         filteredEventList={this.state.filteredEventList}
                         newEventMarker={this.state.newEventMarker}
                         markers={this.state.markers}
+                        shownEventData={this.state.shownEventData}
                         
                         handleResize={this.handleResize}
                         updateAppStatus={this.updateAppStatus}
@@ -233,7 +224,7 @@ const Main = React.createClass({
                                 {childrenWithProps}
                             </div>
                             <div id="rightContainerBottomBar">
-                                <Link to="/termsOfService" className="link bottomBarLink">Terms of service</Link>
+                                <Link to="/termsOfService" className="link bottomBarLink">Terms of Service</Link>
                                 <Link to="/contact" className="link bottomBarLink">Contact us</Link>
                             </div>
 
