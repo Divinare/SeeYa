@@ -50,9 +50,15 @@ module.exports = {
         }
     },
 
-    setErrorToField: function(inputField, errorArray, errorField){
+    // errorObject can be an array of errors or string
+    setErrorToField: function(inputField, errorObject, errorField){
         $(inputField).addClass('invalid')
-        var errorText = errorArray.join('<br/>')
+        var errorText;
+        if(errorObject.constructor === Array) {
+            errorText = errorObject.join('<br/>')
+        } else {
+            errorText = errorObject;
+        }
         $(errorField).html(errorText);
     },
 

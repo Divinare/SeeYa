@@ -27,7 +27,8 @@ module.exports = {
 		'attendance': REST + '/attendances/'
 	},
 	'editEntry': {
-		'event': REST + '/events/'
+		'event': REST + '/events/',
+		'user': REST + '/users/'
 	},
 	'authorization': {
 		'loggedInStatus': REST + '/isLoggedIn',

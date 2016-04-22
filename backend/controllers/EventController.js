@@ -2,7 +2,7 @@ var router = require("express").Router();
 var Sequelize = require('sequelize')
 var Promise = require('bluebird');
 
-var Validator = require("../../common/validators/validator.js")
+var validator = require("../../common/validators/validator.js")
 var models  = require('../models');
 var helper = require("../helpers/helper.js")
 var CategoryService = require('../services/CategoryService.js');
@@ -195,12 +195,12 @@ function validateEvent(eventToAdd) {
     var lat = eventToAdd.lat;
     var lon = eventToAdd.lon;
 
-    var valid1 = Validator.validateEventName(eventToAdd.name);
-    var valid2 = Validator.validateEventAddress(eventToAdd.address);
-    var valid3 = Validator.validateEventLatLng([lat, lon]);
-    var valid4 = Validator.validateEventTimestamp(eventToAdd.timestamp);
-    var valid5 = Validator.validateEventCategory(eventToAdd.category);
-    var valid6 = Validator.validateEventDescription(eventToAdd.description);
+    var valid1 = validator.validateEventName(eventToAdd.name);
+    var valid2 = validator.validateEventAddress(eventToAdd.address);
+    var valid3 = validator.validateEventLatLng([lat, lon]);
+    var valid4 = validator.validateEventTimestamp(eventToAdd.timestamp);
+    var valid5 = validator.validateEventCategory(eventToAdd.category);
+    var valid6 = validator.validateEventDescription(eventToAdd.description);
 
     // All of the validations must return an empty string
     if(valid1.length == 0 && valid2.length == 0 && valid3.length == 0 && valid4.length == 0 && valid5.length == 0 && valid6.length == 0) {

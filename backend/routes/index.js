@@ -50,6 +50,8 @@ router.post('/contacts', ContactCtrl.create)
 
 router.post('/events/:id', EventCtrl.update);
 router.post('/categories/:id', CategoryCtrl.update);
+router.post('/users/:id', UserCtrl.update);
+
 
 router.delete('/events/:id', EventCtrl.delete);
 router.delete('/attendances/:eventId', AttendanceCtrl.delete);

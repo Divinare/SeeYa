@@ -48,14 +48,14 @@ module.exports = {
     hashPassword: function(password, salt, errorCallback, successCallback){
         //Do the actual hashing of the password
         crypto.pbkdf2(password, salt, iterations, hashLengthInBytes, hashingAlgorithm,
-                    function (err, hash){
-                        if (err) { 
-                            errorCallback(err); 
-                        }else{
-                            hash = new Buffer(hash).toString('hex') 
-                            successCallback(salt, hash);
-                        }
-                    });
+            function (err, hash){
+                if (err) { 
+                    errorCallback(err); 
+                } else {
+                    hash = new Buffer(hash).toString('hex') 
+                    successCallback(salt, hash);
+                }
+        });
     }
 };
 
