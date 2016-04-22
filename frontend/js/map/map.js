@@ -23,19 +23,6 @@ var Map = React.createClass({
     componentDidMount: function () {
         this.initMap();
         this.props.handleResize();
-
-        console.log("MAP DID MOUNT!!!");
-        console.log(this.props.shownEventData);
-        var that = this;
-        setTimeout(function(){
-        console.log("STATE MARKERS:");
-        console.log("STATE MARKERS:");
-        console.log("STATE MARKERS:");
-        console.log("STATE MARKERS:");
-        console.log("STATE MARKERS:");
-        console.log(that.state.markers);
-        that.addAllMarkers(that.props);
-        }, 3000);
     },
 
     componentWillReceiveProps: function(nextProps) {
@@ -50,8 +37,7 @@ var Map = React.createClass({
         var allowDrawMarkers = !(location === 'eventForm' || location === 'editForm');
 
         if(this.state != null && nextProps.filteredEventList.length > 0) {
-                    this.addAllMarkers(nextProps);
-                    /*
+                    
             if(allowDrawMarkers) {
                 var newEventMarker = this.props.newEventMarker;
                 if(!$.isEmptyObject(newEventMarker)) {
@@ -76,7 +62,6 @@ var Map = React.createClass({
                 }
                 window.markersHaventLoaded = false;
             }
-            */
         }
     },
 
@@ -108,12 +93,6 @@ var Map = React.createClass({
     },
 
     initMap: function() {
-        console.log("SETTING WINDOW MAP!!!!!!!!");
-        console.log("SETTING WINDOW MAP!!!!!!!!");
-        console.log("SETTING WINDOW MAP!!!!!!!!");
-        console.log("SETTING WINDOW MAP!!!!!!!!");
-        console.log("SETTING WINDOW MAP!!!!!!!!");
-
         var that = this;
 
         var mapOptions = {
@@ -162,10 +141,6 @@ var Map = React.createClass({
                 UTILS.styleHelper.toggleRightContainer();
             }
         });
-
-var icon = new google.maps.MarkerImage("assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(24,29));
-        var marker = this.createMarker({ lat: 60.2210574, lng: 24.8603772 }, map, icon, false);
-
         window.map = map;
     },
 
@@ -222,11 +197,8 @@ var icon = new google.maps.MarkerImage("assets/marker_gatherup_straight.png", nu
     },
 
     _createEventMarker: function(event) {
-        console.log("AT CREATE MARKER :O---");
-        console.log(event);
-        console.log(window.map);
         var that = this;
-        var icon = new google.maps.MarkerImage("assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(24,29));
+        var icon = new google.maps.MarkerImage("../../assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(24,29));
         var marker = this.createMarker({ lat: event.lat, lng: event.lon }, window.map, icon, false);
         var infowindow =  this.createInfowindow(window.map, marker, event);
         google.maps.event.addListener(marker, 'click', function() {
@@ -240,7 +212,6 @@ var icon = new google.maps.MarkerImage("assets/marker_gatherup_straight.png", nu
     },
 
     addNewEventMarker: function(latLng, map) {
-        console.log("addNewEventMarker map.js")
         var that = this;
         var icon = new google.maps.MarkerImage("assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(24,29));
         var marker = this.createMarker(latLng, map, icon, true, true);
@@ -274,7 +245,14 @@ var icon = new google.maps.MarkerImage("assets/marker_gatherup_straight.png", nu
             });
         }
 
+        console.log("ICON");
+        console.log("ICON");
+        console.log("ICON");
+        console.log("ICON");
+        console.log("ICON");
+        console.log(icon);
         if(typeof icon != 'undefined') {
+
             marker.setIcon(icon);
         }
         return marker;
