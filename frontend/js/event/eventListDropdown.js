@@ -137,7 +137,7 @@ var Dropdown = React.createClass({
                     {listItems}
                 </div>
 
-                <div id="category" className="dropdownBtnEventList" onClick={this.toggleShowCategories}>Categories</div>
+                <div id="category" className="dropdownBtnEventList" onClick={this.toggleShowCategories}>Category filters</div>
             </div>
             
         );

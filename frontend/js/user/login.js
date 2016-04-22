@@ -41,7 +41,6 @@ const About = React.createClass({
      we still want them to be able to sign in.
     */
     submit: function(e){
-        console.log("SUBMIT")
         e.preventDefault();
         var that = this;
         var validEmail = validator.validateField(commonValidator.validateNotEmpty, 

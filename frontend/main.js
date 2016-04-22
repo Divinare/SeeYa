@@ -50,7 +50,6 @@ const Main = React.createClass({
             filteredEventList: [],
             eventListData: eventListData,
             newEventMarker: null,
-            markers: [],
             shownEventData: {}, // data that is shown currently to the user, if any
             user: null,
             loginStatusPending: true,
@@ -208,7 +207,6 @@ const Main = React.createClass({
                         eventList={this.state.eventList}
                         filteredEventList={this.state.filteredEventList}
                         newEventMarker={this.state.newEventMarker}
-                        markers={this.state.markers}
                         shownEventData={this.state.shownEventData}
                         
                         handleResize={this.handleResize}

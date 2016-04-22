@@ -59,21 +59,19 @@ const EventForm = React.createClass({
             (prevProps == null || prevEventMarker == null || $.isEmptyObject(prevEventMarker) ) &&
             this.isMounted())  {
 
-            google.maps.event.addListener(newEventMarker, 'dragend', function(evt){
+            google.maps.event.addListener(newEventMarker, 'dragend', function(evt) {
                 if(that.state.syncAddress){
                     that.codeAddressFromLatLng(evt.latLng, that.afterGeocoding);
                 }
             });
 
-            google.maps.event.addListener(newEventMarker, 'click', function(evt){
+            google.maps.event.addListener(newEventMarker, 'click', function(evt) {
                 if(that.state.infoWindow != null){
                     if(that.state.infoWindow.getMap() == null){
                         that.state.infoWindow.open(map, newEventMarker)
-                        that.createChangeListener();
                     }else{
                         that.state.infoWindow.close()
                     }
-                    
                 }
             });
         }       
@@ -85,7 +83,6 @@ const EventForm = React.createClass({
             ){
             var user = this.props.getAppStatus('user')
             if( user.id !== this.state.event.creator ){
-                console.log("gonna clear event marker")
                 that.clearNewEventMarker();
                 msgComponent.showMessageComponent('Event can only be modified by its creator', constants.SHOW_MSG_MS_DEFAULT, 'error')
                 browserHistory.push('/')
@@ -94,7 +91,6 @@ const EventForm = React.createClass({
 	},
                 
 	componentDidMount: function() {
-        console.log("did mount")
         this.setToolbarIcons();
 		var that = this;
 		this.props.handleResize();
@@ -183,7 +179,6 @@ const EventForm = React.createClass({
 		return path.indexOf('edit') > -1
 	},
 
-
 	/*** ADDRESS ***/
 
 	initAutocomplete: function() {
@@ -226,7 +221,7 @@ const EventForm = React.createClass({
 		   		that.centerAndSetMarker(results[0].geometry.location);
 
 			} else {
-				console.log("Geocode was not successful for the following reason: " + status);
+				console.log("____ Geocode was not successful for the following reason: " + status);
                 that.returnMarker();
                 that.afterGeocoding(false, status);
 			}
@@ -252,9 +247,8 @@ const EventForm = React.createClass({
                      that.codeAddressFromLatLng(evt.latLng, that.afterGeocoding);
                 }
             });
-            var infowindow = that.createInfoWindow();
-            infowindow.open(map, marker);
-            this.createChangeListener();
+            var infoWindow = this.createInfoWindow();
+            infoWindow.open(map, marker);
             this.props.updateAppStatus("newEventMarker", marker);
         }
         map.setCenter(latLng);
@@ -375,11 +369,9 @@ const EventForm = React.createClass({
             //remove the marker and add again firstclicklistener
             this.clearNewEventMarker();
             this.createFirstClickListener();
-
         }
 
         if( this.props.newEventMarker != null && this.state.latLng != null && !$.isEmptyObject(this.state.latLng) ){
-            console.log("RETURNING MARKER")
             this.props.newEventMarker.setPosition(this.state.latLng)
         }
     },
@@ -396,8 +388,6 @@ const EventForm = React.createClass({
                         if(addressFound){
                             var infowindow = that.createInfoWindow();
                             infowindow.open(map, that.props.newEventMarker);
-                            that.createChangeListener();
-          
                             that.afterGeocoding(addressFound, status);
                         }
                     };
@@ -407,46 +397,49 @@ const EventForm = React.createClass({
             });
     },  
 
-    //hacky function because with react cannot add the listener in normal way
-    createChangeListener: function(){
-        var that = this;
-        var counter = 0;
-        var addChangeListener = function(){
-            if(that.state.changeListener == null) {
-                 document.getElementById('sync').addEventListener('change', function(event){
-                    console.log("changed")
-                    that.setState({
-                        syncAddress: event.target.checked,
-                        changeListener: this
-                    })
-                })
-             }
-        }
-
-        var tryAdding = function(){
-            setTimeout(function () {
-                if(document.getElementById('sync') == null && counter < 20){
-                    counter++;
-                    tryAdding(); //wait a bit more if the infowindow didn't get visible yet
-                }else{
-                    addChangeListener();
-                }   
-            }, 100);
-        }
-        tryAdding();
+    _handleInfoWindowClick: function(event) {
+        var checked = !this.state.syncAddress;
+        this.setState({
+            syncAddress: checked,
+        })
+        $('#syncAddressCheckbox')[0].checked = checked;
     },
 
-    createInfoWindow: function(){
-        var infoWindow = (new google.maps.InfoWindow({
-            content: '<div>Drag and drop me</div><input type=\'checkbox\' id=syncAddressCheckbox checked=\'true\'></input><label for=\'syncAddressCheckbox\'>&nbsp;Auto sync with address</label>'
-        }) );
-        console.log("infowindow created")
+    _renderInfoWindow: function(){
+
+        return (
+            <div className="eventFormInfowindowContainer">
+                <div>Drag and drop me</div>
+
+                <div id="eventFormCheckboxContainer" onClick={this._handleInfoWindowClick}>                    
+                    <input id="syncAddressCheckbox" type="checkbox"
+                      checked={true}
+                      onChange={function(){}}
+                      value={this.state.syncAddress} />
+                      <div id="syncAddressText">Auto sync with address</div>
+                </div>
+            </div>
+        )
+    },
+
+
+    createInfoWindow: function(map, marker, event) {
+        var that = this;
+        var infowindowContent = '';
+        var infowindowContainer = document.createElement('div');
+        ReactDOM.render(this._renderInfoWindow(event), infowindowContainer );
+
+        var infoWindow = new google.maps.InfoWindow({
+            content: infowindowContainer
+        });
+        
         if(this.isMounted()){
             this.setState({
                 infoWindow: infoWindow
             })
         }
-        return infoWindow
+        
+        return infoWindow;
     },
 
     afterGeocoding: function(addressFound, status){    //show error message if no address found by the geocoder
@@ -491,7 +484,6 @@ const EventForm = React.createClass({
                 loadingEvent:false
     		});
             if(this.isMounted()){
-                console.log("state set")
                 this.centerAndSetMarker(latLng);
                 this.initAutocomplete();
             }
@@ -502,7 +494,6 @@ const EventForm = React.createClass({
 
     handleNewDateChange: function(timestamp) {
     	if(timestamp == "Invalid date") {
-    		console.log("INVALID DATE")
     		timestamp = this.readDateFromInputField(timestamp);
     	}
     	if(timestamp !== ""){
@@ -547,10 +538,8 @@ const EventForm = React.createClass({
 
 		var moment = Moment(dateString, "DD-MM-YYYY-HH:mm");
 		if( moment.isValid() ){
-			console.log("valid")
 			return moment;
-		}else{
-			console.log("invalid")
+		} else {
 			return ""
 		}
     },
@@ -719,7 +708,7 @@ const EventForm = React.createClass({
 
 		// If one of the validations fail, prevent submitting form
 		if(!valid1 || !valid2 || !valid3 || !valid4 || !valid5 || !valid6 || !valid7) {
-			console.log("form INVALID " + valid1 + valid2 + valid3 + valid4 + valid5 + valid6 + valid7);
+			console.log("____  form INVALID " + valid1 + valid2 + valid3 + valid4 + valid5 + valid6 + valid7);
 			return;
 		}
 		var timestamp = this.combineTimeAndDate(dateTimestamp, time);

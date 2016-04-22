@@ -171,8 +171,6 @@ const EventList = React.createClass({
         this.setState({
             showAllCategories: show
         })
-        console.log("UPDATED EVENTLIST DATA");
-        console.log(eventListData);
         this.props.getEvents();
     },
 

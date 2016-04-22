@@ -159,9 +159,6 @@ module.exports = {
             var rightContainerPadding = 40;
             var newHeight = (this.getRightContainerHeight()-(rightContainerPadding*2)-eventListTopicHeight-eventListBottomBarHeight-toolbarHeight);
             $("#eventListTableContainer").css("height", newHeight+"px");
-            /*console.log("NEW HEIGHT");
-            console.log(rightContainerPadding);
-            console.log(newHeight);*/
         }
     }
 }

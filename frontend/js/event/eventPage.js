@@ -104,7 +104,6 @@ const EventPage = React.createClass({
     },
 
     componentWillUnmount: function() {
-        console.log("UNMOUNT!?!?!?");
         this.props.updateAppStatus("shownEventData", {});
     },
 
