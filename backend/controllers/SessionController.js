@@ -70,6 +70,33 @@ module.exports = {
         });
     },
 
+    loginOAuth: function(accessToken, refreshToken, profile, done ){
+        console.log("AUTHENTICATING...")
+        console.log(profile)
+
+        //I don't know if it can really be null, but if it is something probably failed
+        if( profile == null ){  
+            return done(null, null);
+        }
+        models.User.findOne({
+            where: { 
+                authProvider: profile.provider,
+                authProvUserId: profile.id
+            }
+        }).then(function(user){
+            if(user == null){
+
+            }
+        }).catch(function(err){
+            return done(err, profile);
+        });
+
+
+
+
+        //return done(null, null)
+    },
+
     logout: function(req, res){
         req.seeyaSession.reset();
         res.status(200).send({});

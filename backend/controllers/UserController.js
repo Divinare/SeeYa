@@ -109,7 +109,7 @@ module.exports = {
                                 }
                             }
                         }).then(function(users){
-                            var id = generateNextId(users);
+                            var id = helper.generateNextId(users);
                             finishSignUp(req, res, 'Anonymous' + id);
                         })
                     }else{
@@ -155,41 +155,6 @@ function finishSignUp(req, res, username){
 
     // var startTime = new Date().getTime();
     security.hashPasswordWithGeneratedSalt(userPassword, errorCallBack, createUser);
-}
-
-//Gets a list of users with username like 'Anonymous%'
-//Parses the usernames to find the first free id (e.g. for users Anonymous1 and Anonymous4, id 2 would be returned)
-function generateNextId(users){
-    console.log("generating anonymous id")
-    if( users == null) {
-        return 1;
-    }
-
-    var ids = [];
-    for( var i = 0; i < users.length; i++){
-        var ending = users[i].get('username').replace('Anonymous','');
-        var endingAsInt = parseInt(ending);
-        if(!isNaN(endingAsInt)){
-            ids.push(endingAsInt)
-        }
-    }
-    if(ids.length === 0){
-        return 1;
-    }
-    ids.sort(sortNumerically);
-
-    for( var i= 0; i < ids.length; i++ ){
-        var id = ids[i];
-        if( i < ids.length && id + 1 !== ids[i + 1]){    //if id + 1 is not found in the id list we can use it
-            return id + 1;
-        }
-    }
-    return (ids[ids.length - 1] + 1)
-}
-
-//needed because javascript sort method treats the values as text by default
-function sortNumerically(a, b){
-    return a - b;
 }
 
 

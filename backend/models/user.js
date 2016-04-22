@@ -10,16 +10,16 @@ module.exports = function(sequelize, DataTypes) {
     },
     password: {
         type:DataTypes.STRING(512),
-        allowNull: false
+        allowNull: true
     },    
     email: {
         type:DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true
     },
     salt: {
         type:DataTypes.STRING(512),
-        allowNull: false
+        allowNull: true
     },
     role: {
         type:DataTypes.STRING,
@@ -35,6 +35,15 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
         allowNull: false
+    },
+    //authentication provider for social logins, e.g. facebook or google
+    authProvider: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    authProvUserId: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
   },{
         timestamps: true,

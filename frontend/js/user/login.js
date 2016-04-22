@@ -111,6 +111,7 @@ const About = React.createClass({
                     <h2 className="topicText">Login</h2>
                     <div id='serverErrorDiv'></div>
                     <form className="form">
+                    <a href="/api/auth/facebook" className="btn btn-primary"><span className="fa fa-facebook"></span> Facebook</a>
                         <div className="form-group">
                                 <input type="text" id="email" name="email" placeholder="Email" className="form-control" onChange={this.handleChange('email')}/>
                                 <span id="emailError"></span>

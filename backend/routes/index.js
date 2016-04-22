@@ -1,6 +1,7 @@
 var models  = require('../models');
 var express = require('express');
 var router  = express.Router();
+var passport = require('passport')
 
 var EventCtrl = require('../controllers/EventController.js');
 var AddressCtrl = require('../controllers/AddressController.js');
@@ -17,6 +18,21 @@ router.get('/categories', CategoryCtrl.findAll);
 
 router.get('/isloggedin', SessionCtrl.isLoggedIn);
 router.get('/logout', SessionCtrl.logout);
+
+//Facebook
+router.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email'}));
+router.get('/auth/facebook/callback',
+passport.authenticate('facebook', { successRedirect: '/api/auth/success',
+                                    failureRedirect: '/api/auth/failure' }));
+
+router.get('/auth/success', function(req, res) {
+    console.log("AUTHENTICATION SCCESS")
+    res.send({message: "success"});
+});
+router.get('/auth/failure', function(req, res) {
+    console.log("ERROR IN AUTHENTICATING")
+    res.send({message:"failure"});
+});
 
 router.get('/events/:id', EventCtrl.findOne);
 router.get('/attendances/:id', AttendanceCtrl.findOne);

@@ -8,8 +8,41 @@ var jade = require('jade');
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var session = require("client-sessions");
-
 var routes = require('./routes');
+var passport = require('passport');
+var Strategy = require('passport-facebook').Strategy;
+var authConfig = require('../config/auth.js')
+var sessionController = require('./controllers/SessionController.js')
+
+
+// Configure the Facebook strategy for use by Passport.
+//
+// OAuth 2.0-based strategies require a `verify` function which receives the
+// credential (`accessToken`) for accessing the Facebook API on the user's
+// behalf, along with the user's profile.  The function must invoke `cb`
+// with a user object, which will be set at `req.user` in route handlers after
+// authentication.
+passport.use(new Strategy({
+    clientID: authConfig.facebookAuth.clientID,
+    clientSecret: authConfig.facebookAuth.clientSecret,
+    callbackURL: authConfig.facebookAuth.callbackURL,
+    profileFields: ['emails']
+  }, 
+ function(accessToken, refreshToken, profile, done) {
+    // In this example, the user's Facebook profile is supplied as the user
+    // record.  In a production-quality application, the Facebook profile should
+    // be associated with a user record in the application's database, which
+    // allows for account linking and authentication with other identity
+    // providers.
+    sessionController.loginOAuth(accessToken, refreshToken, profile, done)
+   /* console.log("AUTHENTICATING...")
+    console.log(profile)
+    return done(null, profile)*/
+  //  return done(null, profile);
+  }));
+
+
+
 
 console.log("ENV::::::::::::::: " + process.env.NODE_ENV);
 console.log(process.env.PORT);
@@ -24,6 +57,22 @@ app.use(session({
   activeDuration: 5 * 60 * 1000, // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
   ephemeral: true //lose the session when browser closes
 }));
+
+// Initialize Passport and restore authentication state, if any, from the
+// session.
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {  
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {  
+   /* User.findOne({ _id: id }, function (err, user) {
+        done(err, user);
+    });*/
+  done(null, null);
+});
 
 var router = express.Router();
 
@@ -41,6 +90,7 @@ app.use(express.static(dist));
 var rest = '/api';
 
 app.use(rest, routes);
+
 
 app.get('*', function (req, res) {
   res.render('index');
