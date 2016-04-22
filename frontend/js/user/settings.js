@@ -3,7 +3,10 @@ import { browserHistory, Link } from 'react-router';
 var React = require('react');
 var commonValidator = require('../../../common/validators/validator.js');
 var utils = require('../../../common/utils.js');
-var validator = UTILS.validator;
+var frontValidator = UTILS.validator;
+var msgComponent = require('../utils/messageComponent.js');
+
+const SHOW_MSG_SEC = 5;
 
 
 const Settings = React.createClass({
@@ -74,7 +77,7 @@ const Settings = React.createClass({
 
 
         var that = this;
-        var validUsername = validator.validateField(commonValidator.validateUsername, 
+        var validUsername = frontValidator.validateField(commonValidator.validateUsername, 
                                             this.state.username,
                                             "#username",
                                             "#usernameError"
@@ -118,32 +121,54 @@ const Settings = React.createClass({
     },
 
     submitPassword: function() {
+        var that = this;
+        var oldPassword = this.state.oldPassword;
+        var password = this.state.password;
+        var repeatPassword = this.state.repeatPassword;
 
-        var params = {"password" :this.state.password, 
-            "repeatPassword": this.state.repeatPassword
+        // Clear old errors first
+        frontValidator.clearErrorFromField("#oldPassword", "#oldPasswordError");
+        frontValidator.clearErrorFromField("#password", "#passwordError");
+        frontValidator.clearErrorFromField("#repeatPassword", "#repeatPasswordError");
+
+        var params = {"password" :password, 
+            "repeatPassword": repeatPassword
         };
 
-
-        var validPassword = validator.validateField(commonValidator.validatePassword, 
-                                                this.state.password,
-                                                "#repeatPassword",
+        var validPassword = frontValidator.validateField(commonValidator.validatePassword, 
+                                                password,
+                                                "#password",
                                                 "#passwordError"
                                                 );
 
-       var passwordsMatching = validator.validateField(commonValidator.matchPasswords, 
+       var passwordsMatching = frontValidator.validateField(commonValidator.matchPasswords, 
                                                     params,
-                                                    "#password",
+                                                    "#repeatPassword",
                                                     "#repeatPasswordError"
                                                     );
 
 
         if(!validPassword || !passwordsMatching) {
+            console.log("____ Could not change password, validPassword: " + validPassword + " passwordsMatching: " + passwordsMatching);
             return;
         }
 
-        // TODO check old password & submit...
-
-
+        var userData = {
+            oldPassword: oldPassword,
+            password: password,
+            repeatPassword: repeatPassword
+        }
+        var error = function( jqXhr, textStatus, errorThrown){
+            frontValidator.setErrorToField("#oldPassword", jqXhr.responseJSON.errors.changePasswordDetails, "#oldPasswordError")
+        };
+        var success = function(result){
+            console.log( "success!!! settings" );
+            console.log(result.user);
+            msgComponent.showMessageComponent('Password changed succesfully', SHOW_MSG_SEC * 1000, 'success')
+            //that.props.updateAppStatus('user', result.user);
+            browserHistory.push('/');
+        };
+        UTILS.rest.editEntry('user', this.props.user.id, userData, success, error);
     },
 
     handleChange: function(key) {

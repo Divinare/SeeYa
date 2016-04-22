@@ -19,6 +19,7 @@ const errors = {
     userPasswordTooLong: "Password too long",
     userPasswordTooShort: "Password too short",
     userNotAuthorized: "This feature is only available for logged in users. Please sign up, or login",
+    userOldPasswordMissMatch: "Old password was incorrect",
 
     eventName: "Name must be 3-30 characters long.",
     eventAddress: "Address incorrect. Did you select it from the list of address suggestions?",

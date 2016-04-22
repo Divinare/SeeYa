@@ -62,7 +62,6 @@ const About = React.createClass({
 
         };
         var success = function(result){
-            console.log( "success!!!" );
             that.props.updateAppStatus('user', result.user);
             browserHistory.push('/');
         };
@@ -71,7 +70,6 @@ const About = React.createClass({
         frontValidator.clearErrorFromField('#password', '#passwordError');
         frontValidator.clearErrorFromField('#repeatPassword', '#repeatPasswordError');
         UTILS.rest.addEntry('user', userData, success, error);
-       
     },
 
     handleChange: function(key) {

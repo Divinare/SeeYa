@@ -10,6 +10,8 @@ var crypto = require('crypto');
 var userService = require('../services/UserService.js');
 var sessionService = require('../services/SessionService.js');
 
+
+
 module.exports = {
     anonymousBase: 'Anonymous',
 
@@ -80,6 +82,9 @@ module.exports = {
         helper.addErrorIfNotEmpty(validationErrors['userPassword'], validator.validatePassword(userPassword));
         helper.addErrorIfNotEmpty(validationErrors['userRepeatPassword'], validator.matchPasswords({"password":userPassword, "repeatPassword": repeatPassword}));
 
+
+
+
         console.log("validationerrors: ")
         console.log(validationErrors)
         //Check that  the username is not in use
@@ -98,8 +103,8 @@ module.exports = {
                     validationErrors['username'].push(errorMessages.getError('userUsernameAlreadyInUse'))
                 }
 
-                //Check if there were any errors and send them back to the client if there were
-                if( !helper.sendErrorsIfFound(res, validationErrors) ){
+                //Check if there were any errors and send them back to the client if there were, otherwise continue
+                if(!helper.sendErrorsIfFound(res, validationErrors) ){
                     //if false is returned no messages were sent, i.e. user input is valid and we can continue
                    if( utils.isEmpty(username) ){
                         models.User.findAll({
@@ -120,7 +125,91 @@ module.exports = {
               
         });
     },
+
+    update: function (req, res) {
+        console.log("UPDATE");
+
+        var oldPassword = req.body.oldPassword;
+        var password = req.body.password;
+        var repeatPassword = req.body.repeatPassword;
+
+
+        var validationErrors = {'password':[], 'repeatPassword': []};
+        helper.addErrorIfNotEmpty(validationErrors['password'], validator.validatePassword(password));
+        helper.addErrorIfNotEmpty(validationErrors['repeatPassword'], validator.matchPasswords({"password":password, "repeatPassword": repeatPassword}));
+
+        console.log(req.body);
+
+        //Check if there were any errors and send them back to the client if there were, otherwise continue
+        if(!helper.sendErrorsIfFound(res, validationErrors) ) {
+            console.log("PASSWORDS WERE OK");
+            var notAuthorized = function(error) {
+                helper.sendErr(res, 401, {message: 'Not authorized'});
+            }
+
+            //main logic here
+            var success = function(user) {
+
+                console.log("USER SALT");
+                console.log(user.salt);
+
+                var errorCallBack = function(err){
+                    console.log("caught error!!!!")
+                    helper.sendErr(res, 500, {"errorMessage": "Unknown error in logging in, please try again and report the error to the administrator if the error persists"});
+                }
+                //called by the security component with the salt and hash of the password
+                var checkPassword = function(salt, oldPasswordHash){
+                    if( user.password === oldPasswordHash ) {
+                        console.log("user password is the same!")
+
+                        //Callback that is called by the security component after the password has been hashed
+                        var createUser = function(salt, hash){
+                            console.log("CREATE USER CALLED")
+                            models.User.update({
+                                password: hash,
+                                salt: salt
+                              },
+                              {
+                                where: { id : user.id }
+                              })
+                              .then(function (result) { 
+                                res.status(200).send(result);
+                              }, function(err){
+                                console.log("ERROR:")
+                                console.log(err)
+                                helper.sendErr(res, 400, err);
+                              });
+
+/*
+                                password: hash,
+                                salt: salt
+                            }).then(function(user) {
+                                res.status(200).send(response);
+                            }).catch(function(err){
+
+                                helper.sendErr(res, 400, err);
+                            });
+                            */
+                        };
+                        //Called if the hashing does not succeed for some reason. Don't know what could cause this
+                        var errorCallBack = function(err){
+                            console.log("caught error!!!!")
+                            helper.sendError(res, 400, {"message": "Unknown error in creating a user, please try again and report the error to the administrator if the error persists"});
+                        }
+                        security.hashPasswordWithGeneratedSalt(password, errorCallBack, createUser);
+                    } else {
+                        helper.sendError(res, 400, {changePasswordDetails: errorMessages.getError('userOldPasswordMissMatch')});
+                    }
+                }
+                security.hashPassword(oldPassword, user.salt, errorCallBack, checkPassword)
+            }
+            userService.getLoggedInUser(req, res, success, notAuthorized);
+        }
+    }
+
 };
+
+
 
 //Called after validating all the user fields when we know that the user can really be created
 function finishSignUp(req, res, username){
@@ -131,8 +220,6 @@ function finishSignUp(req, res, username){
     //Callback that is called by the security component after the password has been hashed
     var createUser = function(salt, hash){
         console.log("CREATE USER CALLED")
-        var endTime = new Date().getTime();
-        // console.log("hashing took: " + (endTime - startTime) + "ms" );
         models.User.create({
             username: username,
             email: userEmail, 
@@ -152,42 +239,5 @@ function finishSignUp(req, res, username){
         console.log("caught error!!!!")
         helper.sendError(res, 400, {"message": "Unknown error in creating a user, please try again and report the error to the administrator if the error persists"});
     }
-
-    // var startTime = new Date().getTime();
     security.hashPasswordWithGeneratedSalt(userPassword, errorCallBack, createUser);
 }
-
-
-  /* findUserEvents: function(req, res){
-        var findEvents = function(user){
-            models.User.findOne({
-            where: { email: user.email },
-                include: [ models.Event ]  //events the user has created
-            }).then(function (user) {
-                console.log("user");
-                console.log(user);
-                console.log('')
-                console.log('')
-                console.log('')
-                console.log('')
-                console.log("EVENTS")
-                var events = user.Events;
-                console.log(user.Events);
-
-                console.log('')
-                console.log('')
-                console.log('')
-                console.log('')
-                console.log("EVENT NAMES")
-                console.log(events[0].get('name'))
-                console.log(events[1].get('name'))
-                res.status(200).send(events);
-            });
-        }
-        var error = function(err){
-            console.log("user is not logged in");
-            helper.sendErr(res, 401, err);
-        }
-        userService.getLoggedInUser(req, res, findEvents, error);
-
-    },*/
