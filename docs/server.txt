@@ -48,17 +48,14 @@ https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubunt
 the user general can use commands that need super user privileges by using sudo before the command.
 
 NOTICE:
-- About ram: The current server only has 512 mb ram available. If this does not seem to be enough, there are two things we can do:
-    1. Upgrade to bigger server, the next tier is 10 dollars (plus VAT)/month with 1gb of ram. If we do a flexible upgrade, we can later go back to the cheaper server. This is what has been done once already.
-    2. It is also possible to create a swap file for the server. This can be used when we run out of ram. There are some caveats using that on ssd drives, which is what digital ocean uses so they do not recommend it.
+- About ram: The current server only has 512 mb ram available, and also 1gb swap file (will be used if we run out of ram. The swap file was set up according to the instructions here: https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04). If the ram is not enough we should probably upgrade the server to a bigger one, the next tier is 10 dollars (plus VAT)/month with 1gb of ram. If we do a flexible upgrade, we can later go back to the cheaper server. 
 
-    The server ran out of ram when I had cloned the project and tried to do npm install. This might not be a problem in the future since there are less node modules to install, but if it becomes a problem we should consider option 1 or 2.
-
-- About the server configuration. The server has a nginx reverse proxy installed. This means that our users connect to nginx and nginx forwards the connections to our app in port 1337. The configuration has been done according to instructions here: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-14-04
+- About the server configuration: The server has a nginx reverse proxy installed. This means that our users connect to nginx and nginx forwards the connections to our app in port 1337. The configuration has been done according to instructions here: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-14-04
 Config file for nginx can be found from /etc/nginx/sites-available/default
 
 - Postgres:
-The configuration is currently so that local connections have peer authentication. This works if you add the user who runs the project (in the production server user 'general') a password and put in the project's file configuration/config.json the password to equal the password you set and the username to equal the username (in this case 'general'). The password for postgres can be set like this: ALTER USER general WITH PASSWORD 'test';. Currently the password is test, but should of course be set to something more secure.
+The production server has a NODE_ENV=production set as suggested by this website: http://www.hacksparrow.com/running-express-js-in-production-mode.html
+So in the production the database is accessed by the general user whereas in development mode there are no passwords needed.
 
 TODO:
 - We should probably enable https and we might need an ssl certificate for that. Instructions can be found from here: https://www.digitalocean.com/community/tutorials/how-to-install-an-ssl-certificate-from-a-commercial-certificate-authority
