@@ -23,7 +23,6 @@ var getFilteredEntries = function(name, categoryFilters, fromTimestamp, toTimest
     }
     url += fromTimestamp + '/' + toTimestamp + '/';
 
-    console.log("getting filtered entries from: " + url);
     $.ajax({ 
         type: 'GET', 
         url: url,

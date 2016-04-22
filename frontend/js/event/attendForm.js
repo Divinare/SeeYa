@@ -115,7 +115,6 @@ const AttendForm = React.createClass({
     },
 
     addAttendance: function(e) {
-        console.log("ADDING attendance")
         var that = this;
         var event = this.state.event;
         var data = {

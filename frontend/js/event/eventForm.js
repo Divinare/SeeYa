@@ -83,7 +83,6 @@ const EventForm = React.createClass({
             ){
             var user = this.props.getAppStatus('user')
             if( user.id !== this.state.event.creator ){
-                console.log("gonna clear event marker")
                 that.clearNewEventMarker();
                 msgComponent.showMessageComponent('Event can only be modified by its creator', constants.SHOW_MSG_MS_DEFAULT, 'error')
                 browserHistory.push('/')
@@ -222,7 +221,7 @@ const EventForm = React.createClass({
 		   		that.centerAndSetMarker(results[0].geometry.location);
 
 			} else {
-				console.log("Geocode was not successful for the following reason: " + status);
+				console.log("____ Geocode was not successful for the following reason: " + status);
                 that.returnMarker();
                 that.afterGeocoding(false, status);
 			}
@@ -373,7 +372,6 @@ const EventForm = React.createClass({
         }
 
         if( this.props.newEventMarker != null && this.state.latLng != null && !$.isEmptyObject(this.state.latLng) ){
-            console.log("RETURNING MARKER")
             this.props.newEventMarker.setPosition(this.state.latLng)
         }
     },
@@ -486,7 +484,6 @@ const EventForm = React.createClass({
                 loadingEvent:false
     		});
             if(this.isMounted()){
-                console.log("state set")
                 this.centerAndSetMarker(latLng);
                 this.initAutocomplete();
             }
@@ -497,7 +494,6 @@ const EventForm = React.createClass({
 
     handleNewDateChange: function(timestamp) {
     	if(timestamp == "Invalid date") {
-    		console.log("INVALID DATE")
     		timestamp = this.readDateFromInputField(timestamp);
     	}
     	if(timestamp !== ""){
@@ -542,10 +538,8 @@ const EventForm = React.createClass({
 
 		var moment = Moment(dateString, "DD-MM-YYYY-HH:mm");
 		if( moment.isValid() ){
-			console.log("valid")
 			return moment;
-		}else{
-			console.log("invalid")
+		} else {
 			return ""
 		}
     },
@@ -714,7 +708,7 @@ const EventForm = React.createClass({
 
 		// If one of the validations fail, prevent submitting form
 		if(!valid1 || !valid2 || !valid3 || !valid4 || !valid5 || !valid6 || !valid7) {
-			console.log("form INVALID " + valid1 + valid2 + valid3 + valid4 + valid5 + valid6 + valid7);
+			console.log("____  form INVALID " + valid1 + valid2 + valid3 + valid4 + valid5 + valid6 + valid7);
 			return;
 		}
 		var timestamp = this.combineTimeAndDate(dateTimestamp, time);

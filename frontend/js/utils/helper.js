@@ -50,7 +50,6 @@ module.exports = {
 
 	locationMatches: function(str){
 		var regex = new RegExp("^.*" + str)
-		//console.log(/^.*events\/\d+\/edit$/.test("http://localhost:1337/events/4/edit"))
 		var url = window.location.href
 		return regex.test(window.location)
 	},
@@ -72,7 +71,6 @@ module.exports = {
 	/* Returns lat and lon as array from marker */
 	getLatLon: function(marker) {
 		if(typeof marker == 'undefined') {
-			console.log("getLatLon - marker was undefined");
 			return null;
 		} else {
 			var array = [];

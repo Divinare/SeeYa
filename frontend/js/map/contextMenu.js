@@ -61,8 +61,6 @@ ContextMenu.prototype.onAdd=function(){
 			menuItem.id=values.id;
 		}
 		menuItem.onclick=function(event){
-			console.log("EVENT::::::::");
-			console.log(event.preventDefault());
 			google.maps.event.trigger($this, 'menu_item_selected', $this.position_, values.eventName);
 			$this.hide();
 		};

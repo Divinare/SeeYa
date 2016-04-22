@@ -26,11 +26,9 @@ var Map = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        console.log("MAP WILL RECEIVE PROPS!!!");
         console.log(nextProps.shownEventData);
 
         var that = this;
-        console.log("DELETING MARKERS!");
         this.deleteMarkers(this.state.markers);
 
         var location = UTILS.helper.getLocation();
@@ -46,18 +44,8 @@ var Map = React.createClass({
 
                 var drawEventMarker = (!$.isEmptyObject(nextProps.shownEventData)) ? true :  false
                 if(drawEventMarker) {
-                    console.log("draw eventmarker")
-                    console.log("draw eventmarker")
-                    console.log("draw eventmarker")
-                    console.log("draw eventmarker")
-                    console.log("draw eventmarker")
                     this.addEventMarker(nextProps.shownEventData);
                 } else {
-                    console.log("draw ALL markers... :o");
-                    console.log("draw ALL markers... :o");
-                    console.log("draw ALL markers... :o");
-                    console.log("draw ALL markers... :o");
-                    console.log("draw ALL markers... :o");
                     this.addAllMarkers(nextProps);
                 }
                 window.markersHaventLoaded = false;
@@ -148,7 +136,7 @@ var Map = React.createClass({
         if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(this.centerMapLocation);
         } else {
-            console.log("Geolocation is not supported by this browser.");
+            console.log("____ Geolocation is not supported by this browser.");
         }
     },
     
@@ -169,12 +157,11 @@ var Map = React.createClass({
                 var marker = that._createEventMarker(event);
                 createdMarkers.push(marker);
             } else {
-                console.log("... Critical error in map.js maybe.");
+                console.log("____ Critical error in map.js maybe.");
             }
         });
                     
         if(!$.isEmptyObject(createdMarkers)) {
-            console.log("SETTING TO STATE! asdsadsad");
             this.setState({
                 markers: createdMarkers
             })
@@ -184,12 +171,8 @@ var Map = React.createClass({
     addEventMarker: function(event) {
         var createdMarkers = [];
         var marker = this._createEventMarker(event);
-        console.log("GOT MARKER &&&&&&&&&");
-        console.log(marker);
         createdMarkers.push(marker);
         if(!$.isEmptyObject(createdMarkers)) {
-            console.log("SETTING TO STATE! asdsnnnnnnnnnnnnnnnnnnnnnnadsad");
-
             this.setState({
                 markers: createdMarkers
             })
@@ -245,12 +228,6 @@ var Map = React.createClass({
             });
         }
 
-        console.log("ICON");
-        console.log("ICON");
-        console.log("ICON");
-        console.log("ICON");
-        console.log("ICON");
-        console.log(icon);
         if(typeof icon != 'undefined') {
 
             marker.setIcon(icon);
@@ -305,26 +282,6 @@ var Map = React.createClass({
         var infowindow = new google.maps.InfoWindow({
             content: infowindowContainer
         });
-
-
-      //  infowindow.open(map, this);
-
-        /*
-        var time = UTILS.eventParser.getValue(event, 'timestamp');
-        var streetAddress = UTILS.eventParser.getValue(event, 'streetAddress');
-        var attendances = UTILS.eventParser.getValue(event, 'attendances');
-        infowindowContent = '<h3>' + event.name + '</h3>'
-                        + '<a> Join to this event</a>'
-                        + '<p>' + time + '</p>'
-                        + '<p>' + streetAddress + '</p>'
-                        + '<p>Attendances: ' + attendances + '</p>'
-                        + '<a>Zoom on map </a>';
-
-        var infowindow = new google.maps.InfoWindow({
-            content: infowindowContent
-        });
-        */
-
         return infowindow;
     },
 
