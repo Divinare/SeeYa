@@ -19,10 +19,7 @@ module.exports = {
 
     validateUsername: function(username, customMessage) {
         var errors = [];
-        if(utils.isEmpty(username)) {
-            errors.push(failed("userUsernameEmpty", customMessage));
-        }
-        if(username.length < fieldLengths.userUsernameMin) {
+        if(!utils.isEmpty(username) && username.length < fieldLengths.userUsernameMin) {
             errors.push( failed("userUsernameTooShort", customMessage) );
         }
         if(username.length > fieldLengths.userUsernameMax) {
