@@ -104,12 +104,22 @@ module.exports = {
             }
         }).then(function(users){
             if(users != null && users.length > 0){
-                console.log("USERS FOUND WITH EMAIL")
-                console.log(users)
-                req.authError = 'There is already a user with email ' + users[0].get('email') + ', please login with your SeeYa credentials';
-                //return done(null, false, { oAuthFailureMessage: 'You already have created a SeeYa user with email...' })
-                return done(null, profile);
-
+                //Take the first found user and associate it with the facebook account
+                var user = users[0];
+                user.authProvider = profile.provider;
+                user.authProvUserId = profile.id;
+                user.save().then(function(savedUser){
+                    var response = sessionService.login(req, null, savedUser);
+                    console.log("fb account associated with existing user!")
+                    return done(null, response);
+                }).catch(function(err){
+                    if(err.message != null){
+                        req.authError = err.message;
+                        return done(null, true);
+                    }else{
+                       return done(err)  //error in connecting to database for example
+                    }   
+                })
             }else{
                 var displayName = profile.displayName
                 var username = null
@@ -122,11 +132,6 @@ module.exports = {
                 }else{  //displayName not null and has a space --> use the part before space as the username
                      username = displayName.substr(0, displayName.indexOf(' '));
                 }
-
-                console.log("displayname")
-                console.log(displayName)
-                console.log("username")
-                console.log(username)
 
                 models.User.findOne({
                     where: { 
@@ -158,7 +163,6 @@ module.exports = {
 
                             models.User.create(userFields).then(function(user){
                                 var response = sessionService.login(req, null, user);
-
                                 console.log("user created!!!!")
                                 return done(null, response);
                             }).catch(function(err){
