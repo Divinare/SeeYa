@@ -17,18 +17,28 @@ module.exports = {
     **/
     sendErrorsIfFound: function(res, validationErrors){
         var errorCount = 0;
+        var errorsToBeSendToClient = [];
+
         for (var property in validationErrors) {
+            console.log(property);
+            console.log(validationErrors);
             if (validationErrors.hasOwnProperty(property)) {
-                if( validationErrors[property].length > 0 ){
+                if(validationErrors[property].constructor == Array) {
+                    console.log(validationErrors[property]);
+                    for(errorArray in validationErrors[property]) {
+                        if(errorArray.length > 0) {
+                            errorsToBeSendToClient.push(validationErrors[property]);
+                        }
+                    }
+                } else if( validationErrors[property].length > 0 ){
                     errorCount++;
-                }else{
-                    delete validationErrors[property]
+                    errorsToBeSendToClient.push(validationErrors[property]);
                 }
             }
         }
         if( errorCount > 0 ){
             console.log("errors found, seding to client")
-            module.exports.sendError(res, 400, validationErrors);
+            module.exports.sendError(res, 400, errorsToBeSendToClient);
             return true;
         }else{
             console.log("no errors")

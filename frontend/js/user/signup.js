@@ -62,6 +62,7 @@ const About = React.createClass({
 
         };
         var success = function(result){
+            console.log(result.user);
             that.props.updateAppStatus('user', result.user);
             browserHistory.push('/');
         };

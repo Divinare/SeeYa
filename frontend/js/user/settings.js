@@ -77,47 +77,41 @@ const Settings = React.createClass({
 
 
         var that = this;
+        var username = this.state.username;
         var validUsername = frontValidator.validateField(commonValidator.validateUsername, 
-                                            this.state.username,
+                                            username,
                                             "#username",
                                             "#usernameError"
                                             );
 
         if(!validUsername) {
+            console.log("___ Username was not valid.");
             return;
         }
-            console.log("username is valid");
+        console.log("username is valid");
 
-
-
-
-            /*
-            var userData = {
-                email: this.state.email,
-                password: this.state.password,
-                repeatPassword: this.state.repeatPassword
-            }
-            var error = function( jqXhr, textStatus, errorThrown){
-                console.log("error")
-                console.log( errorThrown );
-                console.log(jqXhr)
-                console.log(jqXhr.responseJSON.userEmail)
-                if( jqXhr.responseJSON.userEmail.length > 0){
-                    validator.setErrorToField('email', [that.state.email + ' already in use'], 'emailError');
-                }
-                $('#serverErrorDiv').show(500);
-
-            };
-            var success = function(result){
-                console.log( "success!!!" );
-                that.props.updateAppStatus('user', result.user);
-                browserHistory.push('/');
-            };
-            $("#serverErrorDiv").hide(200);
-            validator.clearErrorFromField('email', 'emailError');
-            UTILS.rest.addEntry('user', userData, success, error);
+        var userData = {
+            username: username,
+            fieldToChange: "username"
         }
-        */
+        var error = function( jqXhr, textStatus, errorThrown){
+            console.log("error")
+            console.log( errorThrown );
+            console.log(jqXhr)
+            console.log(jqXhr.responseJSON)
+           // if( jqXhr.responseJSON.userEmail.length > 0){
+           //     validator.setErrorToField('email', [that.state.email + ' already in use'], 'emailError');
+           // }
+
+        };
+        var success = function(result){
+            console.log( "success!!!" );
+            console.log(result.user);
+            that.props.updateAppStatus('user', result.user);
+            browserHistory.push('/');
+        };
+        frontValidator.clearErrorFromField('#username', '#usernameError');
+        UTILS.rest.editEntry('user', this.props.user.id, userData, success, error);
     },
 
     submitPassword: function() {
@@ -156,7 +150,8 @@ const Settings = React.createClass({
         var userData = {
             oldPassword: oldPassword,
             password: password,
-            repeatPassword: repeatPassword
+            repeatPassword: repeatPassword,
+            fieldToChange: "password"
         }
         var error = function( jqXhr, textStatus, errorThrown){
             frontValidator.setErrorToField("#oldPassword", jqXhr.responseJSON.errors.changePasswordDetails, "#oldPasswordError")
