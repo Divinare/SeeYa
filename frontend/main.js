@@ -25,14 +25,15 @@ var ContactUs = require('./js/contactUs.js');
 var TermsOfService = require('./js/termsOfService.js');
 var RequireLogin = require('./js/user/requireLogin.js');
 var AttendForm = require('./js/event/attendForm.js');
-var AuthError = require('./js/user/authError.js')
+var AuthError = require('./js/user/authError.js');
+var ForgotPassword = require('./js/user/forgotPassword.js');
 
 import { render } from 'react-dom'
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
 
-$(document).click(function() {
-    UTILS.helper.hideSingeSelectDropdown();
-    UTILS.helper.hideCategoryDropdownEventlist();
+$(document).on("click", function (event) {
+    UTILS.helper.hideSingeSelectDropdown(event);
+    UTILS.helper.hideCategoryDropdownEventlist(event);
 });
 
 const Main = React.createClass({
@@ -120,9 +121,6 @@ const Main = React.createClass({
     getEvents: function() {
         var that = this;
         var onSuccess = function(eventList) {
-            //var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
-            console.log("EVENTLIST -.-.-.-.-.-");
-            console.log(eventList);
             that.setState({
                 eventList: eventList,
                 filteredEventList: eventList
@@ -249,6 +247,7 @@ render((
             <Route path="contact" component={ContactUs} />
             <Route path="termsOfService" component={TermsOfService} />
             <Route path="authError/:message" component={AuthError}/>
+            <Route path="forgotPassword" component={ForgotPassword}/>
             <Route component={RequireLogin} >
                 <Route path="settings" component={Settings} />
                 <Route path="join/:id" component={AttendForm} />

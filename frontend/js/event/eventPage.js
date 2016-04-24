@@ -1,8 +1,10 @@
 var React = require('react');
 var Router = require('react-router');
 var Moment = require('moment');
-var _ = require('lodash');
-var validator = require('bootstrap-validator');
+
+var commonUtils = require('../../../common/utils.js');
+
+
 var Confirm = require('../modal/confirm.js')
 var reactDom = require('react-dom')
 var msgComponent = require('../utils/messageComponent.js');
@@ -110,7 +112,7 @@ const EventPage = React.createClass({
     componentDidMount: function() {
         var tokens = UTILS.helper.getUrlTokens();
         var eventId = tokens[tokens.length - 1];
-        //this.setToolbarIcons();
+        this.setToolbarIcons();
         this.props.handleResize();
         this.fetchEvent(eventId);
         this.checkIfUserLoggedIn();
@@ -336,30 +338,46 @@ const EventPage = React.createClass({
             time = Moment.unix(eventVar.timestamp/1000).format("HH:mm");
 
 
-            if(typeof eventVar.Address === 'undefined'){
+            if(typeof eventVar.Address === 'undefined') {
                 address = <div></div>
-            } else{
-                var addressStr = '';
-
-                if(!_.isEmpty(eventVar.Address.streetAddress)){
-                    addressStr = eventVar.Address.streetAddress + ", "
+            } else {
+                address = eventVar.Address.streetAddress;
+                /*
+                var addressComponents = [];
+                if(!commonUtils.isEmpty(eventVar.Address.streetAddress)) {
+                    addressComponents.push(eventVar.Address.streetAddress);
                 }
-                if(!_.isEmpty(eventVar.Address.zipCode)){
-                    addressStr += eventVar.Address.zipCode + ", "
+                if(!commonUtils.isEmpty(eventVar.Address.zipCode)) {
+                    if(!arrayContainsString(addressComponents, eventVar.Address.zipCode)) {
+                        addressComponents.push(eventVar.Address.zipCode);
+                    }
                 }
-                if(!_.isEmpty(eventVar.Address.city)){
-                    addressStr += eventVar.Address.city + ", "
+                if(!commonUtils.isEmpty(eventVar.Address.city)) {
+                    if(!arrayContainsString(addressComponents, eventVar.Address.city)) {
+                        addressComponents.push(eventVar.Address.city);
+                    }
                 }
-                if(!_.isEmpty(eventVar.Address.country)){
-                    addressStr += eventVar.Address.country
+                if(!commonUtils.isEmpty(eventVar.Address.country)) {
+                    if(!arrayContainsString(addressComponents, eventVar.Address.country)) {
+                        addressComponents.push(eventVar.Address.country);
+                    }
                 }
-                addressStr = _.trim(addressStr, ",");
+                var addressStr = addressComponents.join(", ");
                 address = <div>{addressStr}</div>
 
+                function arrayContainsString(stringArray, searchStr) {
+                    for(var str in stringArray) {
+                        if(stringArray[str].indexOf(searchStr) > -1) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                */
             }
 
 
-            if(typeof eventVar.Attendances !== 'undefined'){
+            if(typeof eventVar.Attendances !== 'undefined') {
 
                  peopleAttending = eventVar.Attendances.length
             }
@@ -379,7 +397,7 @@ const EventPage = React.createClass({
         //    var descriptionField = document.createElement("span");
 
            // var descriptionField = "";
-            if(!_.isEmpty(eventVar.description)) {
+            if(!commonUtils.isEmpty(eventVar.description)) {
 
                 function escape(text) {
                     var div = document.createElement("div");

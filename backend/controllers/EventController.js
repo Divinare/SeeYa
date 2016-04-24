@@ -65,21 +65,15 @@ module.exports = {
     },
 
     create: function (req, res) {
-        console.log("creating event: ")
+        console.log("____ Creating event")
         var eventToAdd = req.body;
 
         var eventValidationMsg = validateEvent(eventToAdd);
-        console.log("Event validation msg:-----");
-        console.log(eventValidationMsg);
-
         if(eventValidationMsg.length == 0) {
-
             findCategory(eventToAdd.category).then(function(category) {
                 if(category == null) {
-                    console.log("CATEGORY NULL")
                     helper.sendErr(res, 400, "Category by name " + eventToAdd.category + " not found.");
                 } else {
-                    console.log("FOUND CATEGORY, GONNA CREATE THE EVENT")
                     var success = function(user){
                         createEvent(req, res, category, user);
                     }

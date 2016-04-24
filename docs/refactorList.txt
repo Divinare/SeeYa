@@ -1,0 +1,14 @@
+
+
+
+
+
+
+https://github.com/Divinare/EventMeetup/blob/master/backend/helpers/helper.js#L26
+
+Validations should only return strings. If need to return more error messages than one, divide them with <br>. This is because if we have arrays and strings, there needs to be more complex logic everywhere
+
+https://github.com/Divinare/EventMeetup/blob/master/frontend/js/utils/validator.js#L54
+
+setErrorToField: function(inputField, errorObject, errorField) {
+change errorObject and errorField so that its more clear that errorObject relates to errorField
