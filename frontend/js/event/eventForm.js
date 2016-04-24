@@ -556,7 +556,7 @@ const EventForm = React.createClass({
 					$(".bootstrap-datetimepicker-widget").css("top", "-16px");
 					var topDateSelect = $(".dropdown-menu").offset().top;
 					var topCalendar = $(".glyphicon-calendar").parent().offset().top;
-					var distance = Math.abs(topDateSelect-topCalendar)-277;
+					var distance = Math.abs(topDateSelect-topCalendar)-263; // NOTE: This value needs to be changed if the date selecting field doesn't position to a right spot!
 					$(".bootstrap-datetimepicker-widget").css("top", distance + "px");
 					$(".right-container").scrollTop(0);
 				}, 1);
