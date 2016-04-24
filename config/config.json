@@ -20,7 +20,7 @@
     "username": "general",
     "password": "hedEhe7wanazu5u",
     "dialect": "postgres",
-    "database":"devdb",
+    "database":"prod_db",
     "protocol": "postgres",
     "port": 5432,
     "host": "127.0.0.1"
