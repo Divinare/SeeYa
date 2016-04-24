@@ -95,7 +95,7 @@ module.exports = {
     	messageComponent.showMessageComponent(message, displayTime, type);
     },
 
-    hideSingeSelectDropdown: function() {
+    hideSingeSelectDropdown: function(event) {
 	    var eventTarget = $(event.target)[0];
 	    var shouldHideEventForm = true;
 	    if(typeof eventTarget != 'undefined' && eventTarget != null) {
@@ -108,7 +108,7 @@ module.exports = {
 	    }
     },
 
-    hideCategoryDropdownEventlist: function() {
+    hideCategoryDropdownEventlist: function(event) {
     	var classesThatShouldPreventHiding = [
     		"eventListDropdownSelectAllTextField",
     		"eventListDropdownSelectAllContainer",

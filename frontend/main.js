@@ -30,9 +30,9 @@ var AuthError = require('./js/user/authError.js')
 import { render } from 'react-dom'
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
 
-$(document).click(function() {
-    UTILS.helper.hideSingeSelectDropdown();
-    UTILS.helper.hideCategoryDropdownEventlist();
+$(document).on("click", function (event) {
+    UTILS.helper.hideSingeSelectDropdown(event);
+    UTILS.helper.hideCategoryDropdownEventlist(event);
 });
 
 const Main = React.createClass({
