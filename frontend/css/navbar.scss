@@ -175,12 +175,14 @@
     }
 
     #navbar-mobile ul {
-        position: absolute;
         width: 100%;
         left: 0;
-        top: 35%;
         padding: 0px;
     }
 
-
+    .menu-mobile {
+        margin-top: -4.35em; /* NOTE: This is 1/2 of the .menu-mobile height, if items are added/deleted or the height is changed, this value needs to be also changed to position The navbar in the middle of the screen! */
+        top: 50%;
+        position: fixed;
+    }
 }
