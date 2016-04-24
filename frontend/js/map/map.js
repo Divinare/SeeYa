@@ -194,7 +194,7 @@ var Map = React.createClass({
 
     addNewEventMarker: function(latLng, map) {
         var that = this;
-        var icon = new google.maps.MarkerImage("assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(24,29));
+        var icon = new google.maps.MarkerImage("assets/marker_new_event.png", null, null, null, new google.maps.Size(24,29));
         var marker = this.createMarker(latLng, map, icon, true, true);
 
         // Delete current eventMarker if there is one

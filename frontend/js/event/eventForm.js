@@ -240,7 +240,7 @@ const EventForm = React.createClass({
                 animation: google.maps.Animation.DROP,
                 draggable: true
             });
-            var icon = new google.maps.MarkerImage("../../assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(24,29));
+            var icon = new google.maps.MarkerImage("../../assets/marker_new_event.png", null, null, null, new google.maps.Size(24,29));
             marker.setIcon(icon);
             google.maps.event.addListener(marker, 'dragend', function(evt){
                 if(that.state.syncAddress){
