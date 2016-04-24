@@ -19,28 +19,22 @@ var sessionController = require('./controllers/SessionController.js')
 //
 // OAuth 2.0-based strategies require a `verify` function which receives the
 // credential (`accessToken`) for accessing the Facebook API on the user's
-// behalf, along with the user's profile.  The function must invoke `cb`
+// behalf, along with the user's profile.  The function must invoke `done`
 // with a user object, which will be set at `req.user` in route handlers after
 // authentication.
 passport.use(new Strategy({
     clientID: authConfig.facebookAuth.clientID,
     clientSecret: authConfig.facebookAuth.clientSecret,
     callbackURL: authConfig.facebookAuth.callbackURL,
-    profileFields: ['emails']
+    profileFields: ['id', 'displayName', 'link', 'emails'],
+    passReqToCallback: true,
+    enableProof: true
   }, 
- function(accessToken, refreshToken, profile, done) {
-    // In this example, the user's Facebook profile is supplied as the user
-    // record.  In a production-quality application, the Facebook profile should
-    // be associated with a user record in the application's database, which
-    // allows for account linking and authentication with other identity
-    // providers.
-    sessionController.loginOAuth(accessToken, refreshToken, profile, done)
-   /* console.log("AUTHENTICATING...")
-    console.log(profile)
-    return done(null, profile)*/
-  //  return done(null, profile);
+ function(req, accessToken, refreshToken, profile, done) {
+    process.nextTick(function() {
+      sessionController.loginOAuth(req, accessToken, refreshToken, profile, done)
+    })    
   }));
-
 
 
 
@@ -88,6 +82,8 @@ app.use(cookieParser());
 app.use(express.static(dist));
 
 var rest = '/api';
+
+app.get('/authError', sessionController.oAuthError);
 
 app.use(rest, routes);
 

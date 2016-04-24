@@ -72,11 +72,8 @@ const About = React.createClass({
                     $("#serverErrorDiv").text(jqXhr.responseJSON.errors['loginDetails']);
                     $("#serverErrorDiv").show(500);
                     frontValidator.setErrorToField('#email', [], '#emailError');
-                    frontValidator.setErrorToField('#password', [], '#passwordError');
-                    
+                    frontValidator.setErrorToField('#password', [], '#passwordError');  
                }
-
-        
             };
             var success = function(result){
                 console.log( "success!!!" );
@@ -110,7 +107,6 @@ const About = React.createClass({
                     <h2 className="topicText">Login</h2>
                     <div id='serverErrorDiv'></div>
                     <form className="form">
-                    <a href="/api/auth/facebook" className="btn btn-primary"><span className="fa fa-facebook"></span> Facebook</a>
                         <div className="form-group">
                                 <input type="text" id="email" name="email" placeholder="Email" className="form-control" onChange={this.handleChange('email')}/>
                                 <span id="emailError"></span>
@@ -125,6 +121,8 @@ const About = React.createClass({
                             <button type="submit" id="loginButton" onClick={this.submit} className="btn btn-primary btn-block">Log in</button>
                         </div>
                     </form>
+                    <a href="/api/auth/facebook">Log in with Facebook</a>
+    
 
                     <h3 id="areYouNewTopic">Are you new to Seeya?</h3>
                     <div className="btn btn-default signupButton"><Link to="/signup">Sign up</Link></div>

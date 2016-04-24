@@ -9,11 +9,11 @@ var utils = require("../../common/utils.js")
 var crypto = require('crypto');
 var userService = require('../services/UserService.js');
 var sessionService = require('../services/SessionService.js');
+var constants = require("../helpers/constants.js")
 
 
 
 module.exports = {
-    anonymousBase: 'Anonymous',
 
     findOne: function (req, res) {
         var userId = req.params.id;
@@ -67,6 +67,8 @@ module.exports = {
     },
 
     create: function (req, res) {
+        console.log("constants")
+        console.log(constants)
         //Validate fields
         console.log("NEW USER TRYING TO SIGN UP")
         var userData = req.body;
@@ -110,11 +112,11 @@ module.exports = {
                         models.User.findAll({
                             where:{
                                 username: {
-                                    $like: 'Anonymous%'
+                                    $like: constants.anonymousBase + '%'
                                 }
                             }
                         }).then(function(users){
-                            var id = helper.generateNextId(users);
+                            var id = helper.generateNextId(users, constants.anonymousBase);
                             finishSignUp(req, res, 'Anonymous' + id);
                         })
                     }else{

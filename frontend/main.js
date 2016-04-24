@@ -25,6 +25,7 @@ var ContactUs = require('./js/contactUs.js');
 var TermsOfService = require('./js/termsOfService.js');
 var RequireLogin = require('./js/user/requireLogin.js');
 var AttendForm = require('./js/event/attendForm.js');
+var AuthError = require('./js/user/authError.js')
 
 import { render } from 'react-dom'
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
@@ -247,6 +248,7 @@ render((
             <Route path="logout" component={Logout} />
             <Route path="contact" component={ContactUs} />
             <Route path="termsOfService" component={TermsOfService} />
+            <Route path="authError/:message" component={AuthError}/>
             <Route component={RequireLogin} >
                 <Route path="settings" component={Settings} />
                 <Route path="join/:id" component={AttendForm} />

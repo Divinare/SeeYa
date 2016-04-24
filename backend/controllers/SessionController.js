@@ -25,6 +25,7 @@ var helper = require("../helpers/helper.js")
 var errorMessages = require("../../common/validators/errorMessage.js")
 var security = require("../helpers/security.js")
 var sessionService = require("../services/SessionService.js")
+var constants = require("../helpers/constants.js")
 
 const httpUnAuthorized = 401;
 
@@ -70,31 +71,155 @@ module.exports = {
         });
     },
 
-    loginOAuth: function(accessToken, refreshToken, profile, done ){
+    /** 
+    This method should never return anything but null in the first parameter of the done callback. If something
+    else is returned, it is handled by passport and the user will just see a text 'unauthorized', or something like
+    that. In case of an error put in the req object an error message with key 'authError'. In these cases
+    we redirect the user to the authError component in UI, which shows the error message and redirects the user.
+    Also for the same reason the second parameter for the done callback should not be false or null, but some
+    object (or true).
+
+    The done callback is described here: http://passportjs.org/docs/authorize Notice though that we are not using
+    passport methods in case of an error but we handle those cases ourselves as described above. 
+    **/
+    loginOAuth: function(req, accessToken, refreshToken, profile, done ){
         console.log("AUTHENTICATING...")
         console.log(profile)
-
         //I don't know if it can really be null, but if it is something probably failed
         if( profile == null ){  
-            return done(null, null);
+            req.authError = 'No information received from the authentication provider.';
+            return done(null, true);
         }
-        models.User.findOne({
-            where: { 
-                authProvider: profile.provider,
-                authProvUserId: profile.id
+
+        //Check whether there are other seeya users who have the same email as this user has in fb
+        var emails = [];
+        profile.emails.forEach(function(entry){
+            emails.push(entry.value)
+        });
+
+        models.User.findAll({
+            where: {
+                email: emails,
+                authProvider: null
             }
-        }).then(function(user){
-            if(user == null){
+        }).then(function(users){
+            if(users != null && users.length > 0){
+                console.log("USERS FOUND WITH EMAIL")
+                console.log(users)
+                req.authError = 'There is already a user with email ' + users[0].get('email') + ', please login with your SeeYa credentials';
+                //return done(null, false, { oAuthFailureMessage: 'You already have created a SeeYa user with email...' })
+                return done(null, profile);
+
+            }else{
+                var displayName = profile.displayName
+                var username = null
+
+                if( displayName == null ){
+                    //make user anonymous if for some reason the displayname is null or undefined
+                    username = constants.anonymousBase;    
+                }else if( displayName.indexOf(' ') === -1 ){  //if there is no space in the display name use all of it
+                    username = displayName
+                }else{  //displayName not null and has a space --> use the part before space as the username
+                     username = displayName.substr(0, displayName.indexOf(' '));
+                }
+
+                console.log("displayname")
+                console.log(displayName)
+                console.log("username")
+                console.log(username)
+
+                models.User.findOne({
+                    where: { 
+                        authProvider: profile.provider,
+                        authProvUserId: profile.id
+                    }
+                }).then(function(user){
+                    if(user == null){
+                        models.User.findAll({
+                            where:{
+                                username: {
+                                    $like: username + '%'
+                                }
+                            }
+                        }).then(function(users){
+                            var id = helper.generateNextId(users, username);
+                            var userFields = {
+                                username: username + id,
+                                authProvider: profile.provider,
+                                authProvUserId: profile.id
+                            }
+                            console.log("profile email")
+                            console.log(profile.email)
+                            console.log(profile.emails[0])
+                            console.log(profile.emails[0].value)
+                            if(profile.emails != null && profile.emails[0] != null && profile.emails[0].value != null){
+                                userFields.email = profile.emails[0].value
+                            }
+
+                            models.User.create(userFields).then(function(user){
+                                var response = sessionService.login(req, null, user);
+
+                                console.log("user created!!!!")
+                                return done(null, response);
+                            }).catch(function(err){
+                                console.log("ERROR:")
+                                console.log(err)
+                                if(err.message != null){
+                                    req.authError = err.message;
+                                     return done(null, true);
+                                }else{
+                                   return done(err)  
+                                }   
+                            });
+
+                        }).catch(function(err){
+                            if(err.message != null){
+                                req.authError = err.message;
+                                return done(null, true);
+                            }else{
+                               return done(err)  //error in connecting to database for example
+                            }
+                        });
+
+                    }else{
+                        console.log("fb user found in db")
+                        var response = sessionService.login(req, null, user);
+                        return done(null, response); //user found in database, only have to log him/her in
+                    }
+                }).catch(function(err){
+                   if(err.message != null){
+                        req.authError = err.message;
+                        return done(null, true);
+                    }else{
+                       return done(err)  //error in connecting to database for example
+                    }   
+                });
 
             }
         }).catch(function(err){
-            return done(err, profile);
+            if(err.message != null){
+                req.authError = err.message;
+                return done(null, true);
+            }else{
+               return done(err)  //error in connecting to database for example
+            }
         });
+    },
 
+    oAuthSuccess: function(req, res){
+        console.log("oauth authentication successful");
+        res.redirect("/");
+    },
 
-
-
-        //return done(null, null)
+    oAuthError: function(req, res){
+        console.log("oauth authentication error");
+        console.log(req.authError)
+       /* console.log("res")
+        console.log(res)
+        console.log("req")
+        console.log(req)*/
+       // res.redirect("")
+        res.redirect("/authError/" + req.authError)
     },
 
     logout: function(req, res){

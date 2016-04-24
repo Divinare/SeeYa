@@ -19,21 +19,6 @@ router.get('/categories', CategoryCtrl.findAll);
 router.get('/isloggedin', SessionCtrl.isLoggedIn);
 router.get('/logout', SessionCtrl.logout);
 
-//Facebook
-router.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email'}));
-router.get('/auth/facebook/callback',
-passport.authenticate('facebook', { successRedirect: '/api/auth/success',
-                                    failureRedirect: '/api/auth/failure' }));
-
-router.get('/auth/success', function(req, res) {
-    console.log("AUTHENTICATION SCCESS")
-    res.send({message: "success"});
-});
-router.get('/auth/failure', function(req, res) {
-    console.log("ERROR IN AUTHENTICATING")
-    res.send({message:"failure"});
-});
-
 router.get('/events/:id', EventCtrl.findOne);
 router.get('/attendances/:id', AttendanceCtrl.findOne);
 router.get('/categories/:id', CategoryCtrl.findOne);
@@ -56,5 +41,41 @@ router.post('/users/:id', UserCtrl.update);
 router.delete('/events/:id', EventCtrl.delete);
 router.delete('/attendances/:eventId', AttendanceCtrl.delete);
 router.delete('/categories/:id', CategoryCtrl.delete);
+
+
+
+
+
+/**
+SOCIAL AUTHENTICATION (FB, GOOGLE, etc.)
+**/
+
+//Facebook
+//we don't want to use the passport sessions, instead we use our own client sessions,
+//that's why session: false
+//Instructions at http://jeroenpelgrims.com/token-based-sessionless-auth-using-express-and-passport/ 
+//were used and modified for our needs
+router.get('/auth/facebook', passport.authenticate('facebook', { session: false, scope: 'email'}));
+router.get('/auth/facebook/callback',
+passport.authenticate('facebook', { session: false, /*failureRedirect: '/authError' */}),
+    //success
+    function(req, res){
+        console.log(req.authErrorMessage)
+        if( req.authError == null){
+            SessionCtrl.oAuthSuccess(req, res);
+        }else{
+            SessionCtrl.oAuthError(req, res);
+        }
+
+    }
+    /*,
+    //error
+    function(req, res   ){
+        SessionCtrl.oAuthError(req, res);
+    }*/
+);
+
+
+
 
 module.exports = router;

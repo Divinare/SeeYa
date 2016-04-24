@@ -36,24 +36,35 @@ module.exports = {
         return false;
     },
 
-    //Gets a list of users with username like 'Anonymous%'
-    //Parses the usernames to find the first free id (e.g. for users Anonymous1 and Anonymous4, id 2 would be returned)
-    generateNextId: function(users){
+    /**
+    Can be used to create a unique username. Finds the next free ordinal number to add after the username
+    so that the username will be unique. The username that needs to be made unique is given as the
+    usernameBase parameter. Parameter users contains the users having a name that starts with the 
+    usernameBase. If the usernameBase is unique in it itself, the '' is returned
+
+    Example:
+    We want to make a username 'Anonymous' unique. We first search the database for users whose username starts
+    with 'Anonymous' and give the list to this method in the users parameter. The parameter usernameBase
+    will be 'Anonymous' as it is the username we want to make unique. If the db has users 'Anonymous', 
+    'Anonymous' and 'Anonymous', this method will return 3, as that is the next free ordinal number we can add
+    after the usernameBase
+    **/
+    generateNextId: function(users, usernameBase){
         console.log("generating anonymous id")
         if( users == null) {
-            return 1;
+            return '';
         }
 
         var ids = [];
         for( var i = 0; i < users.length; i++){
-            var ending = users[i].get('username').replace('Anonymous','');
+            var ending = users[i].get('username').replace(usernameBase,'');
             var endingAsInt = parseInt(ending);
             if(!isNaN(endingAsInt)){
                 ids.push(endingAsInt)
             }
         }
         if(ids.length === 0){
-            return 1;
+            return '';
         }
         ids.sort(module.exports.sortNumerically);
 
