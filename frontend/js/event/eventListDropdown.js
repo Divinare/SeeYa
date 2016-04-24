@@ -51,7 +51,7 @@ var Dropdown = React.createClass({
             var itemLeft = list[i];
             var filterLeftValue = filtersArray[itemLeft.name];
 
-            var leftDiv = <div key={itemLeft.name} className="itemDropdownEventList" onClick={this.changeFilterValue.bind(null, itemLeft.name)}>
+            var leftDiv = <div key={itemLeft.name} className="leftItemDropdownEventList" onClick={this.changeFilterValue.bind(null, itemLeft.name)}>
                 <input className="eventListDropdownCheckbox" type="checkbox"
                   checked={filterLeftValue}
                   onChange={function(){}}
@@ -63,7 +63,7 @@ var Dropdown = React.createClass({
             if(i+1 < list.length) {
                 var itemRight = list[i+1];
                 var filterRightValue = filtersArray[itemRight.name];
-                rightDiv = <div key={itemRight.name} className="itemDropdownEventList" onClick={this.changeFilterValue.bind(null, itemRight.name)}>
+                rightDiv = <div key={itemRight.name} className="rightItemDropdownEventList" onClick={this.changeFilterValue.bind(null, itemRight.name)}>
                     <input className="eventListDropdownCheckbox" type="checkbox"
                       checked={filterRightValue}
                       onChange={function(){}}
