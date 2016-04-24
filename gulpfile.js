@@ -25,6 +25,9 @@ var modules_path = "node_modules";
 var dist_path = "dist";
 var server_main = backend_path + "/server.js";
 
+var minify = require('gulp-minify');
+var gulpWebpack = require('gulp-webpack');
+//var webpack = require('webpack');
 
 /*** RSYNC DEPLOY TO PRODUCTION ***/
 
@@ -56,9 +59,20 @@ var err = function() {
   return gutil.beep.apply(gutil, x);
 };
 
-var webpack = function(name, ext, watch) {
-  var options;
-  options = {
+/*
+var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+var plugins = [];
+
+plugins.push(new UglifyJsPlugin({ minimize: true }));
+...
+
+    plugins: plugins
+
+
+*/
+
+var webpackFunc = function(name, ext, watch) {
+  var options = {
     watch: watch,
     cache: true,
     devtool: "source-map",
@@ -86,11 +100,36 @@ var webpack = function(name, ext, watch) {
       ]
     }
   };
-  return gulp.src(frontend_path + "/" + name + "." + ext).pipe(gwebpack(options)).pipe(gulp.dest(dist_path));
+  return gulp.src(frontend_path + "/" + name + "." + ext)
+         .pipe(gwebpack(options))
+         .pipe(gulp.dest(dist_path))
 };
 
+
+/*
+gulp.task('webpack', function() {
+  gulp.src(frontend_path + "/main.js")
+    .pipe(gulpWebpack({
+      output: {
+        filename: 'main.js',
+      },
+      plugins: [new webpack.optimize.UglifyJsPlugin()],
+    }, webpack))
+    .pipe(gulp.dest(dist_path));
+});
+*/
+
+
+/*         {
+            // I want to uglify with mangling only app files, not thirdparty libs
+            test: /.*\/main\/.*\.js$/,
+            loader: "uglify"
+        }
+        */
+
+
 var js = function(watch) {
-  return webpack("main", "js", watch); // cjsx
+  return webpackFunc("main", "js", watch); // cjsx
 };
 
 gulp.task('js', function() {
@@ -158,6 +197,21 @@ gulp.task('server', function() {
     }
   });
 });
+
+/*
+gulp.task('compress', function() {
+    console.log("BUILDING!!!!!!!!!!!!!!!!!!!!!!!");
+  gulp.src('dist/main.js')
+    .pipe(minify({
+        ext:{
+            src:'-debug.js',
+            min:'.js'
+        },
+        ignoreFiles: ['-min.js']
+    }))
+    .pipe(gulp.dest('dist/main.min.js'))
+});
+*/
 
 /*** BUILD TASKS ***/
 
