@@ -43,6 +43,9 @@ module.exports = {
     },
 
     filterEvents: function (req, res) {
+
+        var unixTimestampNow = Date.parse(new Date());
+        
         var categoryFilters = req.params.category;
         var filterArray = categoryFilters.split(",");
         
@@ -58,7 +61,12 @@ module.exports = {
                             $or: categoryFilters
                         }
                     }
-                ]
+                ],
+            where: {
+                timestamp: {
+                    $gte: unixTimestampNow
+                }
+            }
         }).then(function (events) {
             res.send(events);
         });
