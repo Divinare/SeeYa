@@ -26,8 +26,6 @@ var Map = React.createClass({
     },
 
     componentWillReceiveProps: function(nextProps) {
-        console.log(nextProps.shownEventData);
-
         var that = this;
         this.deleteMarkers(this.state.markers);
 

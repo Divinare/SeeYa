@@ -120,9 +120,6 @@ const Main = React.createClass({
     getEvents: function() {
         var that = this;
         var onSuccess = function(eventList) {
-            //var filteredEventList = UTILS.eventFilter.filterColumns(eventList, eventListData);
-            console.log("EVENTLIST -.-.-.-.-.-");
-            console.log(eventList);
             that.setState({
                 eventList: eventList,
                 filteredEventList: eventList

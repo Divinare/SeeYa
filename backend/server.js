@@ -1,6 +1,5 @@
 var express = require("express");
 var path = require("path");
-var logger = require("morgan");
 var models = require("./models");
 var debug = require("debug")("EventMeetup");
 var util = require('util');
@@ -74,9 +73,8 @@ var router = express.Router();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
 app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(express.static(dist));
