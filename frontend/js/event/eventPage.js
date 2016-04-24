@@ -341,7 +341,8 @@ const EventPage = React.createClass({
             if(typeof eventVar.Address === 'undefined') {
                 address = <div></div>
             } else {
-
+                address = eventVar.Address.streetAddress;
+                /*
                 var addressComponents = [];
                 if(!commonUtils.isEmpty(eventVar.Address.streetAddress)) {
                     addressComponents.push(eventVar.Address.streetAddress);
@@ -360,7 +361,6 @@ const EventPage = React.createClass({
                     if(!arrayContainsString(addressComponents, eventVar.Address.country)) {
                         addressComponents.push(eventVar.Address.country);
                     }
-
                 }
                 var addressStr = addressComponents.join(", ");
                 address = <div>{addressStr}</div>
@@ -373,6 +373,7 @@ const EventPage = React.createClass({
                     }
                     return false;
                 }
+                */
             }
 
 

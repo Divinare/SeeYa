@@ -31,6 +31,10 @@ module.exports = function(sequelize, DataTypes) {
         defaultValue: false,
         allowNull: false
     },
+    accountValidationId: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     showNotifications: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
@@ -43,6 +47,16 @@ module.exports = function(sequelize, DataTypes) {
     },
     authProvUserId: {
         type: DataTypes.STRING,
+        allowNull: true
+    },
+    // id string when user wants to reset his password, he goes to an url forgotPassword/:id and if id's match, he can reset his password
+    forgotPasswordId: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    // when current forgotPasswordId was created
+    forgotPasswordIdCreateTime: {
+        type: DataTypes.DATE,
         allowNull: true
     }
   },{

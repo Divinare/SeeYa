@@ -10,13 +10,26 @@ select * from "Events";
 
 insert into "Categories" (id, name, "createdAt", "updatedAt") VALUES
 (1, 'Sports', current_timestamp, current_timestamp),
-(2, 'Beer', current_timestamp, current_timestamp),
+(2, 'Socializing', current_timestamp, current_timestamp),
 (3, 'Food & Drink', current_timestamp, current_timestamp),
-(4, 'Games', current_timestamp, current_timestamp),
-(5, 'Singles', current_timestamp, current_timestamp),
-(6, 'Music', current_timestamp, current_timestamp),
+(4, 'Nature', current_timestamp, current_timestamp),
+(5, 'Music', current_timestamp, current_timestamp),
+(6, 'Travel', current_timestamp, current_timestamp),
 (7, 'Other', current_timestamp, current_timestamp);
 
+Sports
+
+Socializing
+
+Food & Drink
+
+Nature
+
+Music
+
+Travel
+
+Other
 
 //INSERTING USERS:
 insert into "Users" values (DEFAULT, 'Anonymous9', 'abc', 'asa@as.com', 'afsd', current_timestamp, current_timestamp);
@@ -28,3 +41,6 @@ delete from "Users" where username like 'Anonymous%';
 //UPDATING USERS
 //Make a user with username 'super' have admin rights
 UPDATE "Users" SET role = 'Admin' where username = 'super'
+
+
+
