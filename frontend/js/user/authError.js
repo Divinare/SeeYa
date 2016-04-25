@@ -8,7 +8,7 @@ var constants = require('../utils/constants.js');
 
 const OAuthError = React.createClass({
     componentDidMount: function() {
-        msgComponent.showMessageComponent(this.props.params.message, constants.SHOW_MSG_MS_DEFAULT, 'error')
+        msgComponent.showMessageComponent(this.props.params.message, 7000, 'error')
         browserHistory.push("/");
     },
 

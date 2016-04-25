@@ -91,55 +91,76 @@ module.exports = {
             return done(null, true);
         }
 
-        //Check whether there are other seeya users who have the same email as this user has in fb
-        var emails = [];
-        profile.emails.forEach(function(entry){
-            emails.push(entry.value)
-        });
-
-        models.User.findAll({
-            where: {
-                email: emails,
-                authProvider: null
+        models.User.findOne({
+            where: { 
+                authProvider: profile.provider,
+                authProvUserId: profile.id
             }
-        }).then(function(users){
-            if(users != null && users.length > 0){
-                //Take the first found user and associate it with the facebook account
-                var user = users[0];
-                user.authProvider = profile.provider;
-                user.authProvUserId = profile.id;
-                user.save().then(function(savedUser){
-                    var response = sessionService.login(req, null, savedUser);
-                    console.log("fb account associated with existing user!")
-                    return done(null, response);
-                }).catch(function(err){
-                    if(err.message != null){
-                        req.authError = err.message;
-                        return done(null, true);
-                    }else{
-                       return done(err)  //error in connecting to database for example
-                    }   
-                })
-            }else{
-                var displayName = profile.displayName
-                var username = null
+        }).then(function(user){
+            if(user != null){   
+                console.log("fb user found in db")
+                var response = sessionService.login(req, null, user);
+                return done(null, response); //user found in database, only have to log him/her in
 
-                if( displayName == null ){
-                    //make user anonymous if for some reason the displayname is null or undefined
-                    username = constants.anonymousBase;    
-                }else if( displayName.indexOf(' ') === -1 ){  //if there is no space in the display name use all of it
-                    username = displayName
-                }else{  //displayName not null and has a space --> use the part before space as the username
-                     username = displayName.substr(0, displayName.indexOf(' '));
-                }
 
-                models.User.findOne({
-                    where: { 
-                        authProvider: profile.provider,
-                        authProvUserId: profile.id
+            }else{      //No user with this fb account found
+                //Check whether there are other seeya users who have the same email as this user has in fb
+                var emails = [];
+                profile.emails.forEach(function(entry){
+                    emails.push(entry.value)
+                });
+
+                models.User.findAll({
+                    where: {
+                        email: emails,
+                        authProvider: null
                     }
-                }).then(function(user){
-                    if(user == null){
+                }).then(function(users){
+
+                    if(users != null && users.length > 0){
+                        //search for a user with verified email address. If one is found, it is safe to link to fb account
+                        var emailsFromDb = [];
+                        var validatedUser = null;
+                        users.forEach(function(currentUser){
+                            if( currentUser.get('accountValidated') === true ){
+                                validatedUser = currentUser;
+                            }else{
+                                emailsFromDb.push(currentUser.get('email'))
+                            }
+                        });
+                        
+                        if( validatedUser != null ){
+                            validatedUser.authProvider = profile.provider;
+                            validatedUser.authProvUserId = profile.id;
+                            validatedUser.save().then(function(savedUser){
+                                var response = sessionService.login(req, null, savedUser);
+                                console.log("fb account associated with existing user!")
+                                return done(null, response);
+                            }).catch(function(err){
+                                if(err.message != null){
+                                    req.authError = err.message;
+                                    return done(null, true);
+                                }else{
+                                   return done(err)  //error in connecting to database for example
+                                }   
+                            });
+         
+                        }else{  //There was no validated user with emails found in fb account
+                            req.authError = errorMessages.getError('userNonVerifiedAccountFbLoginStart') + emailsFromDb.join(',') + ". " + errorMessages.getError('userNonVerifiedAccountFbLoginEnd')
+                            return done(null, true);
+                        }
+                    }else{      //No users found with fb account nor with the email addresses found in db --> create a new user
+                        var displayName = profile.displayName
+                        var username = null
+
+                        if( displayName == null ){
+                            //make user anonymous if for some reason the displayname is null or undefined
+                            username = constants.anonymousBase;    
+                        }else if( displayName.indexOf(' ') === -1 ){  //if there is no space in the display name use the whole name as user name
+                            username = displayName
+                        }else{  //displayName not null and has a space --> use the part before space as the username
+                             username = displayName.substr(0, displayName.indexOf(' '));
+                        }
                         models.User.findAll({
                             where:{
                                 username: {
@@ -158,7 +179,8 @@ module.exports = {
                             console.log(profile.emails[0])
                             console.log(profile.emails[0].value)
                             if(profile.emails != null && profile.emails[0] != null && profile.emails[0].value != null){
-                                userFields.email = profile.emails[0].value
+                                userFields.email = profile.emails[0].value;
+                                userFields.accountValidated = true;
                             }
 
                             models.User.create(userFields).then(function(user){
@@ -170,7 +192,7 @@ module.exports = {
                                 console.log(err)
                                 if(err.message != null){
                                     req.authError = err.message;
-                                     return done(null, true);
+                                    return done(null, true);
                                 }else{
                                    return done(err)  
                                 }   
@@ -184,11 +206,6 @@ module.exports = {
                                return done(err)  //error in connecting to database for example
                             }
                         });
-
-                    }else{
-                        console.log("fb user found in db")
-                        var response = sessionService.login(req, null, user);
-                        return done(null, response); //user found in database, only have to log him/her in
                     }
                 }).catch(function(err){
                    if(err.message != null){
@@ -198,7 +215,6 @@ module.exports = {
                        return done(err)  //error in connecting to database for example
                     }   
                 });
-
             }
         }).catch(function(err){
             if(err.message != null){

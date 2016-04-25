@@ -20,6 +20,8 @@ const errors = {
     userPasswordTooShort: "Password too short",
     userNotAuthorized: "This feature is only available for logged in users. Please sign up, or login",
     userOldPasswordMissMatch: "Old password was incorrect",
+    userNonVerifiedAccountFbLoginStart: "There's an existing user account with ",
+    userNonVerifiedAccountFbLoginEnd: "Please verify the email address before logging in with Facebook",
 
     eventName: "Name must be 3-30 characters long.",
     eventAddress: "Address incorrect. Did you select it from the list of address suggestions?",
