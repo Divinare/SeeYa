@@ -226,8 +226,8 @@ gulp.task('minify', function() {
 })
 */
 
-/*
 
+/*
 gulp.task('minify', function () {
     return gulp.src(frontend_path + '/main.js')
        .pipe(react())
@@ -238,6 +238,16 @@ gulp.task('minify', function () {
 });
 */
 
+/*
+gulp.task('minify', function () {
+    return gulp.src(dist_path + '/main.js')
+       .pipe(react())
+       .pipe(uglify().on('error', gutil.log))
+       .pipe(concat('main.js'))
+       .pipe(uglify())
+       .pipe(gulp.dest(dist_path));
+});
+*/
 
 /*
 gulp.task('compress', function() {

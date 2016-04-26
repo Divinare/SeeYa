@@ -180,20 +180,13 @@ var ContactUs = React.createClass({
         })
     },
 
-    /*
-
-        <input type="text" id="subject" placeholder="Click to select" className="form-control" onChange={this.handleChange('subjectId')}/>
-    <span id="subjectError"></span>
-
-    */
-
     render: function(){
         return (
             <div id="contactUsContainer">
                 <h2 className="topicText">Contact us</h2>
                 <p>
                 Send email to:
-                <a href="mailto:gatherupThisIsnotthecorrectaddress@gmail.com?Subject=Hello%20again" target="_top"> gatherup@gmail.com</a>
+                <a href="mailto:team@seeyaevents.com ?Subject=Hello" target="_top"> team@seeyaevents.com </a>
                 </p>
                 <div className="form-group">
                         <label className="control-label">Subject *</label>
