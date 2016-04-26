@@ -1,4 +1,7 @@
-import { browserHistory, Link } from 'react-router';
+var React = require('react');
+var Router = require('react-router');
+var browserHistory = Router.browserHistory;
+var Link = Router.Link;
 
 module.exports = React.createClass({
     componentDidMount: function() {

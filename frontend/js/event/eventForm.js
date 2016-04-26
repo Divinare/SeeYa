@@ -1,5 +1,6 @@
 var React = require('react');
 var Router = require('react-router');
+var browserHistory = Router.browserHistory;
 
 var SingleSelectDropdown = require('../singleSelectDropdown.js');
 var DatePicker = require('react-bootstrap-datetimepicker');
@@ -16,8 +17,6 @@ var autocomplete;
 var placesService;
 var geocoder;
 var componentForm = ['street-address', 'country-name', 'postal-code'];
-
-import { browserHistory } from 'react-router';
 
 const EventForm = React.createClass({
     getInitialState: function() {

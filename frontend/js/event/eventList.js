@@ -1,10 +1,13 @@
 var Router = require('react-router');
+var browserHistory = Router.browserHistory;
+var Link = Router.Link;
+
 var Moment = require('moment');
 
 var EventListDropdown = require('./eventListDropdown.js');
 //var Dateselect = require('../dateselect.js');
 //var DatePicker = require('../datepicker.js');
-import { browserHistory } from 'react-router'
+//import { browserHistory } from 'react-router'
 
 var SortTypes = {
   ASC: 'ASC',

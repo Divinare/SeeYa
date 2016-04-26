@@ -1,7 +1,8 @@
 var React = require('react');
-import { browserHistory } from 'react-router';
+var Router = require('react-router');
+var browserHistory = Router.browserHistory;
 
-var NoMatch = React.createClass({
+const NoMatch = React.createClass({
 
 
 	getInitialState: function() {

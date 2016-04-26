@@ -1,11 +1,14 @@
 var React = require('react');
+var Router = require('react-router');
+var browserHistory = Router.browserHistory;
+
 var Moment = require('moment')
 var Router = require('react-router');
 var ContextMenu = require('./contextMenu.js');
 
 var CreateNewEventPopup = require('./createNewEventPopup.js');
 
-import { browserHistory } from 'react-router'
+//import { browserHistory } from 'react-router'
 
 var Map = React.createClass({
     mixins: [ Router.Navigation ],

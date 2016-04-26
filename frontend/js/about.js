@@ -1,7 +1,6 @@
 var React = require('react');
-
-import { browserHistory } from 'react-router';
-
+var Router = require('react-router');
+var browserHistory = Router.browserHistory;
 
 const About = React.createClass({
 

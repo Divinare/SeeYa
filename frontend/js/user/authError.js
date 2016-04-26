@@ -1,6 +1,7 @@
 var React = require('react');
+var Router = require('react-router');
+var browserHistory = Router.browserHistory;
 
-import { browserHistory } from 'react-router';
 var msgComponent = require('../utils/messageComponent.js');
 var constants = require('../utils/constants.js');
 

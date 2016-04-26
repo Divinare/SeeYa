@@ -1,20 +1,19 @@
 var React = require('react');
 var Router = require('react-router');
+var browserHistory = Router.browserHistory;
+var Link = Router.Link;
+
 var Moment = require('moment');
 
 var commonUtils = require('../../../common/utils.js');
-
-
 var Confirm = require('../modal/confirm.js')
-var reactDom = require('react-dom')
+var reactDom = require('react-dom');
 var msgComponent = require('../utils/messageComponent.js');
 var constants = require('../utils/constants.js');
 //import { render } from 'react-dom'
 const SHOW_MSG_SEC = 5;
 
-var Link = Router.Link;
-
-import { browserHistory } from 'react-router';
+//import { browserHistory } from 'react-router';
 
 $ = window.jQuery = require('jquery');
 

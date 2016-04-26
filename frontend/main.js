@@ -5,6 +5,16 @@ window.URL = UTILS.url;
 window.React = require('react');
 window.ReactDOM = require('react-dom');
 
+var render = require('react-dom').render;
+
+var reactRouter = require('react-router');
+var Router = reactRouter.Router;
+var Route = reactRouter.Route;
+var IndexRoute = reactRouter.IndexRoute;
+var Link = reactRouter.Link;
+var IndexLink = reactRouter.IndexLink;
+var browserHistory = reactRouter.browserHistory;
+
 window.markersHaventLoaded = true; 
 
 var Moment = require('moment');
@@ -27,9 +37,6 @@ var RequireLogin = require('./js/user/requireLogin.js');
 var AttendForm = require('./js/event/attendForm.js');
 var AuthError = require('./js/user/authError.js');
 var ForgotPassword = require('./js/user/forgotPassword.js');
-
-import { render } from 'react-dom'
-import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
 
 $(document).on("click", function (event) {
     UTILS.helper.hideSingeSelectDropdown(event);
