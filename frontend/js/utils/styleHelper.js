@@ -24,16 +24,22 @@ module.exports = {
 		return window.innerWidth;
 	},
 
-	getRightContainerHeight: function() {
+	getRightContainerHeight: function(initialScreenSize) {
 		var screenType = this.getScreenType();
 		if(screenType == 'desktop') {	
 			var eventListHeight = window.innerHeight;
 			eventListHeight -= window.CONFIGS.navbarHeight;
 			return eventListHeight-20;
 		} else if( screenType == 'tablet') {
-			var eventListHeight = (window.innerHeight-141);
-			return eventListHeight;
-		}
+            var isKeyboardOn = (window.innerHeight < initialScreenSize);
+            if(isKeyboardOn) {
+                var eventListHeight = (initialScreenSize-141);
+                return eventListHeight;
+            } else {
+    			var eventListHeight = (window.innerHeight-141);
+    			return eventListHeight;
+     	    }
+        }
 	},
 
 	getRightContainerWidth: function() {
@@ -112,7 +118,14 @@ module.exports = {
         this.showOrHideRightContainer(true);
     },
 
-    resetRightContainer: function() {
+    resetRightContainer: function(initialScreenSize) {
+        var isKeyboardOn = (window.innerHeight < initialScreenSize);
+        if(isKeyboardOn) {
+            $(".right-container").css("top", "20px");
+            $(".right-container").css("right", "0px");
+            console.log("returning!");
+            return;
+        } 
         var className = $('.right-container').attr('class');
         $("#rightContainerContent").css("visibility", "visible");
         $("#rightContainerToolbar").css("visibility", "visible");
@@ -141,23 +154,22 @@ module.exports = {
         }
     },
 
-    resizeRightContainerContent: function() {
-
-            var toolbarHeight = $("#rightContainerToolbar")[0].clientHeight;
-            var bottomBarHeight = $("#rightContainerBottomBar")[0].clientHeight;
-            var rightContainerPadding = 40;
-            var newHeight = (this.getRightContainerHeight()-rightContainerPadding-toolbarHeight-bottomBarHeight);
-            $("#rightContainerContent").css("height", newHeight+"px");
+    resizeRightContainerContent: function(initialScreenSize) {
+        var toolbarHeight = $("#rightContainerToolbar")[0].clientHeight;
+        var bottomBarHeight = $("#rightContainerBottomBar")[0].clientHeight;
+        var rightContainerPadding = 40;
+        var newHeight = (this.getRightContainerHeight(initialScreenSize)-rightContainerPadding-toolbarHeight-bottomBarHeight);
+        $("#rightContainerContent").css("height", newHeight+"px");
     },
 
-    resizeEventList: function() {
+    resizeEventList: function(initialScreenSize) {
 
         if(typeof $("#eventListTopic")[0] !== "undefined") {
             var toolbarHeight = $("#rightContainerToolbar")[0].clientHeight;
             var eventListTopicHeight = $("#eventListTopic")[0].clientHeight;
             var eventListBottomBarHeight = $("#eventListBottomBar")[0].clientHeight;
             var rightContainerPadding = 40;
-            var newHeight = (this.getRightContainerHeight()-(rightContainerPadding*2)-eventListTopicHeight-eventListBottomBarHeight-toolbarHeight);
+            var newHeight = (this.getRightContainerHeight(initialScreenSize)-(rightContainerPadding*2)-eventListTopicHeight-eventListBottomBarHeight-toolbarHeight);
             $("#eventListTableContainer").css("height", newHeight+"px");
         }
     }

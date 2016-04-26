@@ -18,6 +18,7 @@ var EventFormDropdown = React.createClass({
             return false;
         });
 
+        $("#" + this.props.inputFieldId).prop("readonly", true);
     },
 
     select: function(item) {
