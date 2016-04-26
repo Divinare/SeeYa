@@ -1,4 +1,4 @@
-# EventMeetup
+# SeeYa
 =============
 
 API KEY: &key=AIzaSyD1G_IG2lcziaSIQT5m3FCGY2xKSBMssHM
@@ -15,7 +15,7 @@ How to run the app locally (Windows):
 SETTING UP THE ENVIRONMENT:
 
 - Install node.js https://nodejs.org/
-- Clone the project from https://github.com/Divinare/EventMeetup
+- Clone the project from https://github.com/Divinare/SeeYa
 - Open command line and go to the folder where you cloned the project
 - When you are in the folder run command:
 
