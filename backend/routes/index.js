@@ -3,6 +3,7 @@ var express = require('express');
 var router  = express.Router();
 var passport = require('passport')
 
+var Security = require('../helpers/security.js');
 var EventCtrl = require('../controllers/EventController.js');
 var AddressCtrl = require('../controllers/AddressController.js');
 var AttendanceCtrl = require('../controllers/AttendanceController.js');
@@ -25,17 +26,17 @@ router.get('/categories/:id', CategoryCtrl.findOne);
 
 router.get('/users/eventAttendees/:id', UserCtrl.findAttendeesByEvent);
 
-router.post('/events', EventCtrl.create);
-router.post('/attendances', AttendanceCtrl.create);
-router.post('/categories', CategoryCtrl.create);
-router.post('/users', UserCtrl.create);
-router.post('/sessions', SessionCtrl.create)
-router.post('/contacts', ContactCtrl.create)
+router.post('/events', Security.sanitizeInput, EventCtrl.create);
+router.post('/attendances', Security.sanitizeInput, AttendanceCtrl.create);
+router.post('/categories', Security.sanitizeInput, CategoryCtrl.create);
+router.post('/users', Security.sanitizeInput, UserCtrl.create);
+router.post('/sessions', Security.sanitizeInput, SessionCtrl.create)
+router.post('/contacts', Security.sanitizeInput, ContactCtrl.create)
 
 
-router.post('/events/:id', EventCtrl.update);
-router.post('/categories/:id', CategoryCtrl.update);
-router.post('/users/:id', UserCtrl.update);
+router.post('/events/:id', Security.sanitizeInput, EventCtrl.update);
+router.post('/categories/:id', Security.sanitizeInput, CategoryCtrl.update);
+router.post('/users/:id', Security.sanitizeInput, UserCtrl.update);
 
 
 router.delete('/events/:id', EventCtrl.delete);

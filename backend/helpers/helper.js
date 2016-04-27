@@ -46,6 +46,33 @@ module.exports = {
         return false;
     },
 
+
+    /**Gets a hash of errors and corresponding field names. If any errors are found, they are sent back to the
+    client.
+    Returns true if errormessages were sent and false otherwise
+    See usercontroller create method for example usage
+    **/
+    sendErrorsMappedToFields: function(res, validationErrors){
+        var errorCount = 0;
+        for (var property in validationErrors) {
+            if (validationErrors.hasOwnProperty(property)) {
+                if( validationErrors[property].length > 0 ){
+                    errorCount++;
+                }else{
+                    delete validationErrors[property]
+                }
+            }
+        }
+        if( errorCount > 0 ){
+            console.log("errors found, seding to client")
+            module.exports.sendError(res, 400, validationErrors);
+            return true;
+        }else{
+            console.log("no errors")
+        }
+        return false;
+    },
+
     /**
     Can be used to create a unique username. Finds the next free ordinal number to add after the username
     so that the username will be unique. The username that needs to be made unique is given as the

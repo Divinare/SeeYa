@@ -13,6 +13,7 @@ https://crackstation.net/hashing-security.htm
 https://masteringmean.com/lessons/46-Encryption-and-password-hashing-with-Nodejs
 */
 
+var escape = require('lodash.escape');
 var crypto = require('crypto');
 //BE CAREFUL IF YOU PLAN TO CHANGE THESE CONFIGS
 //If we lose information about what configs we used to save users' passwords, we cannot recover them anymore
@@ -56,8 +57,69 @@ module.exports = {
                     successCallback(salt, hash);
                 }
         });
+    },
+
+    //sanitize all input except passwords
+    sanitizeInput: function(req, res, next){
+        var whiteList = ['password', 'repeatpassword', 'oldpassword', 'email']
+        var input = req.body
+        console.log("sanitizing!!!!")
+
+        var sanitizedObj = {};
+        transform(input, sanitizedObj, 'transformed', escape, whiteList);
+        console.log("sanitized")
+        console.log(sanitizedObj)
+        req.body = sanitizedObj.transformed
+        
+        next();
     }
 };
 
+
+/**applies the transformFunction to all the object properties going through all the nested
+    properties as well. The property is not transformed if its key is listed in the
+    exceptions list
+
+    The function doesn't transform the object itself, but constructs a new object into the resObj
+
+    TODO: probably doesn't handle arrays correctly, fix that
+**/
+function transform(obj, resObj, stack, transformFunction, exceptions) {
+    console.log("iterate called")
+    for (var property in obj) {
+        if (obj.hasOwnProperty(property)) {
+            if (typeof obj[property] == "object") {
+                transform(obj[property], resObj, stack + '.' + property, transformFunction, exceptions);
+            } else {
+
+                if( exceptions.indexOf(property.toLowerCase()) === -1){
+                    var transformed = transformFunction(obj[property]);
+                    assign(resObj, stack + "." + property, transformed);
+                }else{
+                    assign(resObj, stack + "." + property, obj[property]);
+                }
+               
+               // console.log(property + "   " + obj[property]);
+                //$('#output').append($("<div/>").text(stack + '.' + property))
+            }
+        }
+    }
+}
+
+function assign(obj, prop, value) {
+    if (typeof prop === "string")
+        prop = prop.split(".");
+
+    if (prop.length > 1) {
+        var e = prop.shift();
+        assign(obj[e] =
+                 Object.prototype.toString.call(obj[e]) === "[object Object]"
+                 ? obj[e]
+                 : {},
+               prop,
+               value);
+    } else
+        obj[prop[0]] = value;
+}
 
 

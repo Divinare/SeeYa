@@ -81,13 +81,14 @@ module.exports = {
             models.User.count({
                 where: { username: username }
             }).then(function(count){
+                console.log("there are " + count + "users with this user name")
                 if(count > 0){
                     console.log("There is already a user in db with username " + username)
                     validationErrors['username'].push(errorMessages.getError('userUsernameAlreadyInUse'))
                 }
 
                 //Check if there were any errors and send them back to the client if there were, otherwise continue
-                if(!helper.sendErrorsIfFound(res, validationErrors) ){
+                if(!helper.sendErrorsMappedToFields(res, validationErrors) ){
                     //if false is returned no messages were sent, i.e. user input is valid and we can continue
                    if( utils.isEmpty(username) ){
                         models.User.findAll({

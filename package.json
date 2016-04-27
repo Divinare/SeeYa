@@ -36,6 +36,7 @@
     "gulp-webpack": "^1.5.0",
     "jade": "^1.6.0",
     "jquery": "^2.1.4",
+    "lodash.escape": "^4.0.0",
     "moment": "^2.10.3",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.0",
