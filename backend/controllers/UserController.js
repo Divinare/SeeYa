@@ -1,17 +1,18 @@
 var router = require("express").Router();
 var crypto = require('crypto');
-
 var models  = require('../models');
 var Sequelize = require('sequelize')
+
 var helper = require("../helpers/helper.js")
 var security = require("../helpers/security.js")
 var validator = require("../../common/validators/validator.js")
 var errorMessages = require("../../common/validators/errorMessage.js")
 var utils = require("../../common/utils.js")
-var userService = require('../services/UserService.js');
-var sessionService = require('../services/SessionService.js');
 var constants = require("../helpers/constants.js")
 
+var userService = require('../services/UserService.js');
+var sessionService = require('../services/SessionService.js');
+var emailService = require("../services/EmailService.js");
 
 
 module.exports = {
@@ -137,13 +138,18 @@ function finishSignUp(req, res, username){
     //Callback that is called by the security component after the password has been hashed
     var createUser = function(salt, hash){
         console.log("CREATE USER CALLED")
+        var accountVerificationId = generateAccountVerificationId();
+
         models.User.create({
             username: username,
             email: userEmail, 
             password: hash,
-            salt: salt
+            salt: salt,
+            accountVerificationId: accountVerificationId,
+            accountVerificated: false
         }).then(function(user){
             var response = sessionService.login(req, res, user);
+            emailService.sendVerificationEmail(userEmail, accountVerificationId, username);
             res.status(201).send(response);
         }).catch(function(err){
             console.log("ERROR:")
@@ -306,4 +312,23 @@ function changePassword(req, res) {
         }
         userService.getLoggedInUser(req, res, success, notAuthorized);
     }
+}
+
+
+function generateAccountVerificationId() {
+    // TODO...
+
+    // Check if id already exists etc.
+
+    function makeid() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for( var i=0; i < 100; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+    return "1234d5dfdgdgfdgfgfgfdgfdgfdgfdgdfw213213213213213213213213213312";
+
 }

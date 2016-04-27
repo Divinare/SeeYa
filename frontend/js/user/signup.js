@@ -67,7 +67,7 @@ const About = React.createClass({
         var success = function(result){
             console.log(result.user);
             that.props.updateAppStatus('user', result.user);
-            browserHistory.push('/');
+            browserHistory.push('/accountVerification');
         };
         frontValidator.clearErrorFromField('#email', '#emailError');
         frontValidator.clearErrorFromField('#username', '#usernameError');

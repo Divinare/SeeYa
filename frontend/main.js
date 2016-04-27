@@ -37,7 +37,7 @@ var RequireLogin = require('./js/user/requireLogin.js');
 var AttendForm = require('./js/event/attendForm.js');
 var AuthError = require('./js/user/authError.js');
 var ForgotPassword = require('./js/user/forgotPassword.js');
-
+var Verification = require('./js/user/verification.js');
 
 var initialScreenSize = window.innerHeight;
 
@@ -269,6 +269,7 @@ render((
                 <Route path="join/:id" component={AttendForm} />
                 <Route path="events/:id/edit" component={EventForm} />
                 <Route path="eventForm" component={EventForm} />
+                <Route path="accountVerification" component={Verification} />
             </Route>
             <Route path="*" component={NoMatch} />
         </Route>

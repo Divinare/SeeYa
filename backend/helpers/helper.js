@@ -27,7 +27,11 @@ module.exports = {
                     console.log(validationErrors[property]);
                     for(errorArray in validationErrors[property]) {
                         if(errorArray.length > 0) {
+                            console.log("ERROR!");
+                            console.log(validationErrors[property]);
+                            console.log(errorArray);
                             errorsToBeSendToClient.push(validationErrors[property]);
+                            errorCount++;
                         }
                     }
                 } else if( validationErrors[property].length > 0 ){
@@ -37,7 +41,7 @@ module.exports = {
             }
         }
         if( errorCount > 0 ){
-            console.log("errors found, seding to client")
+            console.log("errors found, sending to client")
             module.exports.sendError(res, 400, errorsToBeSendToClient);
             return true;
         }else{

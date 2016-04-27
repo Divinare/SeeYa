@@ -26,12 +26,12 @@ module.exports = function(sequelize, DataTypes) {
         defaultValue: "User",
         allowNull: false
     },
-    accountValidated: {
+    accountVerificated: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
         allowNull: false
     },
-    accountValidationId: {
+    accountVerificationId: {
         type: DataTypes.STRING,
         allowNull: true
     },

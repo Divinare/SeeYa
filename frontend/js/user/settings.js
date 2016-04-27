@@ -105,6 +105,10 @@ const Settings = React.createClass({
            //     validator.setErrorToField('email', [that.state.email + ' already in use'], 'emailError');
            // }
 
+           // TODO, add error if username is unique:
+           // frontValidator.setErrorToField("#username", jqXhr.responseJSON.errors.changePasswordDetails, "#usernameError")
+
+
         };
         var success = function(result){
             console.log( "success!!!" );

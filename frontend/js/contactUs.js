@@ -199,7 +199,7 @@ var ContactUs = React.createClass({
                     </div>
                     <div className="form-group">
                         <label className="control-label">Email</label>
-                            <input type="text" id="email" placeholder="(optional)" className="form-control" onChange={this.handleChange('email')}/>
+                            <input type="text" id="email" placeholder="(optional)" className="form-control" onChange={this.handleChange('email')} autoComplete="off"/>
                             <span id="emailError"></span>
                     </div>
                     <div className="form-group">

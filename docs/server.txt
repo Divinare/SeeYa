@@ -40,7 +40,7 @@ To restart pm in production:
 
 pm2 stop 0
 pm2 delete 0
-pm2 start gulp (run at eventMeetup folder)
+pm2 start gulp (run at SeeYa folder)
 
 USERS: root, general
 The password for the general user is seeyaServer0104 (in case you need to do commands that need super user privileges)
