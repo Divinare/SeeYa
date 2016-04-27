@@ -799,7 +799,7 @@ const EventForm = React.createClass({
 
 					{/* Name */}
 					<div className='form-group'>
-						<input type='text' className='form-control' id='name' value={this.state.name} onChange={this.handleChange('name')} placeholder='Event name'/>
+						<input type='text' className='form-control' id='name' value={this.state.name} onChange={this.handleChange('name')} placeholder='Event name' autocomplete="off"/>
 					</div>
 					<span className="validationError" id="nameError"></span>
 
@@ -849,7 +849,7 @@ const EventForm = React.createClass({
 					{/* Time */}
 					<div className='form-group'>
 						<div className='input-group' id='time-container'>
-							<input type='text' className='form-control' id='time' value={this.state.time} onChange={this.handleChange("time")} placeholder="Time (hh:mm)" />
+							<input type='text' className='form-control' id='time' value={this.state.time} onChange={this.handleChange("time")} placeholder="Time (hh:mm)" autocomplete="off" />
 							<span className="input-group-btn">
 								 <button className="btn btn-default" type="button" onClick={this.setCurrentTime}><i className="glyphicon glyphicon-time"></i></button>
 							</span>
@@ -859,7 +859,7 @@ const EventForm = React.createClass({
 
 					{/* Description */}
 					<div className='form-group'>
-						<textarea type='text' className='form-control' id='description' maxLength="500" value={this.state.description} onChange={this.handleChange('description')} placeholder="Description"/>
+						<textarea type='text' className='form-control' id='description' maxLength="500" value={this.state.description} onChange={this.handleChange('description')} placeholder="Description" autocomplete="off"/>
 					</div>
 					<span id="charactersLeft"></span>
 
