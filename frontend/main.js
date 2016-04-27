@@ -239,7 +239,6 @@ render((
         <Route path="/" component={Main}>
             <IndexRoute component={EventList} />
             <Route path="events/:id" component={EventPage} />
-            <Route path="eventForm" component={EventForm} />
             <Route path="about" component={About} />
             <Route path="signup" component={Signup} />
             <Route path="login" component={Login} />
@@ -252,6 +251,7 @@ render((
                 <Route path="settings" component={Settings} />
                 <Route path="join/:id" component={AttendForm} />
                 <Route path="events/:id/edit" component={EventForm} />
+                <Route path="eventForm" component={EventForm} />
             </Route>
             <Route path="*" component={NoMatch} />
         </Route>

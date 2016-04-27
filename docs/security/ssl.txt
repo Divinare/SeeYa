@@ -1,0 +1,4 @@
+
+"The "challenge password" is basically a shared-secret nonce between you and the SSL issuer, embedded in the CSR, which the issuer may use to authenticate you should that ever be needed."
+
+challenge password: BB9KYF5tb6rQdZtk

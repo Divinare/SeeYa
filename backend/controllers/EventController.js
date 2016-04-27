@@ -83,10 +83,16 @@ module.exports = {
                     helper.sendErr(res, 400, "Category by name " + eventToAdd.category + " not found.");
                 } else {
                     var success = function(user){
-                        createEvent(req, res, category, user);
+                        console.log("success func")
+                        if(user != null){
+                            createEvent(req, res, category, user);
+                        }else{
+                            helper.sendError(res, 400, {user: "Not logged in"})
+                        }
                     }
                     var error = function(err){
-                        createEvent(req, res, category, null);
+                        console.log("error func")
+                        helper.sendError(res, 400, {user: "Not logged in"})
                     }
                     userService.getLoggedInUser(req, res, success, error);
                 }
