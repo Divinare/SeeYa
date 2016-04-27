@@ -1,5 +1,6 @@
 body {
     overflow: hidden;
+    height: 100%;
 }
 
 html {
@@ -28,7 +29,6 @@ img{
 dd {
     margin: 0 0 10px;
 }
-
 
 /* Custom scrollbar width */
 ::-webkit-scrollbar {

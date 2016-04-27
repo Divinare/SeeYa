@@ -26,6 +26,13 @@ var dist_path = "dist";
 var server_main = backend_path + "/server.js";
 
 var minify = require('gulp-minify');
+var uglify = require('gulp-uglify');
+var gutil = require('gulp-util');
+var react = require('gulp-react');
+var browserify = require('browserify');
+var reactify = require('reactify');
+var source = require('vinyl-source-stream');
+
 var gulpWebpack = require('gulp-webpack');
 //var webpack = require('webpack');
 
@@ -199,6 +206,50 @@ gulp.task('server', function() {
 });
 
 /*
+gulp.task('minify', function() {
+  gulp.src([frontend_path + "/main.js"])
+    .pipe(uglify().on('error', gutil.log))
+    .pipe(react())
+    .pipe(concat('main.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('./dist/'))
+});
+*/
+
+/*
+gulp.task('minify', function() {
+  return browserify(frontend_path + '/main.js')
+  .transform(reactify)
+  .bundle()
+  .pipe(source(dist_path + '/main.js'))
+  .pipe(gulp.dest(dist_path));
+})
+*/
+
+
+/*
+gulp.task('minify', function () {
+    return gulp.src(frontend_path + '/main.js')
+       .pipe(react())
+       .pipe(uglify().on('error', gutil.log))
+       .pipe(concat('main.js'))
+       .pipe(uglify())
+       .pipe(gulp.dest(dist_path));
+});
+*/
+
+/*
+gulp.task('minify', function () {
+    return gulp.src(dist_path + '/main.js')
+       .pipe(react())
+       .pipe(uglify().on('error', gutil.log))
+       .pipe(concat('main.js'))
+       .pipe(uglify())
+       .pipe(gulp.dest(dist_path));
+});
+*/
+
+/*
 gulp.task('compress', function() {
     console.log("BUILDING!!!!!!!!!!!!!!!!!!!!!!!");
   gulp.src('dist/main.js')
@@ -222,8 +273,16 @@ gulp.task('copyToBuild', function() {
 //copyToBuild
 
 gulp.task('build', ['clean', 'copy', 'scss', 'js', 'copyToBuild']);
+//gulp.task('build', ['clean', 'copy', 'scss', 'minify', 'copyToBuild']);
 
 gulp.task('default', ['clean', 'copy', 'scss', 'server', 'js-dev', 'watch']);
+
+gulp.task('transform', function(){
+  gulp.src(frontend_path + '/main.js')
+    .pipe(react())
+    .pipe(gulp.dest(dist_path));
+});
+
 
 gulp.task('watch', ['copy'], function() {
   livereload.listen();

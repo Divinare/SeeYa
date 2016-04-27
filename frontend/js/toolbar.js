@@ -1,6 +1,5 @@
 var React = require('react');
 
-
 var maxToolbarIconsCount = 6;
 
 const Toolbar = React.createClass({

@@ -1,5 +1,8 @@
-import { browserHistory, Link } from 'react-router';
 var React = require('react');
+var Router = require('react-router');
+var browserHistory = Router.browserHistory;
+var Link = Router.Link;
+
 var utils = require('../../../common/utils.js');
 var msgComponent = require('../utils/messageComponent.js');
 var validator = require('../../../common/validators/validator.js');

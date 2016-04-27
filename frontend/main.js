@@ -5,6 +5,16 @@ window.URL = UTILS.url;
 window.React = require('react');
 window.ReactDOM = require('react-dom');
 
+var render = require('react-dom').render;
+
+var reactRouter = require('react-router');
+var Router = reactRouter.Router;
+var Route = reactRouter.Route;
+var IndexRoute = reactRouter.IndexRoute;
+var Link = reactRouter.Link;
+var IndexLink = reactRouter.IndexLink;
+var browserHistory = reactRouter.browserHistory;
+
 window.markersHaventLoaded = true; 
 
 var Moment = require('moment');
@@ -28,8 +38,8 @@ var AttendForm = require('./js/event/attendForm.js');
 var AuthError = require('./js/user/authError.js');
 var ForgotPassword = require('./js/user/forgotPassword.js');
 
-import { render } from 'react-dom'
-import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router'
+
+var initialScreenSize = window.innerHeight;
 
 $(document).on("click", function (event) {
     UTILS.helper.hideSingeSelectDropdown(event);
@@ -101,19 +111,26 @@ const Main = React.createClass({
         if(typeof map !== 'undefined') {
             $("#map-canvas").css('height', UTILS.styleHelper.getMapHeight());
             $("#map-canvas").css('width', UTILS.styleHelper.getMapWidth());
-            var eventListHeight = UTILS.styleHelper.getRightContainerHeight();
+            var eventListHeight = UTILS.styleHelper.getRightContainerHeight(initialScreenSize);
             var eventListWidth = UTILS.styleHelper.getRightContainerWidth();
             $(".right-container").css('height', eventListHeight);
             $(".right-container").css('width', eventListWidth);
 
-            UTILS.styleHelper.resetRightContainer();
-            UTILS.styleHelper.resizeEventList();
-            UTILS.styleHelper.resizeRightContainerContent();
+            UTILS.styleHelper.resetRightContainer(initialScreenSize);
+            UTILS.styleHelper.resizeEventList(initialScreenSize);
+            UTILS.styleHelper.resizeRightContainerContent(initialScreenSize);
             
             // Are these needed? T. Joe 14.4.2016
             // google.maps.event.trigger(map,'resize');
             //   map.setZoom( map.getZoom() );
             UTILS.messageComponent.adjustMessageComponentWidth();
+
+            var isKeyboardOn = (window.innerHeight < initialScreenSize);
+            if(isKeyboardOn) {
+                console.log("OMG!");
+                $(".right-container").css("top", "20px");
+            } 
+            // initial_screen_size
         }
 
     },
