@@ -115,6 +115,19 @@ var editEntry = function(name, id, data, onSuccess, onError){
     });
 }
 
+var verifyEmail = function(action, data, onSuccess, onError) {
+    var url = URL.verifyEmail[action];
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: url,
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: onSuccess,
+        error: onError
+    });
+}
+
 module.exports = {
 
     getAllEntries: getAllEntries,
@@ -125,7 +138,8 @@ module.exports = {
     removeEntry: removeEntry,
     editEntry: editEntry,
     isLoggedIn: isLoggedIn,
-    logout: logout
+    logout: logout,
+    verifyEmail: verifyEmail
 
 
 }

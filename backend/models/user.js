@@ -26,12 +26,14 @@ module.exports = function(sequelize, DataTypes) {
         defaultValue: "User",
         allowNull: false
     },
-    accountVerificated: {
+    // has user verified his email by going to his email and by clicking verification link?
+    emailVerified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
         allowNull: false
     },
-    accountVerificationId: {
+    // unique string that is used for verifying account email
+    emailVerificationId: {
         type: DataTypes.STRING,
         allowNull: true
     },

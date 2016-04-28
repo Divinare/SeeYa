@@ -26,7 +26,7 @@ router.get('/categories/:id', CategoryCtrl.findOne);
 
 router.get('/users/eventAttendees/:id', UserCtrl.findAttendeesByEvent);
 
-router.post('/events', Security.sanitizeInput, EventCtrl.create);
+router.post('/events', EventCtrl.create); // Security.sanitizeInput
 router.post('/attendances', Security.sanitizeInput, AttendanceCtrl.create);
 router.post('/categories', Security.sanitizeInput, CategoryCtrl.create);
 router.post('/users', Security.sanitizeInput, UserCtrl.create);
@@ -37,6 +37,8 @@ router.post('/contacts', Security.sanitizeInput, ContactCtrl.create)
 router.post('/events/:id', Security.sanitizeInput, EventCtrl.update);
 router.post('/categories/:id', Security.sanitizeInput, CategoryCtrl.update);
 router.post('/users/:id', Security.sanitizeInput, UserCtrl.update);
+router.post('/emailVerification', Security.sanitizeInput, UserCtrl.verifyEmail);
+router.post('/sendVerificationEmail', Security.sanitizeInput, UserCtrl.sendVerificationEmail);
 
 
 router.delete('/events/:id', EventCtrl.delete);

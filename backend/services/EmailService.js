@@ -9,7 +9,7 @@ module.exports = {
         var poolConfig = {
             pool: true,
             host: 'smtp.gmail.com',
-            port: 7519,
+            port: 465, // Don't change! Changing might cause emails to be not sent!
             secure: true, // use SSL 
             auth: {
                 user: 'seeyanoreply@gmail.com',
@@ -24,22 +24,23 @@ module.exports = {
         console.log("___ From: " + mailOptions.from)
         console.log("___ To: " + mailOptions.to)
         console.log("___ Subject: " + mailOptions.subject);
-        console.log("___ Text: " + mailOptions.text);
         console.log("___ Html: " + mailOptions.html);
          
         transporter.sendMail(mailOptions, function(error, info){
             if(error){
+                // TODO: return error to user?
                 return console.log(error);
             }
+            // TODO: return to user that email has been sent?
             console.log('Message sent: ' + info.response);
         });
 
     },
 
-    sendVerificationEmail: function(userEmail, accountVerificationId, username) {
+    sendVerificationEmail: function(userEmail, emailVerificationId, username) {
         var that = this;
 
-        var templatePath = path.join(__dirname, 'emailTemplates/accountVerification.html');
+        var templatePath = path.join(__dirname, 'emailTemplates/emailVerification.html');
 
         fs.readFile(templatePath, 'utf-8', function(error, source) {
             var template = handlebars.compile(source);
@@ -49,8 +50,8 @@ module.exports = {
                 greetUsername = true;
             }
             var templateData = {
-                verificationLink: "seeyaevents.com/accountVerification/?" + accountVerificationId,
-                //minifiedVerificationLink: "seeyaevents.com/accountVerification/?" + accountVerificationId.substring(0, 15) + "...",
+                verificationLink: "seeyaevents.com/emailVerification/?" + emailVerificationId,
+                //minifiedVerificationLink: "seeyaevents.com/emailVerification/?" + emailVerificationId.substring(0, 15) + "...",
                 greetUsername: greetUsername,
                 username: username
             }

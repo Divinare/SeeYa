@@ -58,7 +58,7 @@ module.exports = {
                         var response = {}
                         module.exports.addUserInfoInCookie(response, user);
                         helper.sendResponse(res, 200, response);*/
-                        var response = sessionService.login(req, res, user);
+                        var response = sessionService.updateLoginInfo(req, res, user);
                         helper.sendResponse(res, 200, response);
                     }else{
                         helper.sendError(res, httpUnAuthorized, {loginDetails: errorMessages.getError('userEmailOrPasswordDontMatch')});
@@ -99,7 +99,7 @@ module.exports = {
         }).then(function(user){
             if(user != null){   
                 console.log("fb user found in db")
-                var response = sessionService.login(req, null, user);
+                var response = sessionService.updateLoginInfo(req, null, user);
                 return done(null, response); //user found in database, only have to log him/her in
 
 
@@ -133,7 +133,7 @@ module.exports = {
                             validatedUser.authProvider = profile.provider;
                             validatedUser.authProvUserId = profile.id;
                             validatedUser.save().then(function(savedUser){
-                                var response = sessionService.login(req, null, savedUser);
+                                var response = sessionService.updateLoginInfo(req, null, savedUser);
                                 console.log("fb account associated with existing user!")
                                 return done(null, response);
                             }).catch(function(err){
@@ -184,7 +184,7 @@ module.exports = {
                             }
 
                             models.User.create(userFields).then(function(user){
-                                var response = sessionService.login(req, null, user);
+                                var response = sessionService.updateLoginInfo(req, null, user);
                                 console.log("user created!!!!")
                                 return done(null, response);
                             }).catch(function(err){

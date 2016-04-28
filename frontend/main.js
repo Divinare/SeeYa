@@ -37,7 +37,7 @@ var RequireLogin = require('./js/user/requireLogin.js');
 var AttendForm = require('./js/event/attendForm.js');
 var AuthError = require('./js/user/authError.js');
 var ForgotPassword = require('./js/user/forgotPassword.js');
-var Verification = require('./js/user/verification.js');
+var Verification = require('./js/user/emailVerification.js');
 
 var initialScreenSize = window.innerHeight;
 
@@ -120,17 +120,12 @@ const Main = React.createClass({
             UTILS.styleHelper.resizeEventList(initialScreenSize);
             UTILS.styleHelper.resizeRightContainerContent(initialScreenSize);
             
-            // Are these needed? T. Joe 14.4.2016
-            // google.maps.event.trigger(map,'resize');
-            //   map.setZoom( map.getZoom() );
             UTILS.messageComponent.adjustMessageComponentWidth();
 
             var isKeyboardOn = (window.innerHeight < initialScreenSize);
             if(isKeyboardOn) {
-                console.log("OMG!");
                 $(".right-container").css("top", "20px");
             } 
-            // initial_screen_size
         }
 
     },
@@ -269,7 +264,7 @@ render((
                 <Route path="join/:id" component={AttendForm} />
                 <Route path="events/:id/edit" component={EventForm} />
                 <Route path="eventForm" component={EventForm} />
-                <Route path="accountVerification" component={Verification} />
+                <Route path="emailVerification" component={Verification} />
             </Route>
             <Route path="*" component={NoMatch} />
         </Route>

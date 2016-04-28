@@ -341,39 +341,7 @@ const EventPage = React.createClass({
                 address = <div></div>
             } else {
                 address = eventVar.Address.streetAddress;
-                /*
-                var addressComponents = [];
-                if(!commonUtils.isEmpty(eventVar.Address.streetAddress)) {
-                    addressComponents.push(eventVar.Address.streetAddress);
-                }
-                if(!commonUtils.isEmpty(eventVar.Address.zipCode)) {
-                    if(!arrayContainsString(addressComponents, eventVar.Address.zipCode)) {
-                        addressComponents.push(eventVar.Address.zipCode);
-                    }
-                }
-                if(!commonUtils.isEmpty(eventVar.Address.city)) {
-                    if(!arrayContainsString(addressComponents, eventVar.Address.city)) {
-                        addressComponents.push(eventVar.Address.city);
-                    }
-                }
-                if(!commonUtils.isEmpty(eventVar.Address.country)) {
-                    if(!arrayContainsString(addressComponents, eventVar.Address.country)) {
-                        addressComponents.push(eventVar.Address.country);
-                    }
-                }
-                var addressStr = addressComponents.join(", ");
-                address = <div>{addressStr}</div>
-
-                function arrayContainsString(stringArray, searchStr) {
-                    for(var str in stringArray) {
-                        if(stringArray[str].indexOf(searchStr) > -1) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-                */
-            }
+             }
 
 
             if(typeof eventVar.Attendances !== 'undefined') {
@@ -384,7 +352,7 @@ const EventPage = React.createClass({
             if(typeof eventVar.Category == 'undefined') {
                 category = <div></div>
             } else {
-                category = <div>Category: {eventVar.Category.name}</div>
+                category = eventVar.Category.name;
 
             }
 
@@ -392,27 +360,21 @@ const EventPage = React.createClass({
                 peopleAttendingStr = peopleAttending + " people attending"
             }
 
-            //var descriptionField = "<span></span>";
-        //    var descriptionField = document.createElement("span");
-
-           // var descriptionField = "";
             if(!commonUtils.isEmpty(eventVar.description)) {
+                description = eventVar.description.replace(/\n\r?/g, '<br />');
 
-                function escape(text) {
-                    var div = document.createElement("div");
-                    div.appendChild(document.createTextNode(text));
-                    return div.innerHTML;
-                }
-
-                var description = escape(eventVar.description);
-                description = escape(description);
-                description = description.replace(/\n\r?/g, '<br />');
-                $("#description").html(description);
+                var descriptionRows = eventVar.description.split("\n");
+                var descriptionRowsHtml = [];
+                descriptionRows.map(function(row) {
+                    if(row.length == 0) {
+                        descriptionRowsHtml.push(<div className="eventPageDescriptionRow minHeight15"></div>);
+                    } else {
+                        descriptionRowsHtml.push(<div className="eventPageDescriptionRow">{row}</div>);
+                    }
+                });
+                description = descriptionRowsHtml;
             }
         }
-
-
-        //let popover = <Popover title="popover">very popover. such engagement</Popover>;
 
         var user = this.props.getAppStatus('user')
         if( this.state.loginStatusPending || this.state.event === null || this.state.fetchingAttendees){
@@ -433,11 +395,17 @@ const EventPage = React.createClass({
             <div id="eventPageContainer">
                 <div>
                     <h3>{eventName} <button className="pull-right btn btn-primary btn-sm" onClick={this.redirectToAttendForm}>{joinBtnText}</button></h3>
-                    {date}<br/>
-                    {time}<br/>
+                    
+                    {time} {date}
+                    <br/>
                     {address}
-                    {category}
-                    {peopleAttendingStr}<br/>
+                    <br/>
+                    <div>Category: {category}</div>
+                    {peopleAttendingStr}
+                    <br/>
+                    <br/>
+                    <div className="bolded">Description</div>
+                    {description}
                     <span id="description"></span><br/>
                 </div>
                 {this.state.attendees.length > 0 ?
@@ -465,22 +433,3 @@ const EventPage = React.createClass({
 });
 
 module.exports = EventPage;
-
-/*
-
-
-                    <Modal bsSize='small' show={this.state.showModal} onHide={this.close}>
-                      <Modal.Header closeButton>
-                        <Modal.Title>People attending in {eventVar.name}</Modal.Title>
-                      </Modal.Header>
-                          <Modal.Body>
-                                {typeof eventVar.Attendances !== 'undefined' ? eventVar.Attendances.map(function(attendance, index){
-                                    return <div>
-                                        <OverlayTrigger overlay={<Popover title={attendance.name}>{attendance.comment}</Popover>}>
-                                        <a href="#">{attendance.name}</a></OverlayTrigger>
-                                   </div>
-                                  }) : ''}
-                          </Modal.Body>
-                    </Modal>
-
-                    */

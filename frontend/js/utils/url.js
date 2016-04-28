@@ -28,7 +28,11 @@ module.exports = {
 	},
 	'editEntry': {
 		'event': REST + '/events/',
-		'user': REST + '/users/'
+		'user': REST + '/users/',
+	},
+	'verifyEmail': {
+		'verifyUserEmail': REST + '/emailVerification/',
+		'sendVerificationEmail':  REST + '/sendVerificationEmail/'
 	},
 	'authorization': {
 		'loggedInStatus': REST + '/isLoggedIn',

@@ -1,10 +1,10 @@
 module.exports = {
     
-    login:function(req, res, user){
+    updateLoginInfo:function(req, res, user){
         addUserInfoInCookie(req.seeyaSession, user);
         var response = {};
         return addSafeUserInfoInResponseObject(response, user);
-    }
+    },
 
 };
 
@@ -18,7 +18,8 @@ function addUserInfoInCookie(cookie, user){
 function addSafeUserInfoInResponseObject(responseObject, user){
     responseObject.user = {
         id: user.id,
-        username: user.username
+        username: user.username,
+        emailVerified: user.emailVerified
     }
     return responseObject;
 }

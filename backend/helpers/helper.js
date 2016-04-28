@@ -4,7 +4,7 @@ module.exports = {
     //This and sendErrorsIfFound are used nowadays. We can delete the rest if we are sure they are not used anywhere anymore
     //The errorHash should have key value pairs where key is the name of the incorrect field and value is list of error messages related to that field
     sendError: function(res, statusCode, errorHash){
-        var jsonResponse = {"errors" : errorHash};
+        var jsonResponse = {"errors": errorHash};
         res.status(statusCode).send(jsonResponse);
     },
 
@@ -154,5 +154,17 @@ module.exports = {
     },
     sendResponse: function(res, statusCode, jsonResponse){
         res.status(statusCode).send(jsonResponse);
+    },
+
+
+    makeId: function(length) {
+        var id = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for( var i=0; i < length; i++ )
+        id += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return id;
     }
+    
 };

@@ -123,6 +123,71 @@ module.exports = {
         } else {
             helper.sendError(res, 400, {"message": "Error in updating user. Give a proper fieldToChange to update user"});
         }
+    },
+
+    verifyEmail: function(req, res) {
+        console.log("VERIFY EMAIL");
+        console.log(req.body.emailVerificationId)
+        var verificationId = req.body.emailVerificationId;
+        models.User.update({
+            emailVerified: true
+        },{
+            where: { emailVerificationId : verificationId }
+        })
+
+        .then(function (result) {
+
+            console.log(result[0]);
+            if(result[0] == 1) {
+                console.log("___ Email verificated");
+                var success = function(user) {
+                    console.log("USER FOUND!");
+                    console.log("USER FOUND!");
+                    console.log("USER FOUND!");
+                    console.log(user.emailVerified)
+                    console.log(user.id)
+
+                    var response = sessionService.updateLoginInfo(req, res, user);
+                    res.status(200).send(response);
+                }
+                var error = function(err) {
+                    console.log("___ Error on finding user after verifying user email:");
+                    console.log(err);
+                    helper.sendErr(res, 400, err);
+                }
+
+                userService.getLoggedInUser(req, res, success, error);
+            } else {
+                console.log("___ Error on verifying user email: user not found.");
+                helper.sendErr(res, 400, ["Error on verifying user email: verification link is invalid"]);
+            }
+        }, function(err){
+            console.log("___ Error on verifying user email:");
+            console.log(err);
+            helper.sendErr(res, 400, err);
+        });
+    },
+
+    sendVerificationEmail: function(req, res) {
+        var success = function(user) {
+            console.log("USER FOUND!");
+            console.log(user.emailVerified)
+
+            if(user.emailVerified) {
+                console.log("___ Account already verified");
+                helper.sendErr(res, 400, "Email of this account has already been verified. No need for verifying it again.");
+            } else {
+                console.log("___ Sending another verification email");
+                emailService.sendVerificationEmail(user.userEmail, user.emailVerificationId, user.username);
+                res.status(200).send({"success": "Verification email has been sent"});
+            }
+        }
+        var error = function(err) {
+            console.log("___ Error on finding user when trying to send verification email");
+            console.log(err);
+            helper.sendErr(res, 400, err);
+        }
+        userService.getLoggedInUser(req, res, success, error);
     }
 
 };
@@ -138,18 +203,18 @@ function finishSignUp(req, res, username){
     //Callback that is called by the security component after the password has been hashed
     var createUser = function(salt, hash){
         console.log("CREATE USER CALLED")
-        var accountVerificationId = generateAccountVerificationId();
+        var emailVerificationId = generateEmailVerificationId();
 
         models.User.create({
             username: username,
             email: userEmail, 
             password: hash,
             salt: salt,
-            accountVerificationId: accountVerificationId,
+            emailVerificationId: emailVerificationId,
             accountVerificated: false
         }).then(function(user){
-            var response = sessionService.login(req, res, user);
-            emailService.sendVerificationEmail(userEmail, accountVerificationId, username);
+            var response = sessionService.updateLoginInfo(req, res, user);
+            emailService.sendVerificationEmail(userEmail, emailVerificationId, username);
             res.status(201).send(response);
         }).catch(function(err){
             console.log("ERROR:")
@@ -232,10 +297,10 @@ function finishUpdatingUsername(req, res, user, username) {
       {
         where: { id : user.id }
       })
-      .then(function (result) { 
-        console.log("Username updated!!");
+      .then(function (result) {
+        console.log("___ Username updated");
         user.username = username;
-        var response = sessionService.login(req, res, user);
+        var response = sessionService.updateLoginInfo(req, res, user);
         res.status(201).send(response);
       }, function(err){
         console.log("___ Error on updating user:");
@@ -315,20 +380,9 @@ function changePassword(req, res) {
 }
 
 
-function generateAccountVerificationId() {
-    // TODO...
+function generateEmailVerificationId() {
 
-    // Check if id already exists etc.
-
-    function makeid() {
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-        for( var i=0; i < 100; i++ )
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-        return text;
-    }
-    return "1234d5dfdgdgfdgfgfgfdgfdgfdgfdgdfw213213213213213213213213213312";
-
+    // TODO: Check if id already exists etc.
+    var id = helper.makeId(75);
+    return id;
 }

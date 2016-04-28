@@ -7,6 +7,10 @@ var commonValidator = require('../../../common/validators/validator.js');
 var utils = require('../../../common/utils.js');
 var validator = UTILS.validator;
 var frontValidator = require('../utils/validator.js')
+var msgComponent = require('../utils/messageComponent.js');
+
+const SHOW_MSG_SEC = 5;
+
 
 const About = React.createClass({
     getInitialState: function() {
@@ -67,7 +71,8 @@ const About = React.createClass({
         var success = function(result){
             console.log(result.user);
             that.props.updateAppStatus('user', result.user);
-            browserHistory.push('/accountVerification');
+            browserHistory.push('/emailVerification');
+            msgComponent.showMessageComponent('Account created succesfully! A verification email has been sent to your inbox for you to verify your email address.', SHOW_MSG_SEC * 1000, 'error')
         };
         frontValidator.clearErrorFromField('#email', '#emailError');
         frontValidator.clearErrorFromField('#username', '#usernameError');
