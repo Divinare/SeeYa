@@ -1,0 +1,17 @@
+
+
+
+// Select all events:
+select * from "Events";
+
+
+// Lists all column names of Users table:
+select * from "Users" where false;
+
+
+
+
+
+
+
+

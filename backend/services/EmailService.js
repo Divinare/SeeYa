@@ -60,7 +60,7 @@ module.exports = {
 
             var mailOptions = {
                 from: '"TeamSeeYa" <teamSeeYa@NoReply.com>',
-                to: "niemijoe@hotmail.com", //userEmail, // can be more receivers, for example: 'bar@blurdybloop.com, baz@blurdybloop.com',
+                to: userEmail, // can be more receivers, for example: 'bar@blurdybloop.com, baz@blurdybloop.com',
                 subject: 'SeeYa account verification',
                 html: emailHtmlContent
             };

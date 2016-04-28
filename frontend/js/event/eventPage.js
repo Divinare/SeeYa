@@ -365,12 +365,14 @@ const EventPage = React.createClass({
 
                 var descriptionRows = eventVar.description.split("\n");
                 var descriptionRowsHtml = [];
+                var key = 1;
                 descriptionRows.map(function(row) {
                     if(row.length == 0) {
-                        descriptionRowsHtml.push(<div className="eventPageDescriptionRow minHeight15"></div>);
+                        descriptionRowsHtml.push(<div key={key} className="eventPageDescriptionRow minHeight15"></div>);
                     } else {
-                        descriptionRowsHtml.push(<div className="eventPageDescriptionRow">{row}</div>);
+                        descriptionRowsHtml.push(<div key={key} className="eventPageDescriptionRow">{row}</div>);
                     }
+                    key++;
                 });
                 description = descriptionRowsHtml;
             }

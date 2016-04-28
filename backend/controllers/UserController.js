@@ -29,7 +29,6 @@ module.exports = {
     },  
 
     findAttendeesByEvent: function(req, res){
-        console.log("FIND EVENT ATTENDEES")
         var eventId = req.params.id;
 
         models.User.findAll({
@@ -54,8 +53,7 @@ module.exports = {
     },
 
     create: function (req, res) {
-        console.log("constants")
-        console.log(constants)
+
         //Validate fields
         console.log("NEW USER TRYING TO SIGN UP")
         var userData = req.body;
@@ -126,27 +124,17 @@ module.exports = {
     },
 
     verifyEmail: function(req, res) {
-        console.log("VERIFY EMAIL");
-        console.log(req.body.emailVerificationId)
         var verificationId = req.body.emailVerificationId;
         models.User.update({
             emailVerified: true
         },{
             where: { emailVerificationId : verificationId }
         })
-
         .then(function (result) {
-
-            console.log(result[0]);
+            // result[0] == 1 means that email verification was successful
             if(result[0] == 1) {
                 console.log("___ Email verificated");
                 var success = function(user) {
-                    console.log("USER FOUND!");
-                    console.log("USER FOUND!");
-                    console.log("USER FOUND!");
-                    console.log(user.emailVerified)
-                    console.log(user.id)
-
                     var response = sessionService.updateLoginInfo(req, res, user);
                     res.status(200).send(response);
                 }
@@ -159,7 +147,7 @@ module.exports = {
                 userService.getLoggedInUser(req, res, success, error);
             } else {
                 console.log("___ Error on verifying user email: user not found.");
-                helper.sendErr(res, 400, ["Error on verifying user email: verification link is invalid"]);
+                helper.sendErr(res, 400, "Error on verifying user email: verification link is invalid");
             }
         }, function(err){
             console.log("___ Error on verifying user email:");
@@ -170,16 +158,15 @@ module.exports = {
 
     sendVerificationEmail: function(req, res) {
         var success = function(user) {
-            console.log("USER FOUND!");
-            console.log(user.emailVerified)
-
             if(user.emailVerified) {
                 console.log("___ Account already verified");
                 helper.sendErr(res, 400, "Email of this account has already been verified. No need for verifying it again.");
             } else {
-                console.log("___ Sending another verification email");
-                emailService.sendVerificationEmail(user.userEmail, user.emailVerificationId, user.username);
-                res.status(200).send({"success": "Verification email has been sent"});
+                if(user.countOfSentVerificationEmails < 10) {
+                    finishSendingVerificationEmail(req, res, user);
+                } else {
+                    helper.sendErr(res, 400, "Maximum count of sent emails is exeeded. Can't send anymore emails. Contact us at our contact page if you have problems with verifying your email address.");
+                }
             }
         }
         var error = function(err) {
@@ -202,7 +189,6 @@ function finishSignUp(req, res, username){
 
     //Callback that is called by the security component after the password has been hashed
     var createUser = function(salt, hash){
-        console.log("CREATE USER CALLED")
         var emailVerificationId = generateEmailVerificationId();
 
         models.User.create({
@@ -224,7 +210,6 @@ function finishSignUp(req, res, username){
     };
     //Called if the hashing does not succeed for some reason. Don't know what could cause this
     var errorCallBack = function(err){
-        console.log("caught error!!!!")
         helper.sendError(res, 400, {"message": "Unknown error in creating a user, please try again and report the error to the administrator if the error persists"});
     }
     security.hashPasswordWithGeneratedSalt(userPassword, errorCallBack, createUser);
@@ -232,18 +217,13 @@ function finishSignUp(req, res, username){
 
 
 function changeUsername(req, res) {
-    console.log("CHANGING USERNAME!");
     var username = req.body.username;
-    console.log(username);
 
     var validationErrors = {'username':[], 'repeatPassword': []};
     helper.addErrorIfNotEmpty(validationErrors['username'], validator.validateUsername(username));
 
-    console.log("is there any errors?");
-    console.log(validationErrors);
     //Check if there were any errors and send them back to the client if there were, otherwise continue
     if(!helper.sendErrorsIfFound(res, validationErrors) ) {
-        console.log("USERNAME WAS OK");
         var notAuthorized = function(error) {
             helper.sendErr(res, 401, {message: 'Not authorized'});
         }
@@ -259,7 +239,7 @@ function changeUsername(req, res) {
                 where: { username: username }
             }).then(function(count){
                 if(count > 0){
-                    console.log("Username already taken " + username)
+                    console.log("___ username already taken " + username)
                     validationErrors['username'].push(errorMessages.getError('userUsernameAlreadyInUse'))
                 }
 
@@ -310,22 +290,17 @@ function finishUpdatingUsername(req, res, user, username) {
 }
 
 function changePassword(req, res) {
-    console.log("CHANGING PASSWORD!");
-    
     var oldPassword = req.body.oldPassword;
     var password = req.body.password;
     var repeatPassword = req.body.repeatPassword;
-
 
     var validationErrors = {'password':[], 'repeatPassword': []};
     helper.addErrorIfNotEmpty(validationErrors['password'], validator.validatePassword(password));
     helper.addErrorIfNotEmpty(validationErrors['repeatPassword'], validator.matchPasswords({"password":password, "repeatPassword": repeatPassword}));
 
-    console.log(req.body);
-
     //Check if there were any errors and send them back to the client if there were, otherwise continue
     if(!helper.sendErrorsIfFound(res, validationErrors) ) {
-        console.log("PASSWORDS WERE OK");
+        console.log("___ Passwords were ok");
         var notAuthorized = function(error) {
             helper.sendErr(res, 401, {message: 'Not authorized'});
         }
@@ -333,21 +308,15 @@ function changePassword(req, res) {
         //main logic here
         var success = function(user) {
 
-            console.log("USER SALT");
-            console.log(user.salt);
-
             var errorCallBack = function(err){
-                console.log("caught error!!!!")
                 helper.sendErr(res, 500, {"errorMessage": "Unknown error in logging in, please try again and report the error to the administrator if the error persists. Error code: 59011"});
             }
             //called by the security component with the salt and hash of the password
             var checkPassword = function(salt, oldPasswordHash){
                 if( user.password === oldPasswordHash ) {
-                    console.log("user password is the same!")
 
                     //Callback that is called by the security component after the password has been hashed
                     var updateUserPassword = function(salt, hash){
-                        console.log("CREATE USER CALLED")
                         models.User.update({
                             password: hash,
                             salt: salt
@@ -365,7 +334,6 @@ function changePassword(req, res) {
                     };
                     //Called if the hashing does not succeed for some reason. Don't know what could cause this
                     var errorCallBack = function(err){
-                        console.log("caught error!!!!")
                         helper.sendError(res, 400, {"message": "Unknown error in creating a user, please try again and report the error to the administrator if the error persists. Error code: 59012"});
                     }
                     security.hashPasswordWithGeneratedSalt(password, errorCallBack, updateUserPassword);
@@ -385,4 +353,27 @@ function generateEmailVerificationId() {
     // TODO: Check if id already exists etc.
     var id = helper.makeId(75);
     return id;
+}
+
+function finishSendingVerificationEmail(req, res, user) {
+    console.log("___ Sending another verification email");
+    emailService.sendVerificationEmail(user.email, user.emailVerificationId, user.username);
+    increaseSentEmailCount(user);
+    res.status(200).send({"success": "Verification email has been sent"});
+}
+
+function increaseSentEmailCount(user) {
+    var newCount = user.countOfSentVerificationEmails+1;
+    models.User.update({
+        countOfSentVerificationEmails: newCount
+    },
+    {
+        where: { id : user.id }
+    })
+    .then(function (result) { 
+          console.log("___ Increased countOfSentVerificationEmails by 1");
+    }, function(err){
+        console.log("___ Error on increasing countOfSentVerificationEmails")
+        console.log(err)
+    });
 }

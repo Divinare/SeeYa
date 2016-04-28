@@ -72,7 +72,7 @@ const About = React.createClass({
             console.log(result.user);
             that.props.updateAppStatus('user', result.user);
             browserHistory.push('/emailVerification');
-            msgComponent.showMessageComponent('Account created succesfully! A verification email has been sent to your inbox for you to verify your email address.', SHOW_MSG_SEC * 1000, 'error')
+            msgComponent.showMessageComponent('Account created succesfully! A verification email has been sent to your inbox for you to verify your email address.', SHOW_MSG_SEC * 1000, 'success')
         };
         frontValidator.clearErrorFromField('#email', '#emailError');
         frontValidator.clearErrorFromField('#username', '#usernameError');

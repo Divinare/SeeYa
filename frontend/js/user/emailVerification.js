@@ -24,6 +24,13 @@ const Verification = React.createClass({
         var that = this;
         this.setToolbarIcons();
         this.props.handleResize();
+        var user = this.props.user;
+
+        if(user.emailVerified) {
+            console.log("___ User email already verified");
+            msgComponent.showMessageComponent('Your email has already been verified', SHOW_MSG_SEC * 1000, 'success')
+            browserHistory.push('/');
+        }
 
         var emailVerificationId = this.getEmailVerificationId();
         if(emailVerificationId != null) {
@@ -32,9 +39,6 @@ const Verification = React.createClass({
             }
 
             var success = function(result) {
-                console.log("Verification success!!!");
-                console.log(result.user);
-
                 that.props.updateAppStatus('user', result.user);
                 msgComponent.showMessageComponent('Email verified successfully! Now you can join to events and create them.', SHOW_MSG_SEC * 1000, 'success')
                 browserHistory.push('/');
@@ -50,23 +54,18 @@ const Verification = React.createClass({
                     emailVerificationHasFailed: true
                 })
             }
-            UTILS.rest.verifyEmail('verifyEmail', emailVerificationData, success, error);
+            UTILS.rest.verifyEmail('verifyUserEmail', emailVerificationData, success, error);
         }
     },
 
     getEmailVerificationId: function() {
         var tokens = helper.getUrlTokens();
-        console.log(tokens);
         var emailVerificationId = tokens[tokens.length-1];
-        console.log("ID: " + emailVerificationId)
         if(emailVerificationId.charAt(0) == "?") {
             // Take off the first character which is "?""
             emailVerificationId = emailVerificationId.substring(1);
-            console.log("emailVerificationId")
-            console.log(emailVerificationId)
             return emailVerificationId;
         } else {
-            console.log("Returning null");
             return null;
         }
     },

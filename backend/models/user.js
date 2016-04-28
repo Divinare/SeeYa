@@ -37,6 +37,11 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: true
     },
+    countOfSentVerificationEmails: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false
+    },
     showNotifications: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
