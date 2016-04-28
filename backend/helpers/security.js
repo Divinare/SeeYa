@@ -13,7 +13,6 @@ https://crackstation.net/hashing-security.htm
 https://masteringmean.com/lessons/46-Encryption-and-password-hashing-with-Nodejs
 */
 
-var escape = require('lodash.escape');
 var crypto = require('crypto');
 //BE CAREFUL IF YOU PLAN TO CHANGE THESE CONFIGS
 //If we lose information about what configs we used to save users' passwords, we cannot recover them anymore
@@ -60,6 +59,8 @@ module.exports = {
     },
 
     //sanitize all input except passwords
+    /*
+    var escape = require('lodash.escape');
     sanitizeInput: function(req, res, next){
         var whiteList = ['password', 'repeatpassword', 'oldpassword', 'email']
         var input = req.body
@@ -73,6 +74,7 @@ module.exports = {
         
         next();
     }
+    */
 };
 
 
