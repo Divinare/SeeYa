@@ -1,3 +1,5 @@
+var helper = require('./helper.js');
+
 var marginWidth = 10;
 
 module.exports = {
@@ -119,13 +121,17 @@ module.exports = {
     },
 
     resetRightContainer: function(initialScreenSize) {
-        var isKeyboardOn = (window.innerHeight < initialScreenSize);
-        if(isKeyboardOn) {
-            $(".right-container").css("top", "20px");
-            $(".right-container").css("right", "0px");
-            console.log("returning!");
-            return;
-        } 
+
+        // Mobile keyboard fix
+        if(helper.isUsingMobile()) {
+            console.log("IS MOBILE!");
+            var isKeyboardOn = (window.innerHeight < initialScreenSize);
+            if(isKeyboardOn) {
+                $(".right-container").css("top", "20px");
+                $(".right-container").css("right", "0px");
+                return;
+            }
+        }
         var className = $('.right-container').attr('class');
         $("#rightContainerContent").css("visibility", "visible");
         $("#rightContainerToolbar").css("visibility", "visible");
