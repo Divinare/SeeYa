@@ -122,10 +122,13 @@ const Main = React.createClass({
             
             UTILS.messageComponent.adjustMessageComponentWidth();
 
-            var isKeyboardOn = (window.innerHeight < initialScreenSize);
-            if(isKeyboardOn) {
-                $(".right-container").css("top", "20px");
-            } 
+            // Mobile keyboard fix
+            if(UTILS.helper.isUsingMobile()) {
+                var isKeyboardOn = (window.innerHeight < initialScreenSize);
+                if(isKeyboardOn) {
+                    $(".right-container").css("top", "20px");
+                } 
+            }
         }
 
     },
