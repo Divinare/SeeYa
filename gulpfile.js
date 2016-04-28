@@ -82,10 +82,10 @@ var webpackFunc = function(name, ext, watch) {
   var options = {
     watch: watch,
     cache: true,
-    devtool: "source-map",
+    //devtool: "source-map",
     output: {
       filename: name + ".js",
-      sourceMapFilename: "[file].map"
+      //sourceMapFilename: "[file].map"
     },
     resolve: {
       extensions: ["", ".webpack.js", ".web.js", ".js", ".jsx", ".coffee"], // , ".cjsx"
@@ -93,23 +93,27 @@ var webpackFunc = function(name, ext, watch) {
     },
     module: {
       loaders: [
-        {
-          test: /\.coffee$/,
-          loader: "coffee-loader"
-        }, {
+         {
           test: [/\.js$/, /\.jsx$/],
           exclude: [new RegExp(modules_path), new RegExp(components_path)],
           loader: "babel-loader"
-        }, {
-          test: /\.jsx$/, // .cjsx$/,
-          loader: "transform?coffee-reactify"
         }
       ]
     }
   };
-  return gulp.src(frontend_path + "/" + name + "." + ext)
+  if(process.env.NODE_ENV !== 'production'){
+    options.devtool = "source-map";
+    options.output.sourceMapFilename = "[file].map";
+
+   return gulp.src(frontend_path + "/" + name + "." + ext)
          .pipe(gwebpack(options))
          .pipe(gulp.dest(dist_path))
+  }else{
+    return gulp.src(frontend_path + "/" + name + "." + ext)
+           .pipe(gwebpack(options))
+           .pipe(uglify())
+           .pipe(gulp.dest(dist_path))
+  }
 };
 
 
@@ -277,11 +281,12 @@ gulp.task('build', ['clean', 'copy', 'scss', 'js', 'copyToBuild']);
 
 gulp.task('default', ['clean', 'copy', 'scss', 'server', 'js-dev', 'watch']);
 
+/*
 gulp.task('transform', function(){
   gulp.src(frontend_path + '/main.js')
     .pipe(react())
     .pipe(gulp.dest(dist_path));
-});
+});*/
 
 
 gulp.task('watch', ['copy'], function() {

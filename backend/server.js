@@ -46,9 +46,8 @@ var app = express();
 app.use(session({
   cookieName: 'seeyaSession',
   secret: 'fustUwecRabuZaFremuqes8uxUnuMU',
-  duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
+  duration: 7 * 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
   activeDuration: 5 * 60 * 1000, // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
-  ephemeral: true //lose the session when browser closes
 }));
 
 // Initialize Passport and restore authentication state, if any, from the
