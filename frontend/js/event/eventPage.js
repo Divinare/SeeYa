@@ -332,7 +332,28 @@ const EventPage = React.createClass({
             date = "---";
             time = "---";
         } else {
-            eventName = eventVar.name;
+            var partLength;
+            var w = window.innerWidth;
+            if(w < 300) {
+                partLength = 12;
+            } else if(w < 350) {
+                partLength = 12;
+            } else if(w < 400) {
+                partLength = 16;
+            } else if(w < 450) {
+                partLength = 18;
+            } else if(w < 500) {
+                partLength = 20;
+            } else if(w < 550) {
+                partLength = 22;
+            } else {
+                partLength = 30;
+            }
+            if(!UTILS.helper.isUsingMobile() && partLength > 16) {
+                partLength = 16;
+            }
+
+            eventName = UTILS.helper.formatStringIntoPartsSeperatedBySpace(eventVar.name, partLength);
             date = Moment.unix(eventVar.timestamp/1000).format("ddd DD.MM.YYYY");
             time = Moment.unix(eventVar.timestamp/1000).format("HH:mm");
 
@@ -396,20 +417,23 @@ const EventPage = React.createClass({
         return (
             <div id="eventPageContainer">
                 <div>
-                    <h3>{eventName} <button className="pull-right btn btn-primary btn-sm" onClick={this.redirectToAttendForm}>{joinBtnText}</button></h3>
-                    
-                    {time} {date}
-                    <br/>
-                    {address}
-                    <br/>
-                    <div>Category: {category}</div>
-                    {peopleAttendingStr}
-                    <br/>
-                    <br/>
-                    <div className="bolded">Description</div>
-                    {description}
-                    <span id="description"></span><br/>
+                    <h3 id="eventPageEventName">{eventName}</h3>
+                    <button className="eventPageAttendanceBtn pull-right btn btn-primary btn-sm" onClick={this.redirectToAttendForm}>{joinBtnText}</button>
                 </div>
+                
+                <br/>
+                {time} {date}
+                <br/>
+                {address}
+                <br/>
+                <div>Category: {category}</div>
+                {peopleAttendingStr}
+                <br/>
+                <br/>
+                <div className="bolded">Description</div>
+                {description}
+                <span id="description"></span><br/>
+
                 {this.state.attendees.length > 0 ?
                     <div>
                         <h3>Who is attending?</h3>

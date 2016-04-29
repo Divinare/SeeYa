@@ -1,6 +1,23 @@
 #eventPageContainer {
 }
 
+#eventPageEventName {
+    display: inline-block;
+    /* Standard */
+    width: calc(100% - 105px);
+    /* Firefox */
+    width: -moz-calc(100% - 105px);
+    /* WebKit */
+    width: -webkit-calc(100% - 105px);
+    /* Opera */
+    width: -o-calc(100% - 105px);
+}
+
+.eventPageAttendanceBtn {
+    float: right;
+    margin-top: 27px;
+}
+
 .participantTable {
 	width:100%;
 }

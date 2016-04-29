@@ -220,7 +220,7 @@ const EventList = React.createClass({
             items.push(
                 <tr key={event.id}>
                     <td className="eventListItem" key={"a"+event.id}><div id="eventListMapIconContainer" onClick={_this.centerMapToMarker.bind(null, event.id, -1)}></div></td>
-                    <td className="eventListItem" key={"b"+event.id}>{_this.cellRenderer("name", event.name, event.id)}</td>
+                    <td className="eventListItem" key={"b"+event.id}>{_this.cellRenderer("name", UTILS.helper.formatStringIntoPartsSeperatedBySpace(event.name, 14), event.id)}</td>
                     <td className="eventListItem" key={"c"+event.id}>{event.Attendances.length}</td>
                     <td className="eventListItem" key={"d"+event.id}>{_this._formatTimestamp(event.timestamp)}</td>                            
                 </tr>
@@ -228,8 +228,6 @@ const EventList = React.createClass({
         });
         return items;
     },
-
-
 
     render: function() {
         var _this = this;

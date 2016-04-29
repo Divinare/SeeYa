@@ -124,7 +124,6 @@ module.exports = {
 
         // Mobile keyboard fix
         if(helper.isUsingMobile()) {
-            console.log("IS MOBILE!");
             var isKeyboardOn = (window.innerHeight < initialScreenSize);
             if(isKeyboardOn) {
                 $(".right-container").css("top", "20px");
@@ -147,7 +146,6 @@ module.exports = {
                  }, 499);
             }
         } else {
-
             if(className.indexOf("toMobile") == -1) {
                 $(".right-container").addClass("toMobile");
                 setTimeout(function(){ 

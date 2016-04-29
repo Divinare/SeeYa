@@ -24,7 +24,7 @@ delete from "Users" where username like 'Anonymous%';
 
 //UPDATING USERS
 //Make a user with username 'super' have admin rights
-UPDATE "Users" SET role = 'Admin' where username = 'super'
+UPDATE "Users" SET role = 'Admin' where username = 'super';
 
 
 
