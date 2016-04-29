@@ -161,7 +161,7 @@ module.exports = {
     resizeRightContainerContent: function(initialScreenSize) {
         var toolbarHeight = $("#rightContainerToolbar")[0].clientHeight;
         var bottomBarHeight = $("#rightContainerBottomBar")[0].clientHeight;
-        var rightContainerPadding = 40;
+        var rightContainerPadding = 10;
         var newHeight = (this.getRightContainerHeight(initialScreenSize)-rightContainerPadding-toolbarHeight-bottomBarHeight);
         $("#rightContainerContent").css("height", newHeight+"px");
     },
@@ -172,8 +172,8 @@ module.exports = {
             var toolbarHeight = $("#rightContainerToolbar")[0].clientHeight;
             var eventListTopicHeight = $("#eventListTopic")[0].clientHeight;
             var eventListBottomBarHeight = $("#eventListBottomBar")[0].clientHeight;
-            var rightContainerPadding = 40;
-            var newHeight = (this.getRightContainerHeight(initialScreenSize)-(rightContainerPadding*2)-eventListTopicHeight-eventListBottomBarHeight-toolbarHeight);
+            var rightContainerPadding = 50;
+            var newHeight = (this.getRightContainerHeight(initialScreenSize)-rightContainerPadding-eventListTopicHeight-eventListBottomBarHeight-toolbarHeight);
             $("#eventListTableContainer").css("height", newHeight+"px");
         }
     }
