@@ -92,13 +92,19 @@ const Settings = React.createClass({
             username: username,
             fieldToChange: "username"
         }
+
         var error = function( jqXhr, textStatus, errorThrown){
             console.log("___ Changing username failed");
             console.log( errorThrown );
             console.log(jqXhr)
             console.log(jqXhr.responseJSON)
-            if( jqXhr.responseJSON.errors.username != null && jqXhr.responseJSON.errors.username.length > 0) {
-                frontValidator.setErrorToField("#username", jqXhr.responseJSON.errors.username, "#usernameError")
+            var usernameError = jqXhr.responseJSON.errors.username
+            if( usernameError != null && usernameError.length > 0) {
+                frontValidator.setErrorToField("#username", usernameError, "#usernameError")
+            }
+            var generalError = jqXhr.responseJSON.errors.message
+            if( generalError != null && generalError > 0) {
+                msgComponent.showMessageComponent(generalError, SHOW_MSG_SEC * 1000, 'error');
             }
         };
         var success = function(result){

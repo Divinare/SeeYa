@@ -1,14 +1,21 @@
+###############################################################################################
 
+TODO REFACTOR LIST
 
+###############################################################################################
 
+helper.sendErr(res, 401, {"message": 'Not authorized'});
 
+could be called with:
+helper.sendErr(res, 401, "Not authorized"]);
 
+AND in sendErr, we should send to UI: {"error": 'Not authorized'}
 
-https://github.com/Divinare/EventMeetup/blob/master/backend/helpers/helper.js#L26
+### AFTER THIS:
 
-Validations should only return strings. If need to return more error messages than one, divide them with <br>. This is because if we have arrays and strings, there needs to be more complex logic everywhere
+UTILS.rest.editEntry('user', this.props.user.id, userData, success, capsule(error));
 
-https://github.com/Divinare/EventMeetup/blob/master/frontend/js/utils/validator.js#L54
+this capsule method could test if object with {"error": "something"} exists and if so, it could display error notification to the user
 
-setErrorToField: function(inputField, errorObject, errorField) {
-change errorObject and errorField so that its more clear that errorObject relates to errorField
+################################################################################################
+

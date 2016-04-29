@@ -10,6 +10,7 @@ const errors = {
     userUsernameTooShort: "Username must be at least " + fieldLengths.userUsernameMin + " characters long.",
     userUsernameTooLong: "Username can be max " + fieldLengths.userUsernameMax + " characters long.",
     userUsernameAlreadyInUse: "Username already in use, you can leave the field empty and change it later in settings.",
+    userChangeUsernameAlreadyInUse: "Username already in use",
     userEmailFormat: "Wrong format. Email address in form 'abc@cde.efg' expected",
     userEmailTooLong: "Email too long",
     userEmailTooShort: "Email too short",

@@ -76,7 +76,7 @@ module.exports = {
         }).then(function(count){
             if(count > 0){
                 console.log("There is already a user in db with email " + userEmail)
-                validationErrors['userEmail'].push(errorMessages.getError('userEmailAlreadyInUse'))
+                validationErrors['userEmail'] += errorMessages.getError('userEmailAlreadyInUse');
             }
             models.User.count({
                 where: { username: username }
@@ -84,7 +84,7 @@ module.exports = {
                 console.log("there are " + count + "users with this user name")
                 if(count > 0){
                     console.log("There is already a user in db with username " + username)
-                    validationErrors['username'].push(errorMessages.getError('userUsernameAlreadyInUse'))
+                    validationErrors['username'] += errorMessages.getError('userUsernameAlreadyInUse');
                 }
 
                 //Check if there were any errors and send them back to the client if there were, otherwise continue
@@ -226,14 +226,14 @@ function changeUsername(req, res) {
     //Check if there were any errors and send them back to the client if there were, otherwise continue
     if(!helper.sendErrorsIfFound(res, validationErrors) ) {
         var notAuthorized = function(error) {
-            helper.sendErr(res, 401, {message: 'Not authorized'});
+            helper.sendErr(res, 401, {"message": 'Not authorized'});
         }
 
         //main logic here
         var success = function(user) {
 
             var errorCallBack = function(err){
-                helper.sendErr(res, 500, {"errorMessage": "Unknown error in logging in, please try again and report the error to the administrator if the error persists. Error code: 59003"});
+                helper.sendErr(res, 500, {"message": "Unknown error in logging in, please try again and report the error to the administrator if the error persists. Error code: 59003"});
             }
 
             models.User.count({
@@ -241,7 +241,7 @@ function changeUsername(req, res) {
             }).then(function(count){
                 if(count > 0){
                     console.log("___ username already taken " + username)
-                    validationErrors['username'] += errorMessages.getError('userUsernameAlreadyInUse');
+                    validationErrors['username'] += errorMessages.getError('userChangeUsernameAlreadyInUse');
                 }
 
                 //Check if there were any errors and send them back to the client if there were, otherwise continue
