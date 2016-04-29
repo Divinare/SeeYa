@@ -120,7 +120,6 @@ const EventForm = React.createClass({
 		}
 		this.setDateFieldPlaceHolder();
 		this.setDateSelectionPositionFunction();
-        this.disableAutoComplete();
 	},
 
     updateLoggedInUser: function(){
@@ -178,12 +177,6 @@ const EventForm = React.createClass({
     	var path = this.props.location.pathname;
 		return path.indexOf('edit') > -1
 	},
-
-    disableAutoComplete: function() {
-        var allInputs = $( ":input" );
-        console.log("ALL INPUTS");
-        console.log(allInputs);
-    },
 
 	/*** ADDRESS ***/
 
@@ -408,21 +401,23 @@ const EventForm = React.createClass({
         this.setState({
             syncAddress: checked,
         })
-        $('#syncAddressCheckbox')[0].checked = checked;
+        if(checked) {
+            $("#syncAddress").html("[ON]");
+            $("#syncAddress").addClass("syncAddressOn");
+            $("#syncAddress").removeClass("syncAddressOff");
+        } else {
+            $("#syncAddress").html("[OFF]");
+            $("#syncAddress").addClass("syncAddressOff");
+            $("#syncAddress").removeClass("syncAddressOn");
+        }
     },
 
     _renderInfoWindow: function(){
-
         return (
             <div className="eventFormInfowindowContainer">
                 <div>Drag and drop me</div>
-
-                <div id="eventFormCheckboxContainer" onClick={this._handleInfoWindowClick}>                    
-                    <input id="syncAddressCheckbox" type="checkbox"
-                      checked={true}
-                      onChange={function(){}}
-                      value={this.state.syncAddress} />
-                      <div id="syncAddressText">Auto sync with address</div>
+                <div id="eventFormCheckboxContainer">                    
+                <div id="syncAddressText" onClick={this._handleInfoWindowClick}>Auto sync with address <span id="syncAddress" className="syncAddressOn">[ON]</span></div>
                 </div>
             </div>
         )
