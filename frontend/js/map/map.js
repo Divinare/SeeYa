@@ -91,7 +91,8 @@ var Map = React.createClass({
             maxZoom: 17,
             zoomControl: false,
             streetViewControl: false,
-            mapTypeControl: false
+            mapTypeControl: false,
+            name: "Dummy Style"
         };
 
         var map = new google.maps.Map(ReactDOM.findDOMNode(this), mapOptions);       

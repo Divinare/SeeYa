@@ -1,5 +1,7 @@
 
 
+psql -d prod_db
+
 
 // Select all events:
 select * from "Events";

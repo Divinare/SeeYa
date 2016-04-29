@@ -76,7 +76,7 @@ module.exports = React.createClass({
 
                         { (this.props.user !== null) ? 
                             <div>
-                                <li><Link to="/logout">Log out</Link></li>
+                                <li><Link to="/logout" onClick={this.closeNavbar}>Log out</Link></li>
                             </div>
                             :
                             <div>

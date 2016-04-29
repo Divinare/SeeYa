@@ -31,14 +31,14 @@ module.exports = {
 		if(screenType == 'desktop') {	
 			var eventListHeight = window.innerHeight;
 			eventListHeight -= window.CONFIGS.navbarHeight;
-			return eventListHeight-20;
+			return eventListHeight-25;
 		} else if( screenType == 'tablet') {
             var isKeyboardOn = (window.innerHeight < initialScreenSize);
             if(isKeyboardOn) {
-                var eventListHeight = (initialScreenSize-141);
+                var eventListHeight = (initialScreenSize-146);
                 return eventListHeight;
             } else {
-    			var eventListHeight = (window.innerHeight-141);
+    			var eventListHeight = (window.innerHeight-146);
     			return eventListHeight;
      	    }
         }
