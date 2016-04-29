@@ -686,11 +686,7 @@ const EventForm = React.createClass({
 			latLng = [this.state.latLng.lat(), this.state.latLng.lng()];
 		}
 
-
-
 		var name = this.state.name;
-		// Override current streetAddress with the one in address input field
-		//address.streetAddress = document.getElementById("address").value;
 
 		var dateTimestamp = null
 		if( this.state.date !== null){
