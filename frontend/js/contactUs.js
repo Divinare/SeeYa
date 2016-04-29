@@ -195,7 +195,8 @@ var ContactUs = React.createClass({
                                 inputFieldId={"subject"}
                                 list={this.state.subjects}
                                 select={this.selectSubject} 
-                                selected={this.state.selectedSubject} />   
+                                selected={this.state.selectedSubject}
+                                scrollTopPosition={0} />   
                     </div>
                     <div className="form-group">
                         <label className="control-label">Email</label>

@@ -1,5 +1,4 @@
 #eventFormContainer {
-    min-height: 200px;
 }
 
 #eventForm input{
@@ -15,6 +14,19 @@
 .datepicker__input{
 	width:100%;
 }
+
+/***********************/
+/*   TABLET / MOBILE   */
+/***********************/
+@media (max-width: 799px) {
+
+    #eventFormContainer {
+        padding-bottom: 75px; /* So that user can see the last input field */
+    }
+
+}
+
+
 
 /*** ADDRESS ***/
 

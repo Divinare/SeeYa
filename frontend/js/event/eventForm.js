@@ -824,7 +824,8 @@ const EventForm = React.createClass({
                                 multipleColumns={true}
 								list={this.state.categories}
                                 select={this.selectCategory} 
-								selected={this.state.selectedCategory} /> 						
+								selected={this.state.selectedCategory}
+                                scrollTopPosition={50} /> 						
 						</div>
 					<span className="validationError" id="categoryError"></span>
 

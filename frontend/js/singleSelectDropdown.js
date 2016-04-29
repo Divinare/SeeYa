@@ -32,6 +32,8 @@ var EventFormDropdown = React.createClass({
         var id = "singleSelectContent";
         if($("#" + id).css('display') == 'none') {
             $("#" + id).slideDown(150, function(){ });
+            var scrollTopPosition = this.props.scrollTopPosition;            
+            $("#rightContainerContent").animate({ scrollTop: scrollTopPosition }, 350);
         } else {
             $("#" + id).slideUp(150, function(){ });
         }
