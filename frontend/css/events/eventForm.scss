@@ -43,6 +43,8 @@
 #syncAddressText {
     display: inline-block;
     font-weight: bold;
+    cursor: pointer;
+    width: 170px;
 }
 
 .syncAddressOn {
@@ -57,12 +59,6 @@
 .dateInputField {
     color: black;
 }
-/*
-.dropdown-menu {
-    top: 0px !important;
-}
-*/
-
 
 .input-group-addon {
     cursor: pointer;
