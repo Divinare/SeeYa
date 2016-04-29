@@ -76,8 +76,6 @@ const Settings = React.createClass({
     },
 
     submitUsername: function() {
-
-
         var that = this;
         var username = this.state.username;
         var validUsername = frontValidator.validateField(commonValidator.validateUsername, 
@@ -90,29 +88,21 @@ const Settings = React.createClass({
             console.log("___ Username was not valid.");
             return;
         }
-        console.log("username is valid");
-
         var userData = {
             username: username,
             fieldToChange: "username"
         }
         var error = function( jqXhr, textStatus, errorThrown){
-            console.log("error")
+            console.log("___ Changing username failed");
             console.log( errorThrown );
             console.log(jqXhr)
             console.log(jqXhr.responseJSON)
-           // if( jqXhr.responseJSON.userEmail.length > 0){
-           //     validator.setErrorToField('email', [that.state.email + ' already in use'], 'emailError');
-           // }
-
-           // TODO, add error if username is unique:
-           // frontValidator.setErrorToField("#username", jqXhr.responseJSON.errors.changePasswordDetails, "#usernameError")
-
-
+            if( jqXhr.responseJSON.errors.username != null && jqXhr.responseJSON.errors.username.length > 0) {
+                frontValidator.setErrorToField("#username", jqXhr.responseJSON.errors.username, "#usernameError")
+            }
         };
         var success = function(result){
-            console.log( "success!!!" );
-            console.log(result.user);
+            console.log("___ Succesfully changed username");
             that.props.updateAppStatus('user', result.user);
             browserHistory.push('/');
         };
@@ -162,11 +152,8 @@ const Settings = React.createClass({
         var error = function( jqXhr, textStatus, errorThrown){
             frontValidator.setErrorToField("#oldPassword", jqXhr.responseJSON.errors.changePasswordDetails, "#oldPasswordError")
         };
-        var success = function(result){
-            console.log( "success!!! settings" );
-            console.log(result.user);
+        var success = function(result) {
             msgComponent.showMessageComponent('Password changed succesfully', SHOW_MSG_SEC * 1000, 'success')
-            //that.props.updateAppStatus('user', result.user);
             browserHistory.push('/');
         };
         UTILS.rest.editEntry('user', this.props.user.id, userData, success, error);

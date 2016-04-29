@@ -20,29 +20,9 @@ module.exports = {
         -Returns boolean signaling whether the input was valid or not
     **/
      validateField: function(func, params, inputField, errorField, message) {
-
-        //console.log("AT VALIDATE FIELD");
-       // console.log(func);
-        //console.log(params);
-
-        // Func is for example: validator.validateField(validator.validateEmail, ...);
-        var errorArr = func(params, message);
-
-
-
-        if( errorArr.constructor !== Array ){   
-            //the function we called only returned error message, not an array of messages
-            //put the message into an array, so the rest of this function works correctly
-            if(utils.notEmpty(errorArr)){
-                var tempArr = [];
-                tempArr.push(errorArr);
-                errorArr = tempArr;
-            }
-        }
-
-        // Validation failed
-        if( errorArr.length > 0 ) {
-                this.setErrorToField(inputField, errorArr, errorField);
+        var error = func(params, message);
+        if( error.length > 0 ) {
+            this.setErrorToField(inputField, error, errorField);
             return false;
         } else {
             this.clearErrorFromField(inputField, errorField);
@@ -50,15 +30,11 @@ module.exports = {
         }
     },
 
-    // errorObject can be an array of errors or string
-    setErrorToField: function(inputField, errorObject, errorField){
+    // error is a String
+    setErrorToField: function(inputField, error, errorField) {
         $(inputField).addClass('invalid')
-        var errorText;
-        if(errorObject.constructor === Array) {
-            errorText = errorObject.join('<br/>')
-        } else {
-            errorText = errorObject;
-        }
+        var errorsArray = error.split("|");
+        var errorText = errorsArray.join("<br>");
         $(errorField).html(errorText);
     },
 

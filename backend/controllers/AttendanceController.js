@@ -38,8 +38,8 @@ module.exports = {
 	create: function (req, res) {
 		var attendanceToAdd = req.body;
         var comment = attendanceToAdd.comment;
-        var validationErrors = {'comment':[]};
-        helper.addErrorIfNotEmpty(validationErrors['comment'], validator.validateAttendanceComment(comment));
+        var validationErrors = {'comment': ''};
+        validationErrors['comment'] = validator.validateAttendanceComment(comment);
 
         if( !helper.sendErrorsIfFound(res, validationErrors) ){
             //if false is returned no messages were sent, i.e. user input is valid and we can continue

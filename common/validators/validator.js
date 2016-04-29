@@ -25,7 +25,7 @@ module.exports = {
         if(username.length > fieldLengths.userUsernameMax) {
             errors.push( failed("userUsernameTooLong", customMessage) );
         }
-        return errors;
+        return errors.join("|");
     },
 
     validateEmail: function(email, customMessage){
@@ -33,17 +33,20 @@ module.exports = {
         This just checks that the email is of form anystring@anystring.anystring, there are more complex validations
         we could do, but this should be enough for now.
         */
+        console.log("at validate email");
+        console.log("at validate email");
+        console.log("at validate email");
         var re = /\S+@\S+\.\S+/;
-        var errorMessages = []
+        var errors = []
         if( !re.test(email) ){
-            errorMessages.push(failed('userEmailFormat', customMessage));
+            errors.push(failed('userEmailFormat', customMessage));
         }
         if( email.length > fieldLengths.userEmailMax ){
-            errorMessages.push(failed('userEmailTooLong', customMessage));
+            errors.push(failed('userEmailTooLong', customMessage));
         }else if( email.length < fieldLengths.userEmailMin ){
-            errorMessages.push(failed('userEmailTooShort', customMessage));
+            errors.push(failed('userEmailTooShort', customMessage));
         }
-        return errorMessages;
+        return errors.join("|");
     },
 
     matchPasswords: function(params, customMessage){
@@ -258,18 +261,19 @@ module.exports = {
             return "";
         }
         var re = /\S+@\S+\.\S+/;
-        var errorMessages = []
+        var errors = []
         if( !re.test(email) ){
-            errorMessages.push(failed('contactEmailFormat', customMessage));
+            errors.push(failed('contactEmailFormat', customMessage));
         }
         if( email.length > fieldLengths.contactEmailMaxLength){
-            errorMessages.push(failed('contactEmailTooLong', customMessage));
+            errors.push(failed('contactEmailTooLong', customMessage));
         }
         else if( email.length < fieldLengths.contactEmailMinLength){
-            errorMessages.push(failed('contactEmailTooShort', customMessage));
+            errors.push(failed('contactEmailTooShort', customMessage));
         }
-
-        return errorMessages;
+        console.log("RETURNING ERROS!!!");
+        console.log(errors.join("|"));
+        return errors.join("|");
     },
 
     validateContactDescription: function(description, customMessage) {

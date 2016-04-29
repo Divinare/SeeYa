@@ -8,71 +8,28 @@ module.exports = {
         res.status(statusCode).send(jsonResponse);
     },
 
-    /**Gets a hash of errors and corresponding field names. If any errors are found, they are sent back to the
+    /**Gets an object of errors and corresponding field names. If any errors are found, they are sent back to the
         client.
 
         Returns true if errormessages were sent and false otherwise
 
         See usercontroller create method for example usage
     **/
-    sendErrorsIfFound: function(res, validationErrors){
-        var errorCount = 0;
-        var errorsToBeSendToClient = [];
-
-        for (var property in validationErrors) {
-            console.log(property);
-            console.log(validationErrors);
-            if (validationErrors.hasOwnProperty(property)) {
-                if(validationErrors[property].constructor == Array) {
-                    console.log(validationErrors[property]);
-                    for(errorArray in validationErrors[property]) {
-                        if(errorArray.length > 0) {
-                            console.log("ERROR!");
-                            console.log(validationErrors[property]);
-                            console.log(errorArray);
-                            errorsToBeSendToClient.push(validationErrors[property]);
-                            errorCount++;
-                        }
-                    }
-                } else if( validationErrors[property].length > 0 ){
-                    errorCount++;
-                    errorsToBeSendToClient.push(validationErrors[property]);
-                }
-            }
-        }
-        if( errorCount > 0 ){
-            console.log("errors found, sending to client")
-            module.exports.sendError(res, 400, errorsToBeSendToClient);
-            return true;
-        }else{
-            console.log("no errors")
-        }
-        return false;
-    },
-
-
-    /**Gets a hash of errors and corresponding field names. If any errors are found, they are sent back to the
-    client.
-    Returns true if errormessages were sent and false otherwise
-    See usercontroller create method for example usage
-    **/
-    sendErrorsMappedToFields: function(res, validationErrors){
+    sendErrorsIfFound: function(res, validationErrors) {
         var errorCount = 0;
         for (var property in validationErrors) {
             if (validationErrors.hasOwnProperty(property)) {
                 if( validationErrors[property].length > 0 ){
                     errorCount++;
-                }else{
-                    delete validationErrors[property]
                 }
             }
         }
-        if( errorCount > 0 ){
-            console.log("errors found, seding to client")
+        if( errorCount > 0 ) {
+            console.log("___ Sending errors to the client");
             module.exports.sendError(res, 400, validationErrors);
             return true;
         }else{
-            console.log("no errors")
+            console.log("___ No errors to be sent to the client");
         }
         return false;
     },
@@ -121,24 +78,6 @@ module.exports = {
     //needed because javascript sort method treats the values as text by default
     sortNumerically: function(a, b){
         return a - b;
-    },
-
-
-
-
-
-
-    addErrorIfNotEmpty: function(array, errorMsg){
-        if(utils.notEmpty(errorMsg)){
-            array.push(errorMsg);
-        }
-    },
-
-    addErrorsIfNotEmpty: function(array, errorArr){
-        if(errorArr.length > 0){
-            array = array.concat(errorArr);
-        }
-        return array;
     },
 
 

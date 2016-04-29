@@ -72,7 +72,6 @@ module.exports = {
     // For example, name "aaaaaaaaaaaaaaaaaaaa" is reformatted into "aaaaaaaaaaaaa aaaaaaa" so that it goes to 2 rows in the UI.
     // itemName = string to be formatted, partLength = how long each part is
     formatStringIntoPartsSeperatedBySpace: function(itemName, partLength) {
-        console.log("original itemName: " + itemName);
         var itemParts = itemName.split(" ");
         var formattedName = "";
         var newItemParts = [];
@@ -80,10 +79,8 @@ module.exports = {
             if(itemPart.length > partLength) {
                 itemPart = _splitName(itemPart, partLength);
             }
-            console.log("ITEM PART: " + itemPart);
             newItemParts.push(itemPart);
         })
-        console.log("RET: " + newItemParts.join(" "));
         return newItemParts.join(" ");
     },
 

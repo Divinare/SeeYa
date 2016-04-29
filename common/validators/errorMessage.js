@@ -41,6 +41,7 @@ const errors = {
     contactSubjectIdEmpty: "Suject cannot be empty. Please select one from the list.",
     contactWrongSubjectId: "Subject id must be either 1, 2 or 3.",
     contactEmailFormat: "Wrong format. Email address in form 'abc@cde.efg' expected.",
+    contactEmailTooShort: "Email is too short.",
     contactEmailTooLong: "Email too long.",
     contactDescriptionEmpty: "Description cannot be left empty.",
     contactDescriptionTooLong: "Description can be max " + fieldLengths.contactDescriptionMaxLength + " long.",

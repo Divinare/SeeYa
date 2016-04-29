@@ -61,13 +61,14 @@ module.exports = {
         var username = userData.username;
         var userPassword = userData.password;
         var repeatPassword = userData.repeatPassword;
-        var validationErrors = {'userEmail':[], 'username':[], 'userPassword':[], 'userRepeatPassword': []};
-        validationErrors['userEmail'] = helper.addErrorsIfNotEmpty(validationErrors['userEmail'], validator.validateEmail(userEmail));
+        var validationErrors = {'userEmail': '', 'username':'', 'userPassword':'', 'userRepeatPassword': ''};
+        
+        validationErrors['userEmail'] = validator.validateEmail(userEmail)
         if(utils.notEmpty(username)){ //username is optional, only validate if the user has filled it
-            validationErrors['username'] = helper.addErrorsIfNotEmpty(validationErrors['username'], validator.validateUsername(username));
+            validationErrors['username'] = validator.validateUsername(username);
         }
-        helper.addErrorIfNotEmpty(validationErrors['userPassword'], validator.validatePassword(userPassword));
-        helper.addErrorIfNotEmpty(validationErrors['userRepeatPassword'], validator.matchPasswords({"password":userPassword, "repeatPassword": repeatPassword}));
+        validationErrors['userPassword'] = validator.validatePassword(userPassword)
+        validationErrors['userRepeatPassword'] = validator.matchPasswords({"password":userPassword, "repeatPassword": repeatPassword});
 
         //Check that  the username is not in use
         models.User.count({
@@ -87,7 +88,7 @@ module.exports = {
                 }
 
                 //Check if there were any errors and send them back to the client if there were, otherwise continue
-                if(!helper.sendErrorsMappedToFields(res, validationErrors) ){
+                if(!helper.sendErrorsIfFound(res, validationErrors) ){
                     //if false is returned no messages were sent, i.e. user input is valid and we can continue
                    if( utils.isEmpty(username) ){
                         models.User.findAll({
@@ -219,8 +220,8 @@ function finishSignUp(req, res, username){
 function changeUsername(req, res) {
     var username = req.body.username;
 
-    var validationErrors = {'username':[], 'repeatPassword': []};
-    helper.addErrorIfNotEmpty(validationErrors['username'], validator.validateUsername(username));
+    var validationErrors = {'username':'', 'repeatPassword': ''};
+    validationErrors['username'] = validator.validateUsername(username);
 
     //Check if there were any errors and send them back to the client if there were, otherwise continue
     if(!helper.sendErrorsIfFound(res, validationErrors) ) {
@@ -240,7 +241,7 @@ function changeUsername(req, res) {
             }).then(function(count){
                 if(count > 0){
                     console.log("___ username already taken " + username)
-                    validationErrors['username'].push(errorMessages.getError('userUsernameAlreadyInUse'))
+                    validationErrors['username'] += errorMessages.getError('userUsernameAlreadyInUse');
                 }
 
                 //Check if there were any errors and send them back to the client if there were, otherwise continue
@@ -294,9 +295,9 @@ function changePassword(req, res) {
     var password = req.body.password;
     var repeatPassword = req.body.repeatPassword;
 
-    var validationErrors = {'password':[], 'repeatPassword': []};
-    helper.addErrorIfNotEmpty(validationErrors['password'], validator.validatePassword(password));
-    helper.addErrorIfNotEmpty(validationErrors['repeatPassword'], validator.matchPasswords({"password":password, "repeatPassword": repeatPassword}));
+    var validationErrors = {'password':'', 'repeatPassword': ''};
+    validationErrors['password'] = validator.validatePassword(password);
+    validationErrors['repeatPassword'] = validator.matchPasswords({"password":password, "repeatPassword": repeatPassword});
 
     //Check if there were any errors and send them back to the client if there were, otherwise continue
     if(!helper.sendErrorsIfFound(res, validationErrors) ) {

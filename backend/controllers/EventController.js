@@ -155,12 +155,7 @@ module.exports = {
     },
 
     delete: function(req, res){
-         console.log("")
-         console.log("")
-         console.log("")
-         console.log("")
-         console.log("")
-        console.log("AT DELETE EVENT")
+
         //called if the user is not logged in or 
         var notAuthorized = function(error){
             helper.sendResponse(res, 401, {message: 'Not authorized'});
@@ -215,12 +210,6 @@ function validateEvent(eventToAdd) {
         // All OK
         return "";
     }
-  /*  console.log(valid1)
-    console.log(valid2)
-    console.log(valid3)
-    console.log(valid4)
-    console.log(valid5)
-    console.log(valid6)*/
     return "... Form INVALID! name: " + valid1 + " address: " + valid2 + " latLng: " + valid3 + " timestamp: " + valid4 + " category: " + valid5 + " description: " + valid6;
 }
 
