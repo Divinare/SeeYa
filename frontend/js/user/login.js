@@ -65,16 +65,16 @@ const About = React.createClass({
                 password: this.state.password
             }
             var error = function( jqXhr, textStatus, errorThrown){
-               // console.log(jqXhr)
                console.log("error function")
+               console.log(jqXhr);
                console.log(jqXhr.responseJSON.errors)
-               if(jqXhr.responseJSON.errors != null && jqXhr.responseJSON.errors.loginDetails != null){
-                     console.log("login detail error")
-                     console.log(jqXhr.responseJSON.errors['loginDetails'])
-                    $("#serverErrorDiv").text(jqXhr.responseJSON.errors['loginDetails']);
-                    $("#serverErrorDiv").show(500);
-                    frontValidator.setErrorToField('#email', [], '#emailError');
-                    frontValidator.setErrorToField('#password', [], '#passwordError');  
+               if(jqXhr.responseJSON.errors != null) {
+                    if(jqXhr.responseJSON.errors.loginDetails != null) {
+                        $("#serverErrorDiv").text(jqXhr.responseJSON.errors['loginDetails']);
+                        $("#serverErrorDiv").show(500);
+                        frontValidator.setErrorToField('#email', "", '#emailError');
+                        frontValidator.setErrorToField('#password', "", '#passwordError');
+                    }  
                }
             };
             var success = function(result){

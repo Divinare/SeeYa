@@ -1,3 +1,13 @@
+var getEntry = function(name, id, onSuccess, onError) {
+    var url = URL.getEntry[name];
+    $.ajax({ 
+        type: 'GET', 
+        url: url+id,
+        dataType: 'json',
+        success: onSuccess,
+        error: onError
+    });
+}
 
 var getAllEntries = function(name, onSuccess, onError) {
     var url = URL.allEntries[name];
@@ -7,73 +17,6 @@ var getAllEntries = function(name, onSuccess, onError) {
         dataType: 'json',
         success: onSuccess,
         error: onError
-    });
-}
-
-var getFilteredEntries = function(name, categoryFilters, fromTimestamp, toTimestamp, onSuccess, onError) {
-    var url = URL.getFilteredEntries[name];
-    var filters = [];
-    for(var filterName in categoryFilters) {
-        if(categoryFilters[filterName] == true) {
-            filters.push(filterName);      
-        }
-    }
-    if(filters.length > 0) {
-        url += filters.join() + '/';
-    }
-    url += fromTimestamp + '/' + toTimestamp + '/';
-
-    $.ajax({ 
-        type: 'GET', 
-        url: url,
-        dataType: 'json',
-        success: onSuccess,
-        error: onError
-    });
-}
-
-var getUsersAttendingEvent = function(eventId, onSuccess, onError){
-    var url = URL.getFilteredEntries['usersAttendingEvent'];
-    $.ajax({ 
-        type: 'GET', 
-        url: url+eventId,
-        dataType: 'json',
-        success: onSuccess,
-        error: onError
-    });
-}
-
-
-var getEntry = function(name, id, onSuccess, onError) {
-    var url = URL.getEntry[name];
-	$.ajax({ 
-		type: 'GET', 
-		url: url+id,
-		dataType: 'json',
-		success: onSuccess,
-        error: onError
-	});
-}
-
-var isLoggedIn = function(onSuccess, onError) {
-    var url = URL.authorization['loggedInStatus'];
-    $.ajax({ 
-        type: 'GET', 
-        url: url,
-        dataType: 'json',
-        success: onSuccess,
-        error: onError  
-    });
-}
-
-var logout = function(onSuccess, onError) {
-    var url = URL.authorization['logout'];
-    $.ajax({ 
-        type: 'GET', 
-        url: url,
-        dataType: 'json',
-        success: onSuccess,
-        error: onError  
     });
 }
 
@@ -115,6 +58,51 @@ var editEntry = function(name, id, data, onSuccess, onError){
     });
 }
 
+var getFilteredEntries = function(name, categoryFilters, fromTimestamp, toTimestamp, onSuccess, onError) {
+    var url = URL.getFilteredEntries[name];
+    var filters = [];
+    for(var filterName in categoryFilters) {
+        if(categoryFilters[filterName] == true) {
+            filters.push(filterName);      
+        }
+    }
+    if(filters.length > 0) {
+        url += filters.join() + '/';
+    }
+    url += fromTimestamp + '/' + toTimestamp + '/';
+
+    $.ajax({ 
+        type: 'GET', 
+        url: url,
+        dataType: 'json',
+        success: onSuccess,
+        error: onError
+    });
+}
+
+var getUsersAttendingEvent = function(eventId, onSuccess, onError){
+    var url = URL.getFilteredEntries['usersAttendingEvent'];
+    $.ajax({ 
+        type: 'GET', 
+        url: url+eventId,
+        dataType: 'json',
+        success: onSuccess,
+        error: onError
+    });
+}
+
+var authorization = function(action, onSuccess, onError) {
+    var url = URL.authorization[action];
+    $.ajax({ 
+        type: 'GET', 
+        url: url,
+        dataType: 'json',
+        success: onSuccess,
+        error: onError  
+    });
+}
+
+
 var verifyEmail = function(action, data, onSuccess, onError) {
     var url = URL.verifyEmail[action];
     $.ajax({
@@ -130,15 +118,14 @@ var verifyEmail = function(action, data, onSuccess, onError) {
 
 module.exports = {
 
-    getAllEntries: getAllEntries,
-    getFilteredEntries: getFilteredEntries,
-    getUsersAttendingEvent: getUsersAttendingEvent,
     getEntry: getEntry,
+    getAllEntries: getAllEntries,
     addEntry: addEntry,
     removeEntry: removeEntry,
     editEntry: editEntry,
-    isLoggedIn: isLoggedIn,
-    logout: logout,
+    getFilteredEntries: getFilteredEntries,
+    getUsersAttendingEvent: getUsersAttendingEvent,
+    authorization: authorization,
     verifyEmail: verifyEmail
 
 

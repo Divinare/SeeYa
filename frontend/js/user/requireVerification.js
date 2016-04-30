@@ -13,39 +13,43 @@ const SHOW_ERROR_MSG_SEC = 5;
 const RequireLogin = React.createClass({
     getInitialState: function() {
         return {
-            loginStatusPending: true,
+            verificationStatusPending: true,
             user: null
         };
     },
 
-    componentDidMount: function(){
+    componentDidMount: function() {
         this.checkLoginStatus();
     },
 
-    checkLoginStatus: function(){
+    checkLoginStatus: function() {
+        
         this.setState({
-            loginStatusPending:true
+            verificationStatusPending: true
         })
+
         var that = this;
         var success = function(result) {
-            that.props.updateAppStatus('user', result.user);
+            console.log(result);
+            //that.props.updateAppStatus('user', result.user);
             that.setState({
-                loginStatusPending: false,
-                user: result.user
+                verificationStatusPending: false
             })
         }
-        var error = function(){
-            that.props.updateAppStatus('user', null);
-            msgComponent.showMessageComponent('Please log in first', SHOW_ERROR_MSG_SEC * 1000, 'error')
-            browserHistory.push('/login');
+        var error = function(error) {
+            console.log("Error");
+            console.log(error);
+            msgComponent.showMessageComponent('Please verify your email first', SHOW_ERROR_MSG_SEC * 1000, 'error')
+            browserHistory.push('/emailVerification');
         }
-        UTILS.rest.authorization("loggedInStatus", success, error);
+        UTILS.rest.authorization("isEmailVerified", success, error);
+        
     },
 
-    render: function(){
+    render: function() {
         return(
             <div>
-                { this.state.loginStatusPending ? 
+                { this.state.verificationStatusPending ? 
                     <h2 className="centeredVertHor">Loading...</h2>
                     :
                     <div>
@@ -58,7 +62,7 @@ const RequireLogin = React.createClass({
                             updateAppStatus: this.props.updateAppStatus,
                             getAppStatus: this.props.getAppStatus,
                             getEvents: this.props.getEvents,
-                            user: this.state.user,
+                            user: this.props.user,
                             updateToolbarIcons: this.props.updateToolbarIcons
                         })}
                     </div>

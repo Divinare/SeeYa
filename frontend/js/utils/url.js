@@ -36,6 +36,7 @@ module.exports = {
 	},
 	'authorization': {
 		'loggedInStatus': REST + '/isLoggedIn',
-		'logout': REST + '/logout'
+		'logout': REST + '/logout',
+		'isEmailVerified': REST + '/isEmailVerified'
 	}
 };

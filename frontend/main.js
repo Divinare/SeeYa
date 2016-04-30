@@ -33,11 +33,13 @@ var Logout = require('./js/user/logout.js');
 var Settings = require('./js/user/settings.js');
 var ContactUs = require('./js/contactUs.js');
 var TermsOfService = require('./js/termsOfService.js');
-var RequireLogin = require('./js/user/requireLogin.js');
 var AttendForm = require('./js/event/attendForm.js');
 var AuthError = require('./js/user/authError.js');
 var ForgotPassword = require('./js/user/forgotPassword.js');
 var Verification = require('./js/user/emailVerification.js');
+
+var RequireLogin = require('./js/user/requireLogin.js');
+var RequireVerification = require('./js/user/requireVerification.js');
 
 var initialScreenSize = window.innerHeight;
 
@@ -104,7 +106,7 @@ const Main = React.createClass({
             })
             console.log("is not logged in");
         }
-         UTILS.rest.isLoggedIn(success, error);
+         UTILS.rest.authorization("loggedInStatus", success, error);
     },
 
     handleResize: function(e) {
@@ -264,10 +266,12 @@ render((
             <Route path="forgotPassword" component={ForgotPassword}/>
             <Route component={RequireLogin} >
                 <Route path="settings" component={Settings} />
-                <Route path="join/:id" component={AttendForm} />
-                <Route path="events/:id/edit" component={EventForm} />
-                <Route path="eventForm" component={EventForm} />
                 <Route path="emailVerification" component={Verification} />
+                <Route component={RequireVerification} >
+                    <Route path="eventForm" component={EventForm} />
+                    <Route path="join/:id" component={AttendForm} />
+                    <Route path="events/:id/edit" component={EventForm} />
+                </Route>
             </Route>
             <Route path="*" component={NoMatch} />
         </Route>

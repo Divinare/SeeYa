@@ -185,7 +185,7 @@ const EventPage = React.createClass({
                 })
             }
         }
-        UTILS.rest.isLoggedIn(success, error);
+        UTILS.rest.authorization("loggedInStatus", success, error);
     },
 
     fetchAttendees: function(eventId){
@@ -413,7 +413,8 @@ const EventPage = React.createClass({
             joinBtnText = "Join"
         }
         var counter = 0;
-
+        console.log("ATTENDANCES");
+        console.log(this.state.attendees);
         return (
             <div id="eventPageContainer">
                 <div>
@@ -443,7 +444,7 @@ const EventPage = React.createClass({
                                     {attendee.username}
                                 </div>
                                 <div className="col-xs-6">
-                                    {attendee['Attendances.comment']}
+                                    {UTILS.helper.formatStringIntoPartsSeperatedBySpace(attendee['Attendances.comment'], 20)}
                                 </div>   
                             </div>
                         )}
@@ -459,3 +460,5 @@ const EventPage = React.createClass({
 });
 
 module.exports = EventPage;
+
+          //  eventName = UTILS.helper.formatStringIntoPartsSeperatedBySpace(attendee['Attendances.comment'], 20);

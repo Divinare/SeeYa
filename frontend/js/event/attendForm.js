@@ -217,6 +217,7 @@ const AttendForm = React.createClass({
                         <div>
                             <br/>
                             <div><Link to={"/login/"}>Log in</Link> or <Link to={"/signup/"}>sign up</Link> to attend </div>
+                            <br/>
                         </div>
                     }
 

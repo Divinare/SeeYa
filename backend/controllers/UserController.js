@@ -176,11 +176,25 @@ module.exports = {
             helper.sendErr(res, 400, err);
         }
         userService.getLoggedInUser(req, res, success, error);
+    },
+
+    isEmailVerified: function(req, res) {
+
+        var success = function(user) {
+            if(user.emailVerified) {
+                res.status(200).send({"success": "Email is verified"});
+            } else {
+                helper.sendErr(res, 400, {"error": "Email is not verified"});
+            }
+        }
+        var error = function(err) {
+            console.log("___ User should be logged in");
+            helper.sendErr(res, 400, err);
+        }
+
+        userService.getLoggedInUser(req, res, success, error);
     }
-
 };
-
-
 
 //Called after validating all the user fields when we know that the user can really be created
 function finishSignUp(req, res, username){

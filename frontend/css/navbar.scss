@@ -38,16 +38,16 @@
 #navbarLogoContainer {
     position: relative;
     display: inline-block;
-    width: 140px;
-    height: 36px;
-    top: 10px;
+    width: 145px;
+    height: 40px;
+    top: 13px;
 }
 
 #navbar-logo {
     background-image: url("assets/seeya_logo.png");
     background-size: cover;
     display: block;
-    width: 129px;
+    width: 128px;
     height: 40px;
 
 }
@@ -64,7 +64,8 @@
 .navbar-left-container {
     position: fixed;
     left: 0px;
-    top: -4px;
+    top: -8px;
+    height: 50px;
     padding-left: 5%;
 }
 

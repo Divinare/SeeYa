@@ -127,7 +127,7 @@ const Verification = React.createClass({
                 return (
                     <div id="emailVerificationContainer">
                         <h2>Email verification</h2>
-                        <p>An email has been sent to your inbox for email verification. Please check your email and click the link to verify your email. Also remember to check from your spam folder.</p>
+                        <p>An email has been sent to your email address for email verification. Please check your email and click the link to verify your email. Also remember to check from your spam folder.</p>
                         <a onClick={this.sendEmailVerificationEmail} id="sendAnotherVerificationEmail">Click here to send another email</a>
                     </div>
                 )

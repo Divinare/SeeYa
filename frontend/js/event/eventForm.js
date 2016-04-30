@@ -146,7 +146,7 @@ const EventForm = React.createClass({
         this.setState({
             loadingUser: true
         })
-        UTILS.rest.isLoggedIn(success, error);
+        UTILS.rest.authorization("loggedInStatus", success, error);
     },
 
     setToolbarIcons: function() {

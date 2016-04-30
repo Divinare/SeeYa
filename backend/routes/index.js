@@ -19,6 +19,7 @@ router.get('/categories', CategoryCtrl.findAll);
 
 router.get('/isloggedin', SessionCtrl.isLoggedIn);
 router.get('/logout', SessionCtrl.logout);
+router.get('/isEmailVerified', UserCtrl.isEmailVerified);
 
 router.get('/events/:id', EventCtrl.findOne);
 router.get('/attendances/:id', AttendanceCtrl.findOne);
@@ -39,6 +40,7 @@ router.post('/categories/:id', CategoryCtrl.update);
 router.post('/users/:id', UserCtrl.update);
 router.post('/emailVerification', UserCtrl.verifyEmail);
 router.post('/sendVerificationEmail', UserCtrl.sendVerificationEmail);
+
 
 
 router.delete('/events/:id', EventCtrl.delete);

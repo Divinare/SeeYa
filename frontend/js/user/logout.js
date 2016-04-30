@@ -22,7 +22,7 @@ module.exports = React.createClass({
                 that.deleteCookie('seeyaSession')
                 browserHistory.push('/');
             };
-        UTILS.rest.logout(success, error);
+        UTILS.rest.authorization("logout", success, error);
     },
 
     setToolbarIcons: function() {

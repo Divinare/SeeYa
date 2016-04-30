@@ -40,7 +40,7 @@ const Settings = React.createClass({
                 signedIn: false
             })
         }
-        UTILS.rest.isLoggedIn(success, error);
+        UTILS.rest.authorization("loggedInStatus", success, error);
         this.props.handleResize();
     },
 
