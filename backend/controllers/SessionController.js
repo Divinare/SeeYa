@@ -122,7 +122,7 @@ module.exports = {
                         var emailsFromDb = [];
                         var validatedUser = null;
                         users.forEach(function(currentUser){
-                            if( currentUser.get('accountValidated') === true ){
+                            if( currentUser.get('emailVerified') === true ){
                                 validatedUser = currentUser;
                             }else{
                                 emailsFromDb.push(currentUser.get('email'))
@@ -174,13 +174,13 @@ module.exports = {
                                 authProvider: profile.provider,
                                 authProvUserId: profile.id
                             }
-                            console.log("profile email")
+                           /* console.log("profile email")
                             console.log(profile.email)
                             console.log(profile.emails[0])
-                            console.log(profile.emails[0].value)
+                            console.log(profile.emails[0].value)*/
                             if(profile.emails != null && profile.emails[0] != null && profile.emails[0].value != null){
                                 userFields.email = profile.emails[0].value;
-                                userFields.accountValidated = true;
+                                userFields.emailVerified = true;
                             }
 
                             models.User.create(userFields).then(function(user){
