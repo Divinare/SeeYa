@@ -36,7 +36,7 @@ const About = React.createClass({
 		        <h4>SeeYa</h4>
 		        <div className="iframe-content">
 		            <div className="intrinsic-content intrinsic-content-16x9">
-		              <iframe src="https://www.youtube.com/embed/kmqy_gwvpMw" alt="SeeYa Events Video" allowfullscreen="allowfullscreen"></iframe>
+		              <iframe src="https://www.youtube.com/embed/kmqy_gwvpMw" alt="SeeYa Events Video" allowFullScreen></iframe>
 		            </div>
 		        </div>
 			</div>
