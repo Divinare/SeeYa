@@ -182,7 +182,7 @@ module.exports = {
     isEmailVerified: function(req, res) {
 
         var success = function(user) {
-            console.log(user)
+           // console.log(user)
             if(user.emailVerified) {
                 console.log("emailfverified")
                 res.status(200).send({"success": "Email is verified"});
