@@ -25,8 +25,6 @@ const About = React.createClass({
 	},
 
 	render: function(){
-
-
 	
 		return (
 			<div id="aboutContainer">
@@ -34,7 +32,14 @@ const About = React.createClass({
 				
 				<p>SeeYa is a community for creating and joining events nearby. Discover new events, gain new experiences with other people and have fun.</p>
 				<p>Simple and easy way to explore events near you or far away. SeeYa was developed in 2016 by a small group of friends in Helsinki, Finland.  </p>
-				
+				<br />
+		        <h4>SeeYa</h4>
+		        <div className="iframe-content">
+		            <div className="intrinsic-content intrinsic-content-16x9">
+		              <iframe src="https://www.youtube.com/embed/Clx4BUnzhO4" allowfullscreen></iframe>
+		            </div>
+		        </div>
+
 			</div>
 		)
 	}
