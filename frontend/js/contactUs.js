@@ -5,6 +5,7 @@ var Link = Router.Link;
 
 var SingleSelectDropdown = require('./singleSelectDropdown.js');
 
+var msgComponent = require('./utils/messageComponent.js');
 var fieldLengths = require('../../common/validators/fieldLengths.js');
 var commonUtils = require('../../common/utils.js');
 var commonValidator = require('../../common/validators/validator.js');
@@ -162,8 +163,15 @@ var ContactUs = React.createClass({
            // $('#serverErrorDiv').show(500);
 
         };
-        var success = function(result){
-            console.log("SUCCESSS!!!");
+        var success = function(result) {
+            var message;
+            if(subjectId == 1) {
+                message = "Thanks for giving us some feedback!"
+            } else {
+                message = "Thanks for contacting us!"
+            }
+
+            msgComponent.showMessageComponent(message, 5000, 'success')
             browserHistory.push('/');
 
         };
