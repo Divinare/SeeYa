@@ -40,6 +40,7 @@ module.exports = {
     },
 
     // TODO, prevent normal user from accessing this method
+    /*
     create: function (req, res) {
         var categoryToAdd = req.body;
         console.log(categoryToAdd);
@@ -52,8 +53,10 @@ module.exports = {
             helper.sendErr(res, 400, err);
         });
     },
+    */
 
     // TODO, prevent normal user from accessing this method
+    /*
     delete: function(req, res){
         var categoryId = req.params.id;
         models.Category.destroy({
@@ -66,8 +69,10 @@ module.exports = {
             helper.sendErr(res, 400, err);
         });
     },
+    */
 
     // TODO, prevent normal user from accessing this method
+    /*
     update: function (req, res) {
         var categoryId = req.params.id;
         Registration.findOne({
@@ -82,5 +87,6 @@ module.exports = {
             });
         });
     }
+    */
 
 };

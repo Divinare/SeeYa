@@ -697,7 +697,7 @@ const EventForm = React.createClass({
 		// VALIDATIONS
 		var valid1 = validator.validateField(commonValidator.validateEventName, name, "#name", "#nameError");
 		var valid2 = validator.validateField(commonValidator.validateEventAddress, address, "#address", "#addressError");
-		var valid3 = validator.validateField(commonValidator.validateEventLatLng, this.state.latLng, "#latLng", "#latLngError");
+		var valid3 = validator.validateField(commonValidator.validateEventLatLng, latLng, "#latLng", "#latLngError");
 		var valid4 = validator.validateField(commonValidator.validateEventDate, dateTimestamp, "#date", "#dateError");
 		var valid5 = validator.validateField(commonValidator.validateEventCategory, category, "#category", "#categoryError", "Select category from the list");
 		var valid6 = validator.validateField(commonValidator.validateEventTime, [time, dateTimestamp], "#time-container", "#timeError");
