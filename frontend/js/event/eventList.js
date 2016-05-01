@@ -138,7 +138,7 @@ const EventList = React.createClass({
         }
 
         return (
-            <div className='link' onClick={this._sortRowsBy.bind(null, sortBy)}>{headerName}</div>
+            <div className='link' onClick={this._sortRowsBy.bind(null, sortBy)}><strong>{headerName}</strong></div>
         );
      },
 
