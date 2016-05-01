@@ -70,7 +70,7 @@ module.exports = {
         validationErrors['userPassword'] = validator.validatePassword(userPassword)
         validationErrors['userRepeatPassword'] = validator.matchPasswords({"password":userPassword, "repeatPassword": repeatPassword});
 
-        //Check that  the username is not in use
+        //Check that  the email is not in use
         models.User.count({
             where: { email: userEmail }
         }).then(function(count){
@@ -78,6 +78,7 @@ module.exports = {
                 console.log("There is already a user in db with email " + userEmail)
                 validationErrors['userEmail'] += errorMessages.getError('userEmailAlreadyInUse');
             }
+            //Check that  the username is not in use
             models.User.count({
                 where: { username: username }
             }).then(function(count){
@@ -181,7 +182,9 @@ module.exports = {
     isEmailVerified: function(req, res) {
 
         var success = function(user) {
+            console.log(user)
             if(user.emailVerified) {
+                console.log("emailfverified")
                 res.status(200).send({"success": "Email is verified"});
             } else {
                 helper.sendErr(res, 400, {"error": "Email is not verified"});

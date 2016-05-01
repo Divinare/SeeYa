@@ -84,7 +84,7 @@ module.exports = {
     **/
     loginOAuth: function(req, accessToken, refreshToken, profile, done ){
         console.log("AUTHENTICATING...")
-        console.log(profile)
+        //console.log(profile)
         //I don't know if it can really be null, but if it is something probably failed
         if( profile == null ){  
             req.authError = 'No information received from the authentication provider.';
