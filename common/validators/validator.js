@@ -116,10 +116,21 @@ module.exports = {
         return "";
     },
     validateEventLatLng: function(latLng, customMessage) {
-        // TODO: LAT LNG VALIDATION, you shouldnt be able to send something like 123x,asd
-
         if(utils.isEmpty(latLng)) {
             return failed("eventLatLng", customMessage);
+        }
+        var latitude = latLng[0];
+        var longitude = latLng[1];
+        if(isNaN(parseFloat(latitude)) || !isFinite(latitude)) {
+            return failed("eventLat", "");
+        }
+        if(isNaN(parseFloat(longitude)) || !isFinite(longitude)) {
+            return failed("eventLon", "");
+        }
+        var reg = new RegExp("^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$");
+        var validLatLon = latitude + ", " + longitude;
+        if( reg.exec(validLatLon) ) {
+            return failed("eventLatLngFormat", "");
         }
         return "";
     },

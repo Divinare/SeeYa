@@ -9,18 +9,18 @@ GET: http://localhost:1337/api/events/1
 CREATING NEW EVENTS:
 POST: http://localhost:1337/api/events
 
-{ "name": "db testi",
+{ "name": "Rantalenttis",
   "address":{
-   "streetAddress":"mustikkamaa",
+   "streetAddress":"Banaanitie123",
    "country":"Finland",
    "zipCode":"00100"
  },
- "description":"testi db nyt backendin alla",
- "categoryName": "Sports",
- "lat":"20.102",
- "lon":"62.123",
+ "description":"Joku ottaa lentopallon mukaan.",
+ "category": "Sports",
+ "lat":"45.102",
+ "lon":"59.123",
   "requiresRegistration":"true",
- "timestamp":"1438277401719"}
+ "timestamp":"1479277402000"}
 
 
 
