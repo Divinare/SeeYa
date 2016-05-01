@@ -255,7 +255,7 @@ function createEvent(req, res, category, user) {
             //maxAttendees = eventToAdd.maxAttendees
             }).then(function(event) {
                 event.setAddress(address)
-                console.log("user: " + user)
+               // console.log("user: " + user)
                 event.setUser(user)     //this should say setCreator instead of setUser, but seems to work only this way, change it if you know how!
                 console.log(event.name + ' created successfully');
 

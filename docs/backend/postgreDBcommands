@@ -27,4 +27,3 @@ delete from "Users" where username like 'Anonymous%';
 UPDATE "Users" SET role = 'Admin' where username = 'super';
 
 
-
