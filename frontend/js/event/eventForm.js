@@ -61,6 +61,10 @@ const EventForm = React.createClass({
             google.maps.event.addListener(newEventMarker, 'dragend', function(evt) {
                 if(that.state.syncAddress){
                     that.codeAddressFromLatLng(evt.latLng, that.afterGeocoding);
+                }else{
+                    that.setState({
+                        latLng: evt.latLng
+                    });
                 }
             });
 
@@ -225,7 +229,6 @@ const EventForm = React.createClass({
                 that.afterGeocoding(false, status);
 			}
  		});
-
   	},
 
   	centerAndSetMarker: function(latLng){
@@ -680,6 +683,9 @@ const EventForm = React.createClass({
 		} else {
 			latLng = [this.state.latLng.lat(), this.state.latLng.lng()];
 		}
+
+        console.log("LATLNG: ")
+        console.log(latLng)
 
 		var name = this.state.name;
 
