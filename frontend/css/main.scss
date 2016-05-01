@@ -1,6 +1,14 @@
 body {
     overflow: hidden;
     height: 100%;
+    /* font-family: FuturaPT */
+    /*font-family: 'avalon','Open Sans', sans-serif !important; */
+    /*font-family: Roboto; */
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+
 }
 
 html {
@@ -15,6 +23,31 @@ a {
 
 h1 {
     margin-top: 0px !important;
+}
+
+h2 {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 300 !important;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+h3 {
+   font-family: 'Roboto', sans-serif;
+   font-style: normal;
+   font-weight: 300 !important;
+   unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+h4 {
+   font-family: 'Roboto', sans-serif;
+   font-style: normal;
+   font-weight: 300 !important;
+   unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+div {
+
 }
 
 img{
