@@ -853,7 +853,7 @@ const EventForm = React.createClass({
 
 					{/* Description */}
 					<div className='form-group'>
-						<textarea type='text' className='form-control' id='description' maxLength="500" value={this.state.description} onChange={this.handleChange('description')} placeholder="Description" />
+						<textarea type='text' className='form-control' id='description' maxLength="2500" value={this.state.description} onChange={this.handleChange('description')} placeholder="Description" />
 					</div>
 					<span id="charactersLeft"></span>
 

@@ -8,9 +8,9 @@ module.exports = function(sequelize, DataTypes) {
             validate: { len: { args: [3,30], msg: "Name must be at least 3-30 characters long"} }
         },
         description: {
-            type: DataTypes.STRING(500),
+            type: DataTypes.STRING(2500),
             allowNull: true,
-            validate: { len: { args: [0,500]}}
+            validate: { len: { args: [0,2500]}}
         },
         lon: {
             type: DataTypes.FLOAT,

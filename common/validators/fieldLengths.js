@@ -15,7 +15,7 @@ module.exports = {
     eventAddressStreetAddressMax: 255,
     eventAddressStreetAddressMin: 5,
     eventMaxDaysInTheFuture: 365,
-    eventDescriptionMaxLength: 500,
+    eventDescriptionMaxLength: 2500,
 
     contactEmailMaxLength: 254,
     contactEmailMinLength: 3,

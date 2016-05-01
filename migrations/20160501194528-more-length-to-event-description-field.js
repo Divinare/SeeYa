@@ -9,10 +9,15 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-
-
-    queryInterface.renameColumn('Users', 'accountValidated', 'accountVerificated')
-
+        queryInterface.changeColumn(
+      'Events',
+      'description',
+      {
+        type: Sequelize.STRING(2500),
+        allowNull: true,
+        validate: { len: { args: [0,2500]}}
+      }
+    )
   },
 
   down: function (queryInterface, Sequelize) {
