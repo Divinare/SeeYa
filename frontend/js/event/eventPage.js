@@ -332,28 +332,8 @@ const EventPage = React.createClass({
             date = "---";
             time = "---";
         } else {
-            var partLength;
-            var w = window.innerWidth;
-            if(w < 300) {
-                partLength = 12;
-            } else if(w < 350) {
-                partLength = 12;
-            } else if(w < 400) {
-                partLength = 16;
-            } else if(w < 450) {
-                partLength = 18;
-            } else if(w < 500) {
-                partLength = 20;
-            } else if(w < 550) {
-                partLength = 22;
-            } else {
-                partLength = 30;
-            }
-            if(!UTILS.helper.isUsingMobile() && partLength > 16) {
-                partLength = 16;
-            }
 
-            eventName = UTILS.helper.formatStringIntoPartsSeperatedBySpace(eventVar.name, partLength);
+            eventName = eventVar.name;
             date = Moment.unix(eventVar.timestamp/1000).format("ddd DD.MM.YYYY");
             time = Moment.unix(eventVar.timestamp/1000).format("HH:mm");
 
@@ -418,7 +398,7 @@ const EventPage = React.createClass({
         return (
             <div id="eventPageContainer">
                 <div>
-                    <h3 id="eventPageEventName">{eventName}</h3>
+                    <h3 id="eventPageEventName" className="breakWord">{eventName}</h3>
                     <button className="eventPageAttendanceBtn pull-right btn btn-primary btn-sm" onClick={this.redirectToAttendForm}>{joinBtnText}</button>
                 </div>
                 
@@ -443,8 +423,8 @@ const EventPage = React.createClass({
                                 <div className="col-xs-6">
                                     {attendee.username}
                                 </div>
-                                <div className="col-xs-6">
-                                    {UTILS.helper.formatStringIntoPartsSeperatedBySpace(attendee['Attendances.comment'], 20)}
+                                <div className="col-xs-6 breakWord">
+                                    {attendee['Attendances.comment']}
                                 </div>   
                             </div>
                         )}
