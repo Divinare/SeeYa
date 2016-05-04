@@ -49,7 +49,7 @@ module.exports = {
     **/
     generateNextId: function(users, usernameBase){
         console.log("generating anonymous id")
-        if( users == null) {
+        if( users == null || users.length === 0) {
             return '';
         }
 
@@ -61,8 +61,12 @@ module.exports = {
                 ids.push(endingAsInt)
             }
         }
-        if(ids.length === 0){
-            return '';
+        /** 
+            there were no names with a number at the end but since we got this far in the function,
+            there was some user with the usernameBase --> return id 1
+        **/
+        if(ids.length === 0){   
+            return 1;
         }
         ids.sort(module.exports.sortNumerically);
 
