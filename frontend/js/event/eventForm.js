@@ -91,6 +91,19 @@ const EventForm = React.createClass({
                 browserHistory.push('/')
             }
         }
+
+        //In edit form set the date in the input field if we have a different date in state than in the date input
+        if( document.getElementsByClassName("dateInputField")[0] != null &&
+            document.getElementsByClassName("dateInputField")[0].getElementsByClassName("form-control")[0] != null &&
+            this.readDateFromInputField() != null &&
+            this.state.date != null 
+            ){
+                if(this.state.date.format('DD.MM.YYYY') != this.readDateFromInputField().format('DD.MM.YYYY')){
+                    console.log("CHANGING DATE")
+                    var momentStr = this.state.date.format('DD.MM.YYYY')
+                    document.getElementsByClassName("dateInputField")[0].getElementsByClassName("form-control")[0].value = momentStr;
+                }
+        }
 	},
                 
 	componentDidMount: function() {
@@ -482,7 +495,7 @@ const EventForm = React.createClass({
     			country: event.Address.country,
     			zipCode: event.Address.zipCode,
     			time: time,
-    			date: moment,
+    		  	date: moment,
     			description: event.description,
     			selectedCategory: event.Category.name,
                 loadingEvent:false
@@ -780,14 +793,6 @@ const EventForm = React.createClass({
 		return "What would you like to do?"
 	},
 
-	updateDateField: function(){
-		if( this.state.date !== null ){
-			return this.state.date.format('x')
-		}else{
-			return document.getElementsByClassName("dateInputField")[0].getElementsByClassName("form-control")[0].value;
-		}
-	},
-
 	render: function(){
 		var that = this;
 
@@ -831,8 +836,8 @@ const EventForm = React.createClass({
 				        <div className="dateInputField">
 
 							<DatePicker
+                               // ref={'dateComponent'}
 								inputFormat="DD.MM.YYYY"
-								dateTime={this.state.updateDateField}
 								size="md"
 								mode="date"
 								viewMode="days"
