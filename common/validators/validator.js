@@ -33,9 +33,6 @@ module.exports = {
         This just checks that the email is of form anystring@anystring.anystring, there are more complex validations
         we could do, but this should be enough for now.
         */
-        console.log("at validate email");
-        console.log("at validate email");
-        console.log("at validate email");
         var re = /\S+@\S+\.\S+/;
         var errors = []
         if( !re.test(email) ){
@@ -282,8 +279,6 @@ module.exports = {
         else if( email.length < fieldLengths.contactEmailMinLength){
             errors.push(failed('contactEmailTooShort', customMessage));
         }
-        console.log("RETURNING ERROS!!!");
-        console.log(errors.join("|"));
         return errors.join("|");
     },
 

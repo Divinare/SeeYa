@@ -26,6 +26,12 @@ module.exports = function(sequelize, DataTypes) {
         defaultValue: "User",
         allowNull: false
     },
+    // do we trust the user, is he for example allowed to create events every ~20 second?
+    trusted: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
     // has user verified his email by going to his email and by clicking verification link?
     emailVerified: {
         type: DataTypes.BOOLEAN,
@@ -63,6 +69,10 @@ module.exports = function(sequelize, DataTypes) {
     },
     // when current forgotPasswordId was created
     forgotPasswordIdCreateTime: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    lastEventCreated: {
         type: DataTypes.DATE,
         allowNull: true
     }

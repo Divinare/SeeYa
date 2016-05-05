@@ -683,7 +683,10 @@ const EventForm = React.createClass({
 
     handleSubmit: function(e) {
 		var that = this;
-		//e.preventDefault();
+
+        // Clear/hide errorfields:
+        $("#submitErrorField").css("display", "none");
+
 		var address = {
 			streetAddress: this.state.streetAddress,
 			city: this.state.city,
@@ -696,9 +699,6 @@ const EventForm = React.createClass({
 		} else {
 			latLng = [this.state.latLng.lat(), this.state.latLng.lng()];
 		}
-
-        console.log("LATLNG: ")
-        console.log(latLng)
 
 		var name = this.state.name;
 
@@ -741,7 +741,10 @@ const EventForm = React.createClass({
 
 		var success;
 		var error = function( jqXhr, textStatus, errorThrown ){
-		    console.log( errorThrown );
+            validator.setErrorToField(".submitError", jqXhr.responseJSON.errors, "#submitErrorField");
+            $("#submitErrorField").css("display", "block");
+            // Scrolls to bottom of the eventForm so that the user can see the error
+            $('#rightContainerContent').scrollTop($('#rightContainerContent')[0].scrollHeight);
 		};
 
 		var returnHome = function(){
@@ -776,7 +779,6 @@ const EventForm = React.createClass({
 	},
 
     clearNewEventMarker: function(){
-        console.log("clearing marker")
         if( this.props.newEventMarker != null && !$.isEmptyObject(this.props.newEventMarker) ){
             if(this.state.infoWindow != null){
                 this.state.infoWindow.setMap(null);
@@ -867,6 +869,8 @@ const EventForm = React.createClass({
 						<textarea type='text' className='form-control' id='description' maxLength="2500" value={this.state.description} onChange={this.handleChange('description')} placeholder="Description" />
 					</div>
 					<span id="charactersLeft"></span>
+
+                    <div className="submitError" id="submitErrorField"></div>
 
 					{/* Submit */}
 					<div className="form-group">
