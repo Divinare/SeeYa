@@ -3,7 +3,9 @@ var utils = require("../../common/utils.js")
 module.exports = {
     //This and sendErrorsIfFound are used nowadays. We can delete the rest if we are sure they are not used anywhere anymore
     //The errorHash should have key value pairs where key is the name of the incorrect field and value is list of error messages related to that field
-    sendError: function(res, statusCode, errorHash){
+    sendError: function(res, statusCode, errorHash) {
+        console.log("SENDING ERROR: ");
+        console.log(errorHash);
         var jsonResponse = {"errors": errorHash};
         res.status(statusCode).send(jsonResponse);
     },

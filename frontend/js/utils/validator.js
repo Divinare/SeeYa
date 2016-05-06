@@ -1,5 +1,5 @@
 var validator = require('../../../common/validators/validator.js');
-var utils = require('../../../common/utils.js');
+var commonUtils = require('../../../common/utils.js');
 
 module.exports = {
 
@@ -30,16 +30,25 @@ module.exports = {
         }
     },
 
-    // error is a String
+    // error param is a String
     setErrorToField: function(inputField, error, errorField) {
-        $(inputField).addClass('invalid')
-        var errorsArray = error.split("|");
-        var errorText = errorsArray.join("<br>");
-        $(errorField).html(errorText);
+        if(commonUtils.notEmpty(inputField) && commonUtils.notEmpty(error) && commonUtils.notEmpty(errorField)) {
+            $(inputField).addClass('invalid')
+            var errorsArray = error.split("|");
+            var errorText = errorsArray.join("<br>");
+            $(errorField).html(errorText);
+        } else {
+            console.log("___ Programmer! Your setErrorToField params were invalid");
+        }
     },
 
     clearErrorFromField: function(inputField, errorField){
-        $(inputField).removeClass('invalid')
-        $(errorField).text("");
+        if(commonUtils.notEmpty(inputField) && commonUtils.notEmpty(errorField)) {
+            $(inputField).removeClass('invalid')
+            $(errorField).text("");
+        } else {
+            console.log("___ Programmer! Your clearErrorFromField params were invalid");
+        }
     }
 }
+

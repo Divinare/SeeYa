@@ -197,6 +197,7 @@ module.exports = {
 
         userService.getLoggedInUser(req, res, success, error);
     }
+
 };
 
 //Called after validating all the user fields when we know that the user can really be created

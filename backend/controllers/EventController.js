@@ -7,8 +7,9 @@ var models  = require('../models');
 var helper = require("../helpers/helper.js")
 var CategoryService = require('../services/CategoryService.js');
 var userService = require('../services/UserService.js');
-var utils = require("../../common/utils.js")
 
+var commonUtils = require("../../common/utils.js")
+var commonConstatns = require("../../common/constants.js")
 module.exports = {
 
     findOne: function (req, res) {
@@ -73,29 +74,32 @@ module.exports = {
     },
 
     create: function (req, res) {
-        console.log("____ Creating event")
+        console.log("___ Trying to create event")
         var eventToAdd = req.body;
 
         var eventValidationMsg = validateEvent(eventToAdd);
-        if(eventValidationMsg.length == 0) {
+
+       if(eventValidationMsg.length == 0) {
             findCategory(eventToAdd.category).then(function(category) {
                 if(category == null) {
                     helper.sendErr(res, 400, "Category by name " + eventToAdd.category + " not found.");
-                } else {
-                    var success = function(user){
-                        console.log("success func")
-                        if(user != null){
-                            createEvent(req, res, category, user);
-                        }else{
-                            helper.sendError(res, 400, {user: "Not logged in"})
-                        }
-                    }
-                    var error = function(err){
-                        console.log("error func")
+                }
+                var success = function(user) {
+                    var allowedError = isUserIsAllowedToCreateEvent(user, eventToAdd); // returns "" if all ok
+                    if(allowedError.length != 0) {
+                        console.log("___ User was not allowed to create event because of:");
+                        console.log(allowedError);
+                        helper.sendError(res, 400, allowedError);
+                    } else if(user != null){
+                        createEvent(req, res, category, user);
+                    }else {
                         helper.sendError(res, 400, {user: "Not logged in"})
                     }
-                    userService.getLoggedInUser(req, res, success, error);
                 }
+                var error = function(err) {
+                    helper.sendError(res, 400, {user: "Not logged in"})
+                }
+                userService.getLoggedInUser(req, res, success, error);
             });
         } else {
             helper.sendErr(res, 400, eventValidationMsg);
@@ -191,10 +195,6 @@ module.exports = {
 };
 
 function validateEvent(eventToAdd) {
-
-    console.log("at validateEvent");
-    console.log(eventToAdd);
-
     var lat = eventToAdd.lat;
     var lon = eventToAdd.lon;
 
@@ -208,9 +208,11 @@ function validateEvent(eventToAdd) {
     // All of the validations must return an empty string
     if(valid1.length == 0 && valid2.length == 0 && valid3.length == 0 && valid4.length == 0 && valid5.length == 0 && valid6.length == 0) {
         // All OK
+        console.log("___ Event was OK");
         return "";
     }
-    return "... Form INVALID! name: " + valid1 + " address: " + valid2 + " latLng: " + valid3 + " timestamp: " + valid4 + " category: " + valid5 + " description: " + valid6;
+    console.log("___ Event was invalid");
+    return "Form INVALID! name: " + valid1 + " address: " + valid2 + " latLng: " + valid3 + " timestamp: " + valid4 + " category: " + valid5 + " description: " + valid6;
 }
 
 
@@ -229,21 +231,49 @@ function findCategory(categoryName) {
     });
 }
 
+// sends error if user is not allowed to create event
+function isUserIsAllowedToCreateEvent(user, eventToAdd) {
+    if (user.lastEventCreated != null) {
+        var currentTime = new Date().getTime()/1000;
+        var lastEventCreated = user.lastEventCreated.getTime()/1000;
+        var sinceLastEventWasCreated = currentTime-lastEventCreated;
+       // console.log("ROLEEEEEEEEEEEE");
+        //console.log()
+        if(user.trusted || user.role == "Admin") {
+            var timeLeft = commonConstatns.trustedUserEventCreationDelay - sinceLastEventWasCreated;
+            console.log("___ User was trusted or admin, trusted: " + user.trusted + " role: " + user.role);
+            if(timeLeft < 0) {
+                return "";
+            } else {
+                return "Events can be created every " + commonConstatns.trustedUserEventCreationDelay + " second for trusted users. Time left: " + timeLeft.toFixed(2) + " seconds.";
+            }
+        } else {
+            console.log("___ User was untrusted, role: " + user.role);
+            var timeLeft = commonConstatns.untrustedUserEventCreationDelay - sinceLastEventWasCreated;
+            if(timeLeft < 0) {
+                return "";
+            } else {
+                return "New events can be created every " + (commonConstatns.untrustedUserEventCreationDelay/60) + " minutes. Time left: " + timeLeft.toFixed(2) + " seconds.";
+            }
+        }
+    }
+    return "";
+}
+
 function createEvent(req, res, category, user) {
+    console.log("___ At createEvent");
     var eventToAdd = req.body;
     models.Address.findOrCreate({where: {
-        streetAddress: eventToAdd.address.streetAddress,
-        country: eventToAdd.address.country,
-        city: eventToAdd.address.city,
-        zipCode: eventToAdd.address.zipCode
-    }
-
+            streetAddress: eventToAdd.address.streetAddress,
+            country: eventToAdd.address.country,
+            city: eventToAdd.address.city,
+            zipCode: eventToAdd.address.zipCode
+        }
     }).spread(function(address, created){
         var description = null;
-        if(utils.notEmpty(eventToAdd.description)){
+        if(commonUtils.notEmpty(eventToAdd.description)){
             description = eventToAdd.description;
         }
-
         models.Event.create({
             name: eventToAdd.name,
             lat: eventToAdd.lat,
@@ -259,24 +289,32 @@ function createEvent(req, res, category, user) {
                 event.setUser(user)     //this should say setCreator instead of setUser, but seems to work only this way, change it if you know how!
                 console.log(event.name + ' created successfully');
 
-                models.Attendance.create({
-                    eventId: event.id,
-                    userId: user.id
-                }).then(function(){
-                    res.send(event); 
-                }).catch(function(err){
-                    //Creating the attendance failed for some reason, we can still send ok, adding the attendance is just extra
-                    console.log("ERROR creating attendance for the event that was just created")
-                    res.send(event); 
-                })
+                var success = function() {
+                    models.Attendance.create({
+                        eventId: event.id,
+                        userId: user.id
+                    }).then(function(){
+                        res.send(event); 
+                    }).catch(function(err){
+                        //Creating the attendance failed for some reason, we can still send ok, adding the attendance is just extra
+                        console.log("___ ERROR creating attendance for the event that was just created")
+                        res.send(event); 
+                    })
+                }
+                var error = function (){
+                    helper.sendErr(res, 400, "Error: couldn't update lastEventCreated to user");
+                }
+                userService.updateLastEventCreated(req, res, success, error, user, new Date());
+
+
             }).catch(function(err){
-                console.log("... ERROR on creating event")
+                console.log("___ ERROR on creating event")
                 console.log(err)
                 helper.sendErr(res, 400, err);
             });
 
     }).catch(function(err){
-        console.log("... ERROR2 on creating event")
+        console.log("___ ERROR2 on creating event")
         console.log(err)
         helper.sendErr(res, 400, err);
     });

@@ -32,7 +32,6 @@ const errors = {
     eventLatLngFormat: "Event latitude or longitude is invalid",
     eventDate: "Date cannot be left empty.",
     eventDateWrongFormat: "Wrong date format. The correct one is DD:MM:YYYY, for example 25.06.2016.",
-    eventDateWrongFormat: "Wrong date format. The correct one is DD:MM:YYYY, for example 25.06.2016.",
     eventDateMaxLimit: "Date can be max one year in the future.",
 
     eventCategory: "Category error",

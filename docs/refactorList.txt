@@ -19,3 +19,16 @@ this capsule method could test if object with {"error": "something"} exists and 
 
 ################################################################################################
 
+Anywhere where we have something like:
+if( jqXhr.responseJSON.errors.userRepeatPassword != null && jqXhr.responseJSON.errors.userRepeatPassword.length > 0){
+    frontValidator.setErrorToField('#repeatPassword', jqXhr.responseJSON.errors.userRepeatPassword, '#repeatPasswordError');
+}
+
+we could just call:
+frontValidator.setErrorToField('#repeatPassword', jqXhr.responseJSON.errors.userRepeatPassword, '#repeatPasswordError');
+
+AND inside setErrorToField, we should check if that errors given was != null or undefined or w/e. We should definitely capsule this one out.
+
+################################################################################################
+
+

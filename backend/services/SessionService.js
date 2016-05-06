@@ -19,7 +19,8 @@ function addSafeUserInfoInResponseObject(responseObject, user){
     responseObject.user = {
         id: user.id,
         username: user.username,
-        emailVerified: user.emailVerified
+        emailVerified: user.emailVerified,
+        lastEventCreated: user.lastEventCreated
     }
     return responseObject;
 }
