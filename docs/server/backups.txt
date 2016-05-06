@@ -4,4 +4,4 @@ scp -r general@seeyaevents.com:/home/general/backups/db .
 
 
 Restore the backup from file backup.sql to database called testdb. There must exist an empty database called testdb
-psql testdb < backup.sql
+psql devdb < backup.sql
