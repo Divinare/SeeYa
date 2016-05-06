@@ -1,3 +1,6 @@
+####################################################################################
+
+RESTORE
 
 Copy all the database backups to your local computer to the folder where you are currently in.
 scp -r general@seeyaevents.com:/home/general/backups/db .
@@ -5,3 +8,16 @@ scp -r general@seeyaevents.com:/home/general/backups/db .
 
 Restore the backup from file backup.sql to database called testdb. There must exist an empty database called testdb
 psql testdb < backup.sql
+
+####################################################################################
+
+Export:
+pg_dump devdb > devdb_dump.sql
+
+Import:
+pg_dump devdb < devdb_dump.sql
+
+####################################################################################
+
+
+
