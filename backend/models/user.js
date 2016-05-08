@@ -5,7 +5,7 @@ module.exports = function(sequelize, DataTypes) {
     username: {
         type:DataTypes.STRING,
         allowNull: false,
-        unique:false,
+        unique:true,
         validate: { len: { args: [3,30], msg: "Username must be 3-30 characters long"} } 
     },
     password: {
