@@ -393,8 +393,7 @@ const EventPage = React.createClass({
             joinBtnText = "Join"
         }
         var counter = 0;
-        console.log("ATTENDANCES");
-        console.log(this.state.attendees);
+
         return (
             <div id="eventPageContainer">
                 <div>

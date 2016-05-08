@@ -183,19 +183,45 @@ const EventList = React.createClass({
         })
     },
 
-    createEventListTable: function(eventList) {
+    createEventListTable: function(filteredEventList) {
         var _this = this;
 
-        if(eventList.length > 0) {
+        if(typeof filteredEventList != "undefined" && filteredEventList.length > 0) {
             return (
                 <table className="eventListTable">
                     <tbody key="tableBody">
-                        {this.createEventListRows(eventList)}
+                        {this.createEventListRows(filteredEventList)}
                     </tbody>
                 </table>
             );
         } else {
-            return <div>No events found. You can find more events by adding more categories from the button below.</div>
+            if(typeof map == "undefined" || map == null) {
+                return <div>Loading ... </div>;
+            }
+            var bounds = map.getBounds();
+            if(typeof bounds == "undefined") {
+                return <div>Loading ... </div>;
+            }
+
+            var latTopLeft = bounds.H.H;
+            var lonTopLeft = bounds.j.j;
+            var latBottomRight = bounds.H.j;
+            var lonBottomRight = bounds.j.H
+            var eventsExistsInTheCurrentBounds = false;
+            this.props.eventList.map(function(event) {
+                if(event.lat > latTopLeft && event.lat < latBottomRight && event.lon > lonTopLeft && event.lon < lonBottomRight) {
+                    eventsExistsInTheCurrentBounds = true;
+                }
+                
+            });
+                return <div>No events found from this area with your categories. To find out more events, you can add categories from the button below or zoom out and search from different areas.</div>
+ 
+            /*if(eventsExistsInTheCurrentBounds) {
+                return <div>No events found with your categories. You can find events by adding more categories from the button below.</div>
+            } else {
+                return <div>No events found from this area. You can find more events by zooming out and searching different areas.</div>
+            }
+            */
         }
     },
 
@@ -231,8 +257,8 @@ const EventList = React.createClass({
 
     render: function() {
         var _this = this;
-        // Use eventList if filteredEventList is empty
-        var eventList = this.props.filteredEventList;
+
+        var filteredEventList = this.props.filteredEventList;
         var eventListData = this.props.eventListData;
         var sortDirArrow = '';
         var sortBy = eventListData.sortBy;
@@ -244,7 +270,7 @@ const EventList = React.createClass({
 
         var selectedCategory = this.props.eventListData['filters'].category;
 
-        var eventListTable = this.createEventListTable(eventList);
+        var eventListTable = this.createEventListTable(filteredEventList);
 
         var toTimestamp = eventListData['filters'].toTimestamp;
         var fromTimestamp = eventListData['filters'].fromTimestamp;
@@ -254,8 +280,8 @@ const EventList = React.createClass({
 
         //var fromDate = moment.unix(value).format("MM/DD/YYYY");
         
-        // Display loading text while loading eventList
-        //if($.isEmptyObject(eventList)) {
+        // Display loading text while loading filteredEventList
+        //if($.isEmptyObject(filteredEventList)) {
         //  return (
         //      <div>"Loading..."</div>
     //          )

@@ -20,7 +20,7 @@ var Map = React.createClass({
             mapCenterLat: 60,
             mapCenterLng: 20,
             openedInfowindow: {},
-            markers: []
+            eventMarkers: []
         };
     },
     componentDidMount: function () {
@@ -30,12 +30,13 @@ var Map = React.createClass({
 
     componentWillReceiveProps: function(nextProps) {
         var that = this;
-        this.deleteMarkers(this.state.markers);
+        //this.deleteMarkers(this.state.markers);
 
         var location = UTILS.helper.getLocation();
         var allowDrawMarkers = !(location === 'eventForm' || location === 'editForm');
 
-        if(this.state != null && nextProps.filteredEventList.length > 0) {
+        if(this.state != null && typeof nextProps.filteredEventList != "undefined" &&
+           nextProps.filteredEventList.length > 0) {
                     
             if(allowDrawMarkers) {
                 var newEventMarker = this.props.newEventMarker;
@@ -45,12 +46,17 @@ var Map = React.createClass({
 
                 var drawEventMarker = (!$.isEmptyObject(nextProps.shownEventData)) ? true :  false
                 if(drawEventMarker) {
+                    this.deleteEventMarkers(this.state.eventMarkers);
                     this.addEventMarker(nextProps.shownEventData);
                 } else {
-                    this.addAllMarkers(nextProps);
+                    this.syncFilteredMarkers(nextProps);
                 }
                 window.markersHaventLoaded = false;
+            } else {
+                this.deleteEventMarkers(this.state.eventMarkers);
             }
+        } else {
+            this.deleteEventMarkers(this.state.eventMarkers);
         }
     },
 
@@ -131,6 +137,11 @@ var Map = React.createClass({
                 UTILS.styleHelper.toggleRightContainer();
             }
         });
+
+        google.maps.event.addListener(map, 'bounds_changed', function(){
+            that.props.automaticFilterEventsByLocation();
+        });
+
         window.map = map;
     },
 
@@ -149,30 +160,65 @@ var Map = React.createClass({
         map.setCenter(latLng);
     },
 
-    addAllMarkers: function(props) {
+    // Syncs filteredEventList and this.state.eventMarkers and also adds/removes markers on map
+    syncFilteredMarkers: function(props) {
+        /*
+            If event in filteredEventList is already in this.state.eventMarkers,
+                - no need to push it on map, keep it in this.state.eventMarkers
+            else
+                -  push it on map, add it in this.state.eventMarkers
+
+            If event in this.state.eventMarkers is not in filteredEventList
+                - remove it from the map (it gets removed from state in the function above)
+            
+        */
+
         var that = this;
         var filteredEventList = props.filteredEventList;
-        var createdMarkers = [];
+        var newEventMarkers = [];
+        var existingEventMarkers = this.state.eventMarkers;
+
+        var existingEventMarkersObj = {};
+        existingEventMarkers.map(function(eventMarker){
+            existingEventMarkersObj[eventMarker.id] = eventMarker;
+        });
 
         filteredEventList.map(function(event) {
             if(!$.isEmptyObject(event)) {
-                var marker = that._createEventMarker(event);
-                createdMarkers.push(marker);
+                if(existingEventMarkersObj[event.id] != null) {
+                    newEventMarkers.push(existingEventMarkersObj[event.id])
+                } else {
+                    var marker = that.createMarkerForEvent(event);
+                    event.marker = marker;
+                    newEventMarkers.push(event);
+                }
             } else {
-                console.log("____ Critical error in map.js maybe.");
+                console.log("___ Programmer! Critical error in map.js maybe.");
+            }
+
+        });
+
+        var tempNewEventMarkers = {}
+        newEventMarkers.map(function(newEventMarker) {
+            tempNewEventMarkers[newEventMarker.id] = newEventMarker;
+        });
+        // Remove eventMarkers that are in existingEventMarkers but not in newEventMarkers
+        existingEventMarkers.map(function(eventMarker) {
+            if(tempNewEventMarkers[eventMarker.id] == null) {
+                that.deleteEventMarker(eventMarker);
             }
         });
                     
-        if(!$.isEmptyObject(createdMarkers)) {
+        if(!$.isEmptyObject(newEventMarkers)) {
             this.setState({
-                markers: createdMarkers
+                eventMarkers: newEventMarkers
             })
         }
     },
 
     addEventMarker: function(event) {
         var createdMarkers = [];
-        var marker = this._createEventMarker(event);
+        var marker = this.createMarkerForEvent(event);
         createdMarkers.push(marker);
         if(!$.isEmptyObject(createdMarkers)) {
             this.setState({
@@ -181,7 +227,7 @@ var Map = React.createClass({
         }
     },
 
-    _createEventMarker: function(event) {
+    createMarkerForEvent: function(event) {
         var that = this;
         var icon = new google.maps.MarkerImage("../../assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(24,29));
         var marker = this.createMarker({ lat: event.lat, lng: event.lon }, window.map, icon, false);
@@ -304,13 +350,25 @@ var Map = React.createClass({
      },
 
 
-    deleteMarkers: function(markers) {
-        markers.map(function(marker) {
-            marker.setMap(null);
+    deleteEventMarkers: function(eventMarkers) {
+        eventMarkers.map(function(eventMarker) {
+            eventMarker.marker.setMap(null);
         });
         this.setState({
-            markers: []
+            eventMarkers: []
         })
+    },
+
+    deleteEventMarker: function(eventMarker) {
+        if(eventMarker == null) {
+            console.log("___ Programmer! Tried to remove empty eventMarker");
+            return;
+        }
+        if(eventMarker.marker == null) {
+            console.log("___ Programmer! Tried to remove eventMarker without marker");
+            return;
+        }
+        eventMarker.marker.setMap(null);
     },
 
     deleteMarker: function(marker) {

@@ -1,3 +1,11 @@
+Similiar sites:
+
+https://world.timeout.com/
+https://www.eventbrite.com/
+http://www.meetup.com/
+http://messis.fi/fi/
+
+
 
 Add this to eventlist column attribute?
 fixed={true}

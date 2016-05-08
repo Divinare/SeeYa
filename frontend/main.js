@@ -60,8 +60,8 @@ const Main = React.createClass({
         return {
             showFrontpage: true,
             eventList: [],
-            categories: [],
             filteredEventList: [],
+            categories: [],
             eventListData: eventListData,
             newEventMarker: null,
             shownEventData: {}, // data that is shown currently to the user, if any
@@ -140,7 +140,7 @@ const Main = React.createClass({
         var onSuccess = function(eventList) {
             that.setState({
                 eventList: eventList,
-                filteredEventList: eventList
+                filteredEventList: that._filterEventsByLocation(eventList)
             })
         }
         var onError = function() {
@@ -174,6 +174,38 @@ const Main = React.createClass({
         }
         UTILS.rest.getAllEntries('category', onSuccess, onError);
 
+    },
+
+    automaticFilterEventsByLocation: function() {
+        var filteredEventList = this._filterEventsByLocation(this.state.eventList);
+
+        this.setState({
+            filteredEventList: filteredEventList
+        })
+    },
+
+    _filterEventsByLocation: function(eventList) {
+        if(map == null || typeof map == "undefined") {
+            console.log("___ Programmer! Map not found when filtering eventList by location");
+            return;
+        }
+        var bounds = map.getBounds();
+        if(typeof bounds == "undefined") {
+            return;
+        }
+        var latTopLeft = bounds.H.H;
+        var lonTopLeft = bounds.j.j;
+        var latBottomRight = bounds.H.j;
+        var lonBottomRight = bounds.j.H
+
+        var filteredEventList = [];
+        eventList.map(function(event) {
+            if(event.lat > latTopLeft && event.lat < latBottomRight && event.lon > lonTopLeft && event.lon < lonBottomRight) {
+                filteredEventList.push(event);
+            }
+            
+        });
+        return filteredEventList;
     },
 
     updateAppStatus: function(propName, newValue) {
@@ -224,10 +256,11 @@ const Main = React.createClass({
                         filteredEventList={this.state.filteredEventList}
                         newEventMarker={this.state.newEventMarker}
                         shownEventData={this.state.shownEventData}
-                        
+
                         handleResize={this.handleResize}
                         updateAppStatus={this.updateAppStatus}
-                        hideRightContainer={this.hideRightContainer} />
+                        hideRightContainer={this.hideRightContainer}
+                        automaticFilterEventsByLocation={this.automaticFilterEventsByLocation} />
 
                         <div className="right-container showing" onClick={this.hideRightContainer}>
                             <div id="rightContainerToolbar">
