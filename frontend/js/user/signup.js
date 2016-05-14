@@ -93,7 +93,8 @@ const About = React.createClass({
         return (
             <div id="signupContainer">
                 <div id="signupForm">  
-                    <h2 className="topicText">Sign up</h2>
+                    <h2 id="signupTopic">Sign up</h2>
+                    <div className="signupInfo">We will never share your email address and the password is encrypted with a <a href="https://en.wikipedia.org/wiki/Salt_(cryptography)" target="_blank">salt</a> in our database.</div>
                     <form className="form">
                         <div className="form-group">
                                 <input type="text" id="email" name="email" placeholder="Email" className="form-control" onChange={this.handleChange('email')}/>
@@ -111,12 +112,20 @@ const About = React.createClass({
                                 <input type="password" id="repeatPassword" name="repeatPassword" placeholder="Repeat password" className="form-control" onChange={this.handleChange('repeatPassword')}/>
                                 <span id="repeatPasswordError"></span>
                         </div>
-    
+
+
                        {/* Submit */}
                         <div className="form-group">
                             <button type="submit" onClick={this.submit} className="btn btn-primary btn-block">Sign up</button>
                         </div>
                     </form>
+
+                    <div className="strike">
+                        <span>OR</span>
+                    </div>
+
+                    <a href="/api/auth/facebook" id="signupPageFacebookButton" className="btn btn-primary btn-block">Sign up with Facebook</a>
+
                 </div>  
             </div>
             )

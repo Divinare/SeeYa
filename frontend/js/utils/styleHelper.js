@@ -80,7 +80,7 @@ module.exports = {
             $("#rightContainerToolbar").css("visibility", "visible");
 
             if(this.isDesktop()) {
-                $(".right-container").animate({'right':'+=350px'},350);
+                $(".right-container").animate({'right':'+=450px'},350);
                 $(".right-container").addClass("showing");
             } else {
                 $(".right-container").animate({'top':'-=' + toggleHeightMobile + 'px'},350);
@@ -92,7 +92,7 @@ module.exports = {
             $("#rightContainerContent").css("visibility", "hidden");
             $("#rightContainerToolbar").css("visibility", "hidden");
             if(this.isDesktop()) {
-                $(".right-container").animate({'right':'-=350px'},350);
+                $(".right-container").animate({'right':'-=450px'},350);
                 $(".right-container").removeClass("showing");
             } else {
                 $(".right-container").animate({'top':'+=' + toggleHeightMobile + 'px'},350);

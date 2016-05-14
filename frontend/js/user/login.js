@@ -123,10 +123,14 @@ const About = React.createClass({
                             <button type="submit" id="loginButton" onClick={this.submit} className="btn btn-primary btn-block">Log in</button>
                         </div>
                     </form>
-                    <Link to="/forgotPassword">Forgot password?</Link>
-                    <br />
-                    <br />
-                    <a href="/api/auth/facebook">Log in with Facebook</a>
+                    
+                    {/* TODO: <Link to="/forgotPassword">Forgot password?</Link> */}
+
+                    <div className="strike">
+                        <span>OR</span>
+                    </div>
+
+                    <a href="/api/auth/facebook" id="loginPageFacebookButton" className="btn btn-primary btn-block">Log in with Facebook</a>
     
                     <h3 id="areYouNewTopic">Are you new to Seeya?</h3>
                     <div className="btn btn-default signupButton"><Link to="/signup">Sign up</Link></div>

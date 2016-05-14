@@ -10,7 +10,7 @@ var eventsListTopicHeight = 115;
 
 var marginWidth = 10;
 
-var rightContainerWidthDesktop = 400;
+var rightContainerWidthDesktop = 500;
 
 
 module.exports = {
