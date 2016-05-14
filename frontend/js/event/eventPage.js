@@ -313,6 +313,10 @@ const EventPage = React.createClass({
         browserHistory.push("/join/" + eventId);
     },
 
+    backToEventsFunc: function() {
+            browserHistory.push('/');
+    },
+
     render: function(){
         var that = this;
 
@@ -434,6 +438,9 @@ const EventPage = React.createClass({
                     :
                     ''
                 }
+                <br/>
+                <br/>
+                <div className="btn btn-default" onClick={this.backToEventsFunc}>&larr; Back to events</div>
   
             </div>
         )

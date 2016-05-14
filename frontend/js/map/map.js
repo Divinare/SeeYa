@@ -50,11 +50,9 @@ var Map = React.createClass({
                 }
                 window.markersHaventLoaded = false;
             } else {
-                console.log("DEL, else allowDrawMarkers");
                 this.deleteEventMarkers(this.state.eventMarkers);
             }
         } else {
-            console.log("DEL, else state != null??");
             this.deleteEventMarkers(this.state.eventMarkers);
         }
     },
@@ -239,14 +237,11 @@ var Map = React.createClass({
     },
 
     addEventMarker: function(event) {
-        console.log("ADD EVENT MAERKRR:RR");
-        console.log(event);
         var eventMarkers = [];
         var marker = this.createMarkerForEvent(event, false);
         event.marker = marker;
         eventMarkers.push(event);
         if(!$.isEmptyObject(eventMarkers)) {
-            console.log("Setting eventmarkr to state!");
             this.setState({
                 eventMarkers: eventMarkers
             })
@@ -377,10 +372,7 @@ var Map = React.createClass({
 
 
     deleteEventMarkers: function(eventMarkers) {
-        console.log("DELETING ALL MARKERS!");
         eventMarkers.map(function(eventMarker) {
-            console.log("event marker");
-            console.log(eventMarker);
             eventMarker.marker.setMap(null);
         });
         this.setState({

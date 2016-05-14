@@ -137,17 +137,15 @@ const Main = React.createClass({
     },
 
     getEvents: function() {
+        console.log("GET EVENTS!!!");
         var that = this;
         var onSuccess = function(eventList) {
             that.setState({
                 eventList: eventList,
                 filteredEventList: that._filterEventsByLocation(eventList)
             })
-            console.log("setting... :o");
-            console.log(that._filterEventsByLocation(eventList));
         }
         var onError = function() {
-            console.log("FILTERED EVENTS IS []!!");
             that.setState({
                 eventList: [],
                 filteredEventList: []

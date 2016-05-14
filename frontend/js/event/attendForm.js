@@ -84,6 +84,8 @@ const AttendForm = React.createClass({
                 that.setState({
                     event: eventData
                 })
+                console.log("EVENT DATAA");
+                console.log(eventData);
                 that.props.updateAppStatus("shownEventData", eventData);
             }
         };
@@ -120,10 +122,6 @@ const AttendForm = React.createClass({
     addAttendance: function(e) {
         var that = this;
         var event = this.state.event;
-        var data = {
-            comment: this.state.comment,
-            event: event
-        }
         var commentValid = frontValidator.validateField(
                                 validator.validateAttendanceComment,
                                 this.state.comment,
@@ -131,28 +129,41 @@ const AttendForm = React.createClass({
                                 "#commentError"  
                             )
         if( commentValid ){
-            var success = function(){
-                console.log("SUCCESS")
-                that.props.getEvents();
-                if(that.state.userAttending){
-                    msgComponent.showMessageComponent('Comment updated', SHOW_MSG_SEC * 1000, 'success')
-                }else{
-                    msgComponent.showMessageComponent('Successfully joined ' + that.state.event.name, SHOW_MSG_SEC * 1000, 'success')
+
+            var onSuccess = function (eventData) {
+
+                var success = function() {
+                    that.props.getEvents();
+                    if(that.state.userAttending){
+                        msgComponent.showMessageComponent('Comment updated', SHOW_MSG_SEC * 1000, 'success')
+                    }else{
+                        msgComponent.showMessageComponent('Successfully joined ' + that.state.event.name, SHOW_MSG_SEC * 1000, 'success')
+                    }
+                    browserHistory.push('/events/' + that.state.event.id); 
+                };              
+                var error = function( jqXhr, textStatus, errorThrown ){
+                    if( jqXhr.responseJSON.errors.comment != null && jqXhr.responseJSON.errors.comment.length > 0){
+                        frontValidator.setErrorToField('#comment', jqXhr.responseJSON.errors.userEmail, '#commentError');
+                    }else{
+                        msgComponent.showMessageComponent('An error occurred when trying to join. Was the event deleted? Please try again and report the error if it persists.', SHOW_MSG_SEC * 1000, 'error')
+                    }
+                };
+                frontValidator.clearErrorFromField('#comment', '#commentError');
+                var data = {
+                    comment: that.state.comment,
+                    event: eventData
                 }
-                browserHistory.push('/events/' + that.state.event.id); 
-            };              
-            var error = function( jqXhr, textStatus, errorThrown ){
-                console.log("ERROR")
-                console.log(jqXhr)
-                if( jqXhr.responseJSON.errors.comment != null && jqXhr.responseJSON.errors.comment.length > 0){
-                    frontValidator.setErrorToField('#comment', jqXhr.responseJSON.errors.userEmail, '#commentError');
-                }else{
-                    msgComponent.showMessageComponent('An error occurred when trying to join. Was the event deleted? Please try again and report the error if it persists.', SHOW_MSG_SEC * 1000, 'error')
-                }
-               // console.log( errorThrown );
+
+                UTILS.rest.addEntry('attendance', data, success, error);
             };
-            frontValidator.clearErrorFromField('#comment', '#commentError');
-            UTILS.rest.addEntry('attendance', data, success, error);
+
+            var onError = function() {
+                console.log("Error on fetching event!");
+                msgComponent.showMessageComponent('The event was not found.', SHOW_MSG_SEC * 1000, 'error')
+                browserHistory.push('/');
+            }
+            // We have to get the event from the backend again because there is event.marker reference that causes a circular reference when parsing JSON in rest.addEntry
+            UTILS.rest.getEntry('event', this.state.event.id, onSuccess, onError);
         }
     },
 
@@ -190,9 +201,9 @@ const AttendForm = React.createClass({
                  { ( this.props.user !== null ) ? 
                         <div >
                             { ( this.state.userAttending === true ) ?
-                                <h2>You have joined {this.state.event.name}</h2>
+                                <h2 className="breakWord">You have joined {this.state.event.name}</h2>
                                 :
-                                <h2>Join {this.state.event.name}</h2>
+                                <h2 className="breakWord">Join {this.state.event.name}</h2>
                             }
                             <form className='form' id='form' role='form'> 
                                 <div className='form-group'>

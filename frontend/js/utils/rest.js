@@ -21,6 +21,8 @@ var getAllEntries = function(name, onSuccess, onError) {
 }
 
 var addEntry = function(name, data, onSuccess, onError) {
+    console.log("ADD ENTRY " + name);;
+    console.log(data);
     var url = URL.addEntry[name];
     $.ajax({
         type: 'POST',
