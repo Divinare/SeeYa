@@ -155,9 +155,10 @@ dd {
 
 .link {
     cursor: pointer;
-    /*color: #FFFFFF; */
-    color: #4E4E4E;
-    text-decoration: none;
+    /*color: #4E4E4E; */
+    color: #585858;
+    text-decoration: none !important;
+    font-weight: bold;
 }
 
 .link:hover { 
@@ -165,7 +166,7 @@ dd {
     /* color: #23527c; */
    /* If white color background do color: #BFEEF7; */
     color: #212121;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 

@@ -30,8 +30,6 @@ var Map = React.createClass({
 
     componentWillReceiveProps: function(nextProps) {
         var that = this;
-        //this.deleteMarkers(this.state.markers);
-
         var location = UTILS.helper.getLocation();
         var allowDrawMarkers = !(location === 'eventForm' || location === 'editForm');
 
@@ -46,16 +44,17 @@ var Map = React.createClass({
 
                 var drawEventMarker = (!$.isEmptyObject(nextProps.shownEventData)) ? true :  false
                 if(drawEventMarker) {
-                    this.deleteEventMarkers(this.state.eventMarkers);
-                    this.addEventMarker(nextProps.shownEventData);
+                    this.drawEventMarker(nextProps.shownEventData);
                 } else {
                     this.syncFilteredMarkers(nextProps);
                 }
                 window.markersHaventLoaded = false;
             } else {
+                console.log("DEL, else allowDrawMarkers");
                 this.deleteEventMarkers(this.state.eventMarkers);
             }
         } else {
+            console.log("DEL, else state != null??");
             this.deleteEventMarkers(this.state.eventMarkers);
         }
     },
@@ -91,7 +90,7 @@ var Map = React.createClass({
         var that = this;
 
         var mapOptions = {
-            center: { lat: 60.205294, lng: 24.936092},  //TODO center to user's location?
+            center: { lat: 60.169856, lng: 24.936092},  //TODO center to user's location?
             zoom: this.state.initialZoom,
             minZoom: 5,
             maxZoom: 17,
@@ -143,6 +142,16 @@ var Map = React.createClass({
         });
 
         window.map = map;
+        if(UTILS.helper.getLocation() != "eventPage") {
+            setTimeout(function(){
+                // Centering map to Helsinki. For some reason google maps positioned itself over Lahti so this solves the problem
+                window.map.setCenter({lat:60.169856, lng:25.136092});
+                that.props.updateAppStatus('automaticFilteringAllowed', true);
+            }, 300);
+        } else {
+            that.props.updateAppStatus('automaticFilteringAllowed', true);
+        }
+
     },
 
     centerMapToUserLocation: function() {
@@ -188,7 +197,7 @@ var Map = React.createClass({
                 if(existingEventMarkersObj[event.id] != null) {
                     newEventMarkers.push(existingEventMarkersObj[event.id])
                 } else {
-                    var marker = that.createMarkerForEvent(event);
+                    var marker = that.createMarkerForEvent(event, true);
                     event.marker = marker;
                     newEventMarkers.push(event);
                 }
@@ -216,21 +225,38 @@ var Map = React.createClass({
         }
     },
 
+    drawEventMarker: function(eventData) {
+        if(this.state.eventMarkers.length == 1) {
+            // No need to draw eventMarker if the right one already exists on map
+            if(this.state.eventMarkers[0].id !== eventData.id) {
+                this.deleteEventMarkers(this.state.eventMarkers);
+                this.addEventMarker(eventData);
+            }
+        } else {
+            this.deleteEventMarkers(this.state.eventMarkers);
+            this.addEventMarker(eventData);
+        }
+    },
+
     addEventMarker: function(event) {
-        var createdMarkers = [];
-        var marker = this.createMarkerForEvent(event);
-        createdMarkers.push(marker);
-        if(!$.isEmptyObject(createdMarkers)) {
+        console.log("ADD EVENT MAERKRR:RR");
+        console.log(event);
+        var eventMarkers = [];
+        var marker = this.createMarkerForEvent(event, false);
+        event.marker = marker;
+        eventMarkers.push(event);
+        if(!$.isEmptyObject(eventMarkers)) {
+            console.log("Setting eventmarkr to state!");
             this.setState({
-                markers: createdMarkers
+                eventMarkers: eventMarkers
             })
         }
     },
 
-    createMarkerForEvent: function(event) {
+    createMarkerForEvent: function(event, showAnimation) {
         var that = this;
         var icon = new google.maps.MarkerImage("../../assets/marker_gatherup_straight.png", null, null, null, new google.maps.Size(24,29));
-        var marker = this.createMarker({ lat: event.lat, lng: event.lon }, window.map, icon, false);
+        var marker = this.createMarker({ lat: event.lat, lng: event.lon }, window.map, icon, false, showAnimation);
         var infowindow =  this.createInfowindow(window.map, marker, event);
         google.maps.event.addListener(marker, 'click', function() {
             that.openInfowindow(window.map, marker, infowindow);
@@ -245,7 +271,7 @@ var Map = React.createClass({
     addNewEventMarker: function(latLng, map) {
         var that = this;
         var icon = new google.maps.MarkerImage("assets/marker_new_event.png", null, null, null, new google.maps.Size(24,29));
-        var marker = this.createMarker(latLng, map, icon, true, true);
+        var marker = this.createMarker(latLng, map, icon, true, false);
 
         // Delete current eventMarker if there is one
         if(this.props.newEventMarker != null) {
@@ -257,8 +283,8 @@ var Map = React.createClass({
 
     createMarker: function(location, map, icon, draggable, showAnimation) {
         var addAnimation = (window.markersHaventLoaded == true) ? true : false;
-        if(showAnimation) {
-            addAnimation = true;
+        if(!showAnimation) {
+            addAnimation = false;
         }
         var marker;
         if(addAnimation) {
@@ -351,7 +377,10 @@ var Map = React.createClass({
 
 
     deleteEventMarkers: function(eventMarkers) {
+        console.log("DELETING ALL MARKERS!");
         eventMarkers.map(function(eventMarker) {
+            console.log("event marker");
+            console.log(eventMarker);
             eventMarker.marker.setMap(null);
         });
         this.setState({

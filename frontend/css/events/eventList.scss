@@ -6,6 +6,7 @@
 /* MAIN DIVS */
 
 #eventListTopic {
+    color: #585858;
     margin: 0px;
     height: 35px;
 }
@@ -31,6 +32,10 @@
 .eventListNameLink:hover { 
     text-decoration: underline;
     color: #23527c;
+}
+
+.eventListTableHeader {
+    font-size: 16px;   
 }
 
 .eventListTable {
@@ -65,6 +70,10 @@
     height: 20px;
     margin-top: 3px;
     margin-bottom: 3px;
+}
+
+#eventListMapIconContainer:hover {
+    background-image: url("assets/marker_new_event.png");
 }
 
 #eventListMapIconContainer img {

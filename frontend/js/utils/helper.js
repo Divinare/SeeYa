@@ -56,11 +56,13 @@ module.exports = {
 
 	getLocation: function(){
 		if(module.exports.isAtLocation('eventForm')){
-			return 'eventForm'
-		}else if(module.exports.locationMatches('events\\/\\d+\\/edit$')){
-			return 'editForm'
-		}
-		return ''
+			return 'eventForm';
+		} else if(module.exports.locationMatches('events\\/\\d+\\/edit$')){
+			return 'editForm';
+		} else if(module.exports.isAtLocation('events')) {
+            return 'eventPage';
+        }
+		return '';
 	},
 
 	isAtLocation: function(routeName) {

@@ -1,12 +1,13 @@
 #popupTopic {
     font-size: 26px;
     border-bottom: 1px solid lightgrey;
-    color: #4E4E4E;
+    color: #337ab7;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
 #popupTopic:hover {
-    color: #000;
+    color: #286090;
 }
 #popupPeopleIcon {
     background-image: url(assets/people_icon_dark.png);

@@ -68,6 +68,7 @@ const Main = React.createClass({
             user: null,
             loginStatusPending: true,
             showRightContainer: false,
+            automaticFilteringAllowed: false,
             toolbarComponentData: {}
         };
 
@@ -142,8 +143,11 @@ const Main = React.createClass({
                 eventList: eventList,
                 filteredEventList: that._filterEventsByLocation(eventList)
             })
+            console.log("setting... :o");
+            console.log(that._filterEventsByLocation(eventList));
         }
         var onError = function() {
+            console.log("FILTERED EVENTS IS []!!");
             that.setState({
                 eventList: [],
                 filteredEventList: []
@@ -177,8 +181,11 @@ const Main = React.createClass({
     },
 
     automaticFilterEventsByLocation: function() {
+        if(!this.state.automaticFilteringAllowed) {
+            // Return because app has not yet loaded all eventList data
+            return;
+        }
         var filteredEventList = this._filterEventsByLocation(this.state.eventList);
-
         this.setState({
             filteredEventList: filteredEventList
         })

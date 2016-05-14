@@ -150,6 +150,9 @@ const EventPage = React.createClass({
                 })
                 that.updateEditingPrivileges(eventData);
                 that.props.updateAppStatus("shownEventData", eventData);
+                setTimeout(function(){
+                    window.map.setCenter({lat:eventData.lat, lng:eventData.lon});
+                }, 300);
             }
         };
 
