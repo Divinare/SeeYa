@@ -122,9 +122,24 @@ dd {
 
 #rightContainerBottomBar {
     height: 35px;
-    padding-top: 5px;
-    right: 2px;
+    width: 100%;
     position: absolute;
+}
+
+#bottombarLeftElements {
+    float: left;
+}
+
+#bottombarRightElements {
+    position: relative;
+    float: right;
+    top: 7px;
+    right: 2px;
+}
+
+#bottombarBackButtom {
+    position: relative;
+    left: 7px;
 }
 
 .bottomBarLink {
@@ -173,6 +188,17 @@ dd {
     text-decoration: none !important;
 }
 
+.eventListNameLink {
+    cursor: pointer;
+    text-decoration: none !important;
+    font-weight: bold;
+
+
+}
+
+.eventListNameLink:hover {
+    
+}
 
 .red-border{
     border-style: solid !important;

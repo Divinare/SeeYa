@@ -48,6 +48,11 @@
     padding-left: 5px;
     padding-right: 5px;
     max-width: 130px;
+    color: #585858;
+}
+
+.eventListItem:hover {
+    color: #212121;
 }
 
 #eventListPeopleIcon {

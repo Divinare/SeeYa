@@ -88,9 +88,9 @@ const EventList = React.createClass({
     },
 
     cellRenderer: function(headerName, content, eventId) {
-        var className = '';
-        if(headerName == 'name' || headerName == 'map') {
-            className = 'link';
+        var className = "";
+        if(headerName == "name") {
+            className = "eventListNameLink";
         }
         return <div className={className} styles={{height: '100%'}} onClick={this.handleCellClick.bind(null, headerName, eventId)}>{content}</div>
     },
@@ -235,10 +235,10 @@ const EventList = React.createClass({
         var items = [];
         items.push(
             <tr key="z">
-                <th className="eventListItem" key="x"></th>
-                <th className="eventListItem" key="y">{this._renderHeader("Name", "name")}</th>
-                <th className="eventListItem" key="c">{this._renderHeader("Attendances", "attendances")}</th>
-                <th className="eventListItem" key="v">{this._renderHeader("When", "timestamp")}</th>
+                <th className="link" key="x"></th>
+                <th className="link" key="y">{this._renderHeader("Name", "name")}</th>
+                <th className="link" key="c">{this._renderHeader("Attendances", "attendances")}</th>
+                <th className="link" key="v">{this._renderHeader("When", "timestamp")}</th>
              </tr>
             );
 

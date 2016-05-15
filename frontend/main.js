@@ -21,6 +21,7 @@ var Moment = require('moment');
 
 var Navbar = require('./js/navbar.js');
 var Toolbar = require('./js/toolbar.js');
+var Bottombar = require('./js/bottombar.js');
 var Map = require('./js/map/map.js');
 var About = require('./js/about.js');
 var NoMatch = require('./js/noMatch.js');
@@ -137,7 +138,6 @@ const Main = React.createClass({
     },
 
     getEvents: function() {
-        console.log("GET EVENTS!!!");
         var that = this;
         var onSuccess = function(eventList) {
             that.setState({
@@ -275,11 +275,7 @@ const Main = React.createClass({
                             <div id="rightContainerContent">
                                 {childrenWithProps}
                             </div>
-                            <div id="rightContainerBottomBar">
-                                <Link to="/termsOfService" className="link bottomBarLink">Terms of Service</Link>
-                                <Link to="/contact" className="link bottomBarLink">Contact us</Link>
-                            </div>
-
+                            <Bottombar />
                         </div>
                 </div>  
                 
