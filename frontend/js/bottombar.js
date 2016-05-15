@@ -21,11 +21,8 @@ const Bottombar = React.createClass({
     },
 
     backToEventsFunc: function() {
-        console.log("BACK!?");
         browserHistory.push('/');
     },
-
-
 
     render: function() {
 
@@ -36,8 +33,8 @@ const Bottombar = React.createClass({
             <div id="rightContainerBottomBar">
                 <div id="bottombarLeftElements">
                     {drawBottombarBackButtom == true ?
-                        <div id="bottombarBackButtom" className="btn btn-default btn-sm">
-                            <div className="bottomBarLink glyphicon glyphicon-chevron-left" onClick={this.backToEventsFunc}>Back</div>
+                        <div id="bottombarBackButtom" className="btn btn-default btn-sm" onClick={this.backToEventsFunc}>
+                            <div className="glyphicon glyphicon-chevron-left"></div><span>Back</span>
                         </div>
                         :
                         <span></span>
