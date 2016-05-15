@@ -139,7 +139,7 @@ dd {
 
 #bottombarBackButtom {
     position: relative;
-    left: 7px;
+    left: 5px;
 }
 
 .bottomBarLink {
@@ -191,9 +191,8 @@ dd {
 .eventListNameLink {
     cursor: pointer;
     text-decoration: none !important;
-    font-weight: bold;
-
-
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500 !important;
 }
 
 .eventListNameLink:hover {
