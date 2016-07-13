@@ -203,10 +203,10 @@ const EventList = React.createClass({
                 return <div>Loading ... </div>;
             }
 
-            var latTopLeft = bounds.H.H;
-            var lonTopLeft = bounds.j.j;
-            var latBottomRight = bounds.H.j;
-            var lonBottomRight = bounds.j.H
+            var latTopLeft = bounds.b.b;
+            var lonTopLeft = bounds.f.f;
+            var latBottomRight = bounds.b.f;
+            var lonBottomRight = bounds.f.b
             var eventsExistsInTheCurrentBounds = false;
             this.props.eventList.map(function(event) {
                 if(event.lat > latTopLeft && event.lat < latBottomRight && event.lon > lonTopLeft && event.lon < lonBottomRight) {
