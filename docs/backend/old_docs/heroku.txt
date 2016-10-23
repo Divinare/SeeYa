@@ -1,4 +1,14 @@
 
+heroku login
+
+heroku logs
+(if not working, do these steps:
+
+git remote rm heroku
+git remote add heroku git@heroku.com:seeyaevents.git
+)
+
+
 $ git init
 $ git add .
 $ git commit -m "initial commit"
@@ -27,9 +37,10 @@ To import database into heroku:
 heroku pg:reset DATABASE --confirm event-meetup
 heroku pg:backups restore 'https://s3-eu-west-1.amazonaws.com/eventmeetup/seedsdb.dump' PRODUCTION_DB_URL --confirm event-meetup
 
+Connect to Heroku psql:
 
-PRODUCTION_DB_URL
-
+heroku pg:psql PRODUCTION_DB_URL
+(where PRODUCTION_DB_URL is our database name)
 
 (https://devcenter.heroku.com/articles/heroku-postgres-import-export)
 
