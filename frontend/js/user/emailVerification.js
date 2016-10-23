@@ -24,9 +24,11 @@ const Verification = React.createClass({
         var that = this;
         this.setToolbarIcons();
         this.props.handleResize();
-        var user = this.props.user;
+        console.log("getting user");
 
-        if(user.emailVerified) {
+        var user = this.props.user;
+        console.log("done getting user");
+        if(user != null && user.emailVerified) {
             console.log("___ User email already verified");
             msgComponent.showMessageComponent('Your email has already been verified', SHOW_MSG_SEC * 1000, 'success')
             browserHistory.push('/');
@@ -39,7 +41,9 @@ const Verification = React.createClass({
             }
 
             var success = function(result) {
-                that.props.updateAppStatus('user', result.user);
+                if(user != null) {
+                    that.props.updateAppStatus('user', result.user);
+                }
                 msgComponent.showMessageComponent('Email verified successfully! Now you can join to events and create them.', SHOW_MSG_SEC * 1000, 'success')
                 browserHistory.push('/');
             }
@@ -61,7 +65,7 @@ const Verification = React.createClass({
     getEmailVerificationId: function() {
         var tokens = helper.getUrlTokens();
         var emailVerificationId = tokens[tokens.length-1];
-        if(emailVerificationId.charAt(0) == "?") {
+        if(emailVerificationId.chaarAt(0) == "?") {
             // Take off the first character which is "?""
             emailVerificationId = emailVerificationId.substring(1);
             return emailVerificationId;

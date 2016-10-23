@@ -299,9 +299,9 @@ render((
             <Route path="termsOfService" component={TermsOfService} />
             <Route path="authError/:message" component={AuthError}/>
             <Route path="forgotPassword" component={ForgotPassword}/>
+            <Route path="emailVerification" component={Verification} />
             <Route component={RequireLogin} >
                 <Route path="settings" component={Settings} />
-                <Route path="emailVerification" component={Verification} />
                 <Route component={RequireVerification} >
                     <Route path="eventForm" component={EventForm} />
                     <Route path="join/:id" component={AttendForm} />

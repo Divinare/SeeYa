@@ -127,6 +127,7 @@ module.exports = {
 
     verifyEmail: function(req, res) {
         var verificationId = req.body.emailVerificationId;
+        console.log("___ Verifying email: " + verificationId);
         models.User.update({
             emailVerified: true
         },{

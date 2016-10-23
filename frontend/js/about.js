@@ -5,6 +5,7 @@ var browserHistory = Router.browserHistory;
 const About = React.createClass({
 
 	componentDidMount: function() {
+        console.log("test");
 		this.setToolbarIcons();
 		this.props.handleResize();
 	},
