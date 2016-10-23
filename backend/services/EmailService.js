@@ -50,7 +50,7 @@ module.exports = {
                 greetUsername = true;
             }
             var templateData = {
-                verificationLink: "seeyaevents.com/emailVerification/?" + emailVerificationId,
+                verificationLink: "www.seeyaevents.com/emailVerification/?" + emailVerificationId,
                 //minifiedVerificationLink: "seeyaevents.com/emailVerification/?" + emailVerificationId.substring(0, 15) + "...",
                 greetUsername: greetUsername,
                 username: username
