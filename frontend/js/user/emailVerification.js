@@ -65,7 +65,7 @@ const Verification = React.createClass({
     getEmailVerificationId: function() {
         var tokens = helper.getUrlTokens();
         var emailVerificationId = tokens[tokens.length-1];
-        if(emailVerificationId.chaarAt(0) == "?") {
+        if(emailVerificationId.charAt(0) == "?") {
             // Take off the first character which is "?""
             emailVerificationId = emailVerificationId.substring(1);
             return emailVerificationId;
