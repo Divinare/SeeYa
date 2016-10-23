@@ -10,10 +10,10 @@ select * from "Events";
 // Lists all column names of Users table:
 select * from "Users" where false;
 
+// List all emails from Users table:
+select email from "Users";
 
-
-
-
-
+// List user which name is Bruno:
+select * from "Users" where username = 'Bruno';
 
 

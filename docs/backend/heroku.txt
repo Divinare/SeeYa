@@ -17,6 +17,8 @@ $ git push heroku master
 $ heroku ps:scale web=1
 $ heroku open
 
+Go to:
+https://event-meetup.herokuapp.com/
 
 // Adds postgresql database to heroku
 heroku addons | grep POSTGRES
@@ -37,7 +39,15 @@ To import database into heroku:
 heroku pg:reset DATABASE --confirm event-meetup
 heroku pg:backups restore 'https://s3-eu-west-1.amazonaws.com/eventmeetup/seedsdb.dump' PRODUCTION_DB_URL --confirm event-meetup
 
+
 Connect to Heroku psql:
+
+NOTE: to change this amazon's seedsdb.dump, contact Joe. He has an email and he can log in. Otherwise you have to create your own amazon account.
+
+To create / change a bucket go here in amazon:
+https://console.aws.amazon.com/s3/home?region=us-west-2
+
+(documentation about how its done: https://devcenter.heroku.com/articles/s3)
 
 heroku pg:psql PRODUCTION_DB_URL
 (where PRODUCTION_DB_URL is our database name)

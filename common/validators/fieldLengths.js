@@ -14,7 +14,7 @@ module.exports = {
     eventAddressZipCodeMax: 255,
     eventAddressStreetAddressMax: 255,
     eventAddressStreetAddressMin: 5,
-    eventMaxDaysInTheFuture: 365,
+    eventMaxDaysInTheFuture: 18250, // Was 365, now its 50 years because this app is in test mode
     eventDescriptionMaxLength: 2500,
 
     contactEmailMaxLength: 254,

@@ -198,10 +198,11 @@ const Main = React.createClass({
         if(typeof bounds == "undefined") {
             return;
         }
-        var latTopLeft = bounds.H.H;
-        var lonTopLeft = bounds.j.j;
-        var latBottomRight = bounds.H.j;
-        var lonBottomRight = bounds.j.H
+
+        var latTopLeft = bounds.f.f;
+        var lonTopLeft = bounds.b.b;
+        var latBottomRight = bounds.f.b;
+        var lonBottomRight = bounds.b.f
 
         var filteredEventList = [];
         eventList.map(function(event) {
