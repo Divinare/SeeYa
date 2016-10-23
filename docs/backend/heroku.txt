@@ -55,5 +55,8 @@ heroku pg:psql PRODUCTION_DB_URL
 (https://devcenter.heroku.com/articles/heroku-postgres-import-export)
 
 Get backup of database in heroku:
-heroku pg:backups:capture
-or heroku pg:backups:capture databasename
+heroku pg:backups capture PRODUCTION_DB_URL
+(heroku pg:backups:capture databasename)
+
+Downloading backup the:
+heroku pg:backups public-url b024
