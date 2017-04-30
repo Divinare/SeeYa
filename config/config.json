@@ -1,6 +1,7 @@
 {
   "development": {
-    "username": null,
+    "domain":"localhost:1337",
+    "username": "null",
     "password": null,
     "dialect": "postgres",
     "database":"devdb",
@@ -15,8 +16,18 @@
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
-
+  "docker": {
+    "domain":"localhost:1337",
+    "username": "postgres",
+    "password": "postgres",
+    "dialect": "postgres",
+    "database": "seeya_db",
+    "protocol": "postgres",
+    "port": 5432,
+    "host": "127.0.0.1"
+  },
   "production": {
+    "domain":"www.seeyaevents.com",
     "username": "general",
     "password": "hedEhe7wanazu5u",
     "dialect": "postgres",

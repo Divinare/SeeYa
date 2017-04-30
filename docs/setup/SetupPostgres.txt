@@ -9,6 +9,9 @@ Instructions to get postgres running on your local environment:
 3. Create the database and database role with following commands:
 (replace "Pete" in the second command with the name that is needed in your system. If you try to run gulp before creating the role, you should get error message telling that something like that a role "xyz" has not been defined, where "xyz" was "Pete" in my system)
 
+start psql with the following command: 
+psql -U postgres (more options in postre.txt if this is not working)
+Then run the following commands:
 CREATE DATABASE devdb;
 CREATE ROLE "Pete" WITH LOGIN;
 

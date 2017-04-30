@@ -1,0 +1,16 @@
+Could not make docker work yet. I'll leave the file here though in case we will use it in the future
+
+Docker commands:
+List docker processes: docker ps   | example output:
+
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                  NAMES
+932a729dd70f        friendlyhello       "python app.py"     5 seconds ago       Up 5 seconds        0.0.0.0:1337->80/tcp   elegant_albattani
+
+View the logs:
+docker logs <container id>
+
+Stop a process:
+docker stop elegant_albattani   | notice that elegant_albattani is the name of the process from the last column labeled "NAMES"
+
+Remove dangling docker images from taking space:
+docker image prune

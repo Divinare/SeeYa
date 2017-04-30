@@ -12,6 +12,9 @@ var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
 var authConfig = require('../config/auth.js')
 var sessionController = require('./controllers/SessionController.js')
+var categoriesConfig = require('../config/categories.js')
+
+//This file is ran when the application starts
 
 
 // Configure the Facebook strategy for use by Passport.
@@ -139,4 +142,20 @@ models.sequelize.sync().then(function () {
   var server = app.listen(app.get('port'), function() {
     debug('Express server listening on port ' + server.address().port);
   });
+});
+
+
+var Category = models.Category;
+//Add default categories if there are none
+Category.count().then(function (count) {
+    if(count == 0){
+      console.log("There are no categories in db, inserting the default ones")
+      categoriesConfig.defaultCategories.forEach(function(name) {
+          Category.create({
+            name: name
+        })
+      });
+    }else{
+      console.log("There are " + count + " categories in the database")
+    }
 });

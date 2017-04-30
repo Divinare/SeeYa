@@ -142,9 +142,9 @@ module.exports = {
                     res.status(200).send(response);
                 }
                 var error = function(err) {
-                    console.log("___ Error on finding user after verifying user email:");
+                    console.log("___ User is not logged in");
                     console.log(err);
-                    helper.sendErr(res, 400, err);
+                    res.status(200).send({});
                 }
 
                 userService.getLoggedInUser(req, res, success, error);

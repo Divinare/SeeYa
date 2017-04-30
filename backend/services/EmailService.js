@@ -49,8 +49,10 @@ module.exports = {
             if(username.length > 0 && username.indexOf("Anonymous") == -1) {
                 greetUsername = true;
             }
+            var env = process.env.NODE_ENV || "development";
+            var config = require(__dirname + '/../../config/config.json')[env];
             var templateData = {
-                verificationLink: "www.seeyaevents.com/emailVerification/?" + emailVerificationId,
+                verificationLink: config.domain + "/emailVerification/?" + emailVerificationId,
                 //minifiedVerificationLink: "seeyaevents.com/emailVerification/?" + emailVerificationId.substring(0, 15) + "...",
                 greetUsername: greetUsername,
                 username: username
