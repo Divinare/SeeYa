@@ -1,7 +1,7 @@
 {
   "development": {
     "domain":"localhost:1337",
-    "username": "null",
+    "username": null,
     "password": null,
     "dialect": "postgres",
     "database":"devdb",
