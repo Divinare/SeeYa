@@ -1,0 +1,11 @@
+db:
+  image: postgres
+seeya:
+  build: .
+  links:
+    - db
+  environment:
+    - PGHOST=db
+    - PGDATABASE=seeya_db
+    - PGUSER=postgres
+    - NODE_ENV=docker
