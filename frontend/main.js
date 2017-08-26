@@ -198,15 +198,15 @@ const Main = React.createClass({
         if(typeof bounds == "undefined") {
             return;
         }
-
-        var latTopLeft = bounds.f.f;
-        var lonTopLeft = bounds.b.b;
-        var latBottomRight = bounds.f.b;
-        var lonBottomRight = bounds.b.f
-
+        var latTopLeft = parseFloat(bounds.f.f);
+        var lonTopLeft = parseFloat(bounds.b.b);
+        var latBottomRight = parseFloat(bounds.f.b);
+        var lonBottomRight = parseFloat(bounds.b.f);
         var filteredEventList = [];
         eventList.map(function(event) {
-            if(event.lat > latTopLeft && event.lat < latBottomRight && event.lon > lonTopLeft && event.lon < lonBottomRight) {
+            var lat = parseFloat(event.lat);
+            var lon = parseFloat(event.lon);
+            if(lat < latTopLeft && lat > latBottomRight && lon > lonTopLeft && lon < lonBottomRight) {
                 filteredEventList.push(event);
             }
             
